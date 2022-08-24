@@ -24,7 +24,7 @@ const puppeteer = require("puppeteer");
     inputHandle = await page.$("[id='priceDate.year']");
     const yearValue = await page.evaluate(input => input.value, inputHandle);
     await inputHandle.dispose();
-    console.log(monthValue + '/' + dayValue + '/' + yearValue);;
+    console.log(monthValue + '/' + dayValue + '/' + yearValue);
 
     // click the input button and wait for the page to navigate to results.
     const [response] = await Promise.all([
@@ -45,6 +45,8 @@ const puppeteer = require("puppeteer");
 
 })();
 
+
+// this function does not work!s
 function tableToJson(table) {
     var data = [];
 
