@@ -43,72 +43,44 @@ async function getTreasuryQuotes() {
     const tableValue = await page.evaluate(input => input.innerHTML, inputHandle);
     //console.log(tableValue);
 
+    // how many quotes were published?
     let rows = await inputHandle.$$('tr');
     console.log('rows = ' + rows.length);
 
-    // create the headers list
+    // create the headers list for JSON tags.
     var headers = [];
     let cols = await rows[0].$$('th');
-    for (let col = 0; col < cols.length; col++) {3
+    for (let col = 0; col < cols.length; col++) {
+        3
         const rawHeader = await page.evaluate(input => input.innerHTML, cols[col]);
         headers[col] = rawHeader.toLowerCase().replace(/ /gi, '');
         console.log(headers[col]);
     }
 
+    // This parses the rate table and puts in an array for conversion to JSON.
     let data = [];
     for (let row = 1; row < rows.length; row++) {
         console.log('row[' + row + '] = ' + await page.evaluate(input => input.innerHTML, rows[row]));
-
-
-
         // get an array of all the columns for the current row.
         cols = await rows[row].$$('td');
         console.log('cols = ' + cols.length);
 
-        if (cols.lenghth == 8) {
+        if (cols.length == 8) {
             var rowData = {};
             for (let col = 0; col < cols.length; col++) {
                 rowData[headers[col]] = await page.evaluate(input => input.innerHTML, cols[col]);
+                console.log('rowData[' + headers[col] + '] = ' + rowData[headers[col]]);
             }
             data.push(rowData);
         }
 
     }
+    console.log('data Rows = ' + data.length);
     console.log(JSON.stringify(data));
     await inputHandle.dispose();
-    await browser.close();
+    await page.close();
+    //await browser.close();
     console.log('closed');
 }
+// For a local node run, this is the test function.
 getTreasuryQuotes();
-
-
-// this would test the function below, but id does not work.
-//console.log(JSON.stringify(tableToJson(tableValue)));
-
-// this function does not work!
-function tableToJson(table) {
-    var data = [];
-
-    // first row needs to be headers
-    var headers = [];
-    for (var i = 0; i < table.rows[0].cells.length; i++) {
-        headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi, '');
-    }
-
-    // go through cells
-    for (var i = 1; i < table.rows.length; i++) {
-
-        var tableRow = table.rows[i];
-        var rowData = {};
-
-        for (var j = 0; j < tableRow.cells.length; j++) {
-
-            rowData[headers[j]] = tableRow.cells[j].innerHTML;
-
-        }
-
-        data.push(rowData);
-    }
-
-    return data;
-}
