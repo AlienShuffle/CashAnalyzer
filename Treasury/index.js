@@ -11,10 +11,7 @@ let browserPromise = puppeteer.launch({
 });
 
 async function _getTreasuryQuotes() {
-    if (!browser) {
-        browser = await
-            console.log('browser started');
-    }
+    const browser = await browserPromise;
 
     // open an  new page instance of Chromium.
     const page = await browser.newPage();
