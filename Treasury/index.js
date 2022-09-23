@@ -2,18 +2,18 @@
 const puppeteer = require("puppeteer");
 
 // shared global browser instance.
-var browser = null;
+let browserPromise = puppeteer.launch({
+    defaultViewport: null,
+    headless: false,  // comment out to make this run headless for production.
+    ignoreDefaultArgs: ['--disable-extensions'],
+    //args: ['--window-size=1920,1080']
+    args: ['--window-size=800,600', '--no-sandbox']
+});
 
-async function getTreasuryQuotes() {
-    if (!browser) { 
-        browser = await puppeteer.launch({
-            defaultViewport: null,
-            //headless: false,  // comment out to make this run headless for production.
-            ignoreDefaultArgs: ['--disable-extensions'],
-            //args: ['--window-size=1920,1080']
-            args: ['--window-size=800,600']
-        });
-        console.log('browser started');
+async function _getTreasuryQuotes() {
+    if (!browser) {
+        browser = await
+            console.log('browser started');
     }
 
     // open an  new page instance of Chromium.
@@ -81,11 +81,36 @@ async function getTreasuryQuotes() {
         }
     }
     console.log('data Rows = ' + data.length);
-    console.log(JSON.stringify(data));
+
     await inputHandle.dispose();
     await page.close();
     //await browser.close();
     console.log('page closed');
+    return (JSON.stringify(data));
 }
 // For a local node run, this is the test function.
 //getTreasuryQuotes();
+
+/*
+ * Responds to any HTTP request.
+ *
+ * @param {!express:Request} req HTTP request context.
+ * @param {!express:Response} res HTTP response context.
+ */
+exports.getTbillQuotes = async (req, res) => {
+    const url = req.query.url || 'http://example.com';
+
+    const browser = await browserPromise;
+    const context = await browser.createIncognitoBrowserContext();
+    const page = await context.newPage();
+    await page.goto(url);
+    const image = await page.screenshot();
+    res.setHeader('Content-type', 'image/png');
+    res.status(200).send(image);
+
+    context.close();
+
+    //let message = req.query.message || req.body.message || 'Hello World from getAllyQuotes\n';
+    //let quotes = _getTreasuryQuotes;
+    //res.status(200).send(message + ' ' + quotes);
+};

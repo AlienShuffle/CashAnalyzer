@@ -1,0 +1,16 @@
+{
+  "name": "Treasury",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "functions-framework --target=getTbillQuotes"
+  },
+  "keywords": [],
+  "author": "AlienShuffle",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.1.2",
+    "puppeteer": "^16.2.0"
+  }
+}
