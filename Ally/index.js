@@ -2,25 +2,23 @@ const puppeteer = require('puppeteer');
 const functions = require('@google-cloud/functions-framework');
 
 // shared global browser instance.
-var browser = null;
+let browserPromise = puppeteer.launch({
+    defaultViewport: null,
+    //headless: false,  // comment out to make this run headless for production.
+    ignoreDefaultArgs: ['--disable-extensions'],
+    //args: ['--window-size=1920,1080']
+    args: ['--window-size=800,600', '--no-sandbox']
+});
 
-async function GetAllyQuotesData() {
-    if (!browser) {
-        browser = await puppeteer.launch({
-            defaultViewport: null,
-            //headless: false,  // comment out to make this run headless for production.
-            ignoreDefaultArgs: ['--disable-extensions'],
-            //args: ['--window-size=1920,1080']
-            args: ['--window-size=800,600']
-        });
-        console.log('browser started');
-    }
+async function _getAllyQuotesData() {
+    const browser = await browserPromise;
+    console.log("I have a browser");
 
     // open a new page instance of Chromium.
     const context = await browser.createIncognitoBrowserContext();
     const page = await context.newPage();
 
-    // browse to the marketable securities page
+    // browse to the Ally savings account page.
     await page.goto("https://www.ally.com/bank/savings-account-rates/");
 
     // this looks for an element with the current saving account rate.
@@ -52,7 +50,7 @@ functions.http('getAllyQuotes', async (req, res) => {
     //console.log('req.query.message ' + req.query.message);
     //console.log('req.body.message ' + req.body.message);
     console.log("step 1");
-    let quote = await GetAllyQuotesData();
+    let quote = await _getAllyQuotesData();
 
     console.log("main after stringify, message = :" + quote + ':');
     res.status(200).send(quote);

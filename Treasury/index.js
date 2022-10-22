@@ -5,7 +5,7 @@ const functions = require('@google-cloud/functions-framework');
 // shared global browser instance.
 let browserPromise = puppeteer.launch({
     defaultViewport: null,
-    headless: false,  // comment out to make this run headless for production.
+    //headless: false,  // comment out to make this run headless for production.
     ignoreDefaultArgs: ['--disable-extensions'],
     //args: ['--window-size=1920,1080']
     args: ['--window-size=800,600', '--no-sandbox']
@@ -13,8 +13,9 @@ let browserPromise = puppeteer.launch({
 
 async function _getTreasuryQuotes() {
     const browser = await browserPromise;
+    console.log("I have a browser");
 
-    // open an  new page instance of Chromium.
+    // open a new page instance of Chromium.
     const context = await browser.createIncognitoBrowserContext();
     const page = await context.newPage();
 
@@ -98,21 +99,3 @@ functions.http('getTreasuryQuotes', async (req, res) => {
     //console.log('set reponse: '+ message);
     res.status(200).send(message);
 });
-
-// test of screen shots and simple parameter passing.
-/*
-functions.http('screenShot', async (req, res) => {
-    const url = req.query.url || 'http://example.com';
-
-    console.log('url = ' + url);
-    const browser = await browserPromise;
-    const context = await browser.createIncognitoBrowserContext();
-    const page = await context.newPage();
-    await page.goto(url);
-    const image = await page.screenshot();
-    res.setHeader('Content-type', 'image/png');
-    res.status(200).send(image);
-
-    context.close();
-});
-*/
