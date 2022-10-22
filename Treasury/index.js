@@ -1,5 +1,6 @@
-// testing This is the Node version that will work locally
+
 const puppeteer = require("puppeteer");
+const functions = require('@google-cloud/functions-framework');
 
 // shared global browser instance.
 let browserPromise = puppeteer.launch({
@@ -14,7 +15,8 @@ async function _getTreasuryQuotes() {
     const browser = await browserPromise;
 
     // open an  new page instance of Chromium.
-    const page = await browser.newPage();
+    const context = await browser.createIncognitoBrowserContext();
+    const page = await context.newPage();
 
     // browse to the marketable securities page
     await page.goto("https://savingsbonds.gov/GA-FI/FedInvest/selectSecurityPriceDate");
@@ -54,10 +56,9 @@ async function _getTreasuryQuotes() {
     var headers = [];
     let cols = await rows[0].$$('th');
     for (let col = 0; col < cols.length; col++) {
-        3
         const rawHeader = await page.evaluate(input => input.innerHTML, cols[col]);
         headers[col] = rawHeader.toLowerCase().replace(/ /gi, '');
-        //console.log(headers[col]);
+        console.log(headers[col]);
     }
 
     // This parses the rate table and puts in an array for conversion to JSON.
@@ -80,13 +81,10 @@ async function _getTreasuryQuotes() {
     console.log('data Rows = ' + data.length);
 
     await inputHandle.dispose();
-    await page.close();
-    //await browser.close();
-    console.log('page closed');
+    await context.close();
+    console.log('page/context closed');
     return (JSON.stringify(data));
 }
-// For a local node run, this is the test function.
-//getTreasuryQuotes();
 
 /*
  * Responds to any HTTP request.
@@ -94,9 +92,19 @@ async function _getTreasuryQuotes() {
  * @param {!express:Request} req HTTP request context.
  * @param {!express:Response} res HTTP response context.
  */
-exports.getTbillQuotes = async (req, res) => {
+functions.http('getTreasuryQuotes', async (req, res) => {
+    console.log('calling _getTreasuryQuotes');
+    const message = await _getTreasuryQuotes();
+    //console.log('set reponse: '+ message);
+    res.status(200).send(message);
+});
+
+// test of screen shots and simple parameter passing.
+/*
+functions.http('screenShot', async (req, res) => {
     const url = req.query.url || 'http://example.com';
 
+    console.log('url = ' + url);
     const browser = await browserPromise;
     const context = await browser.createIncognitoBrowserContext();
     const page = await context.newPage();
@@ -106,8 +114,5 @@ exports.getTbillQuotes = async (req, res) => {
     res.status(200).send(image);
 
     context.close();
-
-    //let message = req.query.message || req.body.message || 'Hello World from getAllyQuotes\n';
-    //let quotes = _getTreasuryQuotes;
-    //res.status(200).send(message + ' ' + quotes);
-};
+});
+*/
