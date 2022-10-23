@@ -1,5 +1,9 @@
 const puppeteer = require('puppeteer');
-const functions = require('@google-cloud/functions-framework');
+const cloudFunctions = require('@google-cloud/functions-framework');
+const NodeCache = require("node-cache");
+
+// The cache used to reduce the number of times we hit the Ally Website.
+const cache = new NodeCache();
 
 // shared global browser instance.
 let browserPromise = puppeteer.launch({
@@ -12,7 +16,7 @@ let browserPromise = puppeteer.launch({
 
 async function _getAllyQuotesData() {
     const browser = await browserPromise;
-    console.log("I have a browser");
+    //console.log("I have a browser");
 
     // open a new page instance of Chromium.
     const context = await browser.createIncognitoBrowserContext();
@@ -25,19 +29,43 @@ async function _getAllyQuotesData() {
     var rateValue;
     inputHandle = await page.$("span.allysf-rates-v1-value");
     if (inputHandle != null) {
-        console.log('handle = ', inputHandle);
         rateValue = await page.evaluate(input => input.innerHTML, inputHandle);
-        console.log('2 rateValue = :' + rateValue + ':');
+        //console.log('rateValue = :' + rateValue + ':');
     }
     inputHandle.dispose();
 
     let data = {};
-    data['Type'] = "Savings";
-    data['Value'] = +rateValue;
-    data['asOf'] = new Date;
+    data.Type = "Savings";
+    data.Value = +rateValue;
+    data.asOf = new Date;
 
     context.close();;
-    return(JSON.stringify(data));
+    return (JSON.stringify(data));
+}
+/*
+ * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new quote, not use any available cache.
+ * @customfunction
+ */
+async function getCachedAllyQuotes(forceRefresh = false) {
+    const cacheKey = 'AllySavings';
+
+    if (!forceRefresh) {
+        var cacheVal = cache.get(cacheKey);
+        //console.log('cache returned: ' + cacheVal);
+        // parse the stored JSON if it exists and return to the caller.
+        if (cacheVal != null) {
+            //console.log('returning valid cache entry');
+            return cacheVal;
+        }
+    }
+
+    //console.log('cache failed, going out to get new value.');
+    var resp = await _getAllyQuotesData();
+    //console.log('resp = ' + resp);
+    var ttl = 18 * 60 * 60; // 18 hours for now.
+    const success = cache.set(cacheKey, resp, ttl);
+    //console.log('cache.set results = ' + success);
+    return resp;
 }
 
 /**
@@ -46,13 +74,42 @@ async function _getAllyQuotesData() {
  * @param {!express:Request} req HTTP request context.
  * @param {!express:Response} res HTTP response context.
  */
-functions.http('getAllyQuotes', async (req, res) => {
+ cloudFunctions.http('getAllyQuotes', async (req, res) => {
     //console.log('req.query.message ' + req.query.message);
     //console.log('req.body.message ' + req.body.message);
-    console.log("step 1");
-    let quote = await _getAllyQuotesData();
 
-    console.log("main after stringify, message = :" + quote + ':');
+    // test the NYC time date date info.
+    /*
+        var currDate = new Date();
+        currDate.setSeconds(0);
+        currDate.setMilliseconds(0);
+        console.log('currDate = ' + currDate);
+        console.log('nycDate = ' + _getNYCTime());
+    */
+
+    let quote = await getCachedAllyQuotes();
+
+    // log cache hit rates for verification we are getting value for the function.
+    console.log('cache stats =' + JSON.stringify(cache.getStats()));
+
+    //console.log("main after stringify, message = :" + quote + ':');
     res.status(200).send(quote);
-    console.log("exit");
 });
+
+
+
+// These are future functions for the CashAnalyzer library module. Just getting code to work for now.
+function _getNYCTime() {
+    // current date in local timezone with seconds trimmed.
+    var currDate = new Date();
+    currDate.setSeconds(0);
+    currDate.setMilliseconds(0);
+
+    // This is considered unsafe, but it appears to work.
+    // It basically gets a string representing the current time in NYC timezone regardless of
+    // the current time zone defined in the user's environment and converts to a new Date thus showing the
+    // local time as it is seen in NYC, not here, wherever here is.....
+    var nycDateString = currDate.toLocaleString('en-US', { timeZone: 'America/New_York' });
+    //console.log('nycDateString = ' + nycDateString);
+    return new Date(Date.parse(nycDateString));
+}
