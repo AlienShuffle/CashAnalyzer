@@ -3,6 +3,7 @@ const cloudFunctions = require('@google-cloud/functions-framework');
 const NodeCache = require("node-cache");
 
 // The cache used to reduce the number of times we hit the Ally Website.
+// This only works as long as the process stays in memory which may not be all that long.
 const cache = new NodeCache();
 
 // shared global browser instance.
@@ -14,7 +15,11 @@ let browserPromise = puppeteer.launch({
     args: ['--window-size=800,600', '--no-sandbox']
 });
 
-async function _getAllyQuotesData() {
+/**
+ * 
+ * @returns {[string,integer,date]} returns the savings type, current APY as a percentage, and the date of the last rate retrievel
+ */
+async function getAllyQuotesData_() {
     const browser = await browserPromise;
     //console.log("I have a browser");
 
@@ -36,13 +41,13 @@ async function _getAllyQuotesData() {
 
     let data = {};
     data.Type = "Savings";
-    data.Value = +rateValue;
+    data.Rate = +rateValue;
     data.asOf = new Date;
 
     context.close();;
     return (JSON.stringify(data));
 }
-/*
+/**
  * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new quote, not use any available cache.
  * @customfunction
  */
@@ -60,7 +65,7 @@ async function getCachedAllyQuotes(forceRefresh = false) {
     }
 
     //console.log('cache failed, going out to get new value.');
-    var resp = await _getAllyQuotesData();
+    var resp = await getAllyQuotesData_();
     //console.log('resp = ' + resp);
     var ttl = 18 * 60 * 60; // 18 hours for now.
     const success = cache.set(cacheKey, resp, ttl);
@@ -74,7 +79,7 @@ async function getCachedAllyQuotes(forceRefresh = false) {
  * @param {!express:Request} req HTTP request context.
  * @param {!express:Response} res HTTP response context.
  */
- cloudFunctions.http('getAllyQuotes', async (req, res) => {
+cloudFunctions.http('getAllyQuotes', async (req, res) => {
     //console.log('req.query.message ' + req.query.message);
     //console.log('req.body.message ' + req.body.message);
 
@@ -84,7 +89,7 @@ async function getCachedAllyQuotes(forceRefresh = false) {
         currDate.setSeconds(0);
         currDate.setMilliseconds(0);
         console.log('currDate = ' + currDate);
-        console.log('nycDate = ' + _getNYCTime());
+        console.log('nycDate = ' + getNYCTime_());
     */
 
     let quote = await getCachedAllyQuotes();
@@ -99,7 +104,7 @@ async function getCachedAllyQuotes(forceRefresh = false) {
 
 
 // These are future functions for the CashAnalyzer library module. Just getting code to work for now.
-function _getNYCTime() {
+function getNYCTime_() {
     // current date in local timezone with seconds trimmed.
     var currDate = new Date();
     currDate.setSeconds(0);
