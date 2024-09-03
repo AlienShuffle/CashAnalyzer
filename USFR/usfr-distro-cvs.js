@@ -28,19 +28,20 @@ function run(pagesToScrape) {
             });
             await page.goto("https://www.wisdomtree.com/investments/global/etf-details/modals/distribuition-history?id={D6F20DDF-9393-431C-85D4-1DB46E5F2798}");
             let currentPage = 1;
-            let urls = '';
+            let distros = '';
             while (currentPage <= pagesToScrape) {
                 await page.waitForSelector('tr');
-                let newUrls = await page.evaluate(() => {
+                let newDistros = await page.evaluate(() => {
                     let results = '';
                     let items = document.querySelectorAll('tr');
                     items.forEach((item) => {
+                        // remove $ from amounts, split each entry by the tab separator.
                         const row = item.innerText.replace(/\$/g, '').split('\t').toString();
                         if (row.length) results += row + "\n";
                     });
                     return results;
                 });
-                urls += newUrls;
+                distros += newDistros;
                 if (currentPage < pagesToScrape) {
                     await Promise.all([
                         await page.waitForSelector('tr'),
@@ -51,10 +52,11 @@ function run(pagesToScrape) {
                 currentPage++;
             }
             browser.close();
-            return resolve(urls);
+            return resolve(distros);
         } catch (e) {
             return reject(e);
         }
     })
 }
+// run the default function with a parameter of one page, results will be logged to console.
 run(1).then(console.log).catch(console.error);
