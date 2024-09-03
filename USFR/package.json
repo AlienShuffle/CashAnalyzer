@@ -1,12 +1,10 @@
 {
-  "name": "USFRQuotes",
+  "name": "USFR Processing",
   "version": "0.0.1",
-  "description": "Initial Test of Puppetter, Node.js, GCF and local development on my PC in Win11 Ubuntu, all stored in GitHub",
-  "main": "index.js",
+  "description": "retrieve quotes and fund facts from wisdomtree.com",
   "scripts": {
-    "start": "functions-framework --target=getUSFRQuotes",
-    "csv": "node usfr-distro-cvs.js",
-    "json": "node usfr-distro-json.js"
+    "start-nogood": "functions-framework --target=getUSFRQuotes",
+    "distros": "./USFR-distro-update.bash"
   },
   "keywords": [
     "Puppeteer",
@@ -18,6 +16,6 @@
   "dependencies": {
     "@google-cloud/functions-framework": "^3.4.2",
     "node-cache": "^5.1.2",
-    "puppeteer": "^16.2.0"
+    "puppeteer": "^23.2.1"
   }
 }
