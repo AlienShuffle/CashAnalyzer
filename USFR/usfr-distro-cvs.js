@@ -4,6 +4,7 @@ const puppeteer = require('puppeteer');
 // initiate a browser instance with all the necessary tweaks for performance, etc.
 let browserPromise = puppeteer.launch({
     defaultViewport: null,
+    // we have to run interactive, or Wisdomtree.com blocks the request.
     headless: false,  // comment out to make this run headless for production.
     ignoreDefaultArgs: ['--disable-extensions'],
     //args: ['--window-size=1920,1080']  // big screen layout for debugging
@@ -54,6 +55,7 @@ function run(pagesToScrape) {
             browser.close();
             return resolve(distros);
         } catch (e) {
+            browser.close();
             return reject(e);
         }
     })

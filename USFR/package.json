@@ -1,7 +1,7 @@
 {
-  "name": "USFR Processing",
+  "name": "USFR-Processing-Apps",
   "version": "0.0.1",
-  "description": "retrieve quotes and fund facts from wisdomtree.com",
+  "description": "Retrieve quotes and fund facts from wisdomtree.com for USFR",
   "scripts": {
     "start-nogood": "functions-framework --target=getUSFRQuotes",
     "distros": "./USFR-distro-update.bash"
@@ -14,8 +14,6 @@
   "author": "AlienShuffle",
   "license": "MIT",
   "dependencies": {
-    "@google-cloud/functions-framework": "^3.4.2",
-    "node-cache": "^5.1.2",
     "puppeteer": "^23.2.1"
   }
 }
