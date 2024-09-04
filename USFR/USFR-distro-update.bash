@@ -1,6 +1,7 @@
 #npm start
 cvsNew=usfr-distro-new.cvs
-cvsPub='/mnt/h/My Drive/CashAnalyzer/USFR/USFR-distros.csv'
+cvsPub='/mnt/c/Users/alan/My Drive (readngtndude@gmail.com)/CashAnalyzer/USFR/USFR-distros.csv'
+#cvsPub='/mnt/h/My Drive/CashAnalyzer/USFR/USFR-distros.csv'
 echo cvsNew=$cvsNew
 echo cvsPub=$cvsPub
 while true
