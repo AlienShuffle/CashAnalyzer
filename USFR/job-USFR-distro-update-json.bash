@@ -1,10 +1,10 @@
 source ../meta.`hostname`.bash
 jsonNew=USFR-distro-new.json
 jsonPub="$publishHome/USFR/USFR-distros.json"
-echo jsonNew=$jsonNew
-echo jsonPub=$jsonPub
+#echo jsonNew=$jsonNew
+#echo jsonPub=$jsonPub
 
-echo "Starting node retrieval app."
+#echo "Starting node retrieval app."
 node ./node-USFR-distro-json.js > $jsonNew
 if [ ! $? ]
 then

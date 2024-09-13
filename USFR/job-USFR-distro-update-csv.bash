@@ -1,9 +1,9 @@
 source ../meta.`hostname`.bash
 csvNew=USFR-distro-new.csv
 csvPub="$publishHome/USFR/USFR-distros.csv"
-echo csvNew=$csvNew
-echo csvPub=$csvPub
-echo "Starting node retrieval app."
+#echo csvNew=$csvNew
+#echo csvPub=$csvPub
+#echo "Starting node retrieval app."
 node ./node-USFR-distro-csv.js > $csvNew
 if [ ! $? ]
 then
