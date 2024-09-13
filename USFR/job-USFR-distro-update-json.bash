@@ -23,7 +23,7 @@ if [ $lenNew -le $lenPub ]
 then
   echo 'new distro file is not longer than published file, exiting.'
 else
-  echo "published updated USFR distro history file."
   cp "$jsonNew" "$jsonPub"
+  echo "published updated USFR distro history file."
 fi
 exit 0
