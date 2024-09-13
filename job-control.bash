@@ -5,7 +5,7 @@ do
   for script in `ls */job-*.bash`
   do
     echo ------------
-    echo "Running $script"
+    echo "Running $script @ `date`"
     dir=`dirname $script`
     scriptFile=`basename $script`
     (cd $dir; eval ./$scriptFile)
