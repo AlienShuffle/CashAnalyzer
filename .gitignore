@@ -106,4 +106,5 @@ dist
 # TernJS port file
 .tern-port
 USFR/usfr-distro-new.cvs
-usfr-distro-new.json
+USFR/usfr-distro-new.json
+USFR/usfr-facts-new.json

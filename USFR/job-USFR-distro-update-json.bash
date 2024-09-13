@@ -1,10 +1,11 @@
-jsonNew=usfr-distro-new.json
-jsonPub='/mnt/c/Users/alan/My Drive (readngtndude@gmail.com)/CashAnalyzer/USFR/USFR-distros.json'
+source ../meta.`hostname`.bash
+jsonNew=USFR-distro-new.json
+jsonPub="$publishHome/USFR/USFR-distros.json"
 echo jsonNew=$jsonNew
 echo jsonPub=$jsonPub
 
 echo "Starting node retrieval app."
-node ./usfr-distro-json.js > $jsonNew
+node ./node-USFR-distro-json.js > $jsonNew
 if [ ! $? ]
 then
   echo "USFR distro retrieval failed, exiting."

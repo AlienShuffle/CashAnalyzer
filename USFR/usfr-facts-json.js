@@ -13,7 +13,6 @@ let browserPromise = puppeteer.launch({
 
 function run() {
     return new Promise(async (resolve, reject) => {
-
         try {
             const browser = await browserPromise;
             const page = await browser.newPage();
@@ -34,26 +33,57 @@ function run() {
                 const row = item.innerText.split('\t');
                 if (row.length == 2) {
                     return row[1].replace(/%/, '') / 100;
+                } else {
+                    return 'unknown';
                 }
             });
-            /*
-            const erValue = page.$(erSelector);
-            //document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(11) > td:nth-child(2)")
-            const yieldSelector = '#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(11) > td:nth-child(2)';
-            const yield = await page.waitForSelector(yieldSelector);
-            */
+
+            // parse out As of Date (table entry is of the form 'As of 09/11/2024')
+            // document.querySelector("#fund-overview > div > div:nth-child(1) > table > thead > tr > th:nth-child(2) > div > span")
+            let asOfDate = await page.evaluate(() => {
+                const item = document.querySelector('#fund-overview > div > div:nth-child(1) > table > thead > tr > th:nth-child(2) > div > span');
+                const row = item.innerText;
+                return row.replace(/As of /, '');
+            });
+
+            // parse out NAV (table entry is of the form '$50.139')
+            // document.querySelector("#fund-nav > div > div:nth-child(1) > table > tbody > tr.strong > td:nth-child(2) > span")
+            let navValue = await page.evaluate(() => {
+                const item = document.querySelector('#fund-nav > div > div:nth-child(1) > table > tbody > tr.strong > td:nth-child(2) > span');
+                const row = item.innerText;
+                return row.replace(/\$/, '') * 1;
+            });
+
+            // parse out 30 Day SEC Yield (table entry is of the form '$50.139')
+            // document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(11)")
+            let secYield = await page.evaluate(() => {
+                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(11)");
+                const row = item.innerText.split('\t');
+                if (row.length == 2) {
+                    return row[1].replace(/%/, '') / 100;
+                }
+                return '';
+            });
+
+            // parse out Effective Duration instead of WAM (table entry is of the form '0.02' years, we multiply by 365)
+            // document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)")
+            let effectiveDuration = await page.evaluate(() => {
+                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)");
+                const row = item.innerText;
+                return row.replace(/%/, '') * 365;
+            });
+            // format return JSON message.
             let distros = {
-                asOfDate: '1/1/2023',
-                nav: 1.90,
-                secYield: 1 * 1,
-                wam: 34,
-                twelveMosTrailingYield: er,
-                expenseRatio: er
+                asOfDate: asOfDate,
+                nav: navValue.toFixed(5) * 1,
+                secYield: secYield.toFixed(5) * 1,
+                effectiveDuration: effectiveDuration.toFixed(1) * 1,
+                expenseRatio: er.toFixed(5) * 1
             };
             browser.close();
             return resolve(JSON.stringify(distros));
         } catch (e) {
-            browser.close();
+            if (!(typeof browser === 'undefined')) browser.close();
             return reject(e);
         }
     })
