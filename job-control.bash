@@ -11,7 +11,7 @@ do
     (cd $dir; eval ./$scriptFile)
     echo
   done
-  echo "sleep 6 hours"
+  echo "sleep 6 hours @ `date`"
   sleep 6h
 done
 exit 0
