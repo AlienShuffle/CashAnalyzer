@@ -105,6 +105,7 @@ dist
 
 # TernJS port file
 .tern-port
-USFR/usfr-distro-new.cvs
-USFR/usfr-distro-new.json
-USFR/usfr-facts-new.json
+# CashAnalyzer temp data files
+USFR/USFR-distro-new.csv
+USFR/USFR-distro-new.json
+USFR/USFR-facts-new.json
