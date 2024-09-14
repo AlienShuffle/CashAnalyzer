@@ -1,0 +1,6 @@
+/home/gebelea/CashAnalyzer/log/cash-analyzer.log {
+    daily
+    rotate 30
+    missingok
+    notifempty
+}

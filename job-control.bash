@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 # Find all the scripts in each system sub-folder with prefix job- and run them with a 6 hour delay
-while true
+(while true
 do
   for script in `ls */job-*.bash`
   do
@@ -13,5 +13,5 @@ do
   done
   echo "sleep 6 hours @ `date`"
   sleep 6h
-done
+done) | tee log/cash-analyzer-jobs.log
 exit 0
