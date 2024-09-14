@@ -11,12 +11,9 @@ let browserPromise = puppeteer.launch({
     args: ['--window-size=800,600', '--no-sandbox'] // small screen layout for simplicity & performance.
 });
 
-function run(pagesToScrape) {
+function run() {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!pagesToScrape) {
-                pagesToScrape = 1;
-            }
             const browser = await browserPromise;
             const page = await browser.newPage();
             await page.setRequestInterception(true);
@@ -28,32 +25,31 @@ function run(pagesToScrape) {
                 }
             });
             await page.goto("https://www.wisdomtree.com/investments/global/etf-details/modals/distribuition-history?id={D6F20DDF-9393-431C-85D4-1DB46E5F2798}");
-            let currentPage = 1;
-            let distros = '';
-            while (currentPage <= pagesToScrape) {
-                await page.waitForSelector('tr');
-                let newDistros = await page.evaluate(() => {
-                    let results = '';
-                    let items = document.querySelectorAll('tr');
-                    items.forEach((item) => {
-                        // remove $ from amounts, split each entry by the tab separator.
-                        const row = item.innerText.replace(/\$/g, '').split('\t').toString();
-                        if (row.length) results += row + "\n";
-                    });
-                    return results;
+            await page.waitForSelector('tr');
+            let distros = await page.evaluate(() => {
+                let results = [];
+                let items = document.querySelectorAll('tr');
+                items.forEach((item) => {
+                    // remove $ from amounts, split each entry by the tab separator.
+                    const row = item.innerText.replace(/\$/g, '').split('\t');
+                    if (row.length && row[0] != "Ex-Dividend Date") {
+                        let rowData = {
+                            exDividendDate: row[0],
+                            recordDate: row[1],
+                            payableDate: row[2],
+                            ordinaryIncome: row[3] * 1,
+                            stcg: row[4] * 1,
+                            ltcg: row[5] * 1,
+                            returnOfCapital: row[6] * 1,
+                            totalDistribution: row[7] * 1
+                        };
+                        results.push(rowData);
+                    }
                 });
-                distros += newDistros;
-                if (currentPage < pagesToScrape) {
-                    await Promise.all([
-                        await page.waitForSelector('tr'),
-                        //await page.click('a.morelink'),
-                        await page.waitForSelector('td')
-                    ])
-                }
-                currentPage++;
-            }
+                return results;
+            });
             browser.close();
-            return resolve(distros);
+            return resolve(JSON.stringify(distros));
         } catch (e) {
             browser.close();
             return reject(e);
@@ -61,4 +57,4 @@ function run(pagesToScrape) {
     })
 }
 // run the default function with a parameter of one page, results will be logged to console.
-run(1).then(console.log).catch(console.error);
+run().then(console.log).catch(console.error);
