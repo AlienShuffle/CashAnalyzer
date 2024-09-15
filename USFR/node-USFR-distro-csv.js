@@ -39,7 +39,7 @@ function run() {
             browser.close();
             return resolve(distros);
         } catch (e) {
-            browser.close();
+            if (!(typeof browser === 'undefined')) browser.close();
             return reject(e);
         }
     })

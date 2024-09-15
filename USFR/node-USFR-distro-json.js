@@ -51,7 +51,7 @@ function run() {
             browser.close();
             return resolve(JSON.stringify(distros));
         } catch (e) {
-            browser.close();
+            if (!(typeof browser === 'undefined')) browser.close();
             return reject(e);
         }
     })
