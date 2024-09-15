@@ -1,0 +1,2 @@
+logrotate state -- version 2
+"/home/gebelea/CashAnalyzer/log/cash-analyzer-jobs.log" 2024-9-15-14:9:24
