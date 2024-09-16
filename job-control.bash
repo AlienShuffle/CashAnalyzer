@@ -14,8 +14,8 @@ do
       (cd $dir; eval ./$scriptFile)
       echo
     done
-    echo "sleep 6 hours @ `date`"
-    sleep 6h
+    echo "sleep 6 hours @ `date`" 
   ) | tee log/cash-analyzer-jobs.log
+  sleep 6h
 done
 exit 0
