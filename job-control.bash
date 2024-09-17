@@ -3,7 +3,7 @@
 while true
 do
   [ -d $HOME/CashAnalyzer/log ] || mkdir $HOME/CashAnalyzer/log
-  logrotate --state $HOME/CashAnalyzer/log/status $HOME/CashAnalyzer/cashanalyzer.log.conf | tee log/cash-analyzer-jobs.log
+  logrotate --state $HOME/CashAnalyzer/log/status $HOME/CashAnalyzer/cashanalyzer.log.conf | tee -a log/cash-analyzer-jobs.log
   (
     for script in `ls */job-*.bash`
     do
@@ -15,7 +15,7 @@ do
       echo
     done
     echo "sleep 6 hours @ `date`" 
-  ) | tee log/cash-analyzer-jobs.log
+  ) | tee -a log/cash-analyzer-jobs.log
   sleep 6h
 done
 exit 0
