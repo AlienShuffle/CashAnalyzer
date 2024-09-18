@@ -109,3 +109,5 @@ dist
 USFR/USFR-distro-new.csv
 USFR/USFR-distro-new.json
 USFR/USFR-facts-new.json
+log/cash-analyzer-jobs.log.*
+log/status

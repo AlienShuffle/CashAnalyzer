@@ -23,7 +23,8 @@ if [ $lenNew -le $lenPub ]
 then
   echo 'new distro file is not longer than published file, exiting.'
 else
-  cp "$jsonNew" "$jsonPub"
-  echo "published updated USFR distro history file."
+  # I am trying cat instead of cp because Google Drive sometimes makes a (1) copy of the file.
+  cat "$jsonNew" > "$jsonPub"
+  echo "published (cat>) updated USFR distro history file."
 fi
 exit 0

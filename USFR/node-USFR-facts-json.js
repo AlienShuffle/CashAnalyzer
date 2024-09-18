@@ -74,6 +74,7 @@ function run() {
             });
             // format return JSON message.
             let distros = {
+                timestamp: String(new Date()),
                 asOfDate: asOfDate,
                 nav: navValue.toFixed(5) * 1,
                 secYield: secYield.toFixed(5) * 1,

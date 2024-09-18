@@ -29,11 +29,13 @@ function run() {
             let distros = await page.evaluate(() => {
                 let results = [];
                 let items = document.querySelectorAll('tr');
+                const timestamp = String(new Date());
                 items.forEach((item) => {
                     // remove $ from amounts, split each entry by the tab separator.
                     const row = item.innerText.replace(/\$/g, '').split('\t');
                     if (row.length && row[0] != "Ex-Dividend Date") {
                         let rowData = {
+                            timestamp: timestamp,
                             exDividendDate: row[0],
                             recordDate: row[1],
                             payableDate: row[2],
@@ -51,7 +53,7 @@ function run() {
             browser.close();
             return resolve(JSON.stringify(distros));
         } catch (e) {
-            browser.close();
+            if (!(typeof browser === 'undefined')) browser.close();
             return reject(e);
         }
     })
