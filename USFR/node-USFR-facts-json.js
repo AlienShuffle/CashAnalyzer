@@ -42,8 +42,12 @@ function run() {
             // document.querySelector("#fund-overview > div > div:nth-child(1) > table > thead > tr > th:nth-child(2) > div > span")
             let asOfDate = await page.evaluate(() => {
                 const item = document.querySelector('#fund-overview > div > div:nth-child(1) > table > thead > tr > th:nth-child(2) > div > span');
-                const row = item.innerText;
-                return row.replace(/As of /, '');
+                if (item) {
+                    const row = item.innerText;
+                    return row.replace(/As of /, '');
+                } else {
+                    return '';
+                }
             });
 
             // parse out NAV (table entry is of the form '$50.139')
@@ -54,7 +58,7 @@ function run() {
                     const row = item.innerText;
                     return row.replace(/\$/, '') * 1;
                 } else {
-                    return "";
+                    return '';
                 }
             });
 
@@ -73,17 +77,21 @@ function run() {
             // document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)")
             let effectiveDuration = await page.evaluate(() => {
                 const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)");
-                const row = item.innerText;
-                return row.replace(/%/, '') * 365;
+                if (item) {
+                    const row = item.innerText;
+                    return row.replace(/%/, '') * 365;
+                } else {
+                    return '';
+                }
             });
             // format return JSON message.
             let distros = {
                 timestamp: String(new Date()),
-                asOfDate: asOfDate,
-                nav: (navValue) ? navValue.toFixed(5) * 1 : "",
-                secYield: secYield.toFixed(5) * 1,
-                effectiveDuration: effectiveDuration.toFixed(1) * 1,
-                expenseRatio: er.toFixed(5) * 1
+                asOfDate: (asOfDate) ? asOfDate : '',
+                nav: (navValue) ? navValue.toFixed(5) * 1 : '',
+                secYield: (secYield) ? secYield.toFixed(5) * 1 : '',
+                effectiveDuration: (effectiveDuration) ? effectiveDuration.toFixed(1) * 1 : '',
+                expenseRatio: (er) ? er.toFixed(5) * 1 : ''
             };
             browser.close();
             return resolve(JSON.stringify(distros));
