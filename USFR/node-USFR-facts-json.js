@@ -50,8 +50,12 @@ function run() {
             // document.querySelector("#fund-nav > div > div:nth-child(1) > table > tbody > tr.strong > td:nth-child(2) > span")
             let navValue = await page.evaluate(() => {
                 const item = document.querySelector('#fund-nav > div > div:nth-child(1) > table > tbody > tr.strong > td:nth-child(2) > span');
-                const row = item.innerText;
-                return row.replace(/\$/, '') * 1;
+                if (item) {
+                    const row = item.innerText;
+                    return row.replace(/\$/, '') * 1;
+                } else {
+                    return "";
+                }
             });
 
             // parse out 30 Day SEC Yield (table entry is of the form '$50.139')
@@ -76,7 +80,7 @@ function run() {
             let distros = {
                 timestamp: String(new Date()),
                 asOfDate: asOfDate,
-                nav: navValue.toFixed(5) * 1,
+                nav: (navValue) ? navValue.toFixed(5) * 1 : "",
                 secYield: secYield.toFixed(5) * 1,
                 effectiveDuration: effectiveDuration.toFixed(1) * 1,
                 expenseRatio: er.toFixed(5) * 1
