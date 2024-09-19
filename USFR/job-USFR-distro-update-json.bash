@@ -5,7 +5,7 @@ jsonPub="$publishHome/USFR/USFR-distros.json"
 #echo jsonPub=$jsonPub
 
 #echo "Starting node retrieval app."
-node ./node-USFR-distro-json.js > $jsonNew
+node ./node-USFR-distro-json.js | jq -S . > "$jsonNew"
 if [ ! $? ]
 then
   echo "USFR distro retrieval failed, exiting."
