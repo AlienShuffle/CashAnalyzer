@@ -10,6 +10,6 @@ then
   echo "USFR facts retrieval failed, exiting."
   exit 1
 fi
-cp "$jsonNew" "$jsonPub"
+cat "$jsonNew" > "$jsonPub"
 echo "published updated USFR facts file."
 exit 0

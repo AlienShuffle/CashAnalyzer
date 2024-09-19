@@ -18,7 +18,7 @@ then
 else
   lenPub=0
 fi
-echo "wc -l new($lenNew) :: pub($lenPub)"
+echo "entries new($lenNew) :: pub($lenPub)"
 if [ $lenNew -le $lenPub ]
 then
   echo 'new distro file is not longer than published file, exiting.'
