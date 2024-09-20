@@ -12,14 +12,5 @@ echo we are going to update npm itself
 npm install -g npm
 npm install --lts
 
-# update permissions.
-for i in `ls job-*.bash`
-do
-  perm=`stat -c '%a' $i`
-  echo "checking $i = $perm" 
-  if [ "$perm" -ne 744 ]
-  then
-    echo changing permissions.
-    chmod 744 $i
-  fi
-done
+echo install jq (this gives v1.6 currently)
+sudo apt install jq
