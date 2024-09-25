@@ -5,7 +5,7 @@ jsonPub="$publishHome/USFR/USFR-distros-v97.json"
 #echo jsonPub=$jsonPub
 
 #
-# this script was used in All Funds version 9 (sheets using fintools v97), and can be retired when v8 is completely retired.
+# this script was used in All Funds version 9 (sheets using fintools v97), and can be retired when v9 is completely retired.
 #
 #echo "Starting node retrieval app."
 node ./node-USFR-distro-json-v97.js | jq -S . > "$jsonNew"
