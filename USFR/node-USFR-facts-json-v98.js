@@ -45,6 +45,7 @@ function run() {
                 if (item) {
                     const row = item.innerText;
                     const ds = row.replace(/As of /, '');
+                    // need to fix dates from MM/DD/YYY to YYYY-MM-DD to allow sorting.
                     const dateString = ds.substring(6, 10) + '-' + ds.substring(0, 2) + '-' + ds.substring(3, 5);
                     return dateString;
                 } else {

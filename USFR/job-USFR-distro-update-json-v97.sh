@@ -1,4 +1,4 @@
-source ../meta.`hostname`.bash
+source ../meta.`hostname`.sh
 jsonNew=USFR-distro-new-v97.json
 jsonPub="$publishHome/USFR/USFR-distros-v97.json"
 #echo jsonNew=$jsonNew

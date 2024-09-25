@@ -1,4 +1,4 @@
-source ../meta.`hostname`.bash
+source ../meta.`hostname`.sh
 
 #
 # this script was used in All Funds version 8 (fintools v95), and can be retired when v8 is completely retired.

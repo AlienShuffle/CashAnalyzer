@@ -5,7 +5,7 @@ do
   [ -d $HOME/CashAnalyzer/log ] || mkdir $HOME/CashAnalyzer/log
   logrotate --state $HOME/CashAnalyzer/log/status $HOME/CashAnalyzer/cashanalyzer.log.conf #| tee -a log/cash-analyzer-jobs.log
   (
-    for script in `ls */job-*.bash`
+    for script in `ls */job-*.sh`
     do
       echo ------------
       echo "Running $script @ `date`"

@@ -31,23 +31,24 @@ function run() {
                 let items = document.querySelectorAll('tr');
                 const timestamp = String(new Date());
                 items.forEach((item) => {
+                    // finds the table, and parses it, assumed order for the resulting arrays from webpage.
                     // remove $ from amounts, split each entry by the tab separator.
                     const row = item.innerText.replace(/\$/g, '').split('\t');
 
                     if (row.length && row[0] != "Ex-Dividend Date") {
+                        // need to fix dates from MM/DD/YYY to YYYY-MM-DD
                         function swapDate(ds) { return ds.substring(6, 10) + '-' + ds.substring(0, 2) + '-' + ds.substring(3, 5); }
                         let rowData = {
                             timestamp: timestamp,
-                            exDividendDate: swapDate(row[0]),
-                            recordDate: swapDate(row[1]),
-                            payableDate: swapDate(row[2]),
+                            exDividendDate: (row[0]) ? swapDate(row[0]) : '',
+                            recordDate: (row[1]) ? swapDate(row[1]) : '',
+                            payableDate: (row[2]) ? swapDate(row[2]) : '',
                             ordinaryIncome: row[3] * 1,
                             stcg: row[4] * 1,
                             ltcg: row[5] * 1,
                             returnOfCapital: row[6] * 1,
                             totalDistribution: row[7] * 1
                         };
-
                         results.push(rowData);
                     }
                 });
