@@ -1,11 +1,14 @@
 source ../meta.`hostname`.bash
-jsonNew=USFR-distro-new.json
-jsonPub="$publishHome/USFR/USFR-distros.json"
+jsonNew=USFR-distro-new-v97.json
+jsonPub="$publishHome/USFR/USFR-distros-v97.json"
 #echo jsonNew=$jsonNew
 #echo jsonPub=$jsonPub
 
+#
+# this script was used in All Funds version 9 (sheets using fintools v97), and can be retired when v8 is completely retired.
+#
 #echo "Starting node retrieval app."
-node ./node-USFR-distro-json.js | jq -S . > "$jsonNew"
+node ./node-USFR-distro-json-v97.js | jq -S . > "$jsonNew"
 if [ ! $? ]
 then
   echo "USFR distro retrieval failed, exiting."

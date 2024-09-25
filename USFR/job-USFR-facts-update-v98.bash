@@ -1,10 +1,10 @@
 source ../meta.`hostname`.bash
-jsonNew=USFR-facts-new.json
-jsonPub="$publishHome/USFR/USFR-facts.json"
+jsonNew=USFR-facts-new-v98.json
+jsonPub="$publishHome/USFR/USFR-facts-v98.json"
 #echo jsonNew=$jsonNew
 #echo jsonPub=$jsonPub
 #echo "Starting node retrieval app."
-node ./node-USFR-facts-json.js | jq -S . > "$jsonNew"
+node ./node-USFR-facts-json-v98.js | jq . > "$jsonNew"
 if [ ! $? ]
 then
   echo "USFR facts retrieval failed, exiting."
