@@ -21,7 +21,15 @@ if [ -z "$dateNew" ]; then
   exit 1
 fi
 echo dateNew=$dateNew
-datePub=$(grep asOfDate "$jsonPub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+
+if [ -s "jsonPub" ]; then
+  datePub=$(grep asOfDate "$jsonPub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+else
+  datePub=""
+  echo "Ally facts file has not been published."
+  dir=$(dirname "$jsonPub")
+  [ -d "$dir" ] || mkdir "$dir"
+fi
 echo datePub=$datePub
 if [[ $datePub < $dateNew ]]; then
   cat "$jsonNew" >"$jsonPub"

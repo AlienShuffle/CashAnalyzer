@@ -17,9 +17,13 @@ fi
 # this should merge the old and new, removing duplicates and keeping newest.
 jq -s 'flatten | unique_by(.exDividendDate) | reverse' "$jsonNew" "$jsonPub" >"$jsonUnique"
 lenNew=$(grep -o returnOfCapital "$jsonNew" | wc -l)
-lenPub=0
 if [ -s "$jsonPub" ]; then
   lenPub=$(grep -o returnOfCapital "$jsonPub" | wc -l)
+else
+  lenPub=0
+  echo "USFR distro history file has not been published."
+  dir=$(dirname "$jsonPub")
+  [ -d "$dir" ] || mkdir "$dir"
 fi
 echo "entries new($lenNew) :: pub($lenPub)"
 lenUnique=$(grep -o returnOfCapital "$jsonUnique" | wc -l)
