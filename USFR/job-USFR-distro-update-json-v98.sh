@@ -25,9 +25,7 @@ fi
 echo "entries new($lenNew) :: pub($lenPub)"
 lenUnique=$(grep -o returnOfCapital "$jsonUnique" | wc -l)
 echo "entries unique($lenUnique)"
-if [ $lenNew -le $lenPub -a $lenUnique -le $lenPub ]; then
-  echo 'new distro file is not longer than published file, exiting.'
-else
+if [ $lenUnique -gt $lenPub ]; then
   # I am trying cat instead of cp because Google Drive sometimes makes a (1) copy of the file.
   # note, the cat still allows the (1) copy to be created, not sure what is up there.
   cat "$jsonUnique" >"$jsonPub"
