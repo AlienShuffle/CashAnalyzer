@@ -2,11 +2,14 @@
 #
 # One Time Setup Tasks.
 #
-echo If you need to update NVM, do the following:
+echo If you need to update NVM, do the following:s
 echo steps to update NVM:
-echo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-
-echo install jq (this gives v1.6 currently)
+echo "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash"
+echo "steps to get current long-term support (--lts) Node Version"
+echo "nvm version"
+echo "nvm install --lts"
+echo
+echo "install jq (this gives v1.6 currently on WSL)"
 sudo apt install jq
 
 #
@@ -15,14 +18,7 @@ sudo apt install jq
 for dir in Ally USFR; do
     (
         cd $dir
-
-        echo steps to get current long-term support (--lts) Node Versiom
-        echo nvm version
-        nvm version
-        echo nvm install --lts
-        nvm install --lts
-
-        echo we are going to update npm itself
+        echo "we are going to update npm and the node libraries"
         npm install -g npm
         npm install --lts
     )
