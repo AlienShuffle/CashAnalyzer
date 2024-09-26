@@ -18,7 +18,7 @@ fi
 jq -s 'flatten | unique_by(.exDividendDate) | reverse' "$jsonNew" "$jsonPub" >"$jsonUnique"
 lenNew=$(grep -o returnOfCapital "$jsonNew" | wc -l)
 lenPub=0
-if [ -f "$jsonPub" ]; then
+if [ -s "$jsonPub" ]; then
   lenPub=$(grep -o returnOfCapital "$jsonPub" | wc -l)
 fi
 echo "entries new($lenNew) :: pub($lenPub)"
