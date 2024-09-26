@@ -7,7 +7,6 @@ let browserPromise = puppeteer.launch({
     // we have to run interactive, or Wisdomtree.com blocks the request.
     headless: false,  // comment out to make this run headless for production.
     ignoreDefaultArgs: ['--disable-extensions'],
-    //args: ['--window-size=1920,1080']  // big screen layout for debugging
     args: ['--window-size=800,600', '--no-sandbox'] // small screen layout for simplicity & performance.
 });
 
@@ -17,6 +16,7 @@ function run() {
             const browser = await browserPromise;
             const page = await browser.newPage();
             await page.setRequestInterception(true);
+            // this will only process document requests, all graphics, etc. will be ignored for performance reasons.
             page.on('request', (request) => {
                 if (request.resourceType() === 'document') {
                     request.continue();
@@ -88,7 +88,7 @@ function run() {
                 }
             });
             // format return JSON message.
-            let distros = {
+            let facts = {
                 timestamp: String(new Date()),
                 asOfDate: (asOfDate) ? asOfDate : '',
                 nav: (navValue) ? navValue.toFixed(5) * 1 : '',
@@ -97,7 +97,7 @@ function run() {
                 expenseRatio: (er) ? er.toFixed(5) * 1 : ''
             };
             browser.close();
-            return resolve(JSON.stringify(distros));
+            return resolve(JSON.stringify(facts));
         } catch (e) {
             if (!(typeof browser === 'undefined')) browser.close();
             return reject(e);

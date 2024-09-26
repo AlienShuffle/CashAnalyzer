@@ -4,7 +4,7 @@
   "description": "Retrieve quotes and fund facts from wisdomtree.com for USFR",
   "scripts": {
     "start-nogood": "functions-framework --target=getUSFRQuotes",
-    "distros": "./USFR-distro-update.bash"
+    "distros-nogood": "./USFR-distro-update.bash"
   },
   "keywords": [
     "Puppeteer",
