@@ -22,7 +22,7 @@ if [ -z "$dateNew" ]; then
 fi
 echo dateNew=$dateNew
 
-if [ -s "jsonPub" ]; then
+if [ -s "$jsonPub" ]; then
   datePub=$(grep asOfDate "$jsonPub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 else
   datePub=""

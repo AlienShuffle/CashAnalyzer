@@ -14,6 +14,10 @@ if [ ! $? ]; then
   echo "USFR distro retrieval failed, exiting."
   exit 1
 fi
+if [ ! -s "$jsonNew" ]; then
+  echo "Empty new USFR distro file."
+  exit 1
+fi
 # this should merge the old and new, removing duplicates and keeping newest.
 jq -s 'flatten | unique_by(.exDividendDate) | reverse' "$jsonNew" "$jsonPub" >"$jsonUnique"
 lenNew=$(grep -o returnOfCapital "$jsonNew" | wc -l)

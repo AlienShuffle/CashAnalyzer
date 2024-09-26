@@ -1,9 +1,9 @@
 source ../meta.$(hostname).sh
 jsonNew=CashPlus-facts-new-v98.json
 jsonPub="$publishHome/CashPlus/CashPlus-facts-v98.json"
-echo publishHome=\'$publishHome\'
-echo jsonNew=$jsonNew
-echo jsonPub=$jsonPub
+#echo publishHome=\'$publishHome\'
+#echo jsonNew=$jsonNew
+#echo jsonPub=$jsonPub
 #
 # this script was used in fintools version 98 and later. This is intended to stick around long-term.
 #
@@ -22,13 +22,12 @@ if [ -z "$dateNew" ]; then
   exit 1
 fi
 echo dateNew=$dateNew
-if [ -s "jsonPub" ]; then
+if [ -s "$jsonPub" ]; then
   datePub=$(grep asOfDate "$jsonPub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 else
   datePub=""
   echo "CashPlus facts file has not been published"
   dir=$(dirname "$jsonPub")
-  echo dir=\'$dir\'
   [ -d "$dir" ] || mkdir "$dir"
 fi
 echo datePub=$datePub
