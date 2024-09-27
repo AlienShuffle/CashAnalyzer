@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+cd $HOME/CashAnalyzer
 [ -d $HOME/CashAnalyzer/log ] || mkdir $HOME/CashAnalyzer/log
 # Find all the scripts in each system sub-folder with prefix job- and run them with a 6 hour delay
 while true; do
