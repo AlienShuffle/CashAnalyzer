@@ -5,6 +5,23 @@ jsonPub="$publishHome/CashPlus/CashPlus-facts-v98.json"
 #echo jsonNew=$jsonNew
 #echo jsonPub=$jsonPub
 #
+# preamble - test to see how long since this last run occured, skip out if this run is too soon.
+#  - note, if $1 to to this script is not empty, I will run the script regardless, but report the aging status too.
+#
+# update these delayHours as appropriate for the data source.
+updateDelayHours=24
+updateDelaySeconds=$(($updateDelayHours * 60 * 60))
+if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonPub")))" -lt "$updateDelaySeconds" ]; then
+  echo "Published file is not yet $updateDelayHours hours old."
+  [ -z "$1" ] && exit 0
+fi
+runDelayHours=6
+runDelaySeconds=$(($runDelayHours * 60 * 60))
+if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonNew")))" -lt "$runDelaySeconds" ]; then
+  echo "Last Run is not yet $runDelayHours hours old."
+  [ -z "$1" ] && exit 0
+fi
+#
 # this script was used in fintools version 98 and later. This is intended to stick around long-term.
 #
 node ./node-CashPlus-facts-v98.js | jq . >"$jsonNew"

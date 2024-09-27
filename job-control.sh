@@ -15,9 +15,9 @@ while true; do
       )
       echo
     done
-    echo "sleep 6 hours @ $(date)"
+    echo "sleep 2 hours @ $(date)"
   ) | tee -a log/cash-analyzer-jobs.log
-  sleep 6h
+  sleep 2h
   echo '##################################'
 done
 exit 0

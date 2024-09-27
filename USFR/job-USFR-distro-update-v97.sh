@@ -3,7 +3,19 @@ jsonNew=USFR-distro-new-v97.json
 jsonPub="$publishHome/USFR/USFR-distros-v97.json"
 #echo jsonNew=$jsonNew
 #echo jsonPub=$jsonPub
-
+# update these delayHours as appropriate for the data source.
+updateDelayHours=24
+updateDelaySeconds=$(($updateDelayHours * 60 * 60))
+if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonPub")))" -lt "$updateDelaySeconds" ]; then
+  echo "Published file is not yet $updateDelayHours hours old."
+  [ -z "$1" ] && exit 0
+fi
+runDelayHours=12
+runDelaySeconds=$(($runDelayHours * 60 * 60))
+if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonNew")))" -lt "$runDelaySeconds" ]; then
+  echo "Last Run is not yet $runDelayHours hours old."
+  [ -z "$1" ] && exit 0
+fi
 #
 # this script was used in All Funds version 9 (sheets using fintools v97), and can be retired when v9 is completely retired.
 #
