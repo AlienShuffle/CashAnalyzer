@@ -14,7 +14,7 @@ if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonPub")))" -lt "$updateDelaySeconds"
   echo "Published file is not yet $updateDelayHours hours old."
   [ -z "$1" ] && exit 0
 fi
-runDelayHours=3
+runDelayHours=4
 runDelaySeconds=$(($runDelayHours * 60 * 60))
 if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonNew")))" -lt "$runDelaySeconds" ]; then
   echo "Last Run is not yet $runDelayHours hours old."
