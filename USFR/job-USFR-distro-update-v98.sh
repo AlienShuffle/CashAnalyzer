@@ -12,13 +12,13 @@ jsonUnique="USFR-distro-new-unique-v98.json"
 updateDelayHours=48
 updateDelaySeconds=$(($updateDelayHours * 60 * 60))
 if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonPub")))" -lt "$updateDelaySeconds" ]; then
-  echo "Published file is not yet $updateDelayHours hours old."
+  echo "Published file is not yet $updateDelayHours hours old $(stat -c '%y' "$jsonPub" | cut -d: -f1,2)"
   [ -z "$1" ] && exit 0
 fi
 runDelayHours=12
 runDelaySeconds=$(($runDelayHours * 60 * 60))
 if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonNew")))" -lt "$runDelaySeconds" ]; then
-  echo "Last Run is not yet $runDelayHours hours old."
+  echo "Last Run is not yet $runDelayHours hours old $(stat -c '%y' "$jsonNew" | cut -d: -f1,2)"
   [ -z "$1" ] && exit 0
 fi
 #
@@ -49,8 +49,6 @@ echo "entries new($lenNew) :: pub($lenPub)"
 lenUnique=$(grep -o returnOfCapital "$jsonUnique" | wc -l)
 echo "entries unique($lenUnique)"
 if [ $lenUnique -gt $lenPub ]; then
-  # I am trying cat instead of cp because Google Drive sometimes makes a (1) copy of the file.
-  # note, the cat still allows the (1) copy to be created, not sure what is up there.
   cat "$jsonUnique" >"$jsonPub"
   echo "published updated USFR distro history file."
 fi
