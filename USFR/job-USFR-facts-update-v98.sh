@@ -10,14 +10,14 @@ jsonPub="$publishHome/USFR/USFR-facts-v98.json"
 # update these delayHours as appropriate for the data source.
 updateDelayHours=12
 updateDelaySeconds=$(($updateDelayHours * 60 * 60))
-if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonPub")))" -lt "$updateDelaySeconds" ]; then
-  echo "Published file is not yet $updateDelayHours hours old."
+if [ -f "$jsonPub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonPub")))" -lt "$updateDelaySeconds" ]; then
+  echo "Published file is not yet $updateDelayHours hours old - $(stat -c '%y' "$jsonPub" | cut -d: -f1,2)"
   [ -z "$1" ] && exit 0
 fi
 runDelayHours=4
 runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonNew")))" -lt "$runDelaySeconds" ]; then
-  echo "Last Run is not yet $runDelayHours hours old."
+if [ -f "$jsonNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonNew")))" -lt "$runDelaySeconds" ]; then
+  echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonNew" | cut -d: -f1,2)"
   [ -z "$1" ] && exit 0
 fi
 #

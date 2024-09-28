@@ -11,14 +11,14 @@ jsonUnique="USFR-distro-new-unique-v98.json"
 # update these delayHours as appropriate for the data source.
 updateDelayHours=48
 updateDelaySeconds=$(($updateDelayHours * 60 * 60))
-if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonPub")))" -lt "$updateDelaySeconds" ]; then
-  echo "Published file is not yet $updateDelayHours hours old $(stat -c '%y' "$jsonPub" | cut -d: -f1,2)"
+if [ -f "$jsonPub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonPub")))" -lt "$updateDelaySeconds" ]; then
+  echo "Published file is not yet $updateDelayHours hours old - $(stat -c '%y' "$jsonPub" | cut -d: -f1,2)"
   [ -z "$1" ] && exit 0
 fi
 runDelayHours=12
 runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonNew")))" -lt "$runDelaySeconds" ]; then
-  echo "Last Run is not yet $runDelayHours hours old $(stat -c '%y' "$jsonNew" | cut -d: -f1,2)"
+if [ -f "$jsonNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonNew")))" -lt "$runDelaySeconds" ]; then
+  echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonNew" | cut -d: -f1,2)"
   [ -z "$1" ] && exit 0
 fi
 #
@@ -35,7 +35,12 @@ if [ ! -s "$jsonNew" ]; then
   exit 1
 fi
 # this should merge the old and new, removing duplicates and keeping newest.
-jq -s 'flatten | unique_by(.exDividendDate) | reverse' "$jsonNew" "$jsonPub" >"$jsonUnique"
+if [ -s "$jasonPub" ]; then
+  jq -s 'flatten | unique_by(.exDividendDate) | reverse' "$jsonNew" "$jsonPub" >"$jsonUnique"
+else
+  cat "$jsonNew" >"$jsonUnique"
+fi
+
 lenNew=$(grep -o returnOfCapital "$jsonNew" | wc -l)
 if [ -s "$jsonPub" ]; then
   lenPub=$(grep -o returnOfCapital "$jsonPub" | wc -l)
