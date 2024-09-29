@@ -12,7 +12,7 @@ while true; do
       scriptFile=$(basename $script)
       (
         cd $dir
-        eval ./$scriptFile
+        eval ./$scriptFile "$*"
       )
       echo
     done

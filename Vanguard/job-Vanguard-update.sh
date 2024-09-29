@@ -39,7 +39,7 @@ if [ ! -s "$jsonRateNew" ]; then
   exit 1
 fi
 apyNew=$(grep apy "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-if [ -z "$apyNew" ] || [ "$apyNew" = "null"]; then
+if [ -z "$apyNew" ] || [ "$apyNew" = "null" ]; then
   echo "New Vanguard rate file has empty APY."
   exit 1
 fi
