@@ -1,12 +1,12 @@
 source ../meta.$(hostname).sh
 # current facts files
 jsonFactsNew=Ally-facts-new.json
-jsonFactsPub="$publishHome/Ally/Ally-facts.json"
+jsonFactsPub="$publishHome/Banks/Ally/Ally-facts.json"
 #echo jsonFactsNew=$jsonFactsNew
 #echo jsonFactsPub=$jsonFactsPub
 # yield history files
 jsonYieldsUnique="Ally-yields-unique.json"
-jsonYieldsPub="$publishHome/Ally/Ally-yields.json"
+jsonYieldsPub="$publishHome/Banks/Ally/Ally-yields.json"
 #echo jsonYieldsUnique=$jsonYieldsUnique
 #echo jsonYieldsPub=$jsonYieldsPub
 #

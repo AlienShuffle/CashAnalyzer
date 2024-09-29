@@ -3,7 +3,7 @@ source ../meta.`hostname`.sh
 # this script was used in All Funds version 8 (fintools v95), and can be retired when v8 is completely retired.
 #
 csvNew=USFR-distro-new-v95.csv
-csvPub="$publishHome/USFR/USFR-distros-v95.csv"
+csvPub="$publishHome/ETFs/USFR/USFR-distros-v95.csv"
 #echo csvNew=$csvNew
 #echo csvPub=$csvPub
 #echo "Starting node retrieval app."

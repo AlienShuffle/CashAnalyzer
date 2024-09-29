@@ -1,6 +1,6 @@
 source ../meta.$(hostname).sh
 jsonNew="USFR-distro-new-v98.json"
-jsonPub="$publishHome/USFR/USFR-distros-v98.json"
+jsonPub="$publishHome/ETFs/USFR/USFR-distros-v98.json"
 jsonUnique="USFR-distro-new-unique-v98.json"
 #echo jsonNew=$jsonNew
 #echo jsonPub=$jsonPub

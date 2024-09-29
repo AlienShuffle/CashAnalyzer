@@ -1,12 +1,12 @@
 source ../meta.$(hostname).sh
 # current facts files
-jsonFactsNew=CashPlus-facts-new.json
-jsonFactsPub="$publishHome/CashPlus/CashPlus-facts.json"
+jsonFactsNew=Vanguard-facts-new.json
+jsonFactsPub="$publishHome/Banks/Vanguard/Vanguard-facts.json"
 #echo jsonFactsNew=$jsonFactsNew
 #echo jsonFactsPub=$jsonFactsPub
 # yield history files
-jsonYieldsUnique="CashPlus-yields-unique.json"
-jsonYieldsPub="$publishHome/CashPlus/CashPlus-yields.json"
+jsonYieldsUnique="Vanguard-yields-unique.json"
+jsonYieldsPub="$publishHome/Banks/Vanguard/Vanguard-yields.json"
 #echo jsonYieldsUnique=$jsonYieldsUnique
 #echo jsonYieldsPub=$jsonYieldsPub
 #
@@ -29,13 +29,13 @@ fi
 #
 # this script was used in fintools version 98 and later. This is intended to stick around long-term.
 #
-node ./node-CashPlus-update.js | jq . >"$jsonFactsNew"
+node ./node-Vanguard-update.js | jq . >"$jsonFactsNew"
 if [ ! $? ]; then
-  echo "CashPlus facts retrieval failed, exiting."
+  echo "Vanguard facts retrieval failed, exiting."
   exit 1
 fi
 if [ ! -s "$jsonFactsNew" ]; then
-  echo "Empty CashPlus facts file."
+  echo "Empty Vanguard facts file."
   exit 1
 fi
 #
@@ -51,21 +51,21 @@ if [ -s "$jsonYieldsPub" ]; then
   lenYieldsPub=$(grep -o apy "$jsonYieldsPub" | wc -l)
 else
   lenYieldsPub=0
-  echo "CashPlus yields history file has not been published."
+  echo "Vanguard yields history file has not been published."
   dir=$(dirname "$jsonYieldsPub")
   [ -d "$dir" ] || mkdir "$dir"
 fi
 echo "entries new($lenYieldsUnique) :: pub($lenYieldsPub)"
 if [ $lenYieldsUnique -gt $lenYieldsPub ]; then
   cat "$jsonYieldsUnique" >"$jsonYieldsPub"
-  echo "published updated CashPlus yields history file."
+  echo "published updated Vanguard yields history file."
 fi
 #
 # process the facts file.
 #
 dateNew=$(grep asOfDate "$jsonFactsNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 if [ -z "$dateNew" ]; then
-  echo "New CashPlus facts file does not include dates."
+  echo "New Vanguard facts file does not include dates."
   exit 1
 fi
 echo dateNew=$dateNew
@@ -74,13 +74,13 @@ if [ -s "$jsonFactsPub" ]; then
   datePub=$(grep asOfDate "$jsonFactsPub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 else
   datePub=""
-  echo "CashPlus facts file has not been published."
+  echo "Vanguard facts file has not been published."
   dir=$(dirname "$jsonFactsPub")
   [ -d "$dir" ] || mkdir "$dir"
 fi
 echo datePub=$datePub
 if [[ $datePub < $dateNew ]]; then
   cat "$jsonFactsNew" >"$jsonFactsPub"
-  echo "published updated CashPlus facts file."
+  echo "published updated Vanguard facts file."
 fi
 exit 0

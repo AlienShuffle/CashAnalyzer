@@ -1,6 +1,6 @@
 source ../meta.$(hostname).sh
 jsonNew=USFR-distro-new-v97.json
-jsonPub="$publishHome/USFR/USFR-distros-v97.json"
+jsonPub="$publishHome/ETFs/USFR/USFR-distros-v97.json"
 #echo jsonNew=$jsonNew
 #echo jsonPub=$jsonPub
 # update these delayHours as appropriate for the data source.
