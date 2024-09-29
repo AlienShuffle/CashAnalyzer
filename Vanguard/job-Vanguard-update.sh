@@ -1,14 +1,14 @@
 source ../meta.$(hostname).sh
-# current facts files
-jsonFactsNew=Vanguard-facts-new.json
-jsonFactsPub="$publishHome/Banks/Vanguard/Vanguard-facts.json"
-#echo jsonFactsNew=$jsonFactsNew
-#echo jsonFactsPub=$jsonFactsPub
-# yield history files
-jsonYieldsUnique="Vanguard-yields-unique.json"
-jsonYieldsPub="$publishHome/Banks/Vanguard/Vanguard-yields.json"
-#echo jsonYieldsUnique=$jsonYieldsUnique
-#echo jsonYieldsPub=$jsonYieldsPub
+# current rate files
+jsonRateNew=Vanguard-rate-new.json
+jsonRatePub="$publishHome/Banks/Vanguard/Vanguard-rate.json"
+#echo jsonRateNew=$jsonRateNew
+#echo jsonRatePub=$jsonRatePub
+# history history files
+jsonHistorysUnique="Vanguard-history-unique.json"
+jsonHistorysPub="$publishHome/Banks/Vanguard/Vanguard-history.json"
+#echo jsonHistorysUnique=$jsonHistorysUnique
+#echo jsonHistorysPub=$jsonHistorysPub
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
 #  - note, if $1 to to this script is not empty, I will run the script regardless, but report the aging status too.
@@ -16,71 +16,76 @@ jsonYieldsPub="$publishHome/Banks/Vanguard/Vanguard-yields.json"
 # update the delayHours values as appropriate for the data source.
 updateDelayHours=20
 updateDelaySeconds=$(($updateDelayHours * 60 * 60))
-if [ -f "$jsonFactsPub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonFactsPub")))" -lt "$updateDelaySeconds" ]; then
-  echo "Published file is not yet $updateDelayHours hours old - $(stat -c '%y' "$jsonFactsPub" | cut -d: -f1,2)"
+if [ -f "$jsonRatePub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRatePub")))" -lt "$updateDelaySeconds" ]; then
+  echo "Published file is not yet $updateDelayHours hours old - $(stat -c '%y' "$jsonRatePub" | cut -d: -f1,2)"
   [ -z "$1" ] && exit 0
 fi
 runDelayHours=6
 runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -f "$jsonFactsNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonFactsNew")))" -lt "$runDelaySeconds" ]; then
-  echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonFactsNew" | cut -d: -f1,2)"
+if [ -f "$jsonRateNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateNew")))" -lt "$runDelaySeconds" ]; then
+  echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonRateNew" | cut -d: -f1,2)"
   [ -z "$1" ] && exit 0
 fi
 #
 # this script was used in fintools version 98 and later. This is intended to stick around long-term.
 #
-node ./node-Vanguard-update.js | jq . >"$jsonFactsNew"
+node ./node-Vanguard-update.js | jq . >"$jsonRateNew"
 if [ ! $? ]; then
-  echo "Vanguard facts retrieval failed, exiting."
+  echo "Vanguard rate retrieval failed, exiting."
   exit 1
 fi
-if [ ! -s "$jsonFactsNew" ]; then
-  echo "Empty Vanguard facts file."
+if [ ! -s "$jsonRateNew" ]; then
+  echo "Empty Vanguard rate file."
+  exit 1
+fi
+apyNew=$(grep apy "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+if [ -z "$apyNew" ] || [ "$apyNew" = "null"]; then
+  echo "New Vanguard rate file has empty APY."
   exit 1
 fi
 #
-# Process the daily yield results in Facts and merge with history.
+# Process the daily history results in rate and merge with history.
 #
-if [ -f "$jsonYieldsPub" ]; then
-  jq -s 'flatten | unique_by([.accountType,.asOfDate])' "$jsonFactsNew" "$jsonYieldsPub" >"$jsonYieldsUnique"
+if [ -f "$jsonHistorysPub" ]; then
+  jq -s 'flatten | unique_by([.accountType,.asOfDate])' "$jsonRateNew" "$jsonHistorysPub" >"$jsonHistorysUnique"
 else
-  cat "$jsonFactsNew" >"$jsonYieldsUnique"
+  cat "$jsonRateNew" >"$jsonHistorysUnique"
 fi
-lenYieldsUnique=$(grep -o apy "$jsonYieldsUnique" | wc -l)
-if [ -s "$jsonYieldsPub" ]; then
-  lenYieldsPub=$(grep -o apy "$jsonYieldsPub" | wc -l)
+lenHistorysUnique=$(grep -o apy "$jsonHistorysUnique" | wc -l)
+if [ -s "$jsonHistorysPub" ]; then
+  lenHistorysPub=$(grep -o apy "$jsonHistorysPub" | wc -l)
 else
-  lenYieldsPub=0
-  echo "Vanguard yields history file has not been published."
-  dir=$(dirname "$jsonYieldsPub")
+  lenHistorysPub=0
+  echo "Vanguard history history file has not been published."
+  dir=$(dirname "$jsonHistorysPub")
   [ -d "$dir" ] || mkdir "$dir"
 fi
-echo "entries new($lenYieldsUnique) :: pub($lenYieldsPub)"
-if [ $lenYieldsUnique -gt $lenYieldsPub ]; then
-  cat "$jsonYieldsUnique" >"$jsonYieldsPub"
-  echo "published updated Vanguard yields history file."
+echo "entries new($lenHistorysUnique) :: pub($lenHistorysPub)"
+if [ $lenHistorysUnique -gt $lenHistorysPub ]; then
+  cat "$jsonHistorysUnique" >"$jsonHistorysPub"
+  echo "published updated Vanguard history history file."
 fi
 #
-# process the facts file.
+# process the rate file.
 #
-dateNew=$(grep asOfDate "$jsonFactsNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 if [ -z "$dateNew" ]; then
-  echo "New Vanguard facts file does not include dates."
+  echo "New Vanguard rate file does not include dates."
   exit 1
 fi
 echo dateNew=$dateNew
 
-if [ -s "$jsonFactsPub" ]; then
-  datePub=$(grep asOfDate "$jsonFactsPub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+if [ -s "$jsonRatePub" ]; then
+  datePub=$(grep asOfDate "$jsonRatePub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 else
   datePub=""
-  echo "Vanguard facts file has not been published."
-  dir=$(dirname "$jsonFactsPub")
+  echo "Vanguard rate file has not been published."
+  dir=$(dirname "$jsonRatePub")
   [ -d "$dir" ] || mkdir "$dir"
 fi
 echo datePub=$datePub
 if [[ $datePub < $dateNew ]]; then
-  cat "$jsonFactsNew" >"$jsonFactsPub"
-  echo "published updated Vanguard facts file."
+  cat "$jsonRateNew" >"$jsonRatePub"
+  echo "published updated Vanguard rate file."
 fi
 exit 0

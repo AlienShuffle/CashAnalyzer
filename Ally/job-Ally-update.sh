@@ -1,14 +1,14 @@
 source ../meta.$(hostname).sh
-# current facts files
-jsonFactsNew=Ally-facts-new.json
-jsonFactsPub="$publishHome/Banks/Ally/Ally-facts.json"
-#echo jsonFactsNew=$jsonFactsNew
-#echo jsonFactsPub=$jsonFactsPub
+# current rate files
+jsonRateNew=Ally-rate-new.json
+jsonRatePub="$publishHome/Banks/Ally/Ally-rate.json"
+#echo jsonRateNew=$jsonRateNew
+#echo jsonRatePub=$jsonRatePub
 # yield history files
-jsonYieldsUnique="Ally-yields-unique.json"
-jsonYieldsPub="$publishHome/Banks/Ally/Ally-yields.json"
-#echo jsonYieldsUnique=$jsonYieldsUnique
-#echo jsonYieldsPub=$jsonYieldsPub
+jsonHistoryUnique="Ally-history-unique.json"
+jsonHistoryPub="$publishHome/Banks/Ally/Ally-history.json"
+#echo jsonHistoryUnique=$jsonHistoryUnique
+#echo jsonHistoryPub=$jsonHistoryPub
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
 #  - note, if $1 to to this script is not empty, I will run the script regardless, but report the aging status too.
@@ -16,71 +16,76 @@ jsonYieldsPub="$publishHome/Banks/Ally/Ally-yields.json"
 # update the delayHours values as appropriate for the data source.
 updateDelayHours=20
 updateDelaySeconds=$(($updateDelayHours * 60 * 60))
-if [ -f "$jsonFactsPub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonFactsPub")))" -lt "$updateDelaySeconds" ]; then
-  echo "Published file is not yet $updateDelayHours hours old - $(stat -c '%y' "$jsonFactsPub"| cut -d: -f1,2)"
+if [ -f "$jsonRatePub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRatePub")))" -lt "$updateDelaySeconds" ]; then
+  echo "Published file is not yet $updateDelayHours hours old - $(stat -c '%y' "$jsonRatePub"| cut -d: -f1,2)"
   [ -z "$1" ] && exit 0
 fi
 runDelayHours=6
 runDelaySeconds=$(($runDelayHours * 60 * 60))
-if  [ -f "$jsonFactsNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonFactsNew")))" -lt "$runDelaySeconds" ]; then
-  echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonFactsNew" | cut -d: -f1,2)"
+if  [ -f "$jsonRateNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateNew")))" -lt "$runDelaySeconds" ]; then
+  echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonRateNew" | cut -d: -f1,2)"
   [ -z "$1" ] && exit 0
 fi
 #
 # this script was used in fintools version 98 and later. This is intended to stick around long-term.
 #
-node ./node-Ally-update.js | jq . >"$jsonFactsNew"
+node ./node-Ally-update.js | jq . >"$jsonRateNew"
 if [ ! $? ]; then
-  echo "Ally facts retrieval failed, exiting."
+  echo "Ally rate retrieval failed, exiting."
   exit 1
 fi
-if [ ! -s "$jsonFactsNew" ]; then
-  echo "Empty Ally facts file."
+if [ ! -s "$jsonRateNew" ]; then
+  echo "Empty Ally rate file."
+  exit 1
+fi
+apyNew=$(grep apy "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+if [ -z "$apyNew" ] || [ "$apyNew" = "null"]; then
+  echo "New Ally rate file has empty APY."
   exit 1
 fi
 #
-# Process the daily yield results in Facts and merge with history.
+# Process the daily yield results in Rate and merge with history.
 #
-if [ -f "$jsonYieldsPub" ]; then
-jq -s 'flatten | unique_by([.accountType,.asOfDate])' "$jsonFactsNew" "$jsonYieldsPub" >"$jsonYieldsUnique"
+if [ -f "$jsonHistoryPub" ]; then
+jq -s 'flatten | unique_by([.accountType,.asOfDate])' "$jsonRateNew" "$jsonHistoryPub" >"$jsonHistoryUnique"
 else
-  cat "$jsonFactsNew" >"$jsonYieldsUnique"
+  cat "$jsonRateNew" >"$jsonHistoryUnique"
 fi
-lenYieldsUnique=$(grep -o apy "$jsonYieldsUnique" | wc -l)
-if [ -s "$jsonYieldsPub" ]; then
-  lenYieldsPub=$(grep -o apy "$jsonYieldsPub" | wc -l)
+lenHistoryUnique=$(grep -o apy "$jsonHistoryUnique" | wc -l)
+if [ -s "$jsonHistoryPub" ]; then
+  lenHistoryPub=$(grep -o apy "$jsonHistoryPub" | wc -l)
 else
-  lenYieldsPub=0
-  echo "Ally yields history file has not been published."
-  dir=$(dirname "$jsonYieldsPub")
+  lenHistoryPub=0
+  echo "Ally history history file has not been published."
+  dir=$(dirname "$jsonHistoryPub")
   [ -d "$dir" ] || mkdir "$dir"
 fi
-echo "entries new($lenYieldsUnique) :: pub($lenYieldsPub)"
-if [ $lenYieldsUnique -gt $lenYieldsPub ]; then
-  cat "$jsonYieldsUnique" >"$jsonYieldsPub"
-  echo "published updated Ally yields history file."
+echo "entries new($lenHistoryUnique) :: pub($lenHistoryPub)"
+if [ $lenHistoryUnique -gt $lenHistoryPub ]; then
+  cat "$jsonHistoryUnique" >"$jsonHistoryPub"
+  echo "published updated Ally history history file."
 fi
 #
-# process the facts file.
+# process the rate file.
 #
-dateNew=$(grep asOfDate "$jsonFactsNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 if [ -z "$dateNew" ]; then
-  echo "New Ally facts file does not include dates."
+  echo "New Ally rate file does not include dates."
   exit 1
 fi
 echo dateNew=$dateNew
 
-if [ -s "$jsonFactsPub" ]; then
-  datePub=$(grep asOfDate "$jsonFactsPub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+if [ -s "$jsonRatePub" ]; then
+  datePub=$(grep asOfDate "$jsonRatePub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 else
   datePub=""
-  echo "Ally facts file has not been published."
-  dir=$(dirname "$jsonFactsPub")
+  echo "Ally rate file has not been published."
+  dir=$(dirname "$jsonRatePub")
   [ -d "$dir" ] || mkdir "$dir"
 fi
 echo datePub=$datePub
 if [[ $datePub < $dateNew ]]; then
-  cat "$jsonFactsNew" >"$jsonFactsPub"
-  echo "published updated Ally facts file."
+  cat "$jsonRateNew" >"$jsonRatePub"
+  echo "published updated Ally rate file."
 fi
 exit 0

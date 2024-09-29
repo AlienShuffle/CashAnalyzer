@@ -32,6 +32,11 @@ if [ ! -s "$jsonNew" ]; then
   echo "Empty new USFR facts file."
   exit 1
 fi
+apyNew=$(grep secYield "$jsonNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+if [ -z "$apyNew" ] || [ "$apyNew" = "null"]; then
+  echo "New USFR facts file has empty APY."
+  exit 1
+fi
 dateNew=$(grep asOfDate "$jsonNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 if [ -z "$dateNew" ]; then
   echo "New USFR facts file does not include dates."
