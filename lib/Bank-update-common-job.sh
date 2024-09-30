@@ -1,13 +1,38 @@
-if [ -z "$1" ]; then
-    echo "$0: arg1 missing, need to specify a valid bank."
+#!/usr/bin/bash
+# process the command argument list.
+while [ -n "$1" ]; do
+    case $1 in
+    "-b")
+        bankName="$2"
+        #echo "bankname=$bankName"
+        shift
+        ;;
+    "-f")
+        forceRun=true
+        #echo "forceRun=$forceRun"
+        ;;
+    "-stdin")
+        stdInFile="$2"
+        #echo "stdInFile=$stdInFile"
+        ;;
+    "-nodearg")
+        nodeArg="$2"
+        #echo "nodeArg=$nodeArg"
+        shift
+        ;;
+    esac
+    shift
+done
+if [ -z "$bankName" ]; then
+    echo "$0: -b bankName missing, need to specify a valid bank."
     exit 1
 fi
-bankFolder="$HOME/CashAnalyzer/$1"
-if [ ! -d $bankFolder ]; then
-    echo "$0: $1 is not a valid bank name."
+if [ ! -d "$HOME/CashAnalyzer/$bankName" ]; then
+    echo "$0: $bankName is not a valid bank name."
     exit 1
 fi
-bankName="$1"
+# look for a -f to force run, overriding the time delays.
+
 source ../meta.$(hostname).sh
 # current rate files
 jsonRateNew="$bankName-rate-new.json"
@@ -21,25 +46,34 @@ jsonHistoryPub="$publishHome/Banks/$bankName/$bankName-history.json"
 #echo jsonHistoryPub=$jsonHistoryPub
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
-#  - note, if $2 to to this script is not empty, I will run the script regardless, but report the aging status too.
+#  - note, if -f is passed to this script, I will run the script regardless, but report the aging status too.
 #
 # update the delayHours values as appropriate for the data source.
 updateDelayHours=20
 updateDelaySeconds=$(($updateDelayHours * 60 * 60))
 if [ -f "$jsonRatePub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRatePub")))" -lt "$updateDelaySeconds" ]; then
     echo "Published file is not yet $updateDelayHours hours old - $(stat -c '%y' "$jsonRatePub" | cut -d: -f1,2)"
-    [ -z "$2" ] && exit 0
+    [ -z "$forceRun" ] && exit 0
 fi
 runDelayHours=6
 runDelaySeconds=$(($runDelayHours * 60 * 60))
 if [ -f "$jsonRateNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateNew")))" -lt "$runDelaySeconds" ]; then
     echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonRateNew" | cut -d: -f1,2)"
-    [ -z "$2" ] && exit 0
+    [ -z "$forceRun" ] && exit 0
 fi
 #
 # this script was used in fintools version 98 and later. This is intended to stick around long-term.
 #
-node "./node-$bankName-update.js" | jq . >"$jsonRateNew"
+scriptFile="./node-$bankName-update.js"
+if [ ! -s "$scriptFile" ]; then
+    echo "Missing $scriptFile file."
+    exit 1
+fi
+if [ -z "$stdInFile" ]; then
+    node $scriptFile "$nodeArg" | jq . >"$jsonRateNew"
+else
+    node $scriptFile "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
+fi
 if [ ! $? ]; then
     echo "$bankName rate retrieval failed, exiting."
     exit 1
@@ -73,7 +107,7 @@ fi
 echo "entries new($lenHistoryUnique) :: pub($lenHistoryPub)"
 if [ $lenHistoryUnique -gt $lenHistoryPub ]; then
     cat "$jsonHistoryUnique" >"$jsonHistoryPub"
-    echo "published updated $bankName history history file."
+    echo "published updated $bankName history file."
 fi
 #
 # process the rate file.

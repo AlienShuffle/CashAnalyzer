@@ -1,1 +1,1 @@
-../lib/Bank-update-common-job.sh $(basename $(pwd))
+../lib/Bank-update-common-job.sh -b $(basename $(pwd)) "$@"
