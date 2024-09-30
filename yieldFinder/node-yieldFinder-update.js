@@ -16,7 +16,7 @@ let resp = [];
 for (let acct in savingsAccounts) {
     const row = {
         "accountType": savingsAccounts[acct].product_name,
-        "apy": savingsAccounts[acct].rate / 100,
+        "apy": (savingsAccounts[acct].rate / 100).toFixed(4) * 1,
         "asOfDate": asOfDateYYYMMDD,
     };
     resp.push(row);
