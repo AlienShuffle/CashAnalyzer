@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 # process the command argument list.
+pubDelayHours=12
+runDelayHours=6
 while [ -n "$1" ]; do
     case $1 in
     "-b")
@@ -18,6 +20,16 @@ while [ -n "$1" ]; do
     "-nodearg")
         nodeArg="$2"
         #echo "nodeArg=$nodeArg"
+        shift
+        ;;
+    "-pubdelay")
+        pubDelayHours="$2"
+        echo "pubDelayHours=$pubDelayHours"
+        shift
+        ;;
+    "-rundelay")
+        runDelayHours="$2"
+        echo "runDelayHours=$runDelayHours"
         shift
         ;;
     esac
@@ -49,13 +61,11 @@ jsonHistoryPub="$publishHome/Banks/$bankName/$bankName-history.json"
 #  - note, if -f is passed to this script, I will run the script regardless, but report the aging status too.
 #
 # update the delayHours values as appropriate for the data source.
-updateDelayHours=20
-updateDelaySeconds=$(($updateDelayHours * 60 * 60))
-if [ -f "$jsonRatePub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRatePub")))" -lt "$updateDelaySeconds" ]; then
-    echo "Published file is not yet $updateDelayHours hours old - $(stat -c '%y' "$jsonRatePub" | cut -d: -f1,2)"
+pubDelaySeconds=$(($pubDelayHours * 60 * 60))
+if [ -f "$jsonRatePub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRatePub")))" -lt "$pubDelaySeconds" ]; then
+    echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$jsonRatePub" | cut -d: -f1,2)"
     [ -z "$forceRun" ] && exit 0
 fi
-runDelayHours=6
 runDelaySeconds=$(($runDelayHours * 60 * 60))
 if [ -f "$jsonRateNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateNew")))" -lt "$runDelaySeconds" ]; then
     echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonRateNew" | cut -d: -f1,2)"

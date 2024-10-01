@@ -23,4 +23,4 @@ if [ ! -s "$jsonFile" ]; then
     echo "Empty $jsonFile file."
     exit 1
 fi
-../lib/Bank-update-common-job.sh -b $(basename $(pwd)) -stdin "$jsonFile" -nodearg "$(cat $asOfFile)" "$@"
+../lib/Bank-update-common-job.sh -b $(basename $(pwd)) -stdin "$jsonFile" -nodearg "$(cat $asOfFile)" -pubdelay 20 -rundelay 6 "$@"
