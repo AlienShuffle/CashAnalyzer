@@ -9,11 +9,11 @@ if [ ! -s "$queryFile" ]; then
     echo "Empty $queryFile file."
     exit 1
 fi
-grep '<p>Rates as of ' yieldFinder-results.html |
+asOfDate=$(grep '<p>Rates as of ' yieldFinder-results.html |
     sed -e 's/ *<p>Rates as of *//' |
-    sed -e 's/ *\/\/ .*<\/p> *//' >"$asOfFile"
-if [ ! -s "$asOfFile" ]; then
-    echo "Empty $asOfFile file."
+    sed -e 's/ *\/\/ .*<\/p> *//')
+if [ -z "$asOfDate" ]; then
+    echo "Empty asOfDate query."
     exit 1
 fi
 grep 'const jsData = {\"moneyMarketFunds\":' "$queryFile" |
@@ -23,4 +23,4 @@ if [ ! -s "$jsonFile" ]; then
     echo "Empty $jsonFile file."
     exit 1
 fi
-../lib/Bank-update-common-job.sh -b $(basename $(pwd)) -stdin "$jsonFile" -nodearg "$(cat $asOfFile)" -pubdelay 20 -rundelay 6 "$@"
+../lib/Bank-update-common-job.sh -b $(basename $(pwd)) -stdin "$jsonFile" -nodearg "$asOfDate" -pubdelay 20 -rundelay 6 "$@"

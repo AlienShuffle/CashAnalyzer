@@ -19,7 +19,7 @@ while [ -n "$1" ]; do
         ;;
     "-nodearg")
         nodeArg="$2"
-        #echo "nodeArg=$nodeArg"
+        echo "nodeArg=$nodeArg"
         shift
         ;;
     "-pubdelay")
