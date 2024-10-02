@@ -11,7 +11,7 @@ while [ -n "$1" ]; do
         ;;
     "-f")
         forceRun=true
-        #echo "forceRun=$forceRun"
+        echo "forceRun=$forceRun"
         ;;
     "-stdin")
         stdInFile="$2"
