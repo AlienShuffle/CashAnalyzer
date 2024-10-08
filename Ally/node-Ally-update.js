@@ -46,11 +46,15 @@ function run() {
             const asOfDate = now.getFullYear() + '-' + (now.getMonth() + 1 + '').padStart(2, '0') + '-' + (now.getDate() + '').padStart(2, '0');
             let facts = [
                 {
+                    "source": 'node-Ally-update.js',
+                    "timestamp": now,
                     accountType: 'Savings',
                     apy: (savingsRate) ? savingsRate / 100 : 'n/a',
                     asOfDate: asOfDate,
                 },
                 {
+                    "source": 'node-Ally-update.js',
+                    "timestamp": now,
                     accountType: 'NPCD',
                     apy: (npcdRate) ? npcdRate / 100 : 'n/a',
                     asOfDate: asOfDate,

@@ -62,12 +62,12 @@ jsonHistoryPub="$publishHome/Banks/$bankName/$bankName-history.json"
 #
 # update the delayHours values as appropriate for the data source.
 pubDelaySeconds=$(($pubDelayHours * 60 * 60))
-if [ -f "$jsonRatePub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRatePub")))" -lt "$pubDelaySeconds" ]; then
+if [ -s "$jsonRatePub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRatePub")))" -lt "$pubDelaySeconds" ]; then
     echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$jsonRatePub" | cut -d: -f1,2)"
     [ -z "$forceRun" ] && exit 0
 fi
 runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -f "$jsonRateNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateNew")))" -lt "$runDelaySeconds" ]; then
+if [ -s "$jsonRateNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateNew")))" -lt "$runDelaySeconds" ]; then
     echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonRateNew" | cut -d: -f1,2)"
     [ -z "$forceRun" ] && exit 0
 fi
@@ -101,9 +101,11 @@ fi
 # Process the daily history results in rate and merge with history.
 #
 if [ -f "$jsonHistoryPub" ]; then
-    jq -s 'flatten | unique_by([.accountType,.asOfDate])' "$jsonRateNew" "$jsonHistoryPub" >"$jsonHistoryUnique"
+    jq -s 'flatten | unique_by([.accountType,.asOfDate])' "$jsonRateNew" "$jsonHistoryPub" >tmp-flatten.json
+    cat tmp-flatten.json | node ../lib/node-bank-gapFiller.js | jq . >"$jsonHistoryUnique"
+    #rm tmp-flatten.json
 else
-    cat "$jsonRateNew" >"$jsonHistoryUnique"
+    cat "$jsonRateNew" | node ../lib/node-bank-gapFiller.js | jq . >"$jsonHistoryUnique"
 fi
 lenHistoryUnique=$(grep -o apy "$jsonHistoryUnique" | wc -l)
 if [ -s "$jsonHistoryPub" ]; then
