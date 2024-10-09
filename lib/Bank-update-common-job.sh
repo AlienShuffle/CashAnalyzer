@@ -11,7 +11,7 @@ while [ -n "$1" ]; do
         ;;
     "-f")
         forceRun=true
-        echo "forceRun=$forceRun"
+        #echo "forceRun=$forceRun"
         ;;
     "-stdin")
         stdInFile="$2"
@@ -19,17 +19,17 @@ while [ -n "$1" ]; do
         ;;
     "-nodearg")
         nodeArg="$2"
-        echo "nodeArg=$nodeArg"
+        #echo "nodeArg=$nodeArg"
         shift
         ;;
     "-pubdelay")
         pubDelayHours="$2"
-        echo "pubDelayHours=$pubDelayHours"
+        #echo "pubDelayHours=$pubDelayHours"
         shift
         ;;
     "-rundelay")
         runDelayHours="$2"
-        echo "runDelayHours=$runDelayHours"
+        #echo "runDelayHours=$runDelayHours"
         shift
         ;;
     esac
