@@ -15,8 +15,8 @@ function run() {
         try {
             const page = await browser.newPage();
 
-            // so far Ally pages are structured the same, so we can re-use logic just different URLs.
-            async function retrieveAPY(url) {
+            // so far pages are structured the same, so we can re-use logic just different URLs.
+            async function retrieveCashPlusAPY(url) {
                 try {
                     // Go for the Savings Rate
                     await page.goto(url);
@@ -42,8 +42,37 @@ function run() {
                 });
                 return apy;
             }
-            const savingsRate = await retrieveAPY('https://investor.vanguard.com/accounts-plans/vanguard-cash-plus-account');
+            const cashPlusYield = await retrieveCashPlusAPY('https://investor.vanguard.com/accounts-plans/vanguard-cash-plus-account');
 
+            //document.querySelector("#richtext-fb6988b911 > p:nth-child(1) > span")
+            async function retrieveCashDepositAPY(url) {
+                try {
+                    // Go for the Savings Rate
+                    await page.goto(url);
+                    // this page is slow, let's wait.
+                    //await page.waitForNetworkIdle({
+                    //    idleTime: 1000,
+                    //});
+                    // make sure the page has rendered at least to the rates section.
+                    await page.waitForSelector("#richtext-fb6988b911 > p:nth-child(1) > span");
+                } catch (error) {
+                    if (browser) await browser.close();
+                    console.error(((error.name === 'TimeoutError') ? 'Browser timeout occurred' : 'An error occured') + ': ' + url, error);
+                    return reject(error);
+                }
+                // parse out savings Rate
+                const apy = await page.evaluate(() => {
+                    const item = document.querySelector("#richtext-fb6988b911 > p:nth-child(1) > span");
+                    if (item) {
+                        const rate = item.innerText.replace(/%/, '');
+                        return rate;
+                    }
+                    return '';
+                });
+                return apy;
+            }
+            const cashDepositYield = await retrieveCashDepositAPY('https://investor.vanguard.com/investment-products/vanguard-cash-deposit');
+            
             // format return JSON message.
             const now = new Date;
             const asOfDate = now.getFullYear() + '-' + (now.getMonth() + 1 + '').padStart(2, '0') + '-' + (now.getDate() + '').padStart(2, '0');
@@ -52,10 +81,16 @@ function run() {
                     "source": 'node-Vanguard-update.js',
                     "timestamp": now,
                     accountType: 'CashPlus',
-                    apy: (savingsRate) ? savingsRate / 100 : 'n/a',
+                    apy: (cashPlusYield) ? cashPlusYield / 100 : 'n/a',
                     asOfDate: asOfDate,
                 },
-
+                {
+                    "source": 'node-Vanguard-update.js',
+                    "timestamp": now,
+                    accountType: 'CashDeposit',
+                    apy: (cashDepositYield) ? cashDepositYield / 100 : 'n/a',
+                    asOfDate: asOfDate,
+                },
             ];
 
             browser.close();
