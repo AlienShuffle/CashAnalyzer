@@ -31,7 +31,7 @@ function run() {
                     console.error(((error.name === 'TimeoutError') ? 'Browser timeout occurred' : 'An error occured') + ': ' + url, error);
                     return reject(error);
                 }
-                // parse out savings Rate
+                // parse out savings Rate (see Vanguard for more generic version that allows selectors as paramaters.)
                 const apy = await page.evaluate(() => {
                     const item = document.querySelector('span.allysf-rates-v1-value');
                     return (item) ? item.innerText : '';
