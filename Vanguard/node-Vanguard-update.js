@@ -19,10 +19,10 @@ function run() {
             async function retrieveAPY(url, path) {
                 try {
                     await page.goto(url);
-                    // this page is slow, let's wait.
-                    //await page.waitForNetworkIdle({
-                    //    idleTime: 1000,
-                    //});
+                    //this page is slow, let's wait.
+                    await page.waitForNetworkIdle({
+                        idleTime: 1000,
+                    });
                     // make sure the page has rendered at least to the rates section.
                     await page.waitForSelector(path);
                 } catch (error) {
@@ -33,11 +33,13 @@ function run() {
                 // parse out savings Rate
                 let inputHandle = await page.$(path);
                 const apyString = await page.evaluate(input => input.innerText, inputHandle);
+                //console.error("apyString = :" + apyString + ":");
                 return apyString.replace(/%/, '');
             }
             const cashPlusYield = await retrieveAPY('https://investor.vanguard.com/accounts-plans/vanguard-cash-plus-account', "#richtext-3a8a82f700 > p:nth-child(1) > span");
+            //#richtext-fb6988b911 > p:nth-child(1) > span
             const cashDepositYield = await retrieveAPY('https://investor.vanguard.com/investment-products/vanguard-cash-deposit', "#richtext-fb6988b911 > p:nth-child(1) > span");
-
+            console.error("cashDepositYield = :" + cashDepositYield + ":");
             // format return JSON message.
             const now = new Date;
             const asOfDate = now.getFullYear() + '-' + (now.getMonth() + 1 + '').padStart(2, '0') + '-' + (now.getDate() + '').padStart(2, '0');
