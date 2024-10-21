@@ -3,7 +3,7 @@ const fs = require("fs");
 // read in from stdin, the yieldFinder.app source data.
 const stdinBuffer = fs.readFileSync(process.stdin.fd);
 const json = JSON.parse(stdinBuffer);
-// parse the asOfDate found arguement 2 to the node call into YYY-MM-DD format.
+// parse the asOfDate found in argument 2 to the node call into YYY-MM-DD format.
 const asOfDateString = process.argv[2];
 const asOfDate = new Date(asOfDateString);
 const asOfDateYYYMMDD = asOfDate.getFullYear() + '-' +
