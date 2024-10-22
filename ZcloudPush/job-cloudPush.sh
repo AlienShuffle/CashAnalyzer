@@ -48,7 +48,7 @@ fi
 
 source ../meta.$(hostname).sh
 
-#cp -r "$publishHome"/* "$cloudFlareHome"
+git pull
 rsync -avu --delete "$publishHome/" "$cloudFlareHome"
 cd "$cloudFlareHome"
 git status
