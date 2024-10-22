@@ -17,7 +17,7 @@ for (let acct in savingsAccounts) {
     const row = {
         "source": 'node-yieldFinder-update.js',
         "timestamp": asOfDate,
-        "accountType": savingsAccounts[acct].product_name,
+        "accountType": savingsAccounts[acct].display_name,
         "apy": (savingsAccounts[acct].rate / 100).toFixed(4) * 1,
         "asOfDate": asOfDateYYYMMDD,
     };
