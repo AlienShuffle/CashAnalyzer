@@ -72,7 +72,7 @@ function run() {
                             rowData[headers[col]] = (value / 100).toFixed(5) * 1;
                             break;
                         case 'bid':
-                        case 'ask':
+                        case 'asked':
                             // quoted in WSJ in 32nds after decimal point, need to move to base 10!
                             rowData[headers[col]] = (Math.trunc(value) + (100 * (value % 1)) / 32).toFixed(5) * 1;
                             break;

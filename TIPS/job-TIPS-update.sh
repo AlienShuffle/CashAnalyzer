@@ -145,7 +145,10 @@ echo datePub=$datePub
 if [[ $datePub < $dateNew ]]; then
     cat "$jsonRateNew" >"$jsonRatePub"
     # save the data file as a .csv as well.
-    (echo 'asOfDate,maturity,coupon,bid,chg,yield,accruedprincipal'; jq -r '.[] | [.asOfDate, .maturity, .coupon, .bid, .chg, .yield, .accruedprincipal] | @csv' "$jsonRateNew") > "$csvRatePub"
+    (
+        echo 'asOfDate,maturity,coupon,bid,asked,chg,yield,accruedprincipal'
+        jq -r '.[] | [.asOfDate, .maturity, .coupon, .bid, .asked, .chg, .yield, .accruedprincipal] | @csv' "$jsonRateNew"
+    ) >"$csvRatePub"
     echo "published updated $bankName rate file."
 fi
 exit 0
