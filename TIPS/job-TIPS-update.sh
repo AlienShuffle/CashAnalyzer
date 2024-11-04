@@ -1,7 +1,8 @@
 #!/usr/bin/bash
 # process the command argument list.
-pubDelayHours=12
-runDelayHours=6
+pubDelayHours=20
+runDelayHours=2
+bankName='TIPS'
 while [ -n "$1" ]; do
     case $1 in
     "-b")
@@ -48,12 +49,13 @@ fi
 source ../meta.$(hostname).sh
 # current rate files
 jsonRateNew="$bankName-rate-new.json"
-jsonRatePub="$publishHome/Banks/$bankName/$bankName-rate.json"
+jsonRatePub="$publishHome/Treasuries/$bankName/$bankName-rate.json"
+csvRatePub="$publishHome/Treasuries/$bankName/$bankName-rate.csv"
 #echo jsonRateNew=$jsonRateNew
 #echo jsonRatePub=$jsonRatePub
 # history history files
 jsonHistoryUnique="$bankName-history-unique.json"
-jsonHistoryPub="$publishHome/Banks/$bankName/$bankName-history.json"
+jsonHistoryPub="$publishHome/Treasuries/$bankName/$bankName-history.json"
 #echo jsonHistoryUnique=$jsonHistoryUnique
 #echo jsonHistoryPub=$jsonHistoryPub
 #
@@ -92,24 +94,24 @@ if [ ! -s "$jsonRateNew" ]; then
     echo "Empty $bankName rate file."
     exit 1
 fi
-apyNew=$(grep apy "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-if [ -z "$apyNew" ] || [ "$apyNew" = "null" ]; then
-    echo "New $bankName rate file has empty APY."
+dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+if [ -z "$dateNew" ] || [ "$dateNew" = "null" ]; then
+    echo "New $bankName rate file has empty timestamps."
     exit 1
 fi
 #
 # Process the daily history results in rate and merge with history.
 #
 if [ -f "$jsonHistoryPub" ]; then
-    jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateNew" "$jsonHistoryPub" >tmp-flatten.json
-    cat tmp-flatten.json | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
+    jq -s 'flatten | unique_by([.maturity,.asOfDate]) | sort_by([.maturity,.asOfDate])' "$jsonRateNew" "$jsonHistoryPub" >tmp-flatten.json
+    cat tmp-flatten.json | jq 'sort_by([.maturity,.asOfDate])' >"$jsonHistoryUnique"
     #rm tmp-flatten.json
 else
-    cat "$jsonRateNew" | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
+    cat "$jsonRateNew" | jq 'sort_by([.maturity,.asOfDate])' >"$jsonHistoryUnique"
 fi
-lenHistoryUnique=$(grep -o apy "$jsonHistoryUnique" | wc -l)
+lenHistoryUnique=$(grep -o asOfDate "$jsonHistoryUnique" | wc -l)
 if [ -s "$jsonHistoryPub" ]; then
-    lenHistoryPub=$(grep -o apy "$jsonHistoryPub" | wc -l)
+    lenHistoryPub=$(grep -o asOfDate "$jsonHistoryPub" | wc -l)
 else
     lenHistoryPub=0
     echo "$bankName history file has not been published."
@@ -142,8 +144,8 @@ fi
 echo datePub=$datePub
 if [[ $datePub < $dateNew ]]; then
     cat "$jsonRateNew" >"$jsonRatePub"
-    echo "published updated $bankName rate file."
-     (echo 'asOfDate,accountType,apy'; jq -r '.[] | [.asOfDate, .accountType, .apy] | @csv' "$jsonRateNew") > "$csvRatePub"
+    # save the data file as a .csv as well.
+    (echo 'asOfDate,maturity,coupon,bid,chg,yield,accruedprincipal'; jq -r '.[] | [.asOfDate, .maturity, .coupon, .bid, .chg, .yield, .accruedprincipal] | @csv' "$jsonRateNew") > "$csvRatePub"
     echo "published updated $bankName rate file."
 fi
 exit 0

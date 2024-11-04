@@ -49,6 +49,9 @@ fi
 source ../meta.$(hostname).sh
 
 git pull
+#rsync -avu --delete "$publishHome/" "$cloudFlareHome"
+# currently not deleting files on the transfer as I am going to use
+# hugo to build a bit of a site around this content.
 rsync -avu --delete "$publishHome/" "$cloudFlareHome"
 cd "$cloudFlareHome"
 git status
