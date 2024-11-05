@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 # process the command argument list.
-pubDelayHours=20
+pubDelayHours=18
 runDelayHours=2
 bankName='TIPS'
 while [ -n "$1" ]; do
