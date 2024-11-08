@@ -52,9 +52,13 @@ git pull
 #rsync -avu --delete "$publishHome/" "$cloudFlareHome"
 # currently not deleting files on the transfer as I am going to use
 # hugo to build a bit of a site around this content.
-rsync -avu --delete "$publishHome/" "$cloudFlareHome"
+rsync -avu "$publishHome/" "$cloudFlareHome"
 cd "$cloudFlareHome"
+echo 'running tree'
+../tree.sh
+echo 'running git commmands'
 git status
 git add *
 git commit -m "job-control $(date)" *
 git push
+echo pwd=$(pwd)
