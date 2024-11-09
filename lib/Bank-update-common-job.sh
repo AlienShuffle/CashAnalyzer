@@ -49,11 +49,13 @@ source ../meta.$(hostname).sh
 # current rate files
 jsonRateNew="$bankName-rate-new.json"
 jsonRatePub="$publishHome/Banks/$bankName/$bankName-rate.json"
+jsonRateFlare="$cloudFlareHome/Banks/$bankName/$bankName-rate.json"
 #echo jsonRateNew=$jsonRateNew
 #echo jsonRatePub=$jsonRatePub
 # history history files
 jsonHistoryUnique="$bankName-history-unique.json"
 jsonHistoryPub="$publishHome/Banks/$bankName/$bankName-history.json"
+jsonHistoryFlare="$cloudFlareHome/Banks/$bankName/$bankName-history.json"
 #echo jsonHistoryUnique=$jsonHistoryUnique
 #echo jsonHistoryPub=$jsonHistoryPub
 #
@@ -107,6 +109,9 @@ if [ -f "$jsonHistoryPub" ]; then
 else
     cat "$jsonRateNew" | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
 fi
+#
+# process google Drive history files
+#
 lenHistoryUnique=$(grep -o apy "$jsonHistoryUnique" | wc -l)
 if [ -s "$jsonHistoryPub" ]; then
     lenHistoryPub=$(grep -o apy "$jsonHistoryPub" | wc -l)
@@ -122,7 +127,24 @@ if [ $lenHistoryUnique -gt $lenHistoryPub ]; then
     echo "published updated $bankName history file."
 fi
 #
-# process the rate file.
+# process cloudFlare history files
+#
+lenHistoryUnique=$(grep -o apy "$jsonHistoryUnique" | wc -l)
+if [ -s "$jsonHistoryFlare" ]; then
+    lenHistoryFlare=$(grep -o apy "$jsonHistoryFlare" | wc -l)
+else
+    lenHistoryFlare=0
+    echo "$bankName cloudFlare history file has not been published."
+    dir=$(dirname "$jsonHistoryFlare")
+    [ -d "$dir" ] || mkdir -p "$dir"
+fi
+echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
+if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
+    cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
+    echo "published updated $bankName cloudFlare history file."
+fi
+#
+# process the google Drive rate file.
 #
 dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 if [ -z "$dateNew" ]; then
@@ -130,7 +152,6 @@ if [ -z "$dateNew" ]; then
     exit 1
 fi
 echo dateNew=$dateNew
-
 if [ -s "$jsonRatePub" ]; then
     datePub=$(grep asOfDate "$jsonRatePub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 else
@@ -142,8 +163,26 @@ fi
 echo datePub=$datePub
 if [[ $datePub < $dateNew ]]; then
     cat "$jsonRateNew" >"$jsonRatePub"
-    echo "published updated $bankName rate file."
+    echo "published updated $bankName .json rate file."
      (echo 'asOfDate,accountType,apy'; jq -r '.[] | [.asOfDate, .accountType, .apy] | @csv' "$jsonRateNew") > "$csvRatePub"
-    echo "published updated $bankName rate file."
+    echo "published updated $bankName .csv rate file."
+fi
+#
+# process the cloudFlare rate file.
+#
+if [ -s "$jsonRateFlare" ]; then
+    datePub=$(grep asOfDate "$jsonRateFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+else
+    dateFlare=""
+    echo "$bankName cloudFlare rate file has not been published."
+    dir=$(dirname "$jsonRateFlare")
+    [ -d "$dir" ] || mkdir -p "$dir"
+fi
+echo dateFlare=$dateFlare
+if [[ $dateFlare < $dateNew ]]; then
+    cat "$jsonRateNew" >"$jsonRateFlare"
+    echo "published updated $bankName cloudFlare .json rate file."
+     (echo 'asOfDate,accountType,apy'; jq -r '.[] | [.asOfDate, .accountType, .apy] | @csv' "$jsonRateNew") > "$csvRatePub"
+    echo "published updated $bankName cloudFlare .csv rate file."
 fi
 exit 0
