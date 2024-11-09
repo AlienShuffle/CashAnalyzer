@@ -1,4 +1,8 @@
 #!/usr/bin/bash
+#
+# This tool now  updates the TIPS data on the cloudflare site and Google Drive.
+# I will be turning off the Google Drive target eventually.
+#
 # process the command argument list.
 pubDelayHours=18
 runDelayHours=2
@@ -51,11 +55,14 @@ source ../meta.$(hostname).sh
 jsonRateNew="$bankName-rate-new.json"
 jsonRatePub="$publishHome/Treasuries/$bankName/$bankName-rate.json"
 csvRatePub="$publishHome/Treasuries/$bankName/$bankName-rate.csv"
+jsonRateFlare="$cloudFlareHome/Treasuries/$bankName/$bankName-rate.json"
+csvRateFlare="$cloudFlareHome/Treasuries/$bankName/$bankName-rate.csv"
 #echo jsonRateNew=$jsonRateNew
 #echo jsonRatePub=$jsonRatePub
 # history history files
 jsonHistoryUnique="$bankName-history-unique.json"
 jsonHistoryPub="$publishHome/Treasuries/$bankName/$bankName-history.json"
+jsonHistoryFlare="$cloudFlareHome/Treasuries/$bankName/$bankName-history.json"
 #echo jsonHistoryUnique=$jsonHistoryUnique
 #echo jsonHistoryPub=$jsonHistoryPub
 #
@@ -110,6 +117,9 @@ else
     cat "$jsonRateNew" | jq 'sort_by([.maturity,.asOfDate])' >"$jsonHistoryUnique"
 fi
 lenHistoryUnique=$(grep -o asOfDate "$jsonHistoryUnique" | wc -l)
+#
+# google Drive publish history file
+#
 if [ -s "$jsonHistoryPub" ]; then
     lenHistoryPub=$(grep -o asOfDate "$jsonHistoryPub" | wc -l)
 else
@@ -123,6 +133,23 @@ if [ $lenHistoryUnique -gt $lenHistoryPub ]; then
     cat "$jsonHistoryUnique" >"$jsonHistoryPub"
     echo "published updated $bankName history file."
 fi
+
+#
+# cloudFlare publish history file
+#
+if [ -s "$jsonHistoryFlare" ]; then
+    lenHistoryFlare=$(grep -o asOfDate "$jsonHistoryFlare" | wc -l)
+else
+    lenHistoryFlare=0
+    echo "$bankName cloudFlare history file has not been published."
+    dir=$(dirname "$jsonHistoryFlare")
+    [ -d "$dir" ] || mkdir -p "$dir"
+fi
+echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
+if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
+    cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
+    echo "published updated $bankName cloudFlare history file."
+fi
 #
 # process the rate file.
 #
@@ -132,7 +159,9 @@ if [ -z "$dateNew" ]; then
     exit 1
 fi
 echo dateNew=$dateNew
-
+#
+# publish google Drive Rate files
+#
 if [ -s "$jsonRatePub" ]; then
     datePub=$(grep asOfDate "$jsonRatePub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 else
@@ -150,5 +179,26 @@ if [[ $datePub < $dateNew ]]; then
         jq -r '.[] | [.asOfDate, .maturity, .coupon, .bid, .asked, .chg, .yield, .accruedprincipal] | @csv' "$jsonRateNew"
     ) >"$csvRatePub"
     echo "published updated $bankName rate file."
+fi
+#
+# publish cloudFlare Rate files
+#
+if [ -s "$jsonRateFlare" ]; then
+    dateFlare=$(grep asOfDate "$jsonRateFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+else
+    dateFlare=""
+    echo "$bankName cloudFlare rate file has not been published."
+    dir=$(dirname "$jsonRateFlare")
+    [ -d "$dir" ] || mkdir -p "$dir"
+fi
+echo dateFlare=$dateFlare
+if [[ $dateFlare < $dateNew ]]; then
+    cat "$jsonRateNew" >"$jsonRateFlare"
+    # save the data file as a .csv as well.
+    (
+        echo 'asOfDate,maturity,coupon,bid,asked,chg,yield,accruedprincipal'
+        jq -r '.[] | [.asOfDate, .maturity, .coupon, .bid, .asked, .chg, .yield, .accruedprincipal] | @csv' "$jsonRateNew"
+    ) >"$csvRateFlare"
+    echo "published updated $bankName cloudFlare rate file."
 fi
 exit 0
