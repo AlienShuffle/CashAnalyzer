@@ -49,7 +49,9 @@ source ../meta.$(hostname).sh
 # current rate files
 jsonRateNew="$bankName-rate-new.json"
 jsonRatePub="$publishHome/Banks/$bankName/$bankName-rate.json"
+csvRatePub="$publishHome/Banks/$bankName/$bankName-rate.csv"
 jsonRateFlare="$cloudFlareHome/Banks/$bankName/$bankName-rate.json"
+csvRateFlare="$cloudFlareHome/Banks/$bankName/$bankName-rate.csv"
 #echo jsonRateNew=$jsonRateNew
 #echo jsonRatePub=$jsonRatePub
 # history history files
@@ -182,7 +184,7 @@ echo dateFlare=$dateFlare
 if [[ $dateFlare < $dateNew ]]; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     echo "published updated $bankName cloudFlare .json rate file."
-     (echo 'asOfDate,accountType,apy'; jq -r '.[] | [.asOfDate, .accountType, .apy] | @csv' "$jsonRateNew") > "$csvRatePub"
+     (echo 'asOfDate,accountType,apy'; jq -r '.[] | [.asOfDate, .accountType, .apy] | @csv' "$jsonRateNew") > "$csvRateFlare"
     echo "published updated $bankName cloudFlare .csv rate file."
 fi
 exit 0
