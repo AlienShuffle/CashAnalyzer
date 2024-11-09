@@ -1,7 +1,7 @@
 source ../meta.$(hostname).sh
 jsonNew=USFR-facts-new-v98.json
 jsonPub="$publishHome/ETFs/USFR/USFR-facts-v98.json"
-jsonFlare="$cloudFlareHome/ETFs/USFR/USFR-facts-v98.json"
+jsonFlare="$cloudFlareHome/ETFs/USFR/USFR-facts.json"
 #echo jsonNew=$jsonNew
 #echo jsonPub=$jsonPub
 #
