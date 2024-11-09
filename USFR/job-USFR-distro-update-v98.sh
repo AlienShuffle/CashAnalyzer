@@ -1,6 +1,7 @@
 source ../meta.$(hostname).sh
 jsonNew="USFR-distro-new-v98.json"
 jsonPub="$publishHome/ETFs/USFR/USFR-distros-v98.json"
+jsonFlare="$cloudFlareHome/ETFs/USFR/USFR-distros-v98.json"
 jsonUnique="USFR-distro-new-unique-v98.json"
 #echo jsonNew=$jsonNew
 #echo jsonPub=$jsonPub
@@ -40,7 +41,7 @@ if [ -s "$jasonPub" ]; then
 else
   cat "$jsonNew" >"$jsonUnique"
 fi
-
+# publish google Drive files.
 lenNew=$(grep -o returnOfCapital "$jsonNew" | wc -l)
 if [ -s "$jsonPub" ]; then
   lenPub=$(grep -o returnOfCapital "$jsonPub" | wc -l)
@@ -48,7 +49,7 @@ else
   lenPub=0
   echo "USFR distro history file has not been published."
   dir=$(dirname "$jsonPub")
-  [ -d "$dir" ] || mkdir "$dir"
+  [ -d "$dir" ] || mkdir -p "$dir"
 fi
 echo "entries new($lenNew) :: pub($lenPub)"
 lenUnique=$(grep -o returnOfCapital "$jsonUnique" | wc -l)
@@ -56,5 +57,22 @@ echo "entries unique($lenUnique)"
 if [ $lenUnique -gt $lenPub ]; then
   cat "$jsonUnique" >"$jsonPub"
   echo "published updated USFR distro history file."
+fi
+# publish cloudFlare files.
+lenNew=$(grep -o returnOfCapital "$jsonNew" | wc -l)
+if [ -s "$jsonFlare" ]; then
+  lenFlare=$(grep -o returnOfCapital "$jsonFlare" | wc -l)
+else
+  lenFlare=0
+  echo "USFR distro cloudFlare history file has not been published."
+  dir=$(dirname "$jsonFlare")
+  [ -d "$dir" ] || mkdir -p "$dir"
+fi
+echo "entries new($lenNew) :: pub($lenFlare)"
+lenUnique=$(grep -o returnOfCapital "$jsonUnique" | wc -l)
+echo "entries unique($lenUnique)"
+if [ $lenUnique -gt $lenFlare ]; then
+  cat "$jsonUnique" >"$jsonFlare"
+  echo "published updated cloudFlare USFR distro history file."
 fi
 exit 0

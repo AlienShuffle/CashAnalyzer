@@ -1,6 +1,7 @@
 source ../meta.$(hostname).sh
 jsonNew=USFR-facts-new-v98.json
 jsonPub="$publishHome/ETFs/USFR/USFR-facts-v98.json"
+jsonFlare="$cloudFlareHome/ETFs/USFR/USFR-facts-v98.json"
 #echo jsonNew=$jsonNew
 #echo jsonPub=$jsonPub
 #
@@ -49,11 +50,25 @@ else
   datePub=""
   echo "USFR facts file has not been published."
   dir=$(dirname "$jsonPub")
-  [ -d "$dir" ] || mkdir "$dir"
+  [ -d "$dir" ] || mkdir -p "$dir"
 fi
 echo datePub=$datePub
 if [[ $datePub < $dateNew ]]; then
   cat "$jsonNew" >"$jsonPub"
   echo "published updated USFR facts file."
+fi
+# cloudFlare files.
+if [ -s "$jsonFlare" ]; then
+  dateFlare=$(grep asOfDate "$jsonFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+else
+  dateFlare=""
+  echo "USFR cloudFlare facts file not has been published."
+  dir=$(dirname "$jsonFlare")
+  [ -d "$dir" ] || mkdir -p "$dir"
+fi
+echo dateFlare=$dateFlare
+if [[ $dateFlare < $dateNew ]]; then
+  cat "$jsonNew" >"$jsonFlare"
+  echo "published updated USFR cloudFlare facts file."
 fi
 exit 0
