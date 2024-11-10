@@ -173,7 +173,7 @@ fi
 # process the cloudFlare rate file.
 #
 if [ -s "$jsonRateFlare" ]; then
-    datePub=$(grep asOfDate "$jsonRateFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+    dateFlare=$(grep asOfDate "$jsonRateFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 else
     dateFlare=""
     echo "$bankName cloudFlare rate file has not been published."
