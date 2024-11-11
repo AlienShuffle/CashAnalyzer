@@ -32,7 +32,7 @@ function run() {
         // find the table with the price quotes.
         inputHandle = await page.$("table.WSJTables--table--1QzSOCfq");
         // get the html string for this table and log it.
-        const tableValue = await page.evaluate(input => input.innerHTML, inputHandle);
+        //const tableValue = await page.evaluate(input => input.innerHTML, inputHandle);
         //console.log(tableValue);
 
         // how many quotes were published?
