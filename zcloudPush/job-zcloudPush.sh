@@ -2,7 +2,7 @@
 # process the command argument list.
 pubDelayHours=2
 runDelayHours=1
-bankName="ZcloudPush"
+bankName="zcloudPush"
 while [ -n "$1" ]; do
     case $1 in
     "-b")
