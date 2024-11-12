@@ -123,7 +123,7 @@ else
     dir=$(dirname "$jsonHistoryPub")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-echo "entries new($lenHistoryUnique) :: pub($lenHistoryPub)"
+#echo "entries new($lenHistoryUnique) :: pub($lenHistoryPub)"
 if [ $lenHistoryUnique -gt $lenHistoryPub ]; then
     cat "$jsonHistoryUnique" >"$jsonHistoryPub"
     echo "published updated $bankName history file."
@@ -140,7 +140,7 @@ else
     dir=$(dirname "$jsonHistoryFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
+#echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
 if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
     cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
     echo "published updated $bankName cloudFlare history file."
@@ -153,7 +153,7 @@ if [ -z "$dateNew" ]; then
     echo "New $bankName rate file does not include dates."
     exit 1
 fi
-echo dateNew=$dateNew
+#echodateNew=$dateNew
 if [ -s "$jsonRatePub" ]; then
     datePub=$(grep asOfDate "$jsonRatePub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 else
@@ -162,7 +162,7 @@ else
     dir=$(dirname "$jsonRatePub")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-echo datePub=$datePub
+#echodatePub=$datePub
 if [[ $datePub < $dateNew ]]; then
     cat "$jsonRateNew" >"$jsonRatePub"
     echo "published updated $bankName .json rate file."
@@ -180,7 +180,7 @@ else
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-echo dateFlare=$dateFlare
+#echodateFlare=$dateFlare
 if [[ $dateFlare < $dateNew ]]; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     echo "published updated $bankName cloudFlare .json rate file."
