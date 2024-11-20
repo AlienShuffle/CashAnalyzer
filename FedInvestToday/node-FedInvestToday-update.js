@@ -18,28 +18,45 @@ function run() {
         const page = await browser.newPage();
 
         // browse to the marketable securities page
-        // alternative url is: https://treasurydirect.gov/GA-FI/FedInvest/selectSecurityPriceDate
-        await page.goto("https://savingsbonds.gov/GA-FI/FedInvest/selectSecurityPriceDate");
-
-        // this looks for an elements <input>, with id attribute priceDate.xxxx 
-        // and stores the contents of the attribute 'value'.
-        let inputHandle = await page.$("[id='priceDate.month']");
-        const monthValue = await page.evaluate(input => input.value, inputHandle);
-        await inputHandle.dispose();
-        inputHandle = await page.$("[id='priceDate.day']");
-        const dayValue = await page.evaluate(input => input.value, inputHandle);
-        await inputHandle.dispose();
-        inputHandle = await page.$("[id='priceDate.year']");
-        const yearValue = await page.evaluate(input => input.value, inputHandle);
-        await inputHandle.dispose();
-
-
-        // click the input button and wait for the page to navigate to results.
-        const [response] = await Promise.all([
-            page.waitForNavigation(), // The promise resolves after navigation has finished
-            page.click('input.action'), // Clicking the link will indirectly cause a navigation
-        ]);
+        await page.goto("https://treasurydirect.gov/GA-FI/FedInvest/todaySecurityPriceDetail");
+        /**    // this looks for an elements <input>, with id attribute priceDate.xxxx 
+                // and stores the contents of the attribute 'value'.
+                let inputHandle = await page.$("[id='priceDate.month']");
+                const monthValue = await page.evaluate(input => input.value, inputHandle);
+                await inputHandle.dispose();
+                inputHandle = await page.$("[id='priceDate.day']");
+                const dayValue = await page.evaluate(input => input.value, inputHandle);
+                await inputHandle.dispose();
+                inputHandle = await page.$("[id='priceDate.year']");
+                const yearValue = await page.evaluate(input => input.value, inputHandle);
+                await inputHandle.dispose();
         
+        
+                // click the input button and wait for the page to navigate to results.
+                const [response] = await Promise.all([
+                    page.waitForNavigation(), // The promise resolves after navigation has finished
+                    page.click('input.action'), // Clicking the link will indirectly cause a navigation
+                ]);
+                
+        **/
+        // grab the current days price date.
+        let h2s = await page.$$('h2');
+        let dateString = '';
+        const legendString = 'Prices For: ';
+        for (let i = 0; i < h2s.length; i++) {
+            const text = await page.evaluate(input => input.innerHTML, h2s[i]);  
+            const index = text.indexOf(legendString);
+            if (index >= 0) {
+                dateString = text.substring(legendString.length);
+                console.error('dateString = "' + dateString + '"');
+                break;
+            } else{
+                console.error('NOT dateString = "' + text + '"');
+            }
+        }
+
+        //console.error('rows = ' + rows.length);
+
         // find the table with the price quotes.
         inputHandle = await page.$("table.data1");
         // get the html string for this table and log it.
@@ -59,7 +76,7 @@ function run() {
             //console.error(headers[col]);
         }
 
-        const asOfDate = du.getISOString(new Date(yearValue * 1, monthValue * 1 - 1, dayValue * 1));
+        const asOfDate = du.getISOString(new Date((dateString == '') ? "1/1/1900" : dateString));
         // This parses the rate table and puts in an array for conversion to JSON.
         let data = [];
         for (let row = 1; row < rows.length; row++) {
