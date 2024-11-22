@@ -101,8 +101,8 @@ fi
 #
 # Process the daily history results in rate and merge with history.
 #
-if [ -f "$jsonHistoryPub" ]; then
-    jq -s 'flatten | unique_by([.supplier,.term,.asOfDate]) | sort_by([.supplier,.term,.asOfDate])' "$jsonRateNew" "$jsonHistoryPub" >tmp-flatten.json
+if [ -f "$jsonHistoryFlare" ]; then
+    jq -s 'flatten | unique_by([.supplier,.term,.asOfDate]) | sort_by([.supplier,.term,.asOfDate])' "$jsonRateNew" "$jsonHistoryFlare" >tmp-flatten.json
     cat tmp-flatten.json | jq 'sort_by([.supplier,.term,.asOfDate])' >"$jsonHistoryUnique"
     #rm tmp-flatten.json
 else
@@ -112,17 +112,17 @@ lenHistoryUnique=$(grep -o asOfDate "$jsonHistoryUnique" | wc -l)
 #
 # google Drive publish history file
 #
-if [ -s "$jsonHistoryPub" ]; then
-    lenHistoryPub=$(grep -o asOfDate "$jsonHistoryPub" | wc -l)
+if [ -s "$jsonHistoryFlare" ]; then
+    lenHistoryPub=$(grep -o asOfDate "$jsonHistoryFlare" | wc -l)
 else
     lenHistoryPub=0
     echo "$bankName history file has not been published."
-    dir=$(dirname "$jsonHistoryPub")
+    dir=$(dirname "$jsonHistoryFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
 echo "entries new($lenHistoryUnique) :: pub($lenHistoryPub)"
 if [ $lenHistoryUnique -gt $lenHistoryPub ]; then
-    cat "$jsonHistoryUnique" >"$jsonHistoryPub"
+    cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
     echo "published updated $bankName history file."
 fi
 #
