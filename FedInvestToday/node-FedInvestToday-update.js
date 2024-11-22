@@ -19,26 +19,7 @@ function run() {
 
         // browse to the marketable securities page
         await page.goto("https://treasurydirect.gov/GA-FI/FedInvest/todaySecurityPriceDetail");
-        /**    // this looks for an elements <input>, with id attribute priceDate.xxxx 
-                // and stores the contents of the attribute 'value'.
-                let inputHandle = await page.$("[id='priceDate.month']");
-                const monthValue = await page.evaluate(input => input.value, inputHandle);
-                await inputHandle.dispose();
-                inputHandle = await page.$("[id='priceDate.day']");
-                const dayValue = await page.evaluate(input => input.value, inputHandle);
-                await inputHandle.dispose();
-                inputHandle = await page.$("[id='priceDate.year']");
-                const yearValue = await page.evaluate(input => input.value, inputHandle);
-                await inputHandle.dispose();
-        
-        
-                // click the input button and wait for the page to navigate to results.
-                const [response] = await Promise.all([
-                    page.waitForNavigation(), // The promise resolves after navigation has finished
-                    page.click('input.action'), // Clicking the link will indirectly cause a navigation
-                ]);
-                
-        **/
+
         // grab the current days price date.
         let h2s = await page.$$('h2');
         let dateString = '';
@@ -56,7 +37,8 @@ function run() {
             await browser.close();
             return reject("Today's prices not yet published.");
         }
-
+        // find the table with the price quotes.
+        let inputHandle = await page.$("table.data1");
         // how many quotes were published?
         let rows = await inputHandle.$$('tr');
         //console.error('rows = ' + rows.length);

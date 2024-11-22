@@ -28,7 +28,7 @@ function run() {
                 } catch (error) {
                     if (browser) await browser.close();
                     console.error(((error.name === 'TimeoutError') ? 'Browser timeout occurred' : 'An error occured') + ': ' + url, error);
-                    return reject(error);
+                    throw error;
                 }
                 // parse out savings Rate
                 let inputHandle = await page.$(path);
@@ -36,9 +36,10 @@ function run() {
                 //console.error("apyString = :" + apyString + ":");
                 return apyString.replace(/%/, '');
             }
-            // document.querySelector("#richtext-2ec99e4b5c > p:nth-child(1) > span > span")
-            const cashPlusYield = await retrieveAPY('https://investor.vanguard.com/accounts-plans/vanguard-cash-plus-account', "#richtext-2ec99e4b5c > p:nth-child(1) > span > span");
-            // document.querySelector("#richtext-fb6988b911 > p:nth-child(1) > span")
+            // 24-11-21 document.querySelector("#richtext-2ec99e4b5c > p:nth-child(1) > span > span")
+            // 24-11-22 document.querySelector("#richtext-3a8a82f700 > p:nth-child(1) > span")
+            const cashPlusYield = await retrieveAPY('https://investor.vanguard.com/accounts-plans/vanguard-cash-plus-account', "#richtext-3a8a82f700 > p:nth-child(1) > span");
+            // 24-11-21 document.querySelector("#richtext-fb6988b911 > p:nth-child(1) > span")
             const cashDepositYield = await retrieveAPY('https://investor.vanguard.com/investment-products/vanguard-cash-deposit', "#richtext-fb6988b911 > p:nth-child(1) > span");
             //console.error("cashDepositYield = :" + cashDepositYield + ":");
             // format return JSON message.
