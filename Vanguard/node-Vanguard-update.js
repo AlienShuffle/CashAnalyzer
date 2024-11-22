@@ -36,10 +36,11 @@ function run() {
                 //console.error("apyString = :" + apyString + ":");
                 return apyString.replace(/%/, '');
             }
-            const cashPlusYield = await retrieveAPY('https://investor.vanguard.com/accounts-plans/vanguard-cash-plus-account', "#richtext-3a8a82f700 > p:nth-child(1) > span");
-            //#richtext-fb6988b911 > p:nth-child(1) > span
+            // document.querySelector("#richtext-2ec99e4b5c > p:nth-child(1) > span > span")
+            const cashPlusYield = await retrieveAPY('https://investor.vanguard.com/accounts-plans/vanguard-cash-plus-account', "#richtext-2ec99e4b5c > p:nth-child(1) > span > span");
+            // document.querySelector("#richtext-fb6988b911 > p:nth-child(1) > span")
             const cashDepositYield = await retrieveAPY('https://investor.vanguard.com/investment-products/vanguard-cash-deposit', "#richtext-fb6988b911 > p:nth-child(1) > span");
-            console.error("cashDepositYield = :" + cashDepositYield + ":");
+            //console.error("cashDepositYield = :" + cashDepositYield + ":");
             // format return JSON message.
             const now = new Date;
             const asOfDate = now.getFullYear() + '-' + (now.getMonth() + 1 + '').padStart(2, '0') + '-' + (now.getDate() + '').padStart(2, '0');
