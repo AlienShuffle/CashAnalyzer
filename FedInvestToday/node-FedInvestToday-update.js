@@ -44,24 +44,18 @@ function run() {
         let dateString = '';
         const legendString = 'Prices For: ';
         for (let i = 0; i < h2s.length; i++) {
-            const text = await page.evaluate(input => input.innerHTML, h2s[i]);  
+            const text = await page.evaluate(input => input.innerHTML, h2s[i]);
             const index = text.indexOf(legendString);
             if (index >= 0) {
                 dateString = text.substring(legendString.length);
                 console.error('dateString = "' + dateString + '"');
                 break;
-            } else{
-                console.error('NOT dateString = "' + text + '"');
             }
         }
-
-        //console.error('rows = ' + rows.length);
-
-        // find the table with the price quotes.
-        inputHandle = await page.$("table.data1");
-        // get the html string for this table and log it.
-        //const tableValue = await page.evaluate(input => input.innerHTML, inputHandle);
-        //console.error(tableValue);
+        if (dateString == '') {
+            await browser.close();
+            return reject("Today's prices not yet published.");
+        }
 
         // how many quotes were published?
         let rows = await inputHandle.$$('tr');
