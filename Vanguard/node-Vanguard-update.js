@@ -19,12 +19,14 @@ function run() {
             async function retrieveAPY(url, path) {
                 try {
                     await page.goto(url);
-                    //this page is slow, let's wait.
-                    await page.waitForNetworkIdle({
-                        idleTime: 1000,
-                    });
+                    // this page is slow, let's wait.
+                    //await page.waitForNetworkIdle({
+                    //    idleTime: 1000,
+                    //});
                     // make sure the page has rendered at least to the rates section.
-                    await page.waitForSelector(path);
+                    let selector = await page.waitForSelector(path);
+                    if (!selector) console.error('selector not found');
+
                 } catch (error) {
                     if (browser) await browser.close();
                     console.error(((error.name === 'TimeoutError') ? 'Browser timeout occurred' : 'An error occured') + ': ' + url, error);

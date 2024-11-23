@@ -20,26 +20,26 @@ function run() {
                 try {
                     // Go for the Savings Rate
                     await page.goto(url);
-                    // this page is slow, let's wait.
-                    await page.waitForNetworkIdle({
-                        idleTime: 1000,
+                    // make sure the page has rendered at least to the rates section, then parse.
+                    let selector = await page.waitForSelector('span.allysf-rates-v1-value');
+                    if (!selector) console.error('selector not found');
+
+                    // parse out savings Rate (see Vanguard for more generic version that allows selectors as paramaters.)
+                    const apy = await page.evaluate(() => {
+                        const item = document.querySelector('span.allysf-rates-v1-value');
+                        return (item) ? item.innerText : '';
                     });
-                    // make sure the page has rendered at least to the rates section.
-                    await page.waitForSelector('span.allysf-rates-v1-value');
+                    //console.error('APY=', apy);
+                    return apy;
                 } catch (error) {
                     if (browser) await browser.close();
                     console.error(((error.name === 'TimeoutError') ? 'Browser timeout occurred' : 'An error occured') + ': ' + url, error);
                     return reject(error);
                 }
-                // parse out savings Rate (see Vanguard for more generic version that allows selectors as paramaters.)
-                const apy = await page.evaluate(() => {
-                    const item = document.querySelector('span.allysf-rates-v1-value');
-                    return (item) ? item.innerText : '';
-                });
-                return apy;
             }
-            const savingsRate = await retrieveAPY('https://www.ally.com/bank/online-savings-account/');
+            //
             const npcdRate = await retrieveAPY('https://www.ally.com/bank/no-penalty-cd/');
+            const savingsRate = await retrieveAPY('https://www.ally.com/bank/online-savings-account/');
 
             // format return JSON message.
             const now = new Date;
