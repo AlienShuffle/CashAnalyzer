@@ -9,7 +9,7 @@ jsonFlare="$cloudFlareHome/ETFs/USFR/USFR-facts.json"
 #  - note, if $1 to to this script is not empty, I will run the script regardless, but report the aging status too.
 #
 # update these delayHours as appropriate for the data source.
-updateDelayHours=12
+updateDelayHours=18
 updateDelaySeconds=$(($updateDelayHours * 60 * 60))
 if [ -f "$jsonPub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonPub")))" -lt "$updateDelaySeconds" ]; then
   echo "Published file is not yet $updateDelayHours hours old - $(stat -c '%y' "$jsonPub" | cut -d: -f1,2)"

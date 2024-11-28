@@ -3,7 +3,7 @@
 # This tool now  updates the PaPower data on the cloudflare site.
 #
 # process the command argument list.
-pubDelayHours=24
+pubDelayHours=22
 runDelayHours=2
 bankName='PaPower'
 while [ -n "$1" ]; do

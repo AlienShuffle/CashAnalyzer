@@ -4,7 +4,7 @@
 # I will be turning off the Google Drive target eventually.
 #
 # process the command argument list.
-pubDelayHours=18
+pubDelayHours=20
 runDelayHours=2
 bankName='FedInvestToday'
 while [ -n "$1" ]; do
