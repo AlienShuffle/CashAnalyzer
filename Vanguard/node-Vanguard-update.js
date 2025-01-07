@@ -1,9 +1,10 @@
 const puppeteer = require('puppeteer');
+const du = require('../lib/dateUtils.js');
 
 // global browser instance.
 let browserPromise = puppeteer.launch({
     defaultViewport: null,
-    headless: false,  // comment out to make this run headless for production.
+    //headless: false,  // comment out to make this run headless for production.
     ignoreDefaultArgs: ['--disable-extensions'],
     //args: ['--window-size=800,600', '--no-sandbox']
     args: ['--window-size=800,600']
@@ -48,7 +49,7 @@ function run() {
             //console.error("cashDepositYield = :" + cashDepositYield + ":");
             // format return JSON message.
             const now = new Date;
-            const asOfDate = now.getFullYear() + '-' + (now.getMonth() + 1 + '').padStart(2, '0') + '-' + (now.getDate() + '').padStart(2, '0');
+            const asOfDate = du.getISOString(now);
             let facts = [
                 {
                     "source": 'node-Vanguard-update.js',
