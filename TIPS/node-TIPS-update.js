@@ -1,10 +1,12 @@
-const du = require('../lib/dateUtils.js');
-const puppeteer = require("puppeteer");
+//const du = require('../lib/dateUtils.js');
+import { duGetISOString } from "../lib/dateUtils.mjs";
+
+import puppeteer from "puppeteer";
 
 // shared global browser instance.
 let browserPromise = puppeteer.launch({
     defaultViewport: null,
-    headless: false,  // comment out to make this run headless for production.
+    //headless: false,  // comment out to make this run headless for production.
     ignoreDefaultArgs: ['--disable-extensions'],
     //args: ['--window-size=1920,1080']
     args: ['--window-size=800,600', '--no-sandbox']
@@ -58,13 +60,13 @@ function run() {
 
             if (cols.length == 7) {
                 var rowData = {};
-                rowData['asOfDate'] = du.getISOString(timestamp);
+                rowData['asOfDate'] = duGetISOString(timestamp);
                 for (let col = 0; col < cols.length; col++) {
                     const value = await page.evaluate(input => input.innerHTML, cols[col]);
                     switch (headers[col]) {
                         case 'maturity':
                             // convert to proper JSON format (YYYY-MM-DD)
-                            rowData[headers[col]] = du.getISOString(new Date(value));
+                            rowData[headers[col]] = duGetISOString(new Date(value));
                             break;
                         case 'coupon':
                         case 'yield':

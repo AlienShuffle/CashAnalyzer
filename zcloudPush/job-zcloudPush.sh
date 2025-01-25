@@ -48,6 +48,7 @@ fi
 
 source ../meta.$(hostname).sh
 
+echo "git pull"
 git pull
 #rsync -avu --delete "$publishHome/" "$cloudFlareHome"
 # currently not deleting files on the transfer as I am going to use
@@ -55,8 +56,12 @@ git pull
 #rsync -avu "$publishHome/" "$cloudFlareHome"
 cd "$cloudFlareHome"
 ../tree.sh
+echo git status
 git status
+echo git add *
 git add *
+echo git commit -m 
 git commit -m "job-control $(date)" *
+echo git push
 git push
 #echo pwd=$(pwd)

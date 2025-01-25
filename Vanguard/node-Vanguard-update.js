@@ -4,7 +4,7 @@ const du = require('../lib/dateUtils.js');
 // global browser instance.
 let browserPromise = puppeteer.launch({
     defaultViewport: null,
-    //headless: false,  // comment out to make this run headless for production.
+    headless: false,  // comment out to make this run headless for production.
     ignoreDefaultArgs: ['--disable-extensions'],
     //args: ['--window-size=800,600', '--no-sandbox']
     args: ['--window-size=800,600']
