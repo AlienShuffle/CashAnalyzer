@@ -21,7 +21,7 @@ sudo apt install jq
 #
 # Updates to the NPM/Node Environment This needs to be done in each directory
 #
-for dir in Ally USFR Vanguard yieldFinder; do
+for dir in Ally FedInvest FedInvestToday PaPower TIPS Treasury USFR Vanguard yieldFinder yieldMM; do
     (
         cd $dir
         echo "##### $dir"
