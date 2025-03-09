@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 queryFile=yieldFinder-file.json
-jsonFile=yieldFinder-results.json
 
 # go pull the home page off the yieldFinder app.
 curl -sSL https://yieldFinder.app/json >"$queryFile"
