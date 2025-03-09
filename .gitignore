@@ -174,3 +174,9 @@ VanguardMM/VYFXX-history-unique.json
 VanguardMM/VYFXX-rate-new.json
 yieldFinder/yieldFinder-file.json
 yieldFinder/yieldFinder-json.json
+yield*/yield*-file.json
+yield*/yield*-rate-new.json
+yield*/history/*/*.json
+yieldMM/history/*/*.json
+yield*/yield*-history-unique.json
+yieldMM/used-inject-rates.json
