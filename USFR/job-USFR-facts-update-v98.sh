@@ -1,9 +1,7 @@
 source ../meta.$(hostname).sh
 jsonNew=USFR-facts-new-v98.json
-jsonPub="$publishHome/ETFs/USFR/USFR-facts-v98.json"
 jsonFlare="$cloudFlareHome/ETFs/USFR/USFR-facts.json"
 #echo jsonNew=$jsonNew
-#echo jsonPub=$jsonPub
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
 #  - note, if $1 to to this script is not empty, I will run the script regardless, but report the aging status too.
@@ -11,8 +9,8 @@ jsonFlare="$cloudFlareHome/ETFs/USFR/USFR-facts.json"
 # update these delayHours as appropriate for the data source.
 updateDelayHours=18
 updateDelaySeconds=$(($updateDelayHours * 60 * 60))
-if [ -f "$jsonPub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonPub")))" -lt "$updateDelaySeconds" ]; then
-  echo "Published file is not yet $updateDelayHours hours old - $(stat -c '%y' "$jsonPub" | cut -d: -f1,2)"
+if [ -f "$jsonFlare" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonFlare")))" -lt "$updateDelaySeconds" ]; then
+  echo "Published file is not yet $updateDelayHours hours old - $(stat -c '%y' "$jsonFlare" | cut -d: -f1,2)"
   [ -z "$1" ] && exit 0
 fi
 runDelayHours=4
@@ -44,20 +42,9 @@ if [ -z "$dateNew" ]; then
   exit 1
 fi
 echo dateNew=$dateNew
-if [ -s "$jsonPub" ]; then
-  datePub=$(grep asOfDate "$jsonPub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-else
-  datePub=""
-  echo "USFR facts file has not been published."
-  dir=$(dirname "$jsonPub")
-  [ -d "$dir" ] || mkdir -p "$dir"
-fi
-echo datePub=$datePub
-if [[ $datePub < $dateNew ]]; then
-  cat "$jsonNew" >"$jsonPub"
-  echo "published updated USFR facts file."
-fi
+#
 # cloudFlare files.
+#
 if [ -s "$jsonFlare" ]; then
   dateFlare=$(grep asOfDate "$jsonFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 else
