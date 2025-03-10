@@ -55,13 +55,10 @@ source ../meta.$(hostname).sh
 # current rate files
 injectRatesJson="inject-rates.json"
 jsonRateNew="$bankName-rate-new.json"
-jsonRatePub="$publishHome/Banks/$bankName/$bankName-rate.json"
-csvRatePub="$publishHome/Banks/$bankName/$bankName-rate.csv"
 jsonRateFlare="$cloudFlareHome/Banks/$bankName/$bankName-rate.json"
 csvRateFlare="$cloudFlareHome/Banks/$bankName/$bankName-rate.csv"
-#echo jsonRateNew=$jsonRateNew
-#echo jsonRatePub=$jsonRatePub
-# history history files
+echo jsonRateNew=$jsonRateNew
+echo jsonRateFlare=$jsonRateFlare
 
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
@@ -73,8 +70,8 @@ if [ -s "$injectRatesJson" ]; then
     jsonRateNew="$injectRatesJson"
 else
     pubDelaySeconds=$(($pubDelayHours * 60 * 60))
-    if [ -s "$jsonRatePub" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRatePub")))" -lt "$pubDelaySeconds" ]; then
-        echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$jsonRatePub" | cut -d: -f1,2)"
+    if [ -s "$jsonRateFlare" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateFlare")))" -lt "$pubDelaySeconds" ]; then
+        echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$jsonRateFlare" | cut -d: -f1,2)"
         [ -z "$forceRun" ] && exit 0
     fi
     runDelaySeconds=$(($runDelayHours * 60 * 60))
@@ -112,7 +109,9 @@ fi
 #
 # Process the daily history results in rate and merge with history.
 #
-# get list of rates that were updated:
+# get list of rates that were updated.
+# Then loop through this list of names, extract them from the rate sheet and merge it into the history sheet.
+#
 grep accountType "$jsonRateNew" | sed 's/^.*Type": "//' | sed 's/",$//' | sort -u |
     while IFS= read -r accountType; do
         dirname="history/$(echo "$accountType" | sed -e 's/ /-/g')"
@@ -120,41 +119,20 @@ grep accountType "$jsonRateNew" | sed 's/^.*Type": "//' | sed 's/",$//' | sort -
         [ -d "$dirname" ] || mkdir -p "$dirname"
         jsonRateAccountType="$dirname/rate-new.json"
         jsonHistoryUnique="$dirname/history-unique.json"
-        jsonHistoryPub="$publishHome/Banks/$bankName/$dirname/rate-history.json"
         jsonHistoryFlare="$cloudFlareHome/Banks/$bankName/$dirname/rate-history.json"
         #echo jsonHistoryUnique=$jsonHistoryUnique
-        #echo jsonHistoryPub=$jsonHistoryPub
+        #echo jsonHistoryFlare=$jsonHistoryFlare
 
         # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
         cat "$jsonRateNew" | jq "[.[] | select(.accountType==\"$accountType\")]" >"$jsonRateAccountType"
 
-        # loop through this list of names, extract them from the rate sheet and merge it into the history sheet.
-
-        if [ -f "$jsonHistoryPub" ]; then
-            jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateAccountType" "$jsonHistoryPub" >tmp-flatten.json
+        if [ -f "$jsonHistoryFlare" ]; then
+            jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateAccountType" "$jsonHistoryFlare" >tmp-flatten.json
             cat tmp-flatten.json | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
-            #rm tmp-flatten.json
+            rm tmp-flatten.json
         else
             cat "$jsonRateAccountType" | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
         fi
-
-        #
-        # process google Drive history files
-        #
-        #lenHistoryUnique=$(grep -o apy "$jsonHistoryUnique" | wc -l)
-        #if [ -s "$jsonHistoryPub" ]; then
-        #    lenHistoryPub=$(grep -o apy "$jsonHistoryPub" | wc -l)
-        #else
-        #    lenHistoryPub=0
-        #    echo "$bankName history file has not been published."
-        #    dir=$(dirname "$jsonHistoryPub")
-        #    [ -d "$dir" ] || mkdir -p "$dir"
-        #fi
-        #echo "entries new($lenHistoryUnique) :: pub($lenHistoryPub)"
-        #if [ $lenHistoryUnique -gt $lenHistoryPub ]; then
-        #    cat "$jsonHistoryUnique" >"$jsonHistoryPub"
-        #    echo "published updated $bankName history file."
-        #fi
 
         #
         # process cloudFlare history files
@@ -174,35 +152,6 @@ grep accountType "$jsonRateNew" | sed 's/^.*Type": "//' | sed 's/",$//' | sort -
             echo "published updated $bankName $accountType cloudFlare history file."
         fi
     done
-#
-# process the google Drive rate file.
-#
-if false; then
-    dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-    if [ -z "$dateNew" ]; then
-        echo "New $bankName rate file does not include dates."
-        exit 1
-    fi
-    #echodateNew=$dateNew
-    if [ -s "$jsonRatePub" ]; then
-        datePub=$(grep asOfDate "$jsonRatePub" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-    else
-        datePub=""
-        echo "$bankName rate file has not been published."
-        dir=$(dirname "$jsonRatePub")
-        [ -d "$dir" ] || mkdir -p "$dir"
-    fi
-    #echodatePub=$datePub
-    if [[ $datePub < $dateNew ]]; then
-        cat "$jsonRateNew" >"$jsonRatePub"
-        echo "published updated $bankName .json rate file."
-        (
-            echo 'asOfDate,accountType,apy'
-            jq -r '.[] | [.asOfDate, .accountType, .apy] | @csv' "$jsonRateNew"
-        ) >"$csvRatePub"
-        echo "published updated $bankName .csv rate file."
-    fi
-fi
 #
 # process the cloudFlare rate file.
 #
@@ -232,11 +181,11 @@ fi
 #
 jsonHistoryUnique="$bankName-history-unique.json"
 jsonHistoryFlare="$cloudFlareHome/Banks/$bankName/$bankName-history.json"
-echo jsonHistoryUnique=$jsonHistoryUnique
-echo jsonHistoryFlare=$jsonHistoryFlare
+#echo jsonHistoryUnique=$jsonHistoryUnique
+#echo jsonHistoryFlare=$jsonHistoryFlare
 
 if [ -f "$jsonHistoryFlare" ]; then
-    rm tmp-flatten.json
+    rm -f tmp-flatten.json
     echo create tmp-flatten.json
     jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateNew" "$jsonHistoryFlare" >tmp-flatten.json
     echo gapFilling tmp-flatten.json

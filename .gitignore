@@ -176,7 +176,7 @@ yieldFinder/yieldFinder-file.json
 yieldFinder/yieldFinder-json.json
 yield*/yield*-file.json
 yield*/yield*-rate-new.json
-yield*/history/*/*.json
+*/history/*/*.json
 yieldMM/history/*/*.json
 yield*/yield*-history-unique.json
 yieldMM/used-inject-rates.json

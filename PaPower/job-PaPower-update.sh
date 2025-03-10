@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 #
-# This tool now  updates the PaPower data on the cloudflare site.
+# This tool now updates the PaPower data on the cloudflare site.
 #
 # process the command argument list.
 pubDelayHours=22
@@ -57,6 +57,7 @@ csvRateFlare="$cloudFlareHome/$bankName/$bankName-rate.csv"
 # history history files
 jsonHistoryUnique="$bankName-history-unique.json"
 jsonHistoryFlare="$cloudFlareHome/$bankName/$bankName-history.json"
+csvHistoryFlare="$cloudFlareHome/$bankName/$bankName-history.csv"
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
 #  - note, if -f is passed to this script, I will run the script regardless, but report the aging status too.
@@ -110,22 +111,6 @@ else
 fi
 lenHistoryUnique=$(grep -o asOfDate "$jsonHistoryUnique" | wc -l)
 #
-# google Drive publish history file
-#
-if [ -s "$jsonHistoryFlare" ]; then
-    lenHistoryPub=$(grep -o asOfDate "$jsonHistoryFlare" | wc -l)
-else
-    lenHistoryPub=0
-    echo "$bankName history file has not been published."
-    dir=$(dirname "$jsonHistoryFlare")
-    [ -d "$dir" ] || mkdir -p "$dir"
-fi
-echo "entries new($lenHistoryUnique) :: pub($lenHistoryPub)"
-if [ $lenHistoryUnique -gt $lenHistoryPub ]; then
-    cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
-    echo "published updated $bankName history file."
-fi
-#
 # cloudFlare publish history file
 #
 if [ -s "$jsonHistoryFlare" ]; then
@@ -139,6 +124,11 @@ fi
 echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
 if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
     cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
+    echo creating $csvHistoryFlare
+    (
+        echo 'asOfDate,supplier,rate,term,url'
+        jq -r '.[] | [.asOfDate, .supplier, .rate, .term, .url] | @csv' "$jsonHistoryUnique"
+    ) >"$csvHistoryFlare"
     echo "published updated $bankName cloudFlare history file."
 fi
 #
@@ -167,7 +157,7 @@ if [[ $dateFlare < $dateNew ]]; then
     # save the data file as a .csv as well.
     (
         echo 'asOfDate,supplier,rate,term,url'
-       jq -r '.[] | [.asOfDate, .supplier, .rate, .term, .url] | @csv' "$jsonRateNew"
+        jq -r '.[] | [.asOfDate, .supplier, .rate, .term, .url] | @csv' "$jsonRateNew"
     ) >"$csvRateFlare"
     echo "published updated $bankName cloudFlare rate file."
 fi
