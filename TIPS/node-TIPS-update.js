@@ -6,7 +6,7 @@ import puppeteer from "puppeteer";
 // shared global browser instance.
 let browserPromise = puppeteer.launch({
     defaultViewport: null,
-    //headless: false,  // comment out to make this run headless for production.
+    headless: false,  // comment out to make this run headless for production.
     ignoreDefaultArgs: ['--disable-extensions'],
     //args: ['--window-size=1920,1080']
     args: ['--window-size=800,600', '--no-sandbox']
@@ -18,7 +18,8 @@ function run() {
         const page = await browser.newPage();
 
         // browse to the marketable securities page
-        await page.goto("http://online.wsj.com/mdc/public/page/2_3020-tips.html?mod=mdc_bnd_pglnk");
+        //await page.goto("http://online.wsj.com/mdc/public/page/2_3020-tips.html?mod=mdc_bnd_pglnk");
+        await page.goto("https://www.wsj.com/market-data/bonds/tips");
 
         let inputHandle;
         inputHandle = await page.$("span.WSJBase--card__timestamp--3F2HxyAE");
@@ -85,6 +86,7 @@ function run() {
                             break;
                     }
                 }
+                rowData['key'] = rowData['maturity'] + '-' + rowData['coupon'].toFixed(5);
                 data.push(rowData);
             }
         }
