@@ -50,18 +50,14 @@ source ../meta.$(hostname).sh
 
 echo "git pull"
 git pull
-#rsync -avu --delete "$publishHome/" "$cloudFlareHome"
-# currently not deleting files on the transfer as I am going to use
-# hugo to build a bit of a site around this content.
-#rsync -avu "$publishHome/" "$cloudFlareHome"
 cd "$cloudFlareHome"
+echo "../tree.sh"
 ../tree.sh
 echo git status
 git status
-echo git add *
+echo "git add" *
 git add *
-echo git commit -m 
+echo "git commit -m \"job-control $(date)\"" *
 git commit -m "job-control $(date)" *
-echo git push
+echo "git push"
 git push
-#echo pwd=$(pwd)

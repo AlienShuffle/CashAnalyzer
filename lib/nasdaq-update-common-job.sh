@@ -107,7 +107,7 @@ fi
 if [ -f "$jsonHistoryPub" ]; then
     jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateNew" "$jsonHistoryPub" >tmp-flatten.json
     cat tmp-flatten.json | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
-    #rm tmp-flatten.json
+    rm tmp-flatten.json
 else
     cat "$jsonRateNew" | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
 fi

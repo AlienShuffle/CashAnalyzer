@@ -105,7 +105,7 @@ fi
 if [ -f "$jsonHistoryFlare" ]; then
     jq -s 'flatten | unique_by([.supplier,.term,.asOfDate]) | sort_by([.supplier,.term,.asOfDate])' "$jsonRateNew" "$jsonHistoryFlare" >tmp-flatten.json
     cat tmp-flatten.json | jq 'sort_by([.supplier,.term,.asOfDate])' >"$jsonHistoryUnique"
-    #rm tmp-flatten.json
+    rm tmp-flatten.json
 else
     cat "$jsonRateNew" | jq 'sort_by([.supplier,.term,.asOfDate])' >"$jsonHistoryUnique"
 fi
