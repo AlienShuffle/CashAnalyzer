@@ -136,8 +136,8 @@ yieldFinder/yieldFinder-rate-new.json
 yieldFinder/yieldFinder-history-unique.json
 yieldFinder/yieldFinder-asOfDate.txt
 */tmp-flatten.json
-TIPS/TIPS-history-unique.json
-TIPS/TIPS-rate-new.json
+wsjTIPS/wsjTIPS-history-unique.json
+wsjTIPS/wsjTIPS-rate-new.json
 FedInvest/FedInvest-history-unique.json
 FedInvest/FedInvest-rate-new.json
 PaPower/PaPower-history-unique.json
@@ -180,3 +180,6 @@ yield*/yield*-rate-new.json
 yieldMM/history/*/*.json
 yield*/yield*-history-unique.json
 yieldMM/used-inject-rates.json
+wsjTIPS/wsjTIPS-rate-new.json
+wsjTIPS/TIPS-history-unique.json
+wsjTIPS/TIPS-rate-new.json

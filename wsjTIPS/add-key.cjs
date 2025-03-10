@@ -1,5 +1,5 @@
 //useful for transition of old data to new data.
-// const fs = require('fs');
+const fs = require('fs');
 // read in from stdin, the TIPS data to add a key attribute.
 const stdinBuffer = fs.readFileSync(process.stdin.fd);
 const json = JSON.parse(stdinBuffer);

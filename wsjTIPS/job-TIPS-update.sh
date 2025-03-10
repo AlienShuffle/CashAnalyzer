@@ -6,7 +6,7 @@
 # process the command argument list.
 pubDelayHours=18
 runDelayHours=2
-bankName='TIPS'
+bankName='wsjTIPS'
 while [ -n "$1" ]; do
     case $1 in
     "-b")
@@ -115,7 +115,7 @@ grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
         [ -d "$dirname" ] || mkdir -p "$dirname"
         jsonRatetipsKey="$dirname/rate-new.json"
         jsonHistoryUnique="$dirname/history-unique.json"
-        jsonHistoryFlare="$cloudFlareHome/Treasries/$bankName/$dirname/rate-history.json"
+        jsonHistoryFlare="$cloudFlareHome/Treasuries/$bankName/$dirname/rate-history.json"
         csvHistoryFlare="$cloudFlareHome/Treasuries/$bankName/$dirname/rate-history.csv"
 
         # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
