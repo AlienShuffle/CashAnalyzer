@@ -57,8 +57,8 @@ injectRatesJson="inject-rates.json"
 jsonRateNew="$bankName-rate-new.json"
 jsonRateFlare="$cloudFlareHome/Banks/$bankName/$bankName-rate.json"
 csvRateFlare="$cloudFlareHome/Banks/$bankName/$bankName-rate.csv"
-echo jsonRateNew=$jsonRateNew
-echo jsonRateFlare=$jsonRateFlare
+#echo jsonRateNew=$jsonRateNew
+#echo jsonRateFlare=$jsonRateFlare
 
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
