@@ -4,7 +4,7 @@ bankName=$(basename $(pwd))
 #bankName=yieldFinder
 
 # go pull the home page off the yieldFinder app.
-curl -sSL https://yieldFinder.app/json >"$queryFile"
+curl -sSL https://yieldFinder.app/json | jq . >"$queryFile"
 if [ ! -s "$queryFile" ]; then
     echo "Empty $queryFile file."
     exit 1

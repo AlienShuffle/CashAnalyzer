@@ -115,7 +115,7 @@ fi
 grep accountType "$jsonRateNew" | sed 's/^.*Type": "//' | sed 's/",$//' | sort -u |
     while IFS= read -r accountType; do
         dirname="history/$(echo "$accountType" | sed -e 's/ /-/g')"
-        echo "Processing $accountType"
+        #echo "Processing $accountType"
         [ -d "$dirname" ] || mkdir -p "$dirname"
         jsonRateAccountType="$dirname/rate-new.json"
         jsonHistoryUnique="$dirname/history-unique.json"
