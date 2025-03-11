@@ -39,7 +39,7 @@ function run() {
             page.waitForNavigation(), // The promise resolves after navigation has finished
             page.click('input.action'), // Clicking the link will indirectly cause a navigation
         ]);
-        
+
         // find the table with the price quotes.
         inputHandle = await page.$("table.data1");
         // get the html string for this table and log it.
@@ -76,11 +76,15 @@ function run() {
                         case 'maturitydate':
                             rowData[headers[col]] = du.getISOString(new Date(value));
                             break;
+                        case 'rate':
+                            rowData[headers[col]] = (parseFloat(value) / 100).toFixed(5);
+                            break;
                         default:
                             rowData[headers[col]] = value;
                             break;
                     }
                 }
+                rowData.key = rowData.maturitydate + '-' + rowData.rate;
                 data.push(rowData);
             }
         }

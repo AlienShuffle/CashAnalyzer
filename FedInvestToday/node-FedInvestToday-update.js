@@ -69,11 +69,15 @@ function run() {
                         case 'maturitydate':
                             rowData[headers[col]] = du.getISOString(new Date(value));
                             break;
+                        case 'rate':
+                            rowData[headers[col]] = (parseFloat(value) / 100).toFixed(5);
+                            break;
                         default:
                             rowData[headers[col]] = value;
                             break;
                     }
                 }
+                rowData.key = rowData.maturitydate + '-' + rowData.rate;
                 data.push(rowData);
             }
         }
