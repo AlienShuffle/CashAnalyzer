@@ -12,7 +12,7 @@ for (let i = 0; i < json.length; i++) {
     if (acct.account_type == 'Money Market Fund') {
         const row = {
             "ticker": acct.ticker,
-            "source": 'node-yieldMM-update.js',
+            "source": 'yieldFinder',
             "timestamp": timestamp,
             "accountType": acct.name,
             "sevenDayYield": (acct.rate / 100).toFixed(4) * 1,

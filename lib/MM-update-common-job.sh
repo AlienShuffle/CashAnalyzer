@@ -12,7 +12,7 @@ while [ -n "$1" ]; do
     case $1 in
     "-b")
         sourceName="$2"
-        echo "sourceName=$sourceName"
+        #echo "sourceName=$sourceName"
         shift
         ;;
     "-f")
@@ -76,7 +76,7 @@ else
         [ -z "$forceRun" ] && exit 0
     fi
     #
-    # this script was used in fintools version 98 and later. This is intended to stick around long-term.
+    # run the scipts to prepare the data.
     #
     scriptFile="./node-$sourceName-update.js"
     if [ ! -s "$scriptFile" ]; then
@@ -112,7 +112,7 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
     while IFS= read -r ticker; do
         dirname="$(echo "$ticker" | sed -e 's/ /-/g')"
         echo "Processing $ticker"
-        [ -d "$dirname" ] || mkdir -p "$dirname"
+        [ -d "history/$dirname" ] || mkdir -p "history/$dirname"
         jsonRateTicker="history/$dirname/rate-new.json"
         jsonHistoryUnique="history/$dirname/history-unique.json"
         jsonHistoryFlare="$cloudFlareHome/MM/$dirname/rate-history.json"
@@ -120,20 +120,20 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
         #echo jsonHistoryFlare=$jsonHistoryFlare
 
         # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
+        echo filtering by ticker.
         cat "$jsonRateNew" | jq "[.[] | select(.ticker==\"$ticker\")]" >"$jsonRateTicker"
 
+        # sort/filter/gap fill the combined history and current date's rates
         if [ -f "$jsonHistoryFlare" ]; then
-            jq -s 'flatten | unique_by([.ticker,.asOfDate]) | sort_by([.ticker,.asOfDate])' "$jsonRateTicker" "$jsonHistoryFlare" >tmp-flatten.json
-            sleep 2
-            cat tmp-flatten.json | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.ticker,.asOfDate])' >"$jsonHistoryUnique"
-            rm tmp-flatten.json
+            cat "$jsonRateTicker" "$jsonHistoryFlare"
         else
-            cat "$jsonRateTicker" | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.ticker,.asOfDate])' >"$jsonHistoryUnique"
-        fi
+            cat "$jsonRateTicker"
+        fi | node ../lib/node-MM-sortBest.js | jq . >"$jsonHistoryUnique"
 
         #
         # process cloudFlare history files
         #
+        echo processing cloudflare files.
         lenHistoryUnique=$(grep -o sevenDayYield "$jsonHistoryUnique" | wc -l)
         if [ -s "$jsonHistoryFlare" ]; then
             lenHistoryFlare=$(grep -o sevenDayYield "$jsonHistoryFlare" | wc -l)

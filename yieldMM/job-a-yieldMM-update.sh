@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-bankName=$(basename $(pwd))
+bankName=yieldMM
 queryFile=$bankName-file.json
 
 # go pull the home page off the yieldFinder app.
