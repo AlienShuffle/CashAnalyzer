@@ -120,12 +120,12 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
         #echo jsonHistoryFlare=$jsonHistoryFlare
 
         # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
-        echo filtering by ticker.
+        #echo filtering by ticker.
         cat "$jsonRateNew" | jq "[.[] | select(.ticker==\"$ticker\")]" >"$jsonRateTicker"
 
         # sort/filter/gap fill the combined history and current date's rates
         if [ -f "$jsonHistoryFlare" ]; then
-            cat "$jsonRateTicker" "$jsonHistoryFlare"
+            jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonRateTicker" "$jsonHistoryFlare"
         else
             cat "$jsonRateTicker"
         fi | node ../lib/node-MM-sortBest.js | jq . >"$jsonHistoryUnique"
@@ -133,7 +133,7 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
         #
         # process cloudFlare history files
         #
-        echo processing cloudflare files.
+        #echo processing cloudflare files.
         lenHistoryUnique=$(grep -o sevenDayYield "$jsonHistoryUnique" | wc -l)
         if [ -s "$jsonHistoryFlare" ]; then
             lenHistoryFlare=$(grep -o sevenDayYield "$jsonHistoryFlare" | wc -l)
