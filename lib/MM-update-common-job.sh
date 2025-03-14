@@ -51,8 +51,10 @@ source ../meta.$(hostname).sh
 # current rate files
 injectRatesJson="inject-rates.json"
 jsonRateNew="$sourceName-rate-new.json"
-jsonRateFlare="$cloudFlareHome/MM/$sourceName/$sourceName-rate.json"
-csvRateFlare="$cloudFlareHome/MM/$sourceName/$sourceName-rate.csv"
+jsonRateFlare="$cloudFlareHome/MM/$sourceName/$sourceName-rates.json"
+csvRateFlare="$cloudFlareHome/MM/$sourceName/$sourceName-rates.csv"
+jsonRateAllFlare="$cloudFlareHome/MM/all-rates.json"
+csvRateAllFlare="$cloudFlareHome/MM/all-rates.csv"
 #echo jsonRateNew=$jsonRateNew
 #echo jsonRateFlare=$jsonRateFlare
 
@@ -113,28 +115,44 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
         dirname="$(echo "$ticker" | sed -e 's/ /-/g')"
         echo "Processing $ticker"
         [ -d "history/$dirname" ] || mkdir -p "history/$dirname"
+        # rates only for this query from this tool.
         jsonRateTicker="history/$dirname/rate-new.json"
-        jsonHistoryUnique="history/$dirname/history-unique.json"
+        # temp merge of this query with this tool's history.
+        jsonHistoryTemp="history/$dirname/history-$sourceName-temp.json"
+        # resulting merged history of this tool's rates.
+        jsonHistoryUnique="history/$dirname/history-$sourceName-unique.json"
+        # temp merge of this tool's history with the combined history published in cloudflare (for comparison with cloudflare)
+        jsonHistoryFlareTemp="history/$dirname/history-$sourceName-flare.json"
+        # resulting published merge of this tool and all combined source histories.
         jsonHistoryFlare="$cloudFlareHome/MM/$dirname/rate-history.json"
-        #echo jsonHistoryUnique=$jsonHistoryUnique
-        #echo jsonHistoryFlare=$jsonHistoryFlare
+        csvHistoryFlare="$cloudFlareHome/MM/$dirname/rate-history.csv"
 
-        # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
-        #echo filtering by ticker.
+        # I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
         cat "$jsonRateNew" | jq "[.[] | select(.ticker==\"$ticker\")]" >"$jsonRateTicker"
 
-        # sort/filter/gap fill the combined history and current date's rates
-        if [ -f "$jsonHistoryFlare" ]; then
-            jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonRateTicker" "$jsonHistoryFlare"
+        # sort/filter/gap fill the combined history and current date's rates using only this tool's data.
+        if [ -f "$jsonHistoryUnique" ]; then
+            jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonRateTicker" "$jsonHistoryUnique" >"$jsonHistoryTemp"
         else
-            cat "$jsonRateTicker"
-        fi | node ../lib/node-MM-sortBest.js | jq . >"$jsonHistoryUnique"
+            cat "$jsonRateTicker" >"$jsonHistoryTemp"
+        fi
+        cat "$jsonHistoryTemp" | node ../lib/node-MM-sortBest.js | jq . >"$jsonHistoryUnique"
+        rm "$jsonHistoryTemp"
+
+        # sort/filter/gapfill this combined history with data from all sources in cloudflare repository.
+        if [ -f "$jsonHistoryFlare" ]; then
+            jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonHistoryUnique" "$jsonHistoryFlare" >tmp-flare.json
+        else
+            cat "$jsonHistoryUnique" >tmp-flare.json
+        fi
+        cat tmp-flare.json | node ../lib/node-MM-sortBest.js | jq . >"$jsonHistoryFlareTemp"
+        rm tmp-flare.json
 
         #
-        # process cloudFlare history files
+        # process cloudFlare history files for this data source.
         #
         #echo processing cloudflare files.
-        lenHistoryUnique=$(grep -o sevenDayYield "$jsonHistoryUnique" | wc -l)
+        lenHistoryFlareTemp=$(grep -o sevenDayYield "$jsonHistoryFlareTemp" | wc -l)
         if [ -s "$jsonHistoryFlare" ]; then
             lenHistoryFlare=$(grep -o sevenDayYield "$jsonHistoryFlare" | wc -l)
         else
@@ -143,14 +161,19 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         fi
-        echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
-        if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
-            cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
+        echo "entries new($lenHistoryFlareTemp) :: flare($lenHistoryFlare)"
+        if [ $lenHistoryFlareTemp -gt $lenHistoryFlare ]; then
+            cat "$jsonHistoryFlareTemp" >"$jsonHistoryFlare"
             echo "published updated $sourceName $ticker cloudFlare history file."
+            (
+                echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
+                jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield,.source] | @csv' "$jsonHistoryFlare"
+            ) >"$csvHistoryFlare"
+            echo "published updated cloudflare $csvHistoryFlare file."
         fi
     done
 #
-# process the cloudFlare rate file.
+# process the cloudFlare rate file for this tool.
 #
 dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 if [ -z "$dateNew" ]; then
@@ -168,11 +191,31 @@ fi
 #echodateFlare=$dateFlare
 if [[ $dateFlare < $dateNew ]]; then
     cat "$jsonRateNew" >"$jsonRateFlare"
-    echo "published updated $sourceName cloudFlare .json rate file."
+    echo "published updated cloudflare $sourceName-rates.json file."
     (
-        echo 'asOfDate,ticker,sevenDayYield'
-        jq -r '.[] | [.asOfDate, .ticker, .sevenDayYield] | @csv' "$jsonRateNew"
+        echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield'
+        jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield] | @csv' "$jsonRateNew"
     ) >"$csvRateFlare"
-    echo "published updated $sourceName cloudFlare .csv rate file."
+    echo "published updated cloudflare $sourceName-rates.csv file."
 fi
+#
+# Merge current tool's current rates into the All tools rate file (keeping only best, most recent reported values)
+#
+if [ -s "$jsonRateAllFlare" ]; then
+    jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonRateNew" "$jsonRateAllFlare" >tmp-all-flare.json
+else
+    echo "$jsonRateAllFlare cloudFlare file has not been published."
+    dir=$(dirname "$jsonRateAllFlare")
+    [ -d "$dir" ] || mkdir -p "$dir"
+    cat "$jsonRateNew" >tmp-all-flare.json
+fi
+# sort, only keep the best, most recent values.
+cat tmp-all-flare.json | node ../lib/node-MM-sortBest.js latest | jq . >"$jsonRateAllFlare"
+rm tmp-all-flare.json
+echo "published updated cloudflare $jsonRateAllFlare file."
+(
+    echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
+    jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield,.source] | @csv' "$jsonRateAllFlare"
+) >"$csvRateAllFlare"
+echo "published updated cloudflare $csvRateAllFlare file."
 exit 0
