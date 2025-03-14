@@ -140,29 +140,25 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
         rm "$jsonHistoryTemp"
 
         # sort/filter/gapfill this combined history with data from all sources in cloudflare repository.
-        if [ -f "$jsonHistoryFlare" ]; then
-            jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonHistoryUnique" "$jsonHistoryFlare" >tmp-flare.json
-        else
-            cat "$jsonHistoryUnique" >tmp-flare.json
-        fi
-        cat tmp-flare.json | node ../lib/node-MM-sortBest.js | jq . >"$jsonHistoryFlareTemp"
-        rm tmp-flare.json
-
-        #
-        # process cloudFlare history files for this data source.
-        #
-        #echo processing cloudflare files.
-        lenHistoryFlareTemp=$(grep -o sevenDayYield "$jsonHistoryFlareTemp" | wc -l)
         if [ -s "$jsonHistoryFlare" ]; then
-            lenHistoryFlare=$(grep -o sevenDayYield "$jsonHistoryFlare" | wc -l)
+            jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonHistoryUnique" "$jsonHistoryFlare" |
+                node ../lib/node-MM-sortBest.js |
+                jq . >"$jsonHistoryFlareTemp"
         else
-            lenHistoryFlare=0
+            cat "$jsonHistoryUnique" |
+                node ../lib/node-MM-sortBest.js |
+                jq . >"$jsonHistoryFlareTemp"
             echo "$sourceName $ticker cloudFlare history file has not been published."
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         fi
-        echo "entries new($lenHistoryFlareTemp) :: flare($lenHistoryFlare)"
-        if [ $lenHistoryFlareTemp -gt $lenHistoryFlare ]; then
+        #
+        # process cloudFlare history files for this data source.
+        #
+        grep -v timestamp "$jsonHistoryFlareTemp" >/tmp/diff.a
+        grep -v timestamp "$jsonHistoryFlare" >/tmp/diff.b
+        diff -q /tmp/diff.a /tmp/diff.b >/dev/null
+        if [ $? -gt 0 ]; then
             cat "$jsonHistoryFlareTemp" >"$jsonHistoryFlare"
             echo "published updated $sourceName $ticker cloudFlare history file."
             (
@@ -180,16 +176,16 @@ if [ -z "$dateNew" ]; then
     echo "New $sourceName rate file does not include dates."
     exit 1
 fi
-if [ -s "$jsonRateFlare" ]; then
-    dateFlare=$(grep asOfDate "$jsonRateFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-else
-    dateFlare=""
+if [ ! -s "$jsonRateFlare" ]; then
     echo "$sourceName cloudFlare rate file has not been published."
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
 #echodateFlare=$dateFlare
-if [[ $dateFlare < $dateNew ]]; then
+grep -v timestamp "$jsonRateNew" >/tmp/diff.a
+grep -v timestamp "$jsonRateFlare" >/tmp/diff.b
+diff -q /tmp/diff.a /tmp/diff.b >/dev/null
+if [ $? -gt 0 ]; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     echo "published updated cloudflare $sourceName-rates.json file."
     (
@@ -202,20 +198,29 @@ fi
 # Merge current tool's current rates into the All tools rate file (keeping only best, most recent reported values)
 #
 if [ -s "$jsonRateAllFlare" ]; then
-    jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonRateNew" "$jsonRateAllFlare" >tmp-all-flare.json
+    jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonRateNew" "$jsonRateAllFlare" |
+        node ../lib/node-MM-sortBest.js latest |
+        jq . >tmp-all-flare.json
 else
     echo "$jsonRateAllFlare cloudFlare file has not been published."
     dir=$(dirname "$jsonRateAllFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
-    cat "$jsonRateNew" >tmp-all-flare.json
+    cat "$jsonRateNew" |
+        node ../lib/node-MM-sortBest.js latest |
+        jq . >tmp-all-flare.json
 fi
-# sort, only keep the best, most recent values.
-cat tmp-all-flare.json | node ../lib/node-MM-sortBest.js latest | jq . >"$jsonRateAllFlare"
-rm tmp-all-flare.json
-echo "published updated cloudflare $jsonRateAllFlare file."
-(
-    echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
-    jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield,.source] | @csv' "$jsonRateAllFlare"
-) >"$csvRateAllFlare"
-echo "published updated cloudflare $csvRateAllFlare file."
+# if the new merged file is different, then publish it.
+grep -v timestamp "tmp-all-flare.json" >/tmp/diff.a
+grep -v timestamp "$jsonRateAllFlare" >/tmp/diff.b
+diff -q /tmp/diff.a /tmp/diff.b >/dev/null
+if [ $? -gt 0 ]; then
+    cat tmp-all-flare.json >"$jsonRateAllFlare"
+    echo "published updated cloudflare $jsonRateAllFlare file."
+    (
+        echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
+        jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield,.source] | @csv' "$jsonRateAllFlare"
+    ) >"$csvRateAllFlare"
+    echo "published updated cloudflare $csvRateAllFlare file."
+fi
+rm -f tmp-all-flare.json /tmp/diff.a /tmp/diff.b
 exit 0
