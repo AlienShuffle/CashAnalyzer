@@ -11,11 +11,11 @@ for (let i = 0; i < json.length; i++) {
     const acct = json[i];
     if (acct.account_type == 'Savings Account') {
         const row = {
-            "source": 'node-yieldFinder-json-update.js',
-            "timestamp": timestamp,
             "accountType": acct.name,
             "apy": (acct.rate / 100).toFixed(4) * 1,
             "asOfDate": acct.rate_as_of,
+            "source": 'node-yieldFinder-json-update.js',
+            "timestamp": timestamp,
         };
         resp.push(row);
     }

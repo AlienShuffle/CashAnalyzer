@@ -23,12 +23,13 @@ for (let i = 0; i < json.length; i++) {
         case 'VUSXX':
         case 'VYFXX':
             const row = {
-                "ticker": ticker,
-                "source": 'Vanguard.com',
-                "timestamp": timestamp,
                 "accountType": safeObjectRef(json[i].profile.shortName),
-                "sevenDayYield": (safeObjectRef(json[i].yield.yieldPct) / 100).toFixed(5) * 1,
                 "asOfDate": du.getISOString(new Date(safeObjectRef(json[i].yield.asOfDate))),
+                "price": 1,
+                "sevenDayYield": (safeObjectRef(json[i].yield.yieldPct) / 100).toFixed(5) * 1,
+                "source": 'Vanguard.com',
+                "ticker": ticker,
+                "timestamp": timestamp,
             };
             resp.push(row);
             break;
