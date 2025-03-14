@@ -1,7 +1,7 @@
 {
-  "name": "NASDAQQuotes",
+  "name": "VanguardMM",
   "version": "0.0.1",
-  "description": "Initial Test of Puppetter, Node.js, GCF and local development on my PC in Win11 Ubuntu, all stored in GitHub",
+  "description": "pull Vanguard Rates, and try to parse most recent MM yields for my tool.",
   "main": "index.js",
   "scripts": {
     "start-nogood-we-arent-using-funcions-framework": "functions-framework --target=getAllyQuotes"
@@ -9,7 +9,7 @@
   "keywords": [
     "Puppeteer",
     "GCF",
-    "NASDQ Quotes"
+    "Vanguard Quotes"
   ],
   "author": "AlienShuffle",
   "license": "MIT",
