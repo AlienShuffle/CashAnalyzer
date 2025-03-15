@@ -133,7 +133,7 @@ grep accountType "$jsonRateNew" | sed 's/^.*Type": "//' | sed 's/",$//' | sort -
         #
         # process cloudFlare account specific history files
         #
-        if [ ! -s "$jsonHistoryFlare" ] || ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
+        if ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
             cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
             echo "published updated $bankName $accountType cloudFlare history file."
         fi
@@ -150,7 +150,7 @@ if [ ! -s "$jsonRateFlare" ]; then
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-if [ ! -s "$jsonRateFlare" ] || ../lib/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
+if ../lib/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     echo "published updated $bankName cloudFlare .json rate file."
     (
@@ -183,7 +183,7 @@ fi
 #
 # process cloudFlare history files
 #
-if [ ! -s "$jsonHistoryFlare" ] || ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
+if ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
     cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
     echo "published updated $bankName cloudFlare history file."
 fi

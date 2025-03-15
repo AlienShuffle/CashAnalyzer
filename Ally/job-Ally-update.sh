@@ -1,1 +1,1 @@
-../lib/Bank-v2-update-common-job.sh -b $(basename $(pwd)) -pubdelay 18 -rundelay 4 "$@"
+../lib/Bank-update-common-job.sh -b $(basename $(pwd)) -pubdelay 18 -rundelay 4 "$@"

@@ -109,20 +109,15 @@ if [ -f "$jsonHistoryFlare" ]; then
 else
     cat "$jsonRateNew" | jq 'sort_by([.supplier,.term,.asOfDate])' >"$jsonHistoryUnique"
 fi
-lenHistoryUnique=$(grep -o asOfDate "$jsonHistoryUnique" | wc -l)
 #
 # cloudFlare publish history file
 #
-if [ -s "$jsonHistoryFlare" ]; then
-    lenHistoryFlare=$(grep -o asOfDate "$jsonHistoryFlare" | wc -l)
-else
-    lenHistoryFlare=0
+if [ ! -s "$jsonHistoryFlare" ]; then
     echo "$bankName cloudFlare history file has not been published."
     dir=$(dirname "$jsonHistoryFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
-if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
+if ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
     cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
     echo creating $csvHistoryFlare
     (
@@ -139,20 +134,15 @@ if [ -z "$dateNew" ]; then
     echo "New $bankName rate file does not include dates."
     exit 1
 fi
-echo dateNew=$dateNew
 #
 # publish cloudFlare Rate files
 #
-if [ -s "$jsonRateFlare" ]; then
-    dateFlare=$(grep asOfDate "$jsonRateFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-else
-    dateFlare=""
+if [ ! -s "$jsonRateFlare" ]; then
     echo "$bankName cloudFlare rate file has not been published."
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-echo dateFlare=$dateFlare
-if [[ $dateFlare < $dateNew ]]; then
+if ../lib/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     # save the data file as a .csv as well.
     (

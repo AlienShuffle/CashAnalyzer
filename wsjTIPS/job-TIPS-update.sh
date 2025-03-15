@@ -131,7 +131,7 @@ grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
         #
         # cloudFlare publish history file
         #
-        if [ ! -s "$jsonHistoryFlare" ] || ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
+        if ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
             cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
             # save the history file as a .csv as well.
             (
@@ -157,7 +157,7 @@ if [ ! -s "$jsonRateFlare" ]; then
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-if [ ! -s "$jsonRateFlare" ] || ../lib/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
+if ../lib/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     # save the data file as a .csv as well.
     (
