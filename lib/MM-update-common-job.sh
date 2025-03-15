@@ -155,10 +155,8 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
         #
         # process cloudFlare history files for this data source.
         #
-        grep -v timestamp "$jsonHistoryFlareTemp" >/tmp/diff.a
-        grep -v timestamp "$jsonHistoryFlare" >/tmp/diff.b
-        diff -q /tmp/diff.a /tmp/diff.b >/dev/null
-        if [ $? -gt 0 ]; then
+        
+        if ../lib/jsonDifferent.sh "$jsonHistoryFlareTemp" "$jsonHistoryFlare"; then
             cat "$jsonHistoryFlareTemp" >"$jsonHistoryFlare"
             echo "published updated $sourceName $ticker cloudFlare history file."
             (
@@ -181,11 +179,7 @@ if [ ! -s "$jsonRateFlare" ]; then
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-#echodateFlare=$dateFlare
-grep -v timestamp "$jsonRateNew" >/tmp/diff.a
-grep -v timestamp "$jsonRateFlare" >/tmp/diff.b
-diff -q /tmp/diff.a /tmp/diff.b >/dev/null
-if [ $? -gt 0 ]; then
+if ../lib/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     echo "published updated cloudflare $sourceName-rates.json file."
     (
@@ -210,10 +204,7 @@ else
         jq . >tmp-all-flare.json
 fi
 # if the new merged file is different, then publish it.
-grep -v timestamp "tmp-all-flare.json" >/tmp/diff.a
-grep -v timestamp "$jsonRateAllFlare" >/tmp/diff.b
-diff -q /tmp/diff.a /tmp/diff.b >/dev/null
-if [ $? -gt 0 ]; then
+if ../lib/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
     cat tmp-all-flare.json >"$jsonRateAllFlare"
     echo "published updated cloudflare $jsonRateAllFlare file."
     (
@@ -222,5 +213,4 @@ if [ $? -gt 0 ]; then
     ) >"$csvRateAllFlare"
     echo "published updated cloudflare $csvRateAllFlare file."
 fi
-rm -f tmp-all-flare.json /tmp/diff.a /tmp/diff.b
-exit 0
+rm -f tmp-all-flare.json
