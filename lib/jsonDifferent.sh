@@ -5,7 +5,7 @@
 # This is opposite of diff, but in the logic of the environment where we do something (publish) if the files are different.
 #
 val=$(node ../lib/node-deepCompare.js $1 $2)
-if [ $val = 'true' ]; then
+if [ "$val" = "true" ]; then
     exit 1 # true means the files are the same.
 else
     exit 0 # return bash 0 (aka true) if the files are different (compare false).

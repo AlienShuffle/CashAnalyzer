@@ -49,16 +49,12 @@ if [ ! -d "$HOME/CashAnalyzer/$bankName" ]; then
     echo "$0: $bankName is not a valid bank name."
     exit 1
 fi
-# look for a -f to force run, overriding the time delays.
-
 source ../meta.$(hostname).sh
 # current rate files
 injectRatesJson="inject-rates.json"
 jsonRateNew="$bankName-rate-new.json"
 jsonRateFlare="$cloudFlareHome/Banks/$bankName/$bankName-rate.json"
 csvRateFlare="$cloudFlareHome/Banks/$bankName/$bankName-rate.csv"
-#echo jsonRateNew=$jsonRateNew
-#echo jsonRateFlare=$jsonRateFlare
 
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
@@ -115,39 +111,29 @@ fi
 grep accountType "$jsonRateNew" | sed 's/^.*Type": "//' | sed 's/",$//' | sort -u |
     while IFS= read -r accountType; do
         dirname="history/$(echo "$accountType" | sed -e 's/ /-/g')"
-        #echo "Processing $accountType"
         [ -d "$dirname" ] || mkdir -p "$dirname"
         jsonRateAccountType="$dirname/rate-new.json"
         jsonHistoryUnique="$dirname/history-unique.json"
         jsonHistoryFlare="$cloudFlareHome/Banks/$bankName/$dirname/rate-history.json"
-        #echo jsonHistoryUnique=$jsonHistoryUnique
-        #echo jsonHistoryFlare=$jsonHistoryFlare
 
         # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
         cat "$jsonRateNew" | jq "[.[] | select(.accountType==\"$accountType\")]" >"$jsonRateAccountType"
 
-        if [ -f "$jsonHistoryFlare" ]; then
+        if [ -s "$jsonHistoryFlare" ]; then
             jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateAccountType" "$jsonHistoryFlare" >tmp-flatten.json
             cat tmp-flatten.json | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
             rm tmp-flatten.json
         else
             cat "$jsonRateAccountType" | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
-        fi
-
-        #
-        # process cloudFlare history files
-        #
-        lenHistoryUnique=$(grep -o apy "$jsonHistoryUnique" | wc -l)
-        if [ -s "$jsonHistoryFlare" ]; then
-            lenHistoryFlare=$(grep -o apy "$jsonHistoryFlare" | wc -l)
-        else
-            lenHistoryFlare=0
             echo "$bankName $accountType cloudFlare history file has not been published."
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         fi
-        #echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
-        if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
+
+        #
+        # process cloudFlare account specific history files
+        #
+        if [ ! -s "$jsonHistoryFlare" ] || ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
             cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
             echo "published updated $bankName $accountType cloudFlare history file."
         fi
@@ -155,21 +141,16 @@ grep accountType "$jsonRateNew" | sed 's/^.*Type": "//' | sed 's/",$//' | sort -
 #
 # process the cloudFlare rate file.
 #
-dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-if [ -z "$dateNew" ]; then
+if [ -z "$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')" ]; then
     echo "New $bankName rate file does not include dates."
     exit 1
 fi
-if [ -s "$jsonRateFlare" ]; then
-    dateFlare=$(grep asOfDate "$jsonRateFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-else
-    dateFlare=""
+if [ ! -s "$jsonRateFlare" ]; then
     echo "$bankName cloudFlare rate file has not been published."
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-#echodateFlare=$dateFlare
-if [[ $dateFlare < $dateNew ]]; then
+if [ ! -s "$jsonRateFlare" ] || ../lib/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     echo "published updated $bankName cloudFlare .json rate file."
     (
@@ -186,35 +167,23 @@ fi
 #
 jsonHistoryUnique="$bankName-history-unique.json"
 jsonHistoryFlare="$cloudFlareHome/Banks/$bankName/$bankName-history.json"
-#echo jsonHistoryUnique=$jsonHistoryUnique
-#echo jsonHistoryFlare=$jsonHistoryFlare
 
-if [ -f "$jsonHistoryFlare" ]; then
-    rm -f tmp-flatten.json
-    echo create tmp-flatten.json
-    jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateNew" "$jsonHistoryFlare" >tmp-flatten.json
-    echo gapFilling tmp-flatten.json
-    sleep 3
-    cat tmp-flatten.json | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
-    #rm tmp-flatten.json
-else
-    echo gapFilling $jsonRateNew
-    cat "$jsonRateNew" | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
-fi
-#
-# process cloudFlare history files
-#
-lenHistoryUnique=$(grep -o apy "$jsonHistoryUnique" | wc -l)
 if [ -s "$jsonHistoryFlare" ]; then
-    lenHistoryFlare=$(grep -o apy "$jsonHistoryFlare" | wc -l)
+    jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateNew" "$jsonHistoryFlare" |
+        node ../lib/node-bank-gapFiller.js |
+        jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
 else
-    lenHistoryFlare=0
+    cat "$jsonRateNew" |
+        node ../lib/node-bank-gapFiller.js |
+        jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
     echo "$bankName cloudFlare history file has not been published."
     dir=$(dirname "$jsonHistoryFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-#echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
-if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
+#
+# process cloudFlare history files
+#
+if [ ! -s "$jsonHistoryFlare" ] || ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
     cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
     echo "published updated $bankName cloudFlare history file."
 fi
