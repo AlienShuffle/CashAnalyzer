@@ -145,11 +145,10 @@ grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
 #
 # process the rate file.
 #
-dateNew=
 if [ -z "$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')" ]; then
     echo "New $bankName rate file does not include dates."
     exit 1
-file
+fi
 #
 # publish cloudFlare Rate files
 #
