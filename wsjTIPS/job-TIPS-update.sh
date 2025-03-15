@@ -56,8 +56,6 @@ injectRatesJson="inject-rates.json"
 jsonRateNew="$bankName-rate-new.json"
 jsonRateFlare="$cloudFlareHome/Treasuries/$bankName/$bankName-rate.json"
 csvRateFlare="$cloudFlareHome/Treasuries/$bankName/$bankName-rate.csv"
-#echo jsonRateNew=$jsonRateNew
-
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
 #  - note, if -f is passed to this script, I will run the script regardless, but report the aging status too.
@@ -121,27 +119,19 @@ grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
         # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
         cat "$jsonRateNew" | jq "[.[] | select(.key==\"$tipsKey\")]" >"$jsonRatetipsKey"
 
-        if [ -f "$jsonHistoryFlare" ]; then
-            jq -s 'flatten | unique_by([.key,.asOfDate]) | sort_by([.key,.asOfDate])' "$jsonRatetipsKey" "$jsonHistoryFlare" >tmp-flatten.json
-            cat tmp-flatten.json | jq 'sort_by([.key,.asOfDate])' >"$jsonHistoryUnique"
-            rm tmp-flatten.json
+        if [ -s "$jsonHistoryFlare" ]; then
+            jq -s 'flatten | unique_by([.key,.asOfDate]) | sort_by([.key,.asOfDate])' "$jsonRatetipsKey" "$jsonHistoryFlare" |
+                jq 'sort_by([.key,.asOfDate])' >"$jsonHistoryUnique"
         else
             cat "$jsonRatetipsKey" | jq 'sort_by([.key,.asOfDate])' >"$jsonHistoryUnique"
-        fi
-        lenHistoryUnique=$(grep -o asOfDate "$jsonHistoryUnique" | wc -l)
-        #
-        # cloudFlare publish history file
-        #
-        if [ -s "$jsonHistoryFlare" ]; then
-            lenHistoryFlare=$(grep -o asOfDate "$jsonHistoryFlare" | wc -l)
-        else
-            lenHistoryFlare=0
             echo "$bankName cloudFlare history file has not been published."
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         fi
-        #echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
-        if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
+        #
+        # cloudFlare publish history file
+        #
+        if [ ! -s "$jsonHistoryFlare" ] || ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
             cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
             # save the history file as a .csv as well.
             (
@@ -155,25 +145,20 @@ grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
 #
 # process the rate file.
 #
-dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-if [ -z "$dateNew" ]; then
+dateNew=
+if [ -z "$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')" ]; then
     echo "New $bankName rate file does not include dates."
     exit 1
-fi
-#echo dateNew=$dateNew
+file
 #
 # publish cloudFlare Rate files
 #
-if [ -s "$jsonRateFlare" ]; then
-    dateFlare=$(grep asOfDate "$jsonRateFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-else
-    dateFlare=""
+if [ ! -s "$jsonRateFlare" ]; then
     echo "$bankName cloudFlare rate file has not been published."
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-#echo dateFlare=$dateFlare
-if [[ $dateFlare < $dateNew ]]; then
+if [ ! -s "$jsonRateFlare" ] || ../lib/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     # save the data file as a .csv as well.
     (
