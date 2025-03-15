@@ -6,7 +6,7 @@
 # process the command argument list.
 pubDelayHours=18
 runDelayHours=2
-bankName='wsjTIPS'
+bankName=$(basename $(pwd))
 while [ -n "$1" ]; do
     case $1 in
     "-b")

@@ -1,10 +1,10 @@
 #!/usr/bin/bash
 #
 # This tool now  updates the TIPS data on the cloudflare site and Google Drive.
-# I will be turning off the Google Drive target eventually.
+# Google Drive target removed.
 #
 # process the command argument list.
-pubDelayHours=20
+pubDelayHours=18
 runDelayHours=2
 bankName=$(basename $(pwd))
 while [ -n "$1" ]; do
@@ -111,36 +111,29 @@ grep cusip "$jsonRateNew" | sed 's/^.*cusip": "//' | sed 's/",$//' | sort -u |
         dirname="history/$cusip"
         echo "Processing $cusip"
         [ -d "$dirname" ] || mkdir -p "$dirname"
-        jasonRateCusip="$dirname/rate-new.json"
+        jsonRateCusip="$dirname/rate-new.json"
         jsonHistoryUnique="$dirname/history-unique.json"
         jsonHistoryFlare="$cloudFlareHome/Treasuries/$bankName/$dirname/rate-history.json"
         csvHistoryFlare="$cloudFlareHome/Treasuries/$bankName/$dirname/rate-history.csv"
 
         # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
-        cat "$jsonRateNew" | jq "[.[] | select(.cusip==\"$cusip\")]" >"$jasonRateCusip"
+        cat "$jsonRateNew" | jq "[.[] | select(.cusip==\"$cusip\")]" >"$jsonRateCusip"
 
-        if [ -f "$jsonHistoryFlare" ]; then
-            jq -s 'flatten | unique_by([.cusip,.asOfDate]) | sort_by([.cusip,.asOfDate])' "$jasonRateCusip" "$jsonHistoryFlare" >tmp-flatten.json
-            cat tmp-flatten.json | jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
-            rm tmp-flatten.json
-        else
-            cat "$jasonRateCusip" | jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
-        fi
-        lenHistoryUnique=$(grep -o asOfDate "$jsonHistoryUnique" | wc -l)
-        #
-        # cloudFlare publish history file
-        #
         if [ -s "$jsonHistoryFlare" ]; then
-            lenHistoryFlare=$(grep -o asOfDate "$jsonHistoryFlare" | wc -l)
+            jq -s 'flatten | unique_by([.cusip,.asOfDate]) | sort_by([.cusip,.asOfDate])' "$jsonRateCusip" "$jsonHistoryFlare" |
+                jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
         else
-            lenHistoryFlare=0
+            cat "$jsonRateCusip" | jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
             echo "$bankName cloudFlare history file has not been published."
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         fi
-        #echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
-        if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
+        #
+        # cloudFlare publish history file
+        #
+        if ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
             cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
+            # save the history file as a .csv as well.
             (
                 echo 'asOfDate, cusip, securitytype, rate, maturitydate, calldate, buy, sell, endofday, key'
                 jq -r '.[] | [.asOfDate, .cusip, .securitytype, .rate, .maturitydate, .calldate, .buy, .sell, .endofday, .key] | @csv' "$jsonHistoryUnique"
@@ -148,29 +141,23 @@ grep cusip "$jsonRateNew" | sed 's/^.*cusip": "//' | sed 's/",$//' | sort -u |
             echo "published updated $bankName cloudFlare history file."
         fi
     done
-###################################################
+###################################
 #
 # process the rate file.
 #
-dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-if [ -z "$dateNew" ]; then
+if [ -z "$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')" ]; then
     echo "New $bankName rate file does not include dates."
     exit 1
 fi
-#echo dateNew=$dateNew
 #
 # publish cloudFlare Rate files
 #
-if [ -s "$jsonRateFlare" ]; then
-    dateFlare=$(grep asOfDate "$jsonRateFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-else
-    dateFlare=""
+if [ ! -s "$jsonRateFlare" ]; then
     echo "$bankName cloudFlare rate file has not been published."
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-#echo dateFlare=$dateFlare
-if [[ $dateFlare < $dateNew ]]; then
+if ../lib/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     # save the data file as a .csv as well.
     (
