@@ -8,8 +8,14 @@
 # process the command argument list.
 pubDelayHours=12
 runDelayHours=6
+accountClass=MM
 while [ -n "$1" ]; do
     case $1 in
+    "--accountClass")
+        accountClass="$2"
+        #echo "accountClass=$accountClass"
+        shift
+        ;;
     "-b")
         sourceName="$2"
         #echo "sourceName=$sourceName"
@@ -23,6 +29,11 @@ while [ -n "$1" ]; do
     "-f")
         forceRun=true
         #echo "forceRun=$forceRun"
+        ;;
+    "--injectProcessedJson")
+        injectProcessedJson="$2"
+        #echo "injectProcessedJson=$injectProcessedJson"
+        shift
         ;;
     "-stdin")
         stdInFile="$2"
@@ -51,34 +62,30 @@ while [ -n "$1" ]; do
     esac
     shift
 done
+# computer-specific configurations.
+source ../meta.$(hostname).sh
+# if a sourceName is not specified, use the current directory name.
 if [ -z "$sourceName" ]; then
-    echo "$0: -b sourceName missing, need to specify a valid Money Market source engine."
-    exit 1
+    sourceName=$(basename $(pwd))
 fi
+# if a script file is not specified, try a default name.
 if [ -z "$scriptFile" ]; then
     scriptFile="./node-$sourceName-update.js"
 fi
-# look for a -f to force run, overriding the time delays.
-
-source ../meta.$(hostname).sh
-# current rate files
-injectRatesJson="inject-rates.json"
+# create data source file paths.
 jsonRateNew="$sourceName-rate-new.json"
-jsonRateFlare="$cloudFlareHome/MM/$sourceName/$sourceName-rates.json"
-csvRateFlare="$cloudFlareHome/MM/$sourceName/$sourceName-rates.csv"
-jsonRateAllFlare="$cloudFlareHome/MM/all-rates.json"
-csvRateAllFlare="$cloudFlareHome/MM/all-rates.csv"
-#echo jsonRateNew=$jsonRateNew
-#echo jsonRateFlare=$jsonRateFlare
+jsonRateFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-rates.json"
+csvRateFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-rates.csv"
+jsonRateAllFlare="$cloudFlareHome/$accountClass/all-rates.json"
+csvRateAllFlare="$cloudFlareHome/$accountClass/all-rates.csv"
 
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
-#  - note, if -f is passed to this script, I will run the script regardless, but report the aging status too.
+#  - note, if -f is passed to this script, I will run the script regardless, but still report the aging status.
 #
-# update the delayHours values as appropriate for the data source.
-if [ -s "$injectRatesJson" ]; then
-    echo "Using $injectRatesJson instead"
-    jsonRateNew="$injectRatesJson"
+if [ -n "$injectProcessedJson" ] && [ -s "$injectProcessedJson" ]; then
+    echo "Using $injectProcessedJson instead of querying online source."
+    jsonRateNew="$injectProcessedJson"
 else
     pubDelaySeconds=$(($pubDelayHours * 60 * 60))
     if [ -s "$jsonRateFlare" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateFlare")))" -lt "$pubDelaySeconds" ]; then
@@ -99,10 +106,10 @@ else
     fi
     if [ -x "$collectionScript" ]; then
         echo "$collectionScript | node $scriptFile $nodeArg | jq . >$jsonRateNew"
-        $collectionScript > tmp-file
-        node $scriptFile < tmp-file "$nodeArg" | jq . >"$jsonRateNew"
+        $collectionScript >tmp-collect.txt
+        node $scriptFile "$nodeArg" <tmp-collect.txt | jq . >"$jsonRateNew"
         # this seems to be a hack!
-        rm -f tmp-file
+        rm -f ttmp-collect.txt
     elif [ -z "$stdInFile" ]; then
         node $scriptFile "$nodeArg" | jq . >"$jsonRateNew"
     else
@@ -142,8 +149,8 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
         # temp merge of this tool's history with the combined history published in cloudflare (for comparison with cloudflare)
         jsonHistoryFlareTemp="history/$dirname/history-$sourceName-flare.json"
         # resulting published merge of this tool and all combined source histories.
-        jsonHistoryFlare="$cloudFlareHome/MM/$dirname/rate-history.json"
-        csvHistoryFlare="$cloudFlareHome/MM/$dirname/rate-history.csv"
+        jsonHistoryFlare="$cloudFlareHome/$accountClass/$dirname/rate-history.json"
+        csvHistoryFlare="$cloudFlareHome/$accountClass/$dirname/rate-history.csv"
 
         # I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
         cat "$jsonRateNew" | jq "[.[] | select(.ticker==\"$ticker\")]" >"$jsonRateTicker"
@@ -154,26 +161,26 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
         else
             cat "$jsonRateTicker" >"$jsonHistoryTemp"
         fi
-        cat "$jsonHistoryTemp" | node ../lib/node-MM-sortBest.js | jq . >"$jsonHistoryUnique"
+        cat "$jsonHistoryTemp" | node ../bin/node-MM-sortBest.js | jq . >"$jsonHistoryUnique"
         rm "$jsonHistoryTemp"
 
         # sort/filter/gapfill this combined history with data from all sources in cloudflare repository.
-        if [ -s "$jsonHistoryFlare" ]; then
-            jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonHistoryUnique" "$jsonHistoryFlare" |
-                node ../lib/node-MM-sortBest.js |
-                jq . >"$jsonHistoryFlareTemp"
-        else
+        if [ ! -s "$jsonHistoryFlare" ]; then
             cat "$jsonHistoryUnique" |
                 node ../lib/node-MM-sortBest.js |
                 jq . >"$jsonHistoryFlareTemp"
             echo "$sourceName $ticker cloudFlare history file has not been published."
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
+        else
+            jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonHistoryUnique" "$jsonHistoryFlare" |
+                node ../lib/node-MM-sortBest.js |
+                jq . >"$jsonHistoryFlareTemp"
         fi
         #
         # process cloudFlare history files for this data source.
         #
-        if ../lib/jsonDifferent.sh "$jsonHistoryFlareTemp" "$jsonHistoryFlare"; then
+        if ../bin/jsonDifferent.sh "$jsonHistoryFlareTemp" "$jsonHistoryFlare"; then
             cat "$jsonHistoryFlareTemp" >"$jsonHistoryFlare"
             echo "published updated $sourceName $ticker cloudFlare history file."
             (
@@ -186,8 +193,7 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
 #
 # process the cloudFlare rate file for this tool.
 #
-dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-if [ -z "$dateNew" ]; then
+if [ -z "$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')" ]; then
     echo "New $sourceName rate file does not include dates."
     exit 1
 fi
@@ -196,7 +202,7 @@ if [ ! -s "$jsonRateFlare" ]; then
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-if ../lib/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
+if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     echo "published updated cloudflare $sourceName-rates.json file."
     (
@@ -219,15 +225,16 @@ else
     cat "$jsonRateNew" |
         node ../lib/node-MM-sortBest.js latest |
         jq . >tmp-all-flare.json
+
 fi
 # if the new merged file is different, then publish it.
-if ../lib/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
+if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
     cat tmp-all-flare.json >"$jsonRateAllFlare"
     echo "published updated cloudflare $jsonRateAllFlare file."
     (
         echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
-        jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield,.source] | @csv' "$jsonRateAllFlare"
+        jq -r '.[] | [.asOfDate,.ticker,.oneDayYield,.sevenDayYield,.thirtyDayYield,.source] | @csv' "$jsonRateAllFlare"
     ) >"$csvRateAllFlare"
     echo "published updated cloudflare $csvRateAllFlare file."
 fi
-rm -f tmp-all-flare.json
+#rm -f tmp-all-flare.json

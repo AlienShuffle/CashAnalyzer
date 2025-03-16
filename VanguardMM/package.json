@@ -1,5 +1,5 @@
 {
-  "name": "VanguardMM",
+  "name": "vanguardmm",
   "version": "0.0.1",
   "description": "pull Vanguard Rates, and try to parse most recent MM yields for my tool.",
   "main": "index.js",

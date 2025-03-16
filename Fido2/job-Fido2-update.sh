@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-cat $(basename $(pwd)) | ../lib/Fidelity-update-common-job.sh "$@"
+cat $(basename $(pwd)) | ../bin/Fidelity-update-common-job.sh "$@"

@@ -18,4 +18,4 @@ queryFile=$bankName-file.json
         done
     echo "]"
 ) | jq . >"$queryFile"
-../lib/MM-update-common-job.sh -scriptFile ../lib/node-FidelityMM-update.js -b $bankName -stdin "$queryFile" -pubdelay 20 -rundelay 4 "$@"
+../bin/MM-update-common-job.sh -scriptFile ../lib/node-FidelityMM-update.js -b $bankName -stdin "$queryFile" -pubdelay 20 -rundelay 4 "$@"
