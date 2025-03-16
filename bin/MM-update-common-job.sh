@@ -16,14 +16,9 @@ while [ -n "$1" ]; do
         #echo "accountClass=$accountClass"
         shift
         ;;
-    "-b")
-        sourceName="$2"
-        #echo "sourceName=$sourceName"
-        shift
-        ;;
-    "-collectionScript")
+    "--collectionScript")
         collectionScript="$2"
-        echo "collectionScript=$collectionScript"
+        #echo "collectionScript=$collectionScript"
         shift
         ;;
     "-f")
@@ -37,26 +32,36 @@ while [ -n "$1" ]; do
         ;;
     "-stdin")
         stdInFile="$2"
+        echo do not use -stdin!
         #echo "stdInFile=$stdInFile"
         ;;
-    "-nodearg")
+    "--nodearg")
         nodeArg="$2"
         #echo "nodeArg=$nodeArg"
         shift
         ;;
-    "-pubdelay")
+    "--pubDelay")
         pubDelayHours="$2"
         #echo "pubDelayHours=$pubDelayHours"
         shift
         ;;
-    "-rundelay")
+    "--processScript")
+        processScript="$2"
+        echo "processScript=$processScript"
+        shift
+        ;;
+    "--runDelay")
         runDelayHours="$2"
         #echo "runDelayHours=$runDelayHours"
         shift
         ;;
-    "-scriptFile")
-        scriptFile="$2"
-        echo "scriptFile=$scriptFile"
+    "--sourceNamne")
+        sourceName="$2"
+        #echo "sourceName=$sourceName"
+        shift
+        ;;
+        *)
+        echo "Parameter $1 ignored"
         shift
         ;;
     esac
@@ -69,8 +74,8 @@ if [ -z "$sourceName" ]; then
     sourceName=$(basename $(pwd))
 fi
 # if a script file is not specified, try a default name.
-if [ -z "$scriptFile" ]; then
-    scriptFile="./node-$sourceName-update.js"
+if [ -z "$processScript" ]; then
+    processScript="./node-$sourceName-update.js"
 fi
 # create data source file paths.
 jsonRateNew="$sourceName-rate-new.json"
@@ -78,7 +83,6 @@ jsonRateFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-rates.json"
 csvRateFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-rates.csv"
 jsonRateAllFlare="$cloudFlareHome/$accountClass/all-rates.json"
 csvRateAllFlare="$cloudFlareHome/$accountClass/all-rates.csv"
-
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
 #  - note, if -f is passed to this script, I will run the script regardless, but still report the aging status.
@@ -100,32 +104,31 @@ else
     #
     # run the scipts to prepare the data.
     #
-    if [ ! -s "$scriptFile" ]; then
-        echo "Missing $scriptFile file."
+    if [ ! -s "$processScript" ]; then
+        echo "Missing $processScript file."
         exit 1
     fi
     if [ -x "$collectionScript" ]; then
-        echo "$collectionScript | node $scriptFile $nodeArg | jq . >$jsonRateNew"
-        $collectionScript >tmp-collect.txt
-        node $scriptFile "$nodeArg" <tmp-collect.txt | jq . >"$jsonRateNew"
-        # this seems to be a hack!
-        rm -f ttmp-collect.txt
-    elif [ -z "$stdInFile" ]; then
-        node $scriptFile "$nodeArg" | jq . >"$jsonRateNew"
+        tmpCollect="tmpCollect.txt"
+        $collectionScript >"$tmpCollect"
+        cat "$tmpCollect" | node $processScript $nodeArg | jq . >"$jsonRateNew"
+        #rm -f "$tmpCollect"
+    elif [ -s "$stdInFile" ]; then
+        node $processScript "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
     else
-        node $scriptFile "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
+        node $processScript "$nodeArg" | jq . >"$jsonRateNew"
     fi
     if [ ! $? ]; then
-        echo "$sourcename rate retrieval failed, exiting."
+        echo "$sourceName rate retrieval failed, exiting."
         exit 1
     fi
     if [ ! -s "$jsonRateNew" ]; then
-        echo "Empty $sourcename rate file."
+        echo "Empty $sourceName rate file."
         exit 1
     fi
     yieldNew=$(grep sevenDayYield "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
     if [ -z "$yieldNew" ] || [ "$yieldNew" = "null" ]; then
-        echo "New $sourcename rate file has empty yields."
+        echo "New $sourceName rate file has empty yields."
         exit 1
     fi
 fi
@@ -161,7 +164,7 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
         else
             cat "$jsonRateTicker" >"$jsonHistoryTemp"
         fi
-        cat "$jsonHistoryTemp" | node ../bin/node-MM-sortBest.js | jq . >"$jsonHistoryUnique"
+        cat "$jsonHistoryTemp" | node ../lib/node-MM-sortBest.js | jq . >"$jsonHistoryUnique"
         rm "$jsonHistoryTemp"
 
         # sort/filter/gapfill this combined history with data from all sources in cloudflare repository.
@@ -225,7 +228,6 @@ else
     cat "$jsonRateNew" |
         node ../lib/node-MM-sortBest.js latest |
         jq . >tmp-all-flare.json
-
 fi
 # if the new merged file is different, then publish it.
 if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
@@ -237,4 +239,4 @@ if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
     ) >"$csvRateAllFlare"
     echo "published updated cloudflare $csvRateAllFlare file."
 fi
-#rm -f tmp-all-flare.json
+rm -f tmp-all-flare.json
