@@ -18,7 +18,7 @@ while [ -n "$1" ]; do
         ;;
     "--collectionScript")
         collectionScript="$2"
-        echo "collectionScript=$collectionScript"
+        #echo "collectionScript=$collectionScript"
         shift
         ;;
     "-f")
@@ -30,14 +30,9 @@ while [ -n "$1" ]; do
         #echo "injectProcessedJson=$injectProcessedJson"
         shift
         ;;
-    "-stdin")
-        stdInFile="$2"
-        echo do not use -stdin!
-        #echo "stdInFile=$stdInFile"
-        ;;
     "--nodearg")
         nodeArg="$2"
-        echo "nodeArg=\"$nodeArg\""
+        #echo "nodeArg=\"$nodeArg\""
         shift
         ;;
     "--pubDelay")
@@ -47,7 +42,7 @@ while [ -n "$1" ]; do
         ;;
     "--processScript")
         processScript="$2"
-        echo "processScript=$processScript"
+        #echo "processScript=$processScript"
         shift
         ;;
     "--runDelay")
@@ -114,10 +109,10 @@ else
             exit 1
         fi
         tmpCollect="tmpCollect.txt"
-        echo "running $collectionScript"
+        #echo "running $collectionScript"
         $collectionScript >"$tmpCollect"
         cat "$tmpCollect" | node $processScript $nodeArg | jq . >"$jsonRateNew"
-        #rm -f "$tmpCollect"
+        rm -f "$tmpCollect"
     elif [ -s "$stdInFile" ]; then
         node $processScript "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
     else

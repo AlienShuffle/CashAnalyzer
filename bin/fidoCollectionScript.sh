@@ -8,9 +8,7 @@
     # note, this cut is reading from stdin and expects a csv list of fund ticker, fundID, names to drive the queries.
     cut -d, -f2 |
         while IFS= read -r fundId; do
-            if [ "$firstRow" = "false" ]; then
-                echo ","
-            fi
+            [ "$firstRow" = "false" ] && echo ","
             curl -sSL "https://institutional.fidelity.com/app/fund/data/$(echo $fundId).json"
             firstRow=false
         done

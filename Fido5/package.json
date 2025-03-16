@@ -1,5 +1,5 @@
 {
-  "name": "FidelityMM",
+  "name": "fidelitymm5",
   "version": "0.0.1",
   "description": "pull Fidelity Rates, and try to parse most recent MM yields for my tool.",
   "main": "index.js",
@@ -13,7 +13,5 @@
   ],
   "author": "AlienShuffle",
   "license": "MIT",
-  "dependencies": {
-    "puppeteer": "^23.2.1"
-  }
+  "dependencies": {}
 }
