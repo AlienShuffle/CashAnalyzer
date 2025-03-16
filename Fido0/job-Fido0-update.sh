@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-cat $(basename $(pwd)) | ../bin/Fidelity-update-common-job.sh "$@"
+cat "$(basename $(pwd))-funds.csv" | ../bin/Fidelity-update-common-job.sh "$@"

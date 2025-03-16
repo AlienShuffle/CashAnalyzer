@@ -18,7 +18,7 @@ while [ -n "$1" ]; do
         ;;
     "--collectionScript")
         collectionScript="$2"
-        #echo "collectionScript=$collectionScript"
+        echo "collectionScript=$collectionScript"
         shift
         ;;
     "-f")
@@ -37,7 +37,7 @@ while [ -n "$1" ]; do
         ;;
     "--nodearg")
         nodeArg="$2"
-        #echo "nodeArg=$nodeArg"
+        echo "nodeArg=\"$nodeArg\""
         shift
         ;;
     "--pubDelay")
@@ -60,7 +60,7 @@ while [ -n "$1" ]; do
         #echo "sourceName=$sourceName"
         shift
         ;;
-        *)
+    *)
         echo "Parameter $1 ignored"
         shift
         ;;
@@ -108,8 +108,13 @@ else
         echo "Missing $processScript file."
         exit 1
     fi
-    if [ -x "$collectionScript" ]; then
+    if [ "$collectionScript" ]; then
+        if [ ! -x "$collectionScript" ]; then
+            echo "invalid collectionScript $collectionScript, exiting..."
+            exit 1
+        fi
         tmpCollect="tmpCollect.txt"
+        echo "running $collectionScript"
         $collectionScript >"$tmpCollect"
         cat "$tmpCollect" | node $processScript $nodeArg | jq . >"$jsonRateNew"
         #rm -f "$tmpCollect"
@@ -141,7 +146,7 @@ fi
 grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
     while IFS= read -r ticker; do
         dirname="$(echo "$ticker" | sed -e 's/ /-/g')"
-        #echo "Processing $ticker"
+        echo "Processing $ticker"
         [ -d "history/$dirname" ] || mkdir -p "history/$dirname"
         # rates only for this query from this tool.
         jsonRateTicker="history/$dirname/rate-new.json"
