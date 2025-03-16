@@ -15,6 +15,11 @@ while [ -n "$1" ]; do
         #echo "sourceName=$sourceName"
         shift
         ;;
+    "-collectionScript")
+        collectionScript="$2"
+        echo "collectionScript=$collectionScript"
+        shift
+        ;;
     "-f")
         forceRun=true
         #echo "forceRun=$forceRun"
@@ -38,12 +43,20 @@ while [ -n "$1" ]; do
         #echo "runDelayHours=$runDelayHours"
         shift
         ;;
+    "-scriptFile")
+        scriptFile="$2"
+        echo "scriptFile=$scriptFile"
+        shift
+        ;;
     esac
     shift
 done
 if [ -z "$sourceName" ]; then
     echo "$0: -b sourceName missing, need to specify a valid Money Market source engine."
     exit 1
+fi
+if [ -z "$scriptFile" ]; then
+    scriptFile="./node-$sourceName-update.js"
 fi
 # look for a -f to force run, overriding the time delays.
 
@@ -80,12 +93,17 @@ else
     #
     # run the scipts to prepare the data.
     #
-    scriptFile="./node-$sourceName-update.js"
     if [ ! -s "$scriptFile" ]; then
         echo "Missing $scriptFile file."
         exit 1
     fi
-    if [ -z "$stdInFile" ]; then
+    if [ -x "$collectionScript" ]; then
+        echo "$collectionScript | node $scriptFile $nodeArg | jq . >$jsonRateNew"
+        $collectionScript > tmp-file
+        node $scriptFile < tmp-file "$nodeArg" | jq . >"$jsonRateNew"
+        # this seems to be a hack!
+        rm -f tmp-file
+    elif [ -z "$stdInFile" ]; then
         node $scriptFile "$nodeArg" | jq . >"$jsonRateNew"
     else
         node $scriptFile "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
@@ -113,7 +131,7 @@ fi
 grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
     while IFS= read -r ticker; do
         dirname="$(echo "$ticker" | sed -e 's/ /-/g')"
-        echo "Processing $ticker"
+        #echo "Processing $ticker"
         [ -d "history/$dirname" ] || mkdir -p "history/$dirname"
         # rates only for this query from this tool.
         jsonRateTicker="history/$dirname/rate-new.json"
@@ -162,7 +180,7 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
                 echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
                 jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield,.source] | @csv' "$jsonHistoryFlare"
             ) >"$csvHistoryFlare"
-            echo "published updated cloudflare $csvHistoryFlare file."
+            echo "published updated cloudflare csv file."
         fi
     done
 #

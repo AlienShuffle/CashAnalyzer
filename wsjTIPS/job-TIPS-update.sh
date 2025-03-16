@@ -109,7 +109,7 @@ fi
 grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
     while IFS= read -r tipsKey; do
         dirname="history/$(echo "$tipsKey" | sed -e 's/ /-/g')"
-        echo "Processing $tipsKey"
+        #echo "Processing $tipsKey"
         [ -d "$dirname" ] || mkdir -p "$dirname"
         jsonRatetipsKey="$dirname/rate-new.json"
         jsonHistoryUnique="$dirname/history-unique.json"
@@ -138,7 +138,7 @@ grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
                 echo 'asOfDate,maturity,coupon,bid,asked,chg,yield,accruedprincipal,key'
                 jq -r '.[] | [.asOfDate, .maturity, .coupon, .bid, .asked, .chg, .yield, .accruedprincipal, .key] | @csv' "$jsonHistoryUnique"
             ) >"$csvHistoryFlare"
-            echo "published updated $bankName cloudFlare history file."
+            echo "published updated $bankName $tipsKey cloudFlare history file."
         fi
     done
 ###################################

@@ -119,7 +119,7 @@ if [ ! -s "$jsonHistoryFlare" ]; then
 fi
 if ../lib/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
     cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
-    echo creating $csvHistoryFlare
+    #echo creating $csvHistoryFlare
     (
         echo 'asOfDate,supplier,rate,term,url'
         jq -r '.[] | [.asOfDate, .supplier, .rate, .term, .url] | @csv' "$jsonHistoryUnique"
