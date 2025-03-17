@@ -8,7 +8,7 @@ function safeObjectRef(obj) {
 }
 
 // read in from stdin, the yieldFinder.app source data json file.
-const stdinBuffer = fs.readFileSync(process.stdin.fd);
+const stdinBuffer = fs.readFileSync(0, 'utf-8');
 const json = JSON.parse(stdinBuffer);
 const timestamp = new Date();
 // convert the data into my facts file format and dump on stdout.

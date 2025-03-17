@@ -108,11 +108,12 @@ else
             echo "invalid collectionScript $collectionScript, exiting..."
             exit 1
         fi
-        tmpCollect="tmpCollect.txt"
-        #echo "running $collectionScript"
+        tmpCollect="tmpCollect.json"
+        echo "running $collectionScript"
         $collectionScript >"$tmpCollect"
+        echo "running node $processScript"
         cat "$tmpCollect" | node $processScript $nodeArg | jq . >"$jsonRateNew"
-        rm -f "$tmpCollect"
+        #rm -f "$tmpCollect"
     elif [ -s "$stdInFile" ]; then
         node $processScript "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
     else
@@ -165,7 +166,7 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
             cat "$jsonRateTicker" >"$jsonHistoryTemp"
         fi
         cat "$jsonHistoryTemp" | node ../lib/node-MM-sortBest.js | jq . >"$jsonHistoryUnique"
-        rm "$jsonHistoryTemp"
+        #rm "$jsonHistoryTemp"
 
         # sort/filter/gapfill this combined history with data from all sources in cloudflare repository.
         if [ ! -s "$jsonHistoryFlare" ]; then
@@ -239,4 +240,4 @@ if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
     ) >"$csvRateAllFlare"
     echo "published updated cloudflare $csvRateAllFlare file."
 fi
-rm -f tmp-all-flare.json
+#rm -f tmp-all-flare.json
