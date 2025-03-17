@@ -30,7 +30,7 @@ while [ -n "$1" ]; do
         #echo "injectProcessedJson=$injectProcessedJson"
         shift
         ;;
-    "--nodearg")
+    "--nodeArg")
         nodeArg="$2"
         #echo "nodeArg=\"$nodeArg\""
         shift
