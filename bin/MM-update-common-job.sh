@@ -1,9 +1,9 @@
 #!/usr/bin/bash
 #
 # This a generic version of the daily yields reports to update with a new and
-# better model for handling history. Old version took all tickers/accounts and put in one history file.
+# better model for handling history.
 # This one is intended to put each ticker in its own history file to reduce size and processing overhead on
-# on the read side. more effort on the update side (most likely)
+# on the read side. More effort on the update side due to separate files to process.
 #
 # process the command argument list.
 pubDelayHours=12
@@ -50,7 +50,7 @@ while [ -n "$1" ]; do
         #echo "runDelayHours=$runDelayHours"
         shift
         ;;
-    "--sourceNamne")
+    "--sourceName")
         sourceName="$2"
         #echo "sourceName=$sourceName"
         shift

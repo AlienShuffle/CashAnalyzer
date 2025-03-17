@@ -1,1 +1,1 @@
-../bin/FedInvest-update-common-job.sh -b $(basename $(pwd)) -pubdelay 18 -rundelay 4 "$@"
+../bin/FedInvest-update-common-job.sh "$@"

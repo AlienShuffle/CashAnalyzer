@@ -18,21 +18,17 @@ while [ -n "$1" ]; do
         forceRun=true
         #echo "forceRun=$forceRun"
         ;;
-    "-stdin")
-        stdInFile="$2"
-        #echo "stdInFile=$stdInFile"
-        ;;
     "-nodearg")
         nodeArg="$2"
         #echo "nodeArg=$nodeArg"
         shift
         ;;
-    "-pubdelay")
+    "--pubDelay")
         pubDelayHours="$2"
         #echo "pubDelayHours=$pubDelayHours"
         shift
         ;;
-    "-rundelay")
+    "--runDelay")
         runDelayHours="$2"
         #echo "runDelayHours=$runDelayHours"
         shift
@@ -48,8 +44,6 @@ if [ ! -d "$HOME/CashAnalyzer/$bankName" ]; then
     echo "$0: $bankName is not a valid bank name."
     exit 1
 fi
-# look for a -f to force run, overriding the time delays.
-
 source ../meta.$(hostname).sh
 # current rate files
 injectRatesJson="inject-rates.json"
