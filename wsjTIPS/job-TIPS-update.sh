@@ -71,7 +71,7 @@ else
         [ -z "$forceRun" ] && exit 0
     fi
     runDelaySeconds=$(($runDelayHours * 60 * 60))
-    if [ -s "$jsonRateNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateNew")))" -lt "$runDelaySeconds" ]; then
+    if [ -s "$jsosnRateNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateNew")))" -lt "$runDelaySeconds" ]; then
         echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonRateNew" | cut -d: -f1,2)"
         [ -z "$forceRun" ] && exit 0
     fi
@@ -145,7 +145,8 @@ grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
 #
 # process the rate file.
 #
-if [ -z "$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')" ]; then
+dates=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+if [ -z "$dates" ]; then
     echo "New $bankName rate file does not include dates."
     exit 1
 fi
