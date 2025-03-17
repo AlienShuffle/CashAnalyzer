@@ -109,9 +109,9 @@ else
             exit 1
         fi
         tmpCollect="tmpCollect.json"
-        echo "running $collectionScript"
+        #echo "running $collectionScript"
         $collectionScript >"$tmpCollect"
-        echo "running node $processScript"
+        #echo "running node $processScript"
         cat "$tmpCollect" | node $processScript $nodeArg | jq . >"$jsonRateNew"
         rm -f "$tmpCollect"
     elif [ -s "$stdInFile" ]; then
@@ -207,7 +207,7 @@ if [ ! -s "$jsonRateFlare" ]; then
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
 if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
-     jq -s 'sort_by([.ticker,.asOfDate,.source])' "$jsonRateNew" >"$jsonRateFlare"
+     jq 'sort_by([.ticker,.asOfDate,.source])' "$jsonRateNew" >"$jsonRateFlare"
     echo "published updated cloudflare $sourceName-rates.json file."
     (
         echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield'
