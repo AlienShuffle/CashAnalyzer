@@ -1,5 +1,5 @@
 {
-  "name": "YieldFinder.app Revised bulk processing ",
+  "name": "yieldfinderbankrates",
   "version": "0.0.2",
   "description": "process a JSON file from https://yieldapp/json",
   "main": "index.js",
@@ -11,6 +11,5 @@
   ],
   "author": "AlienShuffle",
   "license": "MIT",
-  "dependencies": {  
-  }
+  "dependencies": {}
 }
