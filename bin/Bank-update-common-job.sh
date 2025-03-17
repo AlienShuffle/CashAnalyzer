@@ -180,11 +180,11 @@ if [ ! -s "$jsonRateFlare" ]; then
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
 if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
-    cat "$jsonRateNew" >"$jsonRateFlare"
+    jq 'sort_by([.accountType,.asOfDate])' "$jsonRateNew" >"$jsonRateFlare"
     echo "published updated $sourceName cloudFlare .json rate file."
     (
         echo 'asOfDate,accountType,apy'
-        jq -r '.[] | [.asOfDate, .accountType, .apy] | @csv' "$jsonRateNew"
+        jq -r '.[] | [.asOfDate, .accountType, .apy] | @csv' "$jsonRateFlare"
     ) >"$csvRateFlare"
     echo "published updated $sourceName cloudFlare .csv rate file."
 fi

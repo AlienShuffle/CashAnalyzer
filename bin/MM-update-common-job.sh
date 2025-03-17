@@ -211,7 +211,7 @@ if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     echo "published updated cloudflare $sourceName-rates.json file."
     (
         echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield'
-        jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield] | @csv' "$jsonRateNew"
+        jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield] | @csv' "$jsonRateFlare"
     ) >"$csvRateFlare"
     echo "published updated cloudflare $sourceName-rates.csv file."
 fi
