@@ -207,7 +207,7 @@ if [ ! -s "$jsonRateFlare" ]; then
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
 if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
-    cat "$jsonRateNew" >"$jsonRateFlare"
+     jq -s 'sort_by([.ticker,.asOfDate,.source])' "$jsonRateNew" >"$jsonRateFlare"
     echo "published updated cloudflare $sourceName-rates.json file."
     (
         echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield'
