@@ -7,6 +7,55 @@
 # storeHistory-funds.csv is a local list curated from the old Google App Script fund list.
 # it is merged with the funds listed for yieldFinder, Vanguard, and Fidelity too.
 #
+# process the command argument list.
+pubDelayHours=48
+runDelayHours=48
+accountClass=MM
+while [ -n "$1" ]; do
+    case $1 in
+    "--accountClass")
+        accountClass="$2"
+        #echo "accountClass=$accountClass"
+        shift
+        ;;
+    "-f")
+        forceRun=true
+        #echo "forceRun=$forceRun"
+        ;;
+    "--pubDelay")
+        pubDelayHours="$2"
+        #echo "pubDelayHours=$pubDelayHours"
+        shift
+        ;;
+    "--runDelay")
+        runDelayHours="$2"
+        #echo "runDelayHours=$runDelayHours"
+        shift
+        ;;
+    *)
+        echo "Parameter $1 ignored"
+        shift
+        ;;
+    esac
+    shift
+done
+# computer-specific configurations.
+source ../meta.$(hostname).sh
+
+# create data source file paths.
+fundsList="mmFunCurr-funds.txt"
+
+runDelaySeconds=$(($runDelayHours * 60 * 60))
+if [ -s "$fundsList" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$fundsList")))" -lt "$runDelaySeconds" ]; then
+    echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$fundsList" | cut -d: -f1,2)"
+    [ -z "$forceRun" ] && exit 0
+fi
+newCount=$(find .. -name '*-funds.csv' -newer $fundsList -print | wc -l)
+#echo newCount=$newCount
+if [ -s "$fundsList" ] && [ "$newCount" -eq "0" ]; then
+    echo "$fundsList sources not updated since last run."
+    [ -z "$forceRun" ] && exit 0
+fi
 find .. -name '*-funds.csv' -exec cat {} \; |
 cut -d, -f1 |
 sort -u > mmFunCurr-funds.txt
