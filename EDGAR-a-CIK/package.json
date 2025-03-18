@@ -1,0 +1,15 @@
+{
+  "name": "cikmap",
+  "version": "0.0.1",
+  "description": "create a CIK -> ticker mapping for EDGAR",
+  "main": "index.js",
+  "scripts": {
+    "start-nogood-we-arent-using-funcions-framework": "functions-framework --target=getFidelityQuotes"
+  },
+  "keywords": [
+    "EDGAR Quotes"
+  ],
+  "author": "AlienShuffle",
+  "license": "MIT",
+  "dependencies": {}
+}
