@@ -48,7 +48,7 @@ const json = parser.parse(xmlFile);
 
 // get header data about the fund.
 const headerData = json.edgarSubmission.headerData;
-const submissionType = headerData.submissionType.substring(0,6);
+const submissionType = headerData.submissionType.replace('/^NT /','').replace('/\/A$/','').substring(0,6);
 const cik = headerData.filerInfo.filer.filerCredentials.cik;
 const fiscalYear = findFiscalYear(cik);
 

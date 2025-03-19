@@ -65,10 +65,10 @@ for list in $MFPlists/*.json; do
                 sleep 1
                 getCount=$(($getCount + 1))
             fi
-            [ $getCount -gt 10 ] && exit 1
+            [ $getCount -gt 8 ] && exit 1
         done
     listCount=$(($listCount + 1))
     echo $listCount: while done.
-    [ $listCount -gt 2 ] && exit 1
+    #[ $listCount -gt 4 ] && exit 1
 done
 exit 0
