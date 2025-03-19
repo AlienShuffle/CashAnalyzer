@@ -49,7 +49,7 @@ MFPfiles="MFP-files"
 getCount=0
 listCount=0
 for list in $MFPlists/*.json; do
-    echo "$getCount:$listCount: processing $list"
+    echo "Processing $list"
     cat "$list" | jq -r '.[] | [.cik,.accessionNumber,.url] | @csv' | sed -e 's/"//g' |
         while read -r entry; do
             cik=$(echo $entry | cut -d, -f1)
@@ -60,16 +60,15 @@ for list in $MFPlists/*.json; do
             [ -d "$targetDir" ] || mkdir -p "$targetDir"
             targetFile="$targetDir/$accessionNumber.xml"
             if [ ! -s "$targetFile" ]; then
-                echo "download $cik : $accessionNumber"
+                echo "$getCount: download $cik : $accessionNumber"
                 ../bin/getEDGAR.sh "$url" >"$targetFile"
                 sleep 1
                 getCount=$(($getCount + 1))
             fi
             [ $getCount -gt 10 ] && exit 1
-            echo "getCount = $getCount"
         done
     listCount=$(($listCount + 1))
-    echo $getCount:$listCount: while done.
+    echo $listCount: while done.
     [ $listCount -gt 2 ] && exit 1
 done
 exit 0
