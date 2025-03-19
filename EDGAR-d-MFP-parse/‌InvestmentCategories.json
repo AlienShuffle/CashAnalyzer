@@ -1,0 +1,92 @@
+[
+    {
+        "treatment": "USGO",
+        "category": "usTreasuryDebt",
+        "EDGAR": "U.S. Treasury Debt"
+    },
+    {
+        "treatment": "USGO",
+        "category": "usGovernmentAgencyDebt",
+        "EDGAR": "U.S. Government Agency Debt"
+    },
+    {
+        "treatment": "USGO",
+        "category": "usGovernmentAgencyCouponDebt",
+        "EDGAR": "U.S. Government Agency Debt (if categorized as coupon-paying notes)"
+    },
+    {
+        "treatment": "USGO",
+        "category": "usGovernmentAgencyZeroCouponDebt",
+        "EDGAR": "U.S. Government Agency Debt (if categorized as no-coupon discount notes)"
+    },
+    {
+        "treatment": "other",
+        "category": "nonUSSovereignDebt",
+        "EDGAR": "Non-U.S. Sovereign, Sub-Sovereign and Supra-National debt"
+    },
+    {
+        "treatment": "other",
+        "category": "certificateofDeposit",
+        "EDGAR": "Certificate of Deposit"
+    },
+    {
+        "treatment": "other",
+        "category": "nonNegotiableTimeDeposit",
+        "EDGAR": "Non-Negotiable Time Deposit"
+    },
+    {
+        "treatment": "exempt",
+        "category": "variableRateDemandNote",
+        "EDGAR": "Variable Rate Demand Note"
+    },
+    {
+        "treatment": "exempt",
+        "category": "otherMunicipalSecurity",
+        "EDGAR": "Other Municipal Security"
+    },
+    {
+        "treatment": "other",
+        "category": "assetBackedCommercialPaper",
+        "EDGAR": "Asset Backed Commercial Paper"
+    },
+    {
+        "treatment": "other",
+        "category": "otherAssetBackedSecurities",
+        "EDGAR": "Other Asset Backed Securities"
+    },
+    {
+        "treatment": "other",
+        "category": "usTreasuryRepurchaseAgreement",
+        "EDGAR": "U.S. Treasury Repurchase Agreement, if collateralized only by U.S. Treasuries (including Strips) and cash"
+    },
+    {
+        "treatment": "other",
+        "category": "usGovernmentAgencyRepurchaseAgreement",
+        "EDGAR": "U.S. Government Agency Repurchase Agreement, collateralized only by U.S. Government Agency securities, U.S. Treasuries, and cash"
+    },
+    {
+        "treatment": "other",
+        "category": "otherRepurchaseAgreement",
+        "EDGAR": "Other Repurchase Agreement, if any collateral falls outside Treasury, Government Agency and cash"
+    },
+    {
+        "treatment": "other",
+        "category": "insuranceCompanyFundingAgreement",
+        "EDGAR": "Insurance Company Funding Agreement"
+    },
+    {
+        "treatment": "other",
+        "category": "financialCompanyCommercialPaper",
+        "EDGAR": "Financial Company Commercial Paper"
+    },
+    {
+        "treatment": "exempt",
+        "category": "tenderOptionBond",
+        "EDGAR": "Tender Option Bond"
+    },
+    {
+        "treatment": "other",
+        "category": "otherInstrument",
+        "EDGAR": "Other Instrument"
+    },
+]
