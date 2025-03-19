@@ -18,10 +18,13 @@ for (let i = 0; i < recentFilings.accessionNumber.length; i++) {
     // skip non monthly funds reports.
     if (recentFilings.form[i].indexOf('MFP') < 0) continue;
 
+    const cleanCIK = cik.replace(/^0+/,'');
+    const cleanAccessionNumber = recentFilings.accessionNumber[i].replace(/-/g,'')
+    const url = `https://www.sec.gov/Archives/edgar/data/${cleanCIK}/${cleanAccessionNumber}/primary_doc.xml`;
     resp.push({
         "cik": cik,
         "fiscalYearEnd": fiscalYearEnd,
-        "accessionNumber": recentFilings.accessionNumber[i],
+        "accessionNumber": cleanAccessionNumber,
         "filingDate": recentFilings.filingDate[i],
         "reportDate": reportDate,
         "acceptanceDateTime": recentFilings.acceptanceDateTime[i],
@@ -29,6 +32,7 @@ for (let i = 0; i < recentFilings.accessionNumber.length; i++) {
         "fileNumber": recentFilings.fileNumber[i],
         "core_type": recentFilings.core_type[i],
         "primaryDocument": recentFilings.primaryDocument[i],
+        "url": url
     });
 }
 console.log(JSON.stringify(resp));
