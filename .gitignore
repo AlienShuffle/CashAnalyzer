@@ -203,3 +203,4 @@ EDGAR-b-submissions/submissions/*
 */MFP-lists/*.json
 EDGAR-c-MFP-lists/MFP-files/*/*.xml
 EDGAR-d-MFP-parse/reports/*/*.json
+EDGAR-b-submissions/fiscalYearFile.csv

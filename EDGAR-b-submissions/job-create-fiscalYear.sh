@@ -42,15 +42,19 @@ source ../meta.$(hostname).sh
 fiscalYearFile="fiscalYearFile.csv"
 
 runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -s "$fiscalYearFile" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$fiscalYearFile")))" -lt "$runDelaySeconds" ]; then
-    echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$fiscalYearFile" | cut -d: -f1,2)"
-    [ -z "$forceRun" ] && exit 0
+if [ -s "$fiscalYearFile" ]; then
+    if [ "$(($(date +"%s") - $(stat -c "%Y" "$fiscalYearFile")))" -lt "$runDelaySeconds" ]; then
+        echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$fiscalYearFile" | cut -d: -f1,2)"
+        [ -z "$forceRun" ] && exit 0
+    fi
 fi
 
-newCount=$(find submissions -name '*.json' -newer $fiscalYearFile -print | wc -l)
-if [ -s "$fiscalYearFile" ] && [ "$fiscalYearFile" -eq "0" ]; then
-    echo "$fiscalYearFile sources not updated since last run."
-    [ -z "$forceRun" ] && exit 0
+if [ -s "$fiscalYearFile" ]; then
+    newCount=$(find submissions -name '*.json' -newer $fiscalYearFile -print | wc -l)
+    if [ "$newCount" -eq "0" ]; then
+        echo "$fiscalYearFile sources not updated since last run."
+        [ -z "$forceRun" ] && exit 0
+    fi
 fi
 
 # the actual parsing.

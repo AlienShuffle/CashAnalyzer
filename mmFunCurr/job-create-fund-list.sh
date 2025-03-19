@@ -50,12 +50,15 @@ if [ -s "$fundsList" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$fundsList")))" 
     echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$fundsList" | cut -d: -f1,2)"
     [ -z "$forceRun" ] && exit 0
 fi
-newCount=$(find .. -name '*-funds.csv' -newer $fundsList -print | wc -l)
-#echo newCount=$newCount
-if [ -s "$fundsList" ] && [ "$newCount" -eq "0" ]; then
-    echo "$fundsList sources not updated since last run."
-    [ -z "$forceRun" ] && exit 0
+
+if [ -s "$fundsList" ]; then
+    newCount=$(find .. -name '*-funds.csv' -newer $fundsList -print | wc -l)
+    if [ "$newCount" -eq "0" ]; then
+        echo "$fundsList sources not updated since last run."
+        [ -z "$forceRun" ] && exit 0
+    fi
 fi
+
 find .. -name '*-funds.csv' -exec cat {} \; |
-cut -d, -f1 |
-sort -u > mmFunCurr-funds.txt
+    cut -d, -f1 |
+    sort -u >$fundsList

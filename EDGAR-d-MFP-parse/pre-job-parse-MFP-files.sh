@@ -43,20 +43,26 @@ if [ ! -d "$MFPFilesDir" ]; then
     echo "$MFPFilesDir does not exist, exiting..."
     exit 1
 fi
+CIKmap="../EDGAR-a-CIK/CIK/CIK-map.json"
+if [ ! -s "$CIKmap" ]; then
+    echo "$CIKmap does not exist, exiting..."
+    exit 1
+fi
+fiscalYears="../EDGAR-b-submissions/fiscalYearFile.csv"
+if [ ! -s "$fiscalYears" ]; then
+    echo "$fiscalYears does not exist, exiting..."
+    exit 1
+fi
 monthlyReport="reports"
-#
-# nothing but the node row have been updated, full logic of source files needs to be worked.
-#
+
 find $MFPFilesDir -type f -name '*.xml' -print |
     while read -r xmlFile; do
         cikDir="$monthlyReport/$(dirname $xmlFile | sed -e 's/^.*\///')"
         [ -d "$cikDir" ] || mkdir -p "$cikDir"
         newFile="$cikDir/$(basename $xmlFile | sed -e 's/\.xml/\.json/')"
-        echo cikDir=$cikDir
-        echo newFile=$newFile
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$xmlFile" -nt "$newFile" ]; then
             echo processing $xmlFile
-            node node-parse-MFP-file.js ../EDGAR-a-CIK/CIK/CIK-map.json <"$xmlFile" # | jq . >"$newFile"
+            node node-parse-MFP-file.js "$CIKmap" "$fiscalYears" <"$xmlFile" | jq . # >"$newFile"
         fi
     done
 exit 0
