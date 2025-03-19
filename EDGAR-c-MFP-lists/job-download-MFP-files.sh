@@ -60,6 +60,7 @@ for list in $MFPlists/*.json; do
             if [ ! -s "$targetFile" ]; then
                 echo "download $cik : $accessionNumber"
                 ../bin/getEDGAR.sh "$url" >"$targetFile"
+                sleep 1
             fi
             exit 1
         done
