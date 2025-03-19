@@ -59,8 +59,12 @@ const registrantFullName = formData.generalInfo.registrantFullName;
 const nameOfSeries = formData.generalInfo.nameOfSeries;
 
 const seriesLevelInfo = formData.seriesLevelInfo;
-const moneyMarketFundCategory = seriesLevelInfo.moneyMarketFundCategory;
-const fundRetailMoneyMarketFlag = seriesLevelInfo.fundRetailMoneyMarketFlag;
+const moneyMarketFundCategory = (submissionType == 'N-MFP2') ?
+    seriesLevelInfo.moneyMarketFundCategory[0] :
+    seriesLevelInfo.moneyMarketFundCategory;
+const retailMoneyMarketFlag = (submissionType == 'N-MFP2') ?
+    ((seriesLevelInfo.fundExemptRetailFlag.toUpperCase() == 'N') ? 'Institutional' : 'Retail') :
+    ((seriesLevelInfo.fundRetailMoneyMarketFlag.toUpperCase() == 'N') ? 'Institutional' : 'Retail')
 
 const classLevelInfo = formData.classLevelInfo;
 
@@ -144,11 +148,17 @@ let investmentCategories = [
         "category": "usGovernmentAgencyRepurchaseAgreement",
         "EDGAR": "U.S. Government Agency Repurchase Agreement, collateralized only by U.S. Government Agency securities, U.S. Treasuries, and cash"
     },
-    {
+    { // MFP-3
         "value": 0,
         "treatment": "other",
         "category": "otherRepurchaseAgreement",
         "EDGAR": "Other Repurchase Agreement, if collateral falls outside Treasury, Government Agency and cash"
+    },
+    { // MFP-2
+        "value": 0,
+        "treatment": "other",
+        "category": "otherRepurchaseAgreement",
+        "EDGAR": "Other Repurchase Agreement, if any collateral falls outside Treasury, Government Agency and cash"
     },
     {
         "value": 0,
@@ -156,11 +166,17 @@ let investmentCategories = [
         "category": "insuranceCompanyFundingAgreement",
         "EDGAR": "Insurance Company Funding Agreement"
     },
-    {
+    { // MFP-3
         "value": 0,
         "treatment": "other",
         "category": "financialCompanyCommercialPaper",
         "EDGAR": "Financial Company Commercial Paper"
+    },
+    { // MFP-2
+        "value": 0,
+        "treatment": "other",
+        "category": "financialCompanyCommercialPaper",
+        "EDGAR": "Investment Company"
     },
     {
         "value": 0,
@@ -186,7 +202,7 @@ function getCategory(EDGAR) {
         if (investmentCategories[i].EDGAR == EDGAR)
             return i;
     }
-    console.log('category not found:' + EDGAR);
+    throw 'category not found:' + EDGAR;
 }
 let totalAssetsProcessed = 0;
 let totalUSGO = 0;
@@ -203,8 +219,12 @@ for (let classIndex = 0; classIndex < classLevelInfo.length; classIndex++) {
 
     // Find the last 7 day yield published on this report.
     const sevenDayYields = classInfo.sevenDayNetYield;
-    const yieldValue = classInfo.sevenDayNetYield[sevenDayYields.length - 1].sevenDayNetYieldValue;
-    const yieldDate = classInfo.sevenDayNetYield[sevenDayYields.length - 1].sevenDayNetYieldDate;
+    const yieldValue = (submissionType == 'N-MFP2') ?
+        classInfo.sevenDayNetYield :
+        classInfo.sevenDayNetYield[sevenDayYields.length - 1].sevenDayNetYieldValue;
+    const yieldDate = (submissionType == 'N-MFP2') ?
+        reportDate :
+        classInfo.sevenDayNetYield[sevenDayYields.length - 1].sevenDayNetYieldDate;
 
     // only process assets once and only if we have a class match.
     if (!totalAssetsProcessed) {
@@ -228,7 +248,7 @@ for (let classIndex = 0; classIndex < classLevelInfo.length; classIndex++) {
         "fiscalYearEnd": fiscalYear,
         "category": moneyMarketFundCategory,
         "totalNetAssets": classInfo.netAssetsOfClass,
-        "investorType": (fundRetailMoneyMarketFlag.toUpperCase() == 'N') ? 'Institutional' : 'Retail',
+        "investorType": retailMoneyMarketFlag,
         "minimumInitialInvestment": classInfo.minInitialInvestment,
         "wam": seriesLevelInfo.averagePortfolioMaturity,
         "wal": seriesLevelInfo.averageLifeMaturity,
@@ -239,7 +259,7 @@ for (let classIndex = 0; classIndex < classLevelInfo.length; classIndex++) {
     for (let j = 0; j < investmentCategories.length; j++) {
         const value = investmentCategories[j].value;
         const name = investmentCategories[j].category;
-        item[name] = (value / totalAssetsProcessed).toFixed(5) * 1;
+        item[name] = ((item[name]) ? item[name] : 0) + (value / totalAssetsProcessed).toFixed(5) * 1;
     }
     item["USGO"] = (totalUSGO / totalAssetsProcessed).toFixed(5) * 1;
     resp.push(item);
