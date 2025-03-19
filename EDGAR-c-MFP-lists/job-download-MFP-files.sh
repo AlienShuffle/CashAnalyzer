@@ -46,8 +46,10 @@ MFPfiles="MFP-files"
 [ -d "$MFPlists" ] || mkdir -p "$MFPlists"
 [ -d "$MFPfiles" ] || mkdir -p "$MFPfiles"
 
+getCount=0
+listCount=0
 for list in $MFPlists/*.json; do
-    #echo "processing $list"
+    echo "$getCount:$listCount: processing $list"
     cat "$list" | jq -r '.[] | [.cik,.accessionNumber,.url] | @csv' | sed -e 's/"//g' |
         while read -r entry; do
             cik=$(echo $entry | cut -d, -f1)
@@ -61,19 +63,13 @@ for list in $MFPlists/*.json; do
                 echo "download $cik : $accessionNumber"
                 ../bin/getEDGAR.sh "$url" >"$targetFile"
                 sleep 1
+                getCount=$(($getCount + 1))
             fi
-            exit 1
+            [ $getCount -gt 10 ] && exit 1
+            echo "getCount = $getCount"
         done
-    exit 1
+    listCount=$(($listCount + 1))
+    echo $getCount:$listCount: while done.
+    [ $listCount -gt 2 ] && exit 1
 done
-exit 1
-
-find $submissionsFiles -type f -print |
-    while read -r submissionFile; do
-        newFile="$MFPlists/$(basename $submissionFile)"
-        if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$submissionFile" -nt "$newFile" ]; then
-            echo processing $submissionFile
-            node node-parse-submission-file.js <"$submissionFile" | jq . >"$newFile"
-        fi
-    done
 exit 0
