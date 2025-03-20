@@ -60,7 +60,7 @@ for list in $MFPlists/*.json; do
             [ -d "$targetDir" ] || mkdir -p "$targetDir"
             targetFile="$targetDir/$accessionNumber.xml"
             if [ ! -s "$targetFile" ]; then
-                echo "$getCount: download $cik : $accessionNumber"
+                echo "download $cik : $accessionNumber"
                 ../bin/getEDGAR.sh "$url" >"$targetFile"
                 sleep 1
                 getCount=$(($getCount + 1))
@@ -68,7 +68,7 @@ for list in $MFPlists/*.json; do
             [ $getCount -gt 8 ] && exit 1
         done
     listCount=$(($listCount + 1))
-    echo $listCount: while done.
+    #echo $listCount: while done.
     #[ $listCount -gt 4 ] && exit 1
 done
 exit 0

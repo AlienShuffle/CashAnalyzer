@@ -241,7 +241,7 @@ for (let classIndex = 0; classIndex < classLevelInfo.length; classIndex++) {
     let item = {
         "ticker": match.ticker,
         "source": "parse-MFP-files.sh",
-        "name": name,
+        "registrantName": registrantFullName,
         "seriesName": nameOfSeries,
         "className": classInfo.classFullName,
         "expenseRatio": 0, // where do I find this?
