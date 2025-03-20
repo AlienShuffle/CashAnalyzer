@@ -1,18 +1,16 @@
-const du = require('../lib/dateUtils.js');
-// Work on POSIX and Windows
-const fs = require("fs");
-const { exit } = require('process');
+import { readFileSync } from 'fs';
+import process from 'process';
 
 // create a lookup array of all the funds I want to track from the mmFun input list
 // the list is a file of tickers, per line.
 // The moneymarket.fun report has over 800 funds, I want to track a much smaller list.
-const fundListBuffer = fs.readFileSync(process.argv[2], 'utf8');
+const fundListBuffer = readFileSync(process.argv[2], 'utf8');
 const fundList = fundListBuffer.split('\n');
 let funds = [];
 for (let i = 0; i < fundList.length; i++) if (fundList[i].length > 0) funds[fundList[i]] = true;
 
 // read in from stdin, the moneymarket.fun source data json file.
-const stdinBuffer = fs.readFileSync(0, 'utf-8');
+const stdinBuffer = readFileSync(process.stdin.fd, 'utf-8');
 const json = JSON.parse(stdinBuffer);
 let resp = [];
 // go through each ticker report provided, see if it is in the track list, publish map if in the list.
@@ -26,6 +24,7 @@ for (let i = 0; i < json.data.length; i++) {
     resp.push({
         "ticker": ticker,
         "cik": item[0],
+        "cikTen": String(item[0]).padStart(10, '0'),
         "series": item[1],
         "class": item[2]
     });

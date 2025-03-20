@@ -2,558 +2,651 @@
   {
     "ticker": "TMCXX",
     "cik": 97098,
+    "cikTen": "0000097098",
     "series": "S000001474",
     "class": "C000003921"
   },
   {
     "ticker": "BUPXX",
     "cik": 97098,
+    "cikTen": "0000097098",
     "series": "S000001475",
     "class": "C000003926"
   },
   {
     "ticker": "TFDXX",
     "cik": 97098,
+    "cikTen": "0000097098",
     "series": "S000001475",
     "class": "C000003928"
   },
   {
     "ticker": "BFRXX",
     "cik": 97098,
+    "cikTen": "0000097098",
     "series": "S000001475",
     "class": "C000003931"
   },
   {
     "ticker": "TSTXX",
     "cik": 97098,
+    "cikTen": "0000097098",
     "series": "S000001476",
     "class": "C000003938"
   },
   {
     "ticker": "TFFXX",
     "cik": 97098,
+    "cikTen": "0000097098",
     "series": "S000001477",
     "class": "C000003948"
   },
   {
     "ticker": "BUCXX",
     "cik": 97098,
+    "cikTen": "0000097098",
     "series": "S000001478",
     "class": "C000003952"
   },
   {
     "ticker": "TTTXX",
     "cik": 97098,
+    "cikTen": "0000097098",
     "series": "S000001478",
     "class": "C000003954"
   },
   {
     "ticker": "MCSXX",
     "cik": 97098,
+    "cikTen": "0000097098",
     "series": "S000001480",
     "class": "C000003974"
   },
   {
     "ticker": "VMFXX",
     "cik": 106830,
+    "cikTen": "0000106830",
     "series": "S000004462",
     "class": "C000012238"
   },
   {
     "ticker": "VMRXX",
     "cik": 106830,
+    "cikTen": "0000106830",
     "series": "S000004463",
     "class": "C000012240"
   },
   {
     "ticker": "VMSXX",
     "cik": 225997,
+    "cikTen": "0000225997",
     "series": "S000002898",
     "class": "C000007961"
   },
   {
     "ticker": "FDRXX",
     "cik": 278001,
+    "cikTen": "0000278001",
     "series": "S000007149",
     "class": "C000019553"
   },
   {
     "ticker": "FSIXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004818",
     "class": "C000013037"
   },
   {
     "ticker": "FTYXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004818",
     "class": "C000013076"
   },
   {
     "ticker": "FRSXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004818",
     "class": "C000141702"
   },
   {
     "ticker": "FISXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004819",
     "class": "C000013038"
   },
   {
     "ticker": "FCEXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004819",
     "class": "C000013077"
   },
   {
     "ticker": "FCSXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004819",
     "class": "C000013078"
   },
   {
     "ticker": "FTUXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004819",
     "class": "C000013079"
   },
   {
     "ticker": "FTVXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004819",
     "class": "C000056568"
   },
   {
     "ticker": "FRBXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004819",
     "class": "C000141703"
   },
   {
     "ticker": "FIGXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004820",
     "class": "C000013039"
   },
   {
     "ticker": "FCVXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004820",
     "class": "C000013080"
   },
   {
     "ticker": "FCGXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004820",
     "class": "C000013081"
   },
   {
     "ticker": "FGEXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004820",
     "class": "C000013082"
   },
   {
     "ticker": "FRGXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004820",
     "class": "C000141704"
   },
   {
     "ticker": "FMPXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004822",
     "class": "C000013041"
   },
   {
     "ticker": "FCIXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004822",
     "class": "C000013086"
   },
   {
     "ticker": "FCOXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004822",
     "class": "C000013087"
   },
   {
     "ticker": "FMYXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004822",
     "class": "C000013088"
   },
   {
     "ticker": "FNSXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004822",
     "class": "C000056571"
   },
   {
     "ticker": "FTCXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004823",
     "class": "C000013042"
   },
   {
     "ticker": "FEXXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004823",
     "class": "C000013089"
   },
   {
     "ticker": "FETXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004823",
     "class": "C000013090"
   },
   {
     "ticker": "FSXXX",
     "cik": 356173,
+    "cikTen": "0000356173",
     "series": "S000004823",
     "class": "C000013091"
   },
   {
     "ticker": "FMSXX",
     "cik": 357057,
+    "cikTen": "0000357057",
     "series": "S000007113",
     "class": "C000019442"
   },
   {
     "ticker": "FMAXX",
     "cik": 357057,
+    "cikTen": "0000357057",
     "series": "S000007113",
     "class": "C000047913"
   },
   {
     "ticker": "FAUXX",
     "cik": 357057,
+    "cikTen": "0000357057",
     "series": "S000007113",
     "class": "C000238262"
   },
   {
     "ticker": "FERXX",
     "cik": 704207,
+    "cikTen": "0000704207",
     "series": "S000007504",
     "class": "C000020479"
   },
   {
     "ticker": "FDEXX",
     "cik": 704207,
+    "cikTen": "0000704207",
     "series": "S000007504",
     "class": "C000020480"
   },
   {
     "ticker": "FMOXX",
     "cik": 704207,
+    "cikTen": "0000704207",
     "series": "S000007504",
     "class": "C000020481"
   },
   {
     "ticker": "FZEXX",
     "cik": 704207,
+    "cikTen": "0000704207",
     "series": "S000007504",
     "class": "C000154297"
   },
   {
     "ticker": "FSRXX",
     "cik": 704207,
+    "cikTen": "0000704207",
     "series": "S000007505",
     "class": "C000020484"
   },
   {
     "ticker": "FDUXX",
     "cik": 704207,
+    "cikTen": "0000704207",
     "series": "S000007505",
     "class": "C000020485"
   },
   {
     "ticker": "FZFXX",
     "cik": 704207,
+    "cikTen": "0000704207",
     "series": "S000007505",
     "class": "C000154298"
   },
   {
     "ticker": "VYFXX",
     "cik": 788599,
+    "cikTen": "0000788599",
     "series": "S000002906",
     "class": "C000007971"
   },
   {
     "ticker": "FMJXX",
     "cik": 822977,
+    "cikTen": "0000822977",
     "series": "S000051191",
     "class": "C000161182"
   },
   {
     "ticker": "FTFXX",
     "cik": 856517,
+    "cikTen": "0000856517",
     "series": "S000009533",
     "class": "C000026054"
   },
   {
     "ticker": "FFTXX",
     "cik": 856517,
+    "cikTen": "0000856517",
     "series": "S000009533",
     "class": "C000167073"
   },
   {
     "ticker": "GOIXX",
     "cik": 856517,
+    "cikTen": "0000856517",
     "series": "S000009536",
     "class": "C000026060"
   },
   {
     "ticker": "GOFXX",
     "cik": 856517,
+    "cikTen": "0000856517",
     "series": "S000009536",
     "class": "C000151096"
   },
   {
     "ticker": "GOVXX",
     "cik": 856517,
+    "cikTen": "0000856517",
     "series": "S000009536",
     "class": "C000190786"
   },
   {
     "ticker": "GOTXX",
     "cik": 856517,
+    "cikTen": "0000856517",
     "series": "S000009537",
     "class": "C000026063"
   },
   {
     "ticker": "PCOXX",
     "cik": 856517,
+    "cikTen": "0000856517",
     "series": "S000009571",
     "class": "C000026147"
   },
   {
     "ticker": "TOIXX",
     "cik": 856517,
+    "cikTen": "0000856517",
     "series": "S000009578",
     "class": "C000026167"
   },
   {
     "ticker": "UTIXX",
     "cik": 856517,
+    "cikTen": "0000856517",
     "series": "S000009580",
     "class": "C000026172"
   },
   {
     "ticker": "SWWXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004500",
     "class": "C000039063"
   },
   {
     "ticker": "SCTXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004500",
     "class": "C000219263"
   },
   {
     "ticker": "SWGXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004506",
     "class": "C000012381"
   },
   {
     "ticker": "SNSXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004507",
     "class": "C000198373"
   },
   {
     "ticker": "SUTXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004507",
     "class": "C000222230"
   },
   {
     "ticker": "SWVXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004508",
     "class": "C000012383"
   },
   {
     "ticker": "SNAXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004508",
     "class": "C000038267"
   },
   {
     "ticker": "SWTXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004511",
     "class": "C000012389"
   },
   {
     "ticker": "SWOXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004511",
     "class": "C000012391"
   },
   {
     "ticker": "SWKXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004512",
     "class": "C000012393"
   },
   {
     "ticker": "SCAXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004512",
     "class": "C000219264"
   },
   {
     "ticker": "SWYXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004513",
     "class": "C000012395"
   },
   {
     "ticker": "SNYXX",
     "cik": 857156,
+    "cikTen": "0000857156",
     "series": "S000004513",
     "class": "C000219265"
   },
   {
     "ticker": "FSPXX",
     "cik": 878662,
+    "cikTen": "0000878662",
     "series": "S000005493",
     "class": "C000014951"
   },
   {
     "ticker": "FSBXX",
     "cik": 878662,
+    "cikTen": "0000878662",
     "series": "S000005493",
     "class": "C000047918"
   },
   {
     "ticker": "FABXX",
     "cik": 878662,
+    "cikTen": "0000878662",
     "series": "S000005493",
     "class": "C000238263"
   },
   {
     "ticker": "FSNXX",
     "cik": 878663,
+    "cikTen": "0000878663",
     "series": "S000007146",
     "class": "C000019550"
   },
   {
     "ticker": "FNKXX",
     "cik": 878663,
+    "cikTen": "0000878663",
     "series": "S000007146",
     "class": "C000047915"
   },
   {
     "ticker": "FAWXX",
     "cik": 878663,
+    "cikTen": "0000878663",
     "series": "S000007146",
     "class": "C000238264"
   },
   {
     "ticker": "FSJXX",
     "cik": 880709,
+    "cikTen": "0000880709",
     "series": "S000006052",
     "class": "C000016621"
   },
   {
     "ticker": "FSKXX",
     "cik": 880709,
+    "cikTen": "0000880709",
     "series": "S000006052",
     "class": "C000047920"
   },
   {
     "ticker": "FAYXX",
     "cik": 880709,
+    "cikTen": "0000880709",
     "series": "S000006052",
     "class": "C000238265"
   },
   {
     "ticker": "FTEXX",
     "cik": 880797,
+    "cikTen": "0000880797",
     "series": "S000007502",
     "class": "C000020476"
   },
   {
     "ticker": "GABXX",
     "cik": 888129,
+    "cikTen": "0000888129",
     "series": "S000001074",
     "class": "C000002897"
   },
   {
     "ticker": "VUSXX",
     "cik": 891190,
+    "cikTen": "0000891190",
     "series": "S000002233",
     "class": "C000005732"
   },
   {
     "ticker": "SPAXX",
     "cik": 917286,
+    "cikTen": "0000917286",
     "series": "S000007051",
     "class": "C000019230"
   },
   {
     "ticker": "FZAXX",
     "cik": 917286,
+    "cikTen": "0000917286",
     "series": "S000007051",
     "class": "C000154303"
   },
   {
     "ticker": "FZCXX",
     "cik": 917286,
+    "cikTen": "0000917286",
     "series": "S000007051",
     "class": "C000154305"
   },
   {
     "ticker": "FZGXX",
     "cik": 917286,
+    "cikTen": "0000917286",
     "series": "S000007051",
     "class": "C000190683"
   },
   {
     "ticker": "SPRXX",
     "cik": 917286,
+    "cikTen": "0000917286",
     "series": "S000007052",
     "class": "C000019231"
   },
   {
     "ticker": "FZDXX",
     "cik": 917286,
+    "cikTen": "0000917286",
     "series": "S000007052",
     "class": "C000154306"
   },
   {
     "ticker": "FDLXX",
     "cik": 917286,
+    "cikTen": "0000917286",
     "series": "S000007053",
     "class": "C000019232"
   },
   {
     "ticker": "FYHXX",
     "cik": 917286,
+    "cikTen": "0000917286",
     "series": "S000089156",
     "class": "C000255665"
   },
   {
     "ticker": "WMPXX",
     "cik": 1081400,
+    "cikTen": "0001081400",
     "series": "S000007425",
     "class": "C000168181"
   },
   {
     "ticker": "HTSXX",
     "cik": 1217286,
+    "cikTen": "0001217286",
     "series": "S000002965",
     "class": "C000008118"
   },
   {
     "ticker": "MSUXX",
     "cik": 1227155,
+    "cikTen": "0001227155",
     "series": "S000004154",
     "class": "C000011692"
   }

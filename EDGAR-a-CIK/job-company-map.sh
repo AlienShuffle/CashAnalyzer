@@ -42,18 +42,17 @@ done
 source ../meta.$(hostname).sh
 
 # create data source file paths.
-CIKmap="CIK/CIK-map.json"
+companyMap="CIK/company-map.json"
 fundsList="../mmFunCurr/mmFunCurr-funds.txt"
 
 runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -s "$CIKmap" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$CIKmap")))" -lt "$runDelaySeconds" ]; then
-    echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$CIKmap" | cut -d: -f1,2)"
+if [ -s "$companyMap" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$companyMap")))" -lt "$runDelaySeconds" ]; then
+    echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$companyMap" | cut -d: -f1,2)"
     [ -z "$forceRun" ] && exit 0
 fi
-if [ -s "$CIKmap" ] && [ "$(($(stat -c "%Y" "$fundsList") - $(stat -c "%Y" "$CIKmap")))" -lt "0" ]; then
+if [ -s "$companyMap" ] && [ "$(($(stat -c "%Y" "$fundsList") - $(stat -c "%Y" "$companyMap")))" -lt "0" ]; then
     echo "$fundsList not updated since last run."
     [ -z "$forceRun" ] && exit 0
 fi
-../bin/getEDGAR.sh "https://www.sec.gov/data/company_tickers_mf.json" |
-    jq . >co_tickers_mf.json
-node ./node-CIK-map-update.js "$fundsList" <co_tickers_mf.json | jq . >"$CIKmap"
+../bin/getEDGAR.sh "https://www.sec.gov/files/investment/data/other/investment-company-series-and-class-information/investment-company-series-class-2024.xml" >investment-map.xml
+node ./node-company-map-update.js "$fundsList" <investment-map.xml | jq . >"$companyMap"

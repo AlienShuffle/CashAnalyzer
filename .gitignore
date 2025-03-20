@@ -205,3 +205,5 @@ EDGAR-c-MFP-lists/MFP-files/*/*.xml
 EDGAR-d-MFP-parse/reports/*/*.json
 EDGAR-b-submissions/fiscalYearFile.csv
 EDGAR-d-MFP-parse/all.json
+EDGAR-a-CIK/co_tickers_mf.json
+EDGAR-a-CIK/investment-map.xml
