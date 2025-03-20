@@ -880,6 +880,16 @@
     "class": "C000005732"
   },
   {
+    "ticker": "VCTXX",
+    "entity_name": "VANGUARD CALIFORNIA TAX-FREE FUNDS",
+    "series_name": "Vanguard California Municipal Money Market Fund",
+    "class_name": "Investor Shares",
+    "cik": 783401,
+    "cikTen": "0000783401",
+    "series": "S000002565",
+    "class": "C000007065"
+  },
+  {
     "ticker": "VMFXX",
     "entity_name": "VANGUARD MONEY MARKET RESERVES",
     "series_name": "Vanguard Federal Money Market Fund",

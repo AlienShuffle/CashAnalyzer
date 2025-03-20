@@ -80,8 +80,8 @@ cat $fundList |
         tickerDir="$cloudFlareHome/$accountClass/$ticker/"
         [ -d "$tickerDir" ] || mkdir -p "$tickerDir"
 
-        jsonFlare="$cloudFlareHome/$accountClass/$ticker/EDGAR-reports.json"
-        csvFlare="$cloudFlareHome/$accountClass/$ticker/EDGAR-reports.csv"
+        jsonFlare="$cloudFlareHome/$accountClass/$ticker/EDGAR-$ticker-reports.json"
+        csvFlare="$cloudFlareHome/$accountClass/$ticker/EDGAR-$ticker-reports.csv"
 
         if ../bin/jsonDifferent.sh "$tickerFile" "$jsonFlare"; then
             cat "$tickerFile" >"$jsonFlare"
@@ -90,7 +90,7 @@ cat $fundList |
                 echo 'ticker,source,registrantName,seriesName,className,expenseRatio,fiscalYearEnd,category,totalNetAssets,investorType,minimumInitialInvestment,wam,wal,reportDate,yield,yieldDate,usTreasuryDebt,usGovernmentAgencyDebt,usGovernmentAgencyCouponDebt,usGovernmentAgencyZeroCouponDebt,nonUSSovereignDebt,certificateofDeposit,nonNegotiableTimeDeposit,variableRateDemandNote,otherMunicipalSecurity,assetBackedCommercialPaper,otherAssetBackedSecurities,usTreasuryRepurchaseAgreement,usGovernmentAgencyRepurchaseAgreement,otherRepurchaseAgreement,insuranceCompanyFundingAgreement,financialCompanyCommercialPaper,nonFinancialCompanyCommercialPaper,tenderOptionBond,otherInstrument,USGO'
                 jq -r '.[] | [.ticker,.source,.registrantName,.seriesName,.className,.expenseRatio,.fiscalYearEnd,.category,.totalNetAssets,.investorType,.minimumInitialInvestment,.wam,.wal,.reportDate,.yield,.yieldDate,.usTreasuryDebt,.usGovernmentAgencyDebt,.usGovernmentAgencyCouponDebt,.usGovernmentAgencyZeroCouponDebt,.nonUSSovereignDebt,.certificateofDeposit,.nonNegotiableTimeDeposit,.variableRateDemandNote,.otherMunicipalSecurity,.assetBackedCommercialPaper,.otherAssetBackedSecurities,.usTreasuryRepurchaseAgreement,.usGovernmentAgencyRepurchaseAgreement,.otherRepurchaseAgreement,.insuranceCompanyFundingAgreement,.financialCompanyCommercialPaper,.nonFinancialCompanyCommercialPaper,.tenderOptionBond,.otherInstrument,.USGO] | @csv' "$jsonFlare"
             ) >"$csvFlare"
-            echo "published updated cloudflare csv file."
+            #echo "published updated cloudflare csv file."
         fi
 
     done
