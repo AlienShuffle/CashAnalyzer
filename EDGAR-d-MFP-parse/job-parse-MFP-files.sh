@@ -43,7 +43,7 @@ if [ ! -d "$MFPFilesDir" ]; then
     echo "$MFPFilesDir does not exist, exiting..."
     exit 1
 fi
-CIKmap="../EDGAR-a-CIK/CIK/CIK-map.json"
+CIKmap="../EDGAR-a-CIK/CIK/company-map.json"
 if [ ! -s "$CIKmap" ]; then
     echo "$CIKmap does not exist, exiting..."
     exit 1

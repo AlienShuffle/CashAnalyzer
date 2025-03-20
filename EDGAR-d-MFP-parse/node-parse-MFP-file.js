@@ -48,7 +48,7 @@ const json = parser.parse(xmlFile);
 
 // get header data about the fund.
 const headerData = json.edgarSubmission.headerData;
-const submissionType = headerData.submissionType.replace('/^NT /','').replace('/\/A$/','').substring(0,6);
+const submissionType = headerData.submissionType.replace('/^NT /', '').replace('/\/A$/', '').substring(0, 6);
 const cik = headerData.filerInfo.filer.filerCredentials.cik;
 const fiscalYear = findFiscalYear(cik);
 
@@ -214,9 +214,6 @@ for (let classIndex = 0; classIndex < classLevelInfo.length; classIndex++) {
     const match = findFund(cik, seriesId, classesId);
     if (!match) continue;
 
-    // Get Fund Ticker Name as close as practical.
-    const name = titleCase(registrantFullName + ' ' + nameOfSeries + ' ' + classInfo.classFullName + ' Shares');
-
     // Find the last 7 day yield published on this report.
     const sevenDayYields = classInfo.sevenDayNetYield;
     const yieldValue = (submissionType == 'N-MFP2') ?
@@ -241,9 +238,9 @@ for (let classIndex = 0; classIndex < classLevelInfo.length; classIndex++) {
     let item = {
         "ticker": match.ticker,
         "source": "parse-MFP-files.sh",
-        "registrantName": registrantFullName,
-        "seriesName": nameOfSeries,
-        "className": classInfo.classFullName,
+        "registrantName": titleCase((registrantFullName) ? registrantFullName : match.entity_name),
+        "seriesName": titleCase((nameOfSeries) ? nameOfSeries : match.series_name),
+        "className": titleCase((classInfo.classFullName) ? classInfo.classFullName : match.class_name),
         "expenseRatio": 0, // where do I find this?
         "fiscalYearEnd": fiscalYear,
         "category": moneyMarketFundCategory,
