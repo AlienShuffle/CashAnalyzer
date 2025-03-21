@@ -2,8 +2,13 @@
 #
 # Pull a recent history report for each Vanguard fund and assemble a csv (ticker:date:rate) array to feed into the processor.
 #
-beginDate='01%2F01%2F2025'
-endDate=$(date +'%m%%2F%d%%2F%Y')
+if [ -n "$1" ]; then
+    beginDate='01%2F01%2F'$1
+    endDate='12%2F31%2F'$1
+else
+    beginDate='01%2F01%2F2025'
+    endDate=$(date +'%m%%2F%d%%2F%Y')
+fi
 while IFS= read -r row; do
     fundId=$(echo $row | cut -d, -f2)
     ticker=$(echo $row | cut -d, -f1)

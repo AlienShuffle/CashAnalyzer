@@ -21,6 +21,11 @@ while [ -n "$1" ]; do
         #echo "collectionScript=$collectionScript"
         shift
         ;;
+    "--collectionArg")
+        collectionArg="$2"
+        #echo "collectionArg=$collectionArg"
+        shift
+        ;;
     "-f")
         forceRun=true
         #echo "forceRun=$forceRun"
@@ -110,7 +115,11 @@ else
         fi
         tmpCollect="tmpCollect.json"
         #echo "running $collectionScript"
-        $collectionScript >"$tmpCollect"
+        if [ -n "$collectionArg" ]; then
+            $collectionScript "$collectionArg" >"$tmpCollect"
+        else
+            $collectionScript >"$tmpCollect"
+        fi
         #echo "running node $processScript"
         cat "$tmpCollect" | node $processScript $nodeArg | jq . >"$jsonRateNew"
         rm -f "$tmpCollect"
