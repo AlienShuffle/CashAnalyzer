@@ -3,6 +3,8 @@ import { XMLValidator } from 'fast-xml-parser';
 import { readFileSync } from 'fs';
 import process from 'node:process';
 
+const debug = false;
+
 // start some utilities here.
 function titleCase(str) {
     let splitStr = str.toLowerCase().split(' ');
@@ -19,11 +21,14 @@ const fundListBuffer = readFileSync(process.argv[2], 'utf8');
 const fundList = JSON.parse(fundListBuffer);
 function findFund(cik, series, classId) {
     for (let i = 0; i < fundList.length; i++) {
-        if (fundList[i].cik == cik && fundList[i].series == series, fundList[i].class == classId)
+        if (fundList[i].cik == cik && fundList[i].series == series, fundList[i].class == classId) {
+            if (debug) console.log('found:' + cik + ':' + series + ':' + classId)
             return fundList[i];
+        }
     }
     return '';
 }
+if (debug) console.log('fundList.length=' + fundList.length)
 
 // take the fund CIK,fiscalyear table and injest as well.
 const fiscalYearBuffer = readFileSync(process.argv[3], 'utf8');
@@ -36,8 +41,10 @@ function findFiscalYear(cik) {
         }
     }
 }
+if (debug) console.log('fiscalYears.length=' + fiscalYears.length)
+
 // read in the MFP XML file from stdin.
-const xmlFile = readFileSync(0, 'utf8');
+const xmlFile = readFileSync(process.stdin.fd, 'utf8');
 // validate the file to know it will parse.
 const result = XMLValidator.validate(xmlFile);
 if (result.err) throw "XML invalid: " + result.err.msg
@@ -45,10 +52,12 @@ if (result.err) throw "XML invalid: " + result.err.msg
 // parse the XML into Javascript object tree (like normal JSON from a Javascript perspective)
 const parser = new XMLParser();
 const json = parser.parse(xmlFile);
+if (debug) console.log('json.length=' + json.length)
 
 // get header data about the fund.
 const headerData = json.edgarSubmission.headerData;
 const submissionType = headerData.submissionType.replace('/^NT /', '').replace('/\/A$/', '').substring(0, 6);
+if (debug) console.log('submissionType=' + submissionType)
 const cik = headerData.filerInfo.filer.filerCredentials.cik;
 const fiscalYear = findFiscalYear(cik);
 
@@ -67,6 +76,8 @@ const retailMoneyMarketFlag = (submissionType == 'N-MFP2') ?
     ((seriesLevelInfo.fundRetailMoneyMarketFlag.toUpperCase() == 'N') ? 'Institutional' : 'Retail')
 
 const classLevelInfo = formData.classLevelInfo;
+if (debug) console.log('classLevelInfo.length=' + classLevelInfo.length)
+if (debug) console.log('Array.isArray(classLevelInfo)=' + Array.isArray(classLevelInfo))
 
 const scheduleOfPortfolioSecuritiesInfo = formData.scheduleOfPortfolioSecuritiesInfo;
 let investmentCategories = [
@@ -204,15 +215,16 @@ function getCategory(EDGAR) {
     }
     throw 'category not found:' + EDGAR;
 }
+
 let totalAssetsProcessed = 0;
 let totalUSGO = 0;
 let resp = [];
-for (let classIndex = 0; classIndex < classLevelInfo.length; classIndex++) {
-    const classInfo = classLevelInfo[classIndex];
+function processClassInfo(classInfo) {
     // let's find out if this class is one we want to report.
     const classesId = classInfo.classesId;
+    if (debug) console.log('cik=' + cik + ' series=' + seriesId + ' classesId=' + classesId)
     const match = findFund(cik, seriesId, classesId);
-    if (!match) continue;
+    if (!match) return;
 
     // Find the last 7 day yield published on this report.
     const sevenDayYields = classInfo.sevenDayNetYield;
@@ -261,4 +273,15 @@ for (let classIndex = 0; classIndex < classLevelInfo.length; classIndex++) {
     item["USGO"] = (totalUSGO / totalAssetsProcessed).toFixed(5) * 1;
     resp.push(item);
 }
+
+
+if (Array.isArray(classLevelInfo)) {
+    for (let classIndex = 0; classIndex < classLevelInfo.length; classIndex++) {
+        const classInfo = classLevelInfo[classIndex];
+        processClassInfo(classInfo);
+    }
+} else {
+    processClassInfo(classLevelInfo);
+}
+
 console.log(JSON.stringify(resp));

@@ -157,8 +157,8 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
         # temp merge of this tool's history with the combined history published in cloudflare (for comparison with cloudflare)
         jsonHistoryFlareTemp="history/$dirname/history-$sourceName-flare.json"
         # resulting published merge of this tool and all combined source histories.
-        jsonHistoryFlare="$cloudFlareHome/$accountClass/$dirname/rate-history.json"
-        csvHistoryFlare="$cloudFlareHome/$accountClass/$dirname/rate-history.csv"
+        jsonHistoryFlare="$cloudFlareHome/$accountClass/$dirname/$dirname-rate-history.json"
+        csvHistoryFlare="$cloudFlareHome/$accountClass/$dirname/$dirname-rate-history.csv"
 
         # I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
         cat "$jsonRateNew" | jq "[.[] | select(.ticker==\"$ticker\")]" >"$jsonRateTicker"

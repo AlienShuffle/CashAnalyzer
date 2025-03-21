@@ -49,13 +49,12 @@ MFPfiles="MFP-files"
 getCount=0
 listCount=0
 for list in $MFPlists/*.json; do
-    echo "Processing $list"
+    #echo "Processing $list"
     cat "$list" | jq -r '.[] | [.cik,.accessionNumber,.url] | @csv' | sed -e 's/"//g' |
         while read -r entry; do
             cik=$(echo $entry | cut -d, -f1)
             accessionNumber=$(echo $entry | cut -d, -f2)
             url=$(echo $entry | cut -d, -f3)
-            #echo $cik ":" $accessionNumber ":" $url
             targetDir="$MFPfiles/$cik"
             [ -d "$targetDir" ] || mkdir -p "$targetDir"
             targetFile="$targetDir/$accessionNumber.xml"
@@ -65,10 +64,8 @@ for list in $MFPlists/*.json; do
                 sleep 1
                 getCount=$(($getCount + 1))
             fi
-            [ $getCount -gt 8 ] && exit 1
+            [ $getCount -gt 10 ] && exit 1
         done
     listCount=$(($listCount + 1))
-    #echo $listCount: while done.
-    #[ $listCount -gt 4 ] && exit 1
 done
 exit 0
