@@ -165,7 +165,7 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
 
         # sort/filter/gap fill the combined history and current date's rates using only this tool's data.
         if [ -f "$jsonHistoryUnique" ]; then
-            jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonRateTicker" "$jsonHistoryUnique" >"$jsonHistoryTemp"
+            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateTicker" "$jsonHistoryUnique" >"$jsonHistoryTemp"
         else
             cat "$jsonRateTicker" >"$jsonHistoryTemp"
         fi
@@ -181,7 +181,7 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         else
-            jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonHistoryUnique" "$jsonHistoryFlare" |
+            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonHistoryUnique" "$jsonHistoryFlare" |
                 node ../lib/node-MM-sortBest.js |
                 jq . >"$jsonHistoryFlareTemp"
         fi
@@ -223,7 +223,7 @@ fi
 # Merge current tool's current rates into the All tools rate file (keeping only best, most recent reported values)
 #
 if [ -s "$jsonRateAllFlare" ]; then
-    jq -s 'flatten | unique_by([.ticker,.asOfDate,.source]) | sort_by([.ticker,.asOfDate,.source])' "$jsonRateNew" "$jsonRateAllFlare" |
+    jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateNew" "$jsonRateAllFlare" |
         node ../lib/node-MM-sortBest.js latest |
         jq . >tmp-all-flare.json
 else
