@@ -133,6 +133,10 @@ else
         exit 1
     fi
 fi
+# sort/normalize the file now.
+jq 'sort_by([.accountType,.asOfDate])' "$jsonRateNew" >tmp.sort.json
+cat tmp.sort.json >"$jsonRateNew"
+rm -f tmp.sort.json
 #
 # Process the daily history results in rate and merge with history.
 #
@@ -207,7 +211,7 @@ if [ ! -s "$jsonRateFlare" ]; then
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
 if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
-     jq 'sort_by([.ticker,.asOfDate,.source])' "$jsonRateNew" >"$jsonRateFlare"
+    cat "$jsonRateNew" >"$jsonRateFlare"
     echo "published updated cloudflare $sourceName-rates.json file."
     (
         echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield'

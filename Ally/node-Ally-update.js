@@ -48,7 +48,7 @@ function run() {
                 {
 
                     accountType: 'Savings',
-                    apy: (savingsRate) ? savingsRate / 100 : 'n/a',
+                    apy: (savingsRate) ? (savingsRate / 100).toFixed(4) * 1 : 'n/a',
                     asOfDate: asOfDate,
                     "source": 'node-Ally-update.js',
                     "timestamp": now,
@@ -56,7 +56,7 @@ function run() {
                 {
 
                     accountType: 'NPCD',
-                    apy: (npcdRate) ? npcdRate / 100 : 'n/a',
+                    apy: (npcdRate) ? (npcdRate / 100).toFixed(4) * 1 : 'n/a',
                     asOfDate: asOfDate,
                     "source": 'node-Ally-update.js',
                     "timestamp": now,
