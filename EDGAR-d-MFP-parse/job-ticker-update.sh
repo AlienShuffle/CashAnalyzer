@@ -4,8 +4,8 @@
 # MFP reports eligible for processing.
 #
 # process the command argument list.
-pubDelayHours=48
-runDelayHours=24
+pubDelayHours=24
+runDelayHours=12
 accountClass=EDGAR
 while [ -n "$1" ]; do
     case $1 in

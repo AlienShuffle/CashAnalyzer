@@ -7,7 +7,7 @@
 # the current funds list is updated by a script in the mmFunCurr directory.
 #
 # process the command argument list.
-pubDelayHours=48
+pubDelayHours=144
 runDelayHours=48
 accountClass=MM
 while [ -n "$1" ]; do

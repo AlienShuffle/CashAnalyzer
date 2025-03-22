@@ -6,8 +6,8 @@
 # on the read side. More effort on the update side due to separate files to process.
 #
 # process the command argument list.
-pubDelayHours=12
-runDelayHours=6
+pubDelayHours=16
+runDelayHours=4
 accountClass=MM
 while [ -n "$1" ]; do
     case $1 in

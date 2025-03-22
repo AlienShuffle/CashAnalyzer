@@ -5,8 +5,8 @@
 # downloads the new files.
 #
 # process the command argument list.
-pubDelayHours=48
-runDelayHours=48
+pubDelayHours=12
+runDelayHours=2
 accountClass=MM
 while [ -n "$1" ]; do
     case $1 in
