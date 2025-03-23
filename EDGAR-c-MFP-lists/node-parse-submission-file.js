@@ -7,7 +7,7 @@ const json = JSON.parse(stdinBuffer);
 const recentFilings = json.filings.recent;
 const cik = json.cik;
 const fiscalYearEnd = json.filings.fiscalYearEnd;
-const oldestDate = new Date('9/1/2021');
+const oldestDate = new Date('5/1/2021');
 let resp = [];
 // go through each ticker report provided, see if it is in the track list, publish map if in the list.
 for (let i = 0; i < recentFilings.accessionNumber.length; i++) {
