@@ -68,9 +68,23 @@ const registrantFullName = formData.generalInfo.registrantFullName;
 const nameOfSeries = formData.generalInfo.nameOfSeries;
 
 const seriesLevelInfo = formData.seriesLevelInfo;
-const moneyMarketFundCategory = (submissionType == 'N-MFP2') ?
-    seriesLevelInfo.moneyMarketFundCategory[0] :
-    seriesLevelInfo.moneyMarketFundCategory;
+// rationalize the Fund Category type.
+function mapCategory(tmpCategory) {
+    const fundCategories_ = ['Government', 'Government', 'Government', 'Muni', 'Prime', 'SingleState', 'Treasury'];
+    const sourceCategories_ = ['Exempt Government', 'Government', 'Government/Agency', 'Other Tax Exempt', 'Prime', 'Single State', 'Treasury'];
+
+    for (let i = 0; i < sourceCategories_.length; i++) {
+        if (sourceCategories_[i] == tmpCategory) {
+            return fundCategories_[i];
+        }
+    }
+    throw "invalid source Category: " + tmpCategory;
+}
+const moneyMarketFundCategory = mapCategory(
+    (Array.isArray(seriesLevelInfo.moneyMarketFundCategory)) ?
+        seriesLevelInfo.moneyMarketFundCategory[0] :
+        seriesLevelInfo.moneyMarketFundCategory);
+
 const retailMoneyMarketFlag = (submissionType == 'N-MFP2') ?
     ((seriesLevelInfo.fundExemptRetailFlag.toUpperCase() == 'N') ? 'Institutional' : 'Retail') :
     ((seriesLevelInfo.fundRetailMoneyMarketFlag.toUpperCase() == 'N') ? 'Institutional' : 'Retail')
@@ -218,6 +232,7 @@ function getCategory(EDGAR) {
 
 let totalAssetsProcessed = 0;
 let totalUSGO = 0;
+let totalExempt = 0;
 let resp = [];
 function processClassInfo(classInfo) {
     // let's find out if this class is one we want to report.
@@ -242,6 +257,7 @@ function processClassInfo(classInfo) {
             const value = scheduleOfPortfolioSecuritiesInfo[i].includingValueOfAnySponsorSupport * 1;
             investmentCategories[category].value += value;
             if (investmentCategories[category].treatment == 'USGO') totalUSGO += value;
+            if (investmentCategories[category].treatment == 'exempt') totalExempt += value;
             totalAssetsProcessed += value;
         }
     }
@@ -271,6 +287,7 @@ function processClassInfo(classInfo) {
         item[name] = ((item[name]) ? item[name] : 0) + (value / totalAssetsProcessed).toFixed(5) * 1;
     }
     item["USGO"] = (totalUSGO / totalAssetsProcessed).toFixed(5) * 1;
+    item["Muni"] = (totalExempt / totalAssetsProcessed).toFixed(5) * 1;
     resp.push(item);
 }
 
