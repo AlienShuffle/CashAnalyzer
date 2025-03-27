@@ -9,6 +9,19 @@ const cik = json.cik;
 const fiscalYearEnd = json.filings.fiscalYearEnd;
 const oldestDate = new Date('1/1/2021');
 let resp = [];
+function insertUniqueResponse(obj) {
+    const objDate = new Date(obj.filingDate);
+    for (let i = 0; i < resp.length; i++) {
+        const respDate = new Date(resp[i].filingDate);
+        if (obj.fileNumber == resp[i].fileNumber &&
+            objDate.getTime() > respDate.getTime()) {
+            resp.splice(i, 1, obj);
+            return;
+        }
+    }
+    resp.push(obj);
+}
+
 // go through each ticker report provided, see if it is in the track list, publish map if in the list.
 for (let i = 0; i < recentFilings.accessionNumber.length; i++) {
     const reportDate = recentFilings.reportDate[i];
@@ -18,10 +31,10 @@ for (let i = 0; i < recentFilings.accessionNumber.length; i++) {
     // skip non monthly funds reports.
     if (recentFilings.form[i].indexOf('MFP') < 0) continue;
 
-    const cleanCIK = cik.replace(/^0+/,'');
-    const cleanAccessionNumber = recentFilings.accessionNumber[i].replace(/-/g,'')
+    const cleanCIK = cik.replace(/^0+/, '');
+    const cleanAccessionNumber = recentFilings.accessionNumber[i].replace(/-/g, '')
     const url = `https://www.sec.gov/Archives/edgar/data/${cleanCIK}/${cleanAccessionNumber}/primary_doc.xml`;
-    resp.push({
+    insertUniqueResponse({
         "cik": cik,
         "fiscalYearEnd": fiscalYearEnd,
         "accessionNumber": cleanAccessionNumber,
