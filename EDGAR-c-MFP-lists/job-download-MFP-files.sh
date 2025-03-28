@@ -62,6 +62,10 @@ for list in $MFPlists/*.json; do
                 echo "download $cik : $accessionNumber"
                 ../bin/getEDGAR.sh "$url" >"$targetFile"
                 sleep 1
+                if grep '<title>SEC.gov | File Unavailable</title>' $targetFile; then
+                    echo "failed download: $targetFile"
+                    rm $targetFile
+                fi
                 getCount=$(($getCount + 1))
             fi
             [ $getCount -gt 10 ] && exit 1

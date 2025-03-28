@@ -7,15 +7,16 @@ const json = JSON.parse(stdinBuffer);
 const recentFilings = json.filings.recent;
 const cik = json.cik;
 const fiscalYearEnd = json.filings.fiscalYearEnd;
-const oldestDate = new Date('1/1/2021');
+const oldestDate = new Date('1/1/2023');
 let resp = [];
 function insertUniqueResponse(obj) {
-    const objDate = new Date(obj.filingDate);
     for (let i = 0; i < resp.length; i++) {
-        const respDate = new Date(resp[i].filingDate);
         if (obj.fileNumber == resp[i].fileNumber &&
-            objDate.getTime() > respDate.getTime()) {
-            resp.splice(i, 1, obj);
+            obj.reportDate.getTime() == resp[i].reportDate.getTime()) {
+            // reportDate matches, replace if newer, drop if older.
+            if (obj.filingDate.getTime() > resp[i].filingDate.getTime()) {
+                resp.splice(i, 1, obj);
+            }
             return;
         }
     }
@@ -38,9 +39,9 @@ for (let i = 0; i < recentFilings.accessionNumber.length; i++) {
         "cik": cik,
         "fiscalYearEnd": fiscalYearEnd,
         "accessionNumber": cleanAccessionNumber,
-        "filingDate": recentFilings.filingDate[i],
-        "reportDate": reportDate,
-        "acceptanceDateTime": recentFilings.acceptanceDateTime[i],
+        "filingDate": du.getDateFromYYYYMMDD(recentFilings.filingDate[i]),
+        "reportDate": newDate,
+        "acceptanceDateTime": new Date(recentFilings.acceptanceDateTime[i]),
         "form": recentFilings.form[i],
         "fileNumber": recentFilings.fileNumber[i],
         "core_type": recentFilings.core_type[i],
