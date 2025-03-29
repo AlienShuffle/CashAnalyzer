@@ -75,6 +75,6 @@ for list in $MFPlists/*.json; do
             [ $getCount -gt 15 ] && exit 1
         done
     listCount=$(($listCount + 1))
-    [ $listCount -gt 15 ] && exit 1
+    [ $listCount -gt 20 ] && exit 1
 done
 exit 0

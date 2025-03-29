@@ -9,23 +9,6 @@ const cik = json.cik;
 const fiscalYearEnd = json.filings.fiscalYearEnd;
 const oldestDate = new Date('1/1/2023');
 let resp = [];
-function insertUniqueResponse(obj) {
-    /*
-    * we are not doing unique inputs, here. found out updated reports are only partial.
-    for (let i = 0; i < resp.length; i++) {
-        if (obj.fileNumber == resp[i].fileNumber &&
-            obj.reportDate.getTime() == resp[i].reportDate.getTime()) {
-            // reportDate matches, replace if newer, drop if older.
-            if (obj.filingDate.getTime() > resp[i].filingDate.getTime()) {
-                resp.splice(i, 1, obj);
-            }
-            return;
-        }
-    }
-    */
-    resp.push(obj);
-}
-
 // go through each ticker report provided, see if it is in the track list, publish map if in the list.
 for (let i = 0; i < recentFilings.accessionNumber.length; i++) {
     const reportDate = recentFilings.reportDate[i];
@@ -38,7 +21,7 @@ for (let i = 0; i < recentFilings.accessionNumber.length; i++) {
     const cleanCIK = cik.replace(/^0+/, '');
     const cleanAccessionNumber = recentFilings.accessionNumber[i].replace(/-/g, '')
     const url = `https://www.sec.gov/Archives/edgar/data/${cleanCIK}/${cleanAccessionNumber}/primary_doc.xml`;
-    insertUniqueResponse({
+    resp.push({
         "cik": cik,
         "fiscalYearEnd": fiscalYearEnd,
         "accessionNumber": cleanAccessionNumber,

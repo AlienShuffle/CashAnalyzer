@@ -1,7 +1,4 @@
-import {
-    duGetISOString,
-    duGetDateFromYYYYMMDD,
-} from "../lib/dateUtils.mjs";
+import { duGetDateFromYYYYMMDD } from "../lib/dateUtils.mjs";
 import { XMLParser } from 'fast-xml-parser';
 import { XMLValidator } from 'fast-xml-parser';
 import { readFileSync } from 'fs';
@@ -309,7 +306,6 @@ function processClassInfo(classInfo) {
     item.filingDate = filingDate;
     resp.push(item);
 }
-
 
 if (Array.isArray(classLevelInfo)) {
     for (let classIndex = 0; classIndex < classLevelInfo.length; classIndex++) {
