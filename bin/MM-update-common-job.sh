@@ -88,7 +88,7 @@ csvRateAllFlare="$cloudFlareHome/$accountClass/all-rates.csv"
 #  - note, if -f is passed to this script, I will run the script regardless, but still report the aging status.
 #
 if [ -n "$injectProcessedJson" ] && [ -s "$injectProcessedJson" ]; then
-    echo "Using $injectProcessedJson instead of querying online source."
+    #echo "Using $injectProcessedJson instead of querying online source."
     jsonRateNew="$injectProcessedJson"
 else
     pubDelaySeconds=$(($pubDelayHours * 60 * 60))

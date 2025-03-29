@@ -211,3 +211,4 @@ EDGAR-d-MFP-parse/tickers/*.json
 EDGAR-d-MFP-parse/sortReportDate.js
 */tmp.json
 EDGAR-c-MFP-lists/MFP-files.old/*/*.xml
+EDGAR-d-MFP-parse/yields/*/*.json

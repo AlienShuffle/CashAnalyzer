@@ -54,10 +54,12 @@ if [ ! -s "$fiscalYears" ]; then
     exit 1
 fi
 monthlyReport="reports"
+yieldReports="yields"
 
 find $MFPFilesDir -type f -name '*.xml' -print |
     while read -r xmlFile; do
-        cikDir="$monthlyReport/$(dirname $xmlFile | sed -e 's/^.*\///')"
+        accession=$(dirname $xmlFile | sed -e 's/^.*\///')
+        cikDir="$monthlyReport/$accession"
         [ -d "$cikDir" ] || mkdir -p "$cikDir"
         #echo looking at $xmlFile
         newFile="$cikDir/$(basename $xmlFile | sed -e 's/\.xml/\.json/')"
@@ -66,6 +68,14 @@ find $MFPFilesDir -type f -name '*.xml' -print |
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$xmlFile" -nt "$newFile" ]; then
             echo processing $xmlFile
             node node-parse-MFP-file.js "$CIKmap" "$fiscalYears" "$filingDate" <"$xmlFile" | jq . >"$newFile"
+        fi
+        yieldDir="$yieldReports/$accession"
+        [ -d "$yieldDir" ] || mkdir -p "$yieldDir"
+        yieldFile="$yieldDir/$(basename $xmlFile | sed -e 's/\.xml/\.json/')"
+        if [ -n "$forceRun" ] || [ ! -s "$yieldFile" ] || [ "$xmlFile" -nt "$yieldFile" ]; then
+            echo processing yield for $xmlFile
+            node node-parse-MFP-yield.js "$CIKmap" <"$xmlFile" | jq . >"$yieldFile"
+            ../bin/MM-update-common-job.sh --injectProcessedJson $yieldFile
         fi
     done
 exit 0
