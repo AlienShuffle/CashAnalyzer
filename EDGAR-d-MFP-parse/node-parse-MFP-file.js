@@ -1,3 +1,7 @@
+import {
+    duGetISOString,
+    duGetDateFromYYYYMMDD,
+} from "../lib/dateUtils.mjs";
 import { XMLParser } from 'fast-xml-parser';
 import { XMLValidator } from 'fast-xml-parser';
 import { readFileSync } from 'fs';
@@ -42,6 +46,9 @@ function findFiscalYear(cik) {
     }
 }
 if (debug) console.log('fiscalYears.length=' + fiscalYears.length)
+
+// This is passed into the program as it is only known in the metadata.
+const filingDate = process.argv[4];
 
 // read in the MFP XML file from stdin.
 const xmlFile = readFileSync(process.stdin.fd, 'utf8');
@@ -243,12 +250,23 @@ function processClassInfo(classInfo) {
 
     // Find the last 7 day yield published on this report.
     const sevenDayYields = classInfo.sevenDayNetYield;
+    let lastSevenDayYieldIndex = 0;
+    let lastSevenDayYieldDate;
+    if (submissionType != 'N-MFP2') {
+        lastSevenDayYieldDate = duGetDateFromYYYYMMDD(sevenDayYields[0].sevenDayNetYieldDate);
+        for (let i = 1; i < sevenDayYields.length; i++) {
+            if (lastSevenDayYieldDate < sevenDayYields[i].sevenDayNetYieldDate) {
+                lastSevenDayYieldIndex = i;
+                lastSevenDayYieldDate = duGetDateFromYYYYMMDD(sevenDayYields[i].sevenDayNetYieldDate);
+            }
+        }
+    }
     const yieldValue = (submissionType == 'N-MFP2') ?
-        classInfo.sevenDayNetYield :
-        classInfo.sevenDayNetYield[sevenDayYields.length - 1].sevenDayNetYieldValue;
+        sevenDayYields :
+        sevenDayYields[lastSevenDayYieldIndex].sevenDayNetYieldValue;
     const yieldDate = (submissionType == 'N-MFP2') ?
         reportDate :
-        classInfo.sevenDayNetYield[sevenDayYields.length - 1].sevenDayNetYieldDate;
+        sevenDayYields[lastSevenDayYieldIndex].sevenDayNetYieldDate;
 
     // only process assets once and only if we have a class match.
     if (!totalAssetsProcessed) {
@@ -288,6 +306,7 @@ function processClassInfo(classInfo) {
     }
     item["USGO"] = (totalUSGO / totalAssetsProcessed).toFixed(5) * 1;
     item["Muni"] = (totalExempt / totalAssetsProcessed).toFixed(5) * 1;
+    item.filingDate = filingDate;
     resp.push(item);
 }
 

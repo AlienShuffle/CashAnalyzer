@@ -10,6 +10,8 @@ const fiscalYearEnd = json.filings.fiscalYearEnd;
 const oldestDate = new Date('1/1/2023');
 let resp = [];
 function insertUniqueResponse(obj) {
+    /*
+    * we are not doing unique inputs, here. found out updated reports are only partial.
     for (let i = 0; i < resp.length; i++) {
         if (obj.fileNumber == resp[i].fileNumber &&
             obj.reportDate.getTime() == resp[i].reportDate.getTime()) {
@@ -20,6 +22,7 @@ function insertUniqueResponse(obj) {
             return;
         }
     }
+    */
     resp.push(obj);
 }
 
@@ -39,9 +42,9 @@ for (let i = 0; i < recentFilings.accessionNumber.length; i++) {
         "cik": cik,
         "fiscalYearEnd": fiscalYearEnd,
         "accessionNumber": cleanAccessionNumber,
-        "filingDate": du.getDateFromYYYYMMDD(recentFilings.filingDate[i]),
-        "reportDate": newDate,
-        "acceptanceDateTime": new Date(recentFilings.acceptanceDateTime[i]),
+        "filingDate": recentFilings.filingDate[i],
+        "reportDate": reportDate,
+        "acceptanceDateTime": recentFilings.acceptanceDateTime[i],
         "form": recentFilings.form[i],
         "fileNumber": recentFilings.fileNumber[i],
         "core_type": recentFilings.core_type[i],

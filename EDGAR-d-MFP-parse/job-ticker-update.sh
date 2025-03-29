@@ -82,7 +82,6 @@ cat $fundList |
 
         jsonFlare="$cloudFlareHome/$accountClass/$ticker/EDGAR-$ticker-reports.json"
         csvFlare="$cloudFlareHome/$accountClass/$ticker/EDGAR-$ticker-reports.csv"
-
         if ../bin/jsonDifferent.sh "$tickerFile" "$jsonFlare"; then
             cat "$tickerFile" >"$jsonFlare"
             echo "published updated $ticker EDGAR cloudFlare history file."
@@ -92,7 +91,6 @@ cat $fundList |
             ) >"$csvFlare"
             #echo "published updated cloudflare csv file."
         fi
-
     done
 rm -f tmp.json
 exit 0
