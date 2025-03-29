@@ -252,9 +252,10 @@ function processClassInfo(classInfo) {
     if (submissionType != 'N-MFP2') {
         lastSevenDayYieldDate = duGetDateFromYYYYMMDD(sevenDayYields[0].sevenDayNetYieldDate);
         for (let i = 1; i < sevenDayYields.length; i++) {
-            if (lastSevenDayYieldDate < sevenDayYields[i].sevenDayNetYieldDate) {
+            const newDate = duGetDateFromYYYYMMDD(sevenDayYields[i].sevenDayNetYieldDate);
+            if (lastSevenDayYieldDate.getTime() < newDate.getTime()) {
                 lastSevenDayYieldIndex = i;
-                lastSevenDayYieldDate = duGetDateFromYYYYMMDD(sevenDayYields[i].sevenDayNetYieldDate);
+                lastSevenDayYieldDate = newDate;
             }
         }
     }
