@@ -62,7 +62,7 @@ find $MFPFilesDir -type f -name '*.xml' -print |
         #echo looking at $xmlFile
         newFile="$cikDir/$(basename $xmlFile | sed -e 's/\.xml/\.json/')"
         filingDate=$(basename $xmlFile | cut -d- -f1-3)
-        echo "filingDate=$filingDate"
+        #echo "filingDate=$filingDate"
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$xmlFile" -nt "$newFile" ]; then
             echo processing $xmlFile
             node node-parse-MFP-file.js "$CIKmap" "$fiscalYears" "$filingDate" <"$xmlFile" | jq . >"$newFile"

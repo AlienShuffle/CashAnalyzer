@@ -56,7 +56,7 @@ for list in $MFPlists/*.json; do
             accessionNumber=$(echo $entry | cut -d, -f2)
             url=$(echo $entry | cut -d, -f3)
             filingDate=$(echo $entry | cut -d, -f4)
-            echo "filingDate=$filingDate"
+            #echo "filingDate=$filingDate"
             targetDir="$MFPfiles/$cik"
             [ -d "$targetDir" ] || mkdir -p "$targetDir"
             targetFile="$targetDir/$filingDate-$accessionNumber.xml"
@@ -69,12 +69,12 @@ for list in $MFPlists/*.json; do
                     rm $targetFile
                 fi
                 getCount=$(($getCount + 1))
-            else
-                echo "already downloaded: $cik/$filingDate-$accessionNumber"
+            #else
+            #    echo "already downloaded: $cik/$filingDate-$accessionNumber"
             fi
-            [ $getCount -gt 9 ] && exit 1
+            [ $getCount -gt 15 ] && exit 1
         done
     listCount=$(($listCount + 1))
-    [ $listCount -gt 1 ] && exit 1
+    [ $listCount -gt 15 ] && exit 1
 done
 exit 0
