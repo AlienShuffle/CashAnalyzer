@@ -10,4 +10,4 @@ find EDGAR-d-MFP-parse/yields -type f -name '*.json' -print | wc -l
 echo number of tickers tracked with MM reports
 find EDGAR-d-MFP-parse/tickers -type f -name '*.json' -print | wc -l
 echo number of tickers tracked with yield reports
-find EDGAR-d-MFP-parse/history -type d  -print | wc -l
+find EDGAR-d-MFP-parse/history -type f -name 'rate-new.json'  -print | wc -l

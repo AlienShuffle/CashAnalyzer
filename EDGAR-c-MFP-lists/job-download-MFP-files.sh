@@ -72,7 +72,7 @@ for list in $MFPlists/*.json; do
             #else
             #    echo "already downloaded: $cik/$filingDate-$accessionNumber"
             fi
-            [ $getCount -gt 15 ] && exit 1
+            [ $getCount -gt 19 ] && exit 1
         done
     listCount=$(($listCount + 1))
     #[ $listCount -gt 20 ] && exit 1
