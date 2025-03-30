@@ -64,14 +64,17 @@ function processClassInfo(classInfo) {
     const sevenDayYields = classInfo.sevenDayNetYield;
     if (submissionType != 'N-MFP2') {
         for (let i = 1; i < sevenDayYields.length; i++) {
-            resp.push({
-                "asOfDate": sevenDayYields[i].sevenDayNetYieldDate,
-                "price": 1,
-                "sevenDayYield": sevenDayYields[i].sevenDayNetYieldValue.toFixed(5) * 1,
-                "source": 'EDGAR MFP-3',
-                "ticker": match.ticker,
-                "timestamp": timestamp,
-            });
+            const yieldNum = sevenDayYields[i].sevenDayNetYieldValue.toFixed(5) * 1;
+            if (yieldNum > 0) {
+                resp.push({
+                    "asOfDate": sevenDayYields[i].sevenDayNetYieldDate,
+                    "price": 1,
+                    "sevenDayYield": yieldNum,
+                    "source": 'EDGAR MFP-3',
+                    "ticker": match.ticker,
+                    "timestamp": timestamp,
+                });
+            }
         }
     } else {
         resp.push({
