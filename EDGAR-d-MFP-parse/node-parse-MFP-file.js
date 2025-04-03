@@ -195,19 +195,19 @@ let investmentCategories = [
         "category": "insuranceCompanyFundingAgreement",
         "EDGAR": "Insurance Company Funding Agreement"
     },
-    { // MFP-3
+    { // MFP-3 - add as exempt to Muni Funds, otherwise taxable.
         "value": 0,
         "treatment": "other",
         "category": "financialCompanyCommercialPaper",
         "EDGAR": "Financial Company Commercial Paper"
     },
-    { // MFP-2
+    { // MFP-2 - add as exempt to Muni Funds, otherwise taxable.
         "value": 0,
         "treatment": "other",
         "category": "financialCompanyCommercialPaper",
         "EDGAR": "Investment Company"
     },
-    {
+    { // add as exempt to Muni Funds, otherwise taxable.
         "value": 0,
         "treatment": "other",
         "category": "nonFinancialCompanyCommercialPaper",
@@ -237,6 +237,7 @@ function getCategory(EDGAR) {
 let totalAssetsProcessed = 0;
 let totalUSGO = 0;
 let totalExempt = 0;
+const timestamp = new Date;
 let resp = [];
 function processClassInfo(classInfo) {
     // let's find out if this class is one we want to report.
@@ -271,10 +272,22 @@ function processClassInfo(classInfo) {
         for (let i = 0; i < scheduleOfPortfolioSecuritiesInfo.length; i++) {
             const category = getCategory(scheduleOfPortfolioSecuritiesInfo[i].investmentCategory);
             const value = scheduleOfPortfolioSecuritiesInfo[i].includingValueOfAnySponsorSupport * 1;
+            totalAssetsProcessed += value;
             investmentCategories[category].value += value;
             if (investmentCategories[category].treatment == 'USGO') totalUSGO += value;
-            if (investmentCategories[category].treatment == 'exempt') totalExempt += value;
-            totalAssetsProcessed += value;
+
+            // total Muni assets, commercial paper is exempt only in Exmempt funds, therefore special processing.
+            if (
+                (investmentCategories[category].treatment == 'exempt') ||
+                (
+                    (moneyMarketFundCategory == 'Muni' || moneyMarketFundCategory == 'SingleState') &&
+                    (investmentCategories[category].category == 'financialCompanyCommercialPaper' ||
+                        investmentCategories[category].category == 'nonFinancialCompanyCommercialPaper')
+                )
+            ) {
+                totalExempt += value;
+            }
+
         }
     }
 
@@ -305,6 +318,7 @@ function processClassInfo(classInfo) {
     item["USGO"] = (totalUSGO / totalAssetsProcessed).toFixed(5) * 1;
     item["Muni"] = (totalExempt / totalAssetsProcessed).toFixed(5) * 1;
     item.filingDate = filingDate;
+    item.timestamp = timestamp;
     resp.push(item);
 }
 
