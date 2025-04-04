@@ -135,7 +135,7 @@ grep cusip "$jsonRateNew" | sed 's/^.*cusip": "//' | sed 's/",$//' | sort -u |
                 echo 'asOfDate, cusip, securitytype, rate, maturitydate, calldate, buy, sell, endofday, key'
                 jq -r '.[] | [.asOfDate, .cusip, .securitytype, .rate, .maturitydate, .calldate, .buy, .sell, .endofday, .key] | @csv' "$jsonHistoryUnique"
             ) >"$csvHistoryFlare"
-            echo "published updated $sourceName cloudFlare history file."
+            #echo "published updated $sourceName cloudFlare history file."
         fi
     done
 ###################################################
@@ -167,6 +167,6 @@ if [[ $dateFlare < $dateNew ]]; then
         echo 'asOfDate, cusip, securitytype, rate, maturitydate, calldate, buy, sell, endofday, key'
         jq -r '.[] | [.asOfDate, .cusip, .securitytype, .rate, .maturitydate, .calldate, .buy, .sell, .endofday, .key] | @csv' "$jsonRateNew"
     ) >"$csvRateFlare"
-    echo "published updated $sourceName cloudFlare rate file."
+    #echo "published updated $sourceName cloudFlare rate file."
 fi
 exit 0

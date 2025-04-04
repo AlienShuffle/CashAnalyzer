@@ -41,6 +41,10 @@ source ../meta.$(hostname).sh
 # create data source file paths.
 submissionsCIKs="submissionsCIKs.txt"
 
+# run more often during the reporting period of the month.
+dayOfMonth=$(date +'%d')
+[ $dayOfMonth -gt 3 ] && [ $dayOfMonth -lt 10 ] && runDelayHours=4
+
 runDelaySeconds=$(($runDelayHours * 60 * 60))
 if [ -s "$submissionsCIKs" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$submissionsCIKs")))" -lt "$runDelaySeconds" ]; then
     echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$submissionsCIKs" | cut -d: -f1,2)"
