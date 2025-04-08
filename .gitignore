@@ -213,3 +213,6 @@ EDGAR-d-MFP-parse/sortReportDate.js
 EDGAR-c-MFP-lists/MFP-files.old/*/*.xml
 EDGAR-d-MFP-parse/yields/*/*.json
 EDGAR-d-MFP-parse/old.*
+EDGAR-c-MFP-lists/NCEN-lists/*.json
+*/cookie.jar.txt
+*/x.json

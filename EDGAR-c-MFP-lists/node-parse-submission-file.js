@@ -1,13 +1,17 @@
 const du = require('../lib/dateUtils.js');
 const fs = require("fs");
+const process = require("process");
 
-// read in from stdin, the list of submissions for this CIK and pull out post-2020 MFP reports and report.
+// If an argv[2] is provided, use as parsing rule for formType to extract.
+const formType = (process.argv[2] && process.argv[2].length > 1) ? process.argv[2] : 'MFP';
+
+// read in from stdin, the list of submissions for this CIK and pull out the requested reports and export the details.
 const stdinBuffer = fs.readFileSync(0, 'utf-8');
 const json = JSON.parse(stdinBuffer);
 const recentFilings = json.filings.recent;
 const cik = json.cik;
 const fiscalYearEnd = json.filings.fiscalYearEnd;
-const oldestDate = new Date('1/1/2023');
+const oldestDate = new Date('3/1/2022');
 let resp = [];
 // go through each ticker report provided, see if it is in the track list, publish map if in the list.
 for (let i = 0; i < recentFilings.accessionNumber.length; i++) {
@@ -15,8 +19,8 @@ for (let i = 0; i < recentFilings.accessionNumber.length; i++) {
     const newDate = du.getDateFromYYYYMMDD(reportDate);
     // skip old reports.
     if (newDate.getTime() < oldestDate.getTime()) continue;
-    // skip non monthly funds reports.
-    if (recentFilings.form[i].indexOf('MFP') < 0) continue;
+    // skip reports we aren't interested in.
+    if (recentFilings.form[i].indexOf(formType) < 0) continue;
 
     const cleanCIK = cik.replace(/^0+/, '');
     const cleanAccessionNumber = recentFilings.accessionNumber[i].replace(/-/g, '')
