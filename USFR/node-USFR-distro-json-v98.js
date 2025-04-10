@@ -43,12 +43,12 @@ function run() {
                             exDividendDate: (row[0]) ? swapDate(row[0]) : '',
                             recordDate: (row[1]) ? swapDate(row[1]) : '',
                             payableDate: (row[2]) ? swapDate(row[2]) : '',
-                            ordinaryIncome: row[3] * 1,
-                            stcg: row[4] * 1,
-                            ltcg: row[5] * 1,
-                            returnOfCapital: row[6] * 1,
-                            totalDistribution: row[7] * 1
                         };
+                        if ((row[3] * 1) > 0) rowData.ordinaryIncome = row[3] * 1;
+                        if ((row[4] * 1) > 0) rowData.stcg = row[4] * 1;
+                        if ((row[5] * 1) > 0) rowData.ltcg = row[5] * 1;
+                        if ((row[6] * 1) > 0) rowData.returnOfCapital = row[6] * 1;
+                        if ((row[7] * 1) > 0) rowData.totalDistribution = row[7] * 1;
                         results.push(rowData);
                     }
                 });

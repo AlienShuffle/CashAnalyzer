@@ -44,7 +44,6 @@ jsonNew="history/$ticker-distro-new.json"
 jsonFlare="$cloudFlareHome/ETFs/$ticker/$ticker-distros.json"
 jsonUnique="history/$ticker-distro-new-unique.json"
 [ -d history ] || mkdir -p history
-
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
 #  - note, if $1 to to this script is not empty, I will run the script regardless, but report the aging status too.
@@ -72,11 +71,11 @@ if [ ! $? ]; then
   echo "$ticker distro retrieval failed, exiting."
   exit 1
 fi
-rm -f "$curlFile"
 if [ ! -s "$jsonNew" ]; then
   echo "Empty new $ticker distro file."
   exit 1
 fi
+rm -f "$curlFile"
 # this should merge the old and new, removing duplicates and keeping newest.
 if [ -s "$jsonFlare" ]; then
   jq -s 'flatten | unique_by(.exDividendDate) | reverse' "$jsonNew" "$jsonFlare" >"$jsonUnique"

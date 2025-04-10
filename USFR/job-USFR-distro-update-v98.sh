@@ -40,19 +40,9 @@ else
   cat "$jsonNew" >"$jsonUnique"
 fi
 # publish cloudFlare files.
-lenNew=$(grep -o returnOfCapital "$jsonNew" | wc -l)
-if [ -s "$jsonFlare" ]; then
-  lenFlare=$(grep -o returnOfCapital "$jsonFlare" | wc -l)
-else
-  lenFlare=0
-  echo "USFR distro cloudFlare history file has not been published."
-  dir=$(dirname "$jsonFlare")
-  [ -d "$dir" ] || mkdir -p "$dir"
-fi
-echo "entries new($lenNew) :: pub($lenFlare)"
-lenUnique=$(grep -o returnOfCapital "$jsonUnique" | wc -l)
-echo "entries unique($lenUnique)"
-if [ $lenUnique -gt $lenFlare ]; then
+dir=$(dirname "$jsonFlare")
+[ -d "$dir" ] || mkdir -p "$dir"
+if ../bin/jsonDifferent.sh "$jsonUnique" "$jsonFlare"; then
   cat "$jsonUnique" >"$jsonFlare"
   echo "published updated cloudFlare USFR distro history file."
 fi
