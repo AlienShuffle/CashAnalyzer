@@ -17,8 +17,11 @@ for (let i = 0; i < downloadedList.length; i++) {
     const path = downloadedList[i];
     if (path.length == 0) continue;
     const pathSplits = path.split('/');
+    // use jus the file name, not the whole path.
     const fileName = pathSplits[pathSplits.length - 1];
+    // lop off the file type suffix.
     const accessionNumber = fileName.replace('.xml', '').replace('.json', '');
-    if (isValidAccession(accessionNumber)) continue;
+    // only use last 18 characters, as beginning of file name includes filingDate
+    if (isValidAccession(accessionNumber.substring(accessionNumber.length-18))) continue;
     console.log(path);
 }
