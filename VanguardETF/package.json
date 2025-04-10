@@ -1,0 +1,15 @@
+{
+  "name": "vbil",
+  "version": "0.0.1",
+  "description": "Retrieve quotes and fund facts from vanguard.com for VBIL",
+  "keywords": [
+    "Puppeteer",
+    "GCF",
+    "VBIL ETF"
+  ],
+  "author": "AlienShuffle",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^23.2.1"
+  }
+}
