@@ -8,8 +8,5 @@
     "VBIL ETF"
   ],
   "author": "AlienShuffle",
-  "license": "MIT",
-  "dependencies": {
-    "puppeteer": "^23.2.1"
-  }
+  "license": "MIT"
 }

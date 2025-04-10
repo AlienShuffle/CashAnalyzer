@@ -219,3 +219,4 @@ EDGAR-c-MFP-lists/NCEN-lists/*.json
 VBIL/bnd.json
 */*-distro-new-unique.json
 */*-file.json
+VanguardETF/history/*.json
