@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-//https://data.sec.gov/submissions/CIK0000320193.json 
+// https://data.sec.gov/submissions/CIK0000320193.json 
 
 // read in from stdin, the CIKD list and create a stream of URLs for download.
 const stdinBuffer = fs.readFileSync(0, 'utf-8');

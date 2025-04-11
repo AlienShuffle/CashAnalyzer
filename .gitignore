@@ -220,3 +220,5 @@ VBIL/bnd.json
 */*-distro-new-unique.json
 */*-file.json
 VanguardETF/history/*.json
+EDGAR-b-submissions/submissions-ext/*.json
+EDGAR-b-submissions/submissionExtensionFile.json
