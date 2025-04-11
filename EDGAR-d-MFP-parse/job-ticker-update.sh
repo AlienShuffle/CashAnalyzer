@@ -43,7 +43,7 @@ if [ ! -s "$CIKmap" ]; then
     echo "$CIKmap does not exist, exiting..."
     exit 1
 fi
-fundList="../mmFunCurr/mmFunCurr-funds.txt"
+fundList="../EDGAR-a-CIK/funds-list.txt"
 if [ ! -s "$fundList" ]; then
     echo "$fundList does not exist, exiting..."
     exit 1
