@@ -8,8 +8,10 @@ const ticker = (process.argv[2]) ? process.argv[2] : null;
 // read in from stdin, the yieldFinder.app source data json file.
 const stdinBuffer = fs.readFileSync(0, 'utf-8');
 const json = JSON.parse(stdinBuffer);
-const timestamp = new Date();
 const distros = json.divCapGain.item;
+// check if distro list is empty.
+if ((typeof distros === "undefined")) process.exit(1);
+const timestamp = new Date();
 let resp = [];
 for (let i = 0; i < distros.length; i++) {
     const distro = distros[i];
