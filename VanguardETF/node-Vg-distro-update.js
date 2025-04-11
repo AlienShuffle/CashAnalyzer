@@ -48,7 +48,7 @@ for (let i = 0; i < distros.length; i++) {
             resp[recordDate].totalDistribution += amount;
             break;
         default:
-            console.log('unknown distributions type = ' + distro.type);
+            console.error('unknown distributions type = ' + distro.type);
             break;
     }
     resp[recordDate].totalDistribution = resp[recordDate].totalDistribution.toFixed(6) * 1;

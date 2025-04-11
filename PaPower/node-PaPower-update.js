@@ -24,7 +24,7 @@ function run() {
             '&usage=1300' +         // typical house.
             //'&term-length=12' +   // comment out if you want all term lengths.
             '&min-price=.05' +
-            '&max-price=.12' +      // this may need to be increased depending on rates.
+            '&max-price=.15' +      // this may need to be increased depending on rates.
             '&ratePreferences%5B%5D=fixed&offerPreferences%5B%5D=no_cancellation' +
             '&offerPreferences%5B%5D=no_enrollment' +
             '&offerPreferences%5B%5D=no_monthly' +
