@@ -222,3 +222,4 @@ VBIL/bnd.json
 VanguardETF/history/*.json
 EDGAR-b-submissions/submissions-ext/*.json
 EDGAR-b-submissions/submissionExtensionFile.json
+USFR/history/*.json

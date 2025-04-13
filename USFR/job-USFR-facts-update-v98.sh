@@ -45,17 +45,22 @@ echo dateNew=$dateNew
 #
 # cloudFlare files.
 #
-if [ -s "$jsonFlare" ]; then
-  dateFlare=$(grep asOfDate "$jsonFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-else
-  dateFlare=""
+if [ ! -s "$jsonFlare" ]; then
   echo "USFR cloudFlare facts file not has been published."
   dir=$(dirname "$jsonFlare")
   [ -d "$dir" ] || mkdir -p "$dir"
 fi
-echo dateFlare=$dateFlare
-if [[ $dateFlare < $dateNew ]]; then
+if ../bin/jsonDifferent.sh "$jsonFlare" "$jsonNew"; then
   cat "$jsonNew" >"$jsonFlare"
   echo "published updated USFR cloudFlare facts file."
 fi
+#
+# Turn current SEC Yield data into a rates history similar to MM funds, but in the ETFs folder.
+#
+cat $jsonNew |
+  ../bin/MM-update-common-job.sh \
+    --accountClass ETFs \
+    --sourceName USFR \
+    --processScript ./node-update-USFR-yields.js \
+    --pubDelay 20 --runDelay 2 "$@"
 exit 0

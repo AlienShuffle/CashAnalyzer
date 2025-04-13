@@ -75,7 +75,7 @@ if [ ! -s "$jsonNew" ]; then
   echo "Empty new $ticker distro file."
   exit 1
 fi
-rm -f "$curlFile"
+
 # this should merge the old and new, removing duplicates and keeping newest.
 if [ -s "$jsonFlare" ]; then
   jq -s 'flatten | unique_by(.exDividendDate) | reverse' "$jsonNew" "$jsonFlare" >"$jsonUnique"
@@ -89,4 +89,15 @@ if ../bin/jsonDifferent.sh "$jsonUnique" "$jsonFlare"; then
   cat "$jsonUnique" >"$jsonFlare"
   echo "published updated cloudFlare $ticker distro history file."
 fi
+#
+# Turn current SEC Yield data into a rates history similar to MM funds, but in the ETFs folder.
+#
+cat "$curlFile" |
+  ../bin/MM-update-common-job.sh \
+    --accountClass ETFs \
+    --sourceName "$ticker" \
+    --nodeArg "$ticker" \
+    --processScript ./node-Vg-yield-update.js \
+    --pubDelay 20 --runDelay 2 "$@"
+rm -f "$curlFile"
 exit 0
