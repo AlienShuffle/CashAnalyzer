@@ -209,7 +209,6 @@ EDGAR-a-CIK/co_tickers_mf.json
 EDGAR-a-CIK/investment-map.xml
 EDGAR-d-MFP-parse/tickers/*.json
 EDGAR-d-MFP-parse/sortReportDate.js
-*/tmp.json
 EDGAR-c-MFP-lists/MFP-files.old/*/*.xml
 EDGAR-d-MFP-parse/yields/*/*.json
 EDGAR-d-MFP-parse/old.*
@@ -217,10 +216,11 @@ EDGAR-c-MFP-lists/NCEN-lists/*.json
 */cookie.jar.txt
 */x.json
 VBIL/bnd.json
-*/*-distro-new-unique.json
 */*-file.json
-VanguardETF/history/*.json
 EDGAR-b-submissions/submissions-ext/*.json
 EDGAR-b-submissions/submissionExtensionFile.json
-USFR/history/*.json
 */history/*-rate-new.json
+*/history/*-new.json
+*/history/*-distro-new-unique.json
+*/history/history-*.json
+*/tmp.json

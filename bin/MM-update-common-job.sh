@@ -78,7 +78,8 @@ if [ -z "$processScript" ]; then
     processScript="./node-$sourceName-update.js"
 fi
 # create data source file paths.
-jsonRateNew="$sourceName-rate-new.json"
+[ -d history ] || mkdir history
+jsonRateNew="history/$sourceName-rate-new.json"
 jsonRateFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-rates.json"
 csvRateFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-rates.csv"
 jsonRateAllFlare="$cloudFlareHome/$accountClass/all-rates.json"
@@ -121,11 +122,10 @@ else
             $collectionScript >"$tmpCollect"
         fi
         #echo "running node $processScript"
-        cat "$tmpCollect" | node $processScript $nodeArg | jq . >"$jsonRateNew"
+        cat "$tmpCollect" | node $processScript "$nodeArg" | jq . >"$jsonRateNew"
         rm -f "$tmpCollect"
-    elif [ -s "$stdInFile" ]; then
-        node $processScript "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
     else
+        #echo "node $processScript $nodeArg | jq . >$jsonRateNew"; exit 1
         node $processScript "$nodeArg" | jq . >"$jsonRateNew"
     fi
     if [ ! $? ]; then
