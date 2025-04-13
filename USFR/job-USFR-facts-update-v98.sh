@@ -1,6 +1,6 @@
 source ../meta.$(hostname).sh
 jsonNew=USFR-facts-new-v98.json
-jsonFlare="$cloudFlareHome/ETFs/USFR/USFR-facts.json"
+jsonFlare="$cloudFlareHome/Funds/USFR/USFR-facts.json"
 #echo jsonNew=$jsonNew
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
@@ -55,11 +55,11 @@ if ../bin/jsonDifferent.sh "$jsonFlare" "$jsonNew"; then
   echo "published updated USFR cloudFlare facts file."
 fi
 #
-# Turn current SEC Yield data into a rates history similar to MM funds, but in the ETFs folder.
+# Turn current SEC Yield data into a rates history similar to MM funds, but in the Funds folder.
 #
 cat $jsonNew |
   ../bin/MM-update-common-job.sh \
-    --accountClass ETFs \
+    --accountClass Funds \
     --sourceName USFR \
     --processScript ./node-update-USFR-yields.js \
     --pubDelay 20 --runDelay 2 "$@"

@@ -1,6 +1,6 @@
 source ../meta.$(hostname).sh
 jsonNew="USFR-distro-new-v98.json"
-jsonFlare="$cloudFlareHome/ETFs/USFR/USFR-distros.json"
+jsonFlare="$cloudFlareHome/Funds/USFR/USFR-distros.json"
 jsonUnique="USFR-distro-new-unique-v98.json"
 #echo jsonNew=$jsonNew
 #

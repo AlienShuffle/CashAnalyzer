@@ -41,7 +41,7 @@ fi
 
 source ../meta.$(hostname).sh
 jsonNew="history/$ticker-distro-new.json"
-jsonFlare="$cloudFlareHome/ETFs/$ticker/$ticker-distros.json"
+jsonFlare="$cloudFlareHome/Funds/$ticker/$ticker-distros.json"
 jsonUnique="history/$ticker-distro-new-unique.json"
 [ -d history ] || mkdir -p history
 #
@@ -90,11 +90,11 @@ if ../bin/jsonDifferent.sh "$jsonUnique" "$jsonFlare"; then
   echo "published updated cloudFlare $ticker distro history file."
 fi
 #
-# Turn current SEC Yield data into a rates history similar to MM funds, but in the ETFs folder.
+# Turn current SEC Yield data into a rates history similar to MM funds, but in the Funds folder.
 #
 cat "$curlFile" |
   ../bin/MM-update-common-job.sh \
-    --accountClass ETFs \
+    --accountClass Funds \
     --sourceName "$ticker" \
     --nodeArg "$ticker" \
     --processScript ./node-Vg-yield-update.js \

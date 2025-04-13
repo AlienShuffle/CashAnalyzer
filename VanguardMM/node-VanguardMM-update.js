@@ -1,9 +1,10 @@
 const du = require('../lib/dateUtils.js');
 // Work on POSIX and Windows
-const fs = require("fs");
+const fs = require('fs');
+const process = require('process');
 
 function safeObjectRef(obj) {
-    if (typeof obj === "undefined") return "";
+    if (typeof obj === 'undefined') return '';
     return obj;
 }
 
