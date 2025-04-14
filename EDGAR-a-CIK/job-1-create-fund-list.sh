@@ -42,9 +42,6 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-# create data source file paths.
-fundsList="mmFunCurr-funds.txt"
-
 runDelaySeconds=$(($runDelayHours * 60 * 60))
 if [ -s "$fundsList" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$fundsList")))" -lt "$runDelaySeconds" ]; then
     echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$fundsList" | cut -d: -f1,2)"

@@ -43,14 +43,13 @@ if [ ! -s "$CIKmap" ]; then
     echo "$CIKmap does not exist, exiting..."
     exit 1
 fi
-fundList="../EDGAR-a-CIK/funds-list.txt"
-if [ ! -s "$fundList" ]; then
-    echo "$fundList does not exist, exiting..."
+if [ -z "$fundsList" } || [ ! -s "$fundsList" ]; then
+    echo "$fundsList does not exist, exiting..."
     exit 1
 fi
 [ -d tickers ] || mkdir -p tickers
 
-cat $fundList |
+cat $fundsList |
     while read -r ticker; do
         cik=$(node ./node-ticker-CIK-map.js "$ticker" <"$CIKmap")
         if [ ! -n "$cik" ]; then

@@ -290,6 +290,16 @@
     "class": "C000026147"
   },
   {
+    "ticker": "PVOXX",
+    "entity_name": "Federated Hermes Money Market Obligations Trust",
+    "series_name": "Federated Hermes Institutional Prime Value Obligations Fund",
+    "class_name": "Institutional Shares",
+    "cik": 856517,
+    "cikTen": "0000856517",
+    "series": "S000009575",
+    "class": "C000026159"
+  },
+  {
     "ticker": "TOIXX",
     "entity_name": "Federated Hermes Money Market Obligations Trust",
     "series_name": "Federated Hermes Treasury Obligations Fund",

@@ -43,7 +43,6 @@ source ../meta.$(hostname).sh
 
 # create data source file paths.
 companyMap="CIK/company-map.json"
-fundsList="funds-list.txt"
 
 runDelaySeconds=$(($runDelayHours * 60 * 60))
 if [ -s "$companyMap" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$companyMap")))" -lt "$runDelaySeconds" ]; then
