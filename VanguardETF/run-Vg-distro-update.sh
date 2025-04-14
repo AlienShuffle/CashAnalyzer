@@ -97,6 +97,6 @@ cat "$curlFile" |
     --accountClass Funds \
     --nodeArg "$ticker" \
     --processScript ./node-Vg-yield-update.js \
-    --pubDelay 20 --runDelay 2 "$@"
+    --pubDelay $pubDelayHours --runDelay $runDelayHours "$@"
 rm -f "$curlFile"
 exit 0

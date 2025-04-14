@@ -21,7 +21,7 @@ const timestamp = new Date();
 function parseIt(item) {
     return {
         "asOfDate": du.getISOString(new Date(item.yield.asOfDate)),
-        "sevenDayYield": (item.yield.yieldPct / 100).toFixed(4) * 1,
+        "thirtyDayYield": (item.yield.yieldPct / 100).toFixed(4) * 1,
         "source": "Vanguard.com Distro",
         "ticker": ticker,
         "timestamp": timestamp,

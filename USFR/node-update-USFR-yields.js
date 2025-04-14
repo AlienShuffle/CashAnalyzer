@@ -12,7 +12,7 @@ function parseIt(item) {
     return {
         "asOfDate": item.asOfDate,
         "price": item.nav,
-        "sevenDayYield": item.secYield,
+        "thirtyDayYield": item.secYield,
         "source": "Wisdomtree yields",
         "ticker": ticker,
         "timestamp": new Date(item.timestamp),
