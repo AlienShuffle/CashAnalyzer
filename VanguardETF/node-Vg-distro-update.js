@@ -25,6 +25,7 @@ for (let i = 0; i < distros.length; i++) {
             recordDate: distro.recordDate.substring(0, 10),
             payableDate: distro.payableDate.substring(0, 10),
             totalDistribution: 0,
+            source: "Vanguard.com Distro",
         };
         if (ticker) resp[recordDate].ticker = ticker;
     }

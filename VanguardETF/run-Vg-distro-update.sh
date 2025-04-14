@@ -95,7 +95,6 @@ fi
 cat "$curlFile" |
   ../bin/MM-update-common-job.sh \
     --accountClass Funds \
-    --sourceName "$ticker" \
     --nodeArg "$ticker" \
     --processScript ./node-Vg-yield-update.js \
     --pubDelay 20 --runDelay 2 "$@"

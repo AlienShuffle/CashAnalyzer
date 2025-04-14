@@ -136,7 +136,7 @@ else
         echo "Empty $sourceName rate file."
         exit 1
     fi
-    yieldNew=$(grep sevenDayYield "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+    yieldNew=$(grep DayYield "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
     if [ -z "$yieldNew" ] || [ "$yieldNew" = "null" ]; then
         echo "New $sourceName rate file has empty yields."
         exit 1
@@ -145,6 +145,7 @@ fi
 # sort/normalize the file now.
 jq 'sort_by([.accountType,.asOfDate])' "$jsonRateNew" >tmp.sort.json
 cat tmp.sort.json >"$jsonRateNew"
+#cat $jsonRateNew
 rm -f tmp.sort.json
 #
 # Process the daily history results in rate and merge with history.

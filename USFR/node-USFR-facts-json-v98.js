@@ -90,11 +90,13 @@ function run() {
             // format return JSON message.
             let facts = {
                 timestamp: String(new Date()),
+                ticker: 'USFR',
                 asOfDate: (asOfDate) ? asOfDate : '',
                 nav: (navValue) ? navValue.toFixed(5) * 1 : '',
                 secYield: (secYield) ? secYield.toFixed(5) * 1 : '',
                 effectiveDuration: (effectiveDuration) ? effectiveDuration.toFixed(1) * 1 : '',
-                expenseRatio: (er) ? er.toFixed(5) * 1 : ''
+                expenseRatio: (er) ? er.toFixed(5) * 1 : '',
+                
             };
             browser.close();
             return resolve(JSON.stringify(facts));

@@ -13,9 +13,9 @@ function parseIt(item) {
         "asOfDate": item.asOfDate,
         "price": item.nav,
         "sevenDayYield": item.secYield,
-        "source": "Wisdomtree",
+        "source": "Wisdomtree yields",
         "ticker": ticker,
-        "timestamp": item.timestamp,
+        "timestamp": new Date(item.timestamp),
     };
 }
 let resp = [];

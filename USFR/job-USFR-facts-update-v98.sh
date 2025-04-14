@@ -60,7 +60,7 @@ fi
 cat $jsonNew |
   ../bin/MM-update-common-job.sh \
     --accountClass Funds \
-    --sourceName USFR \
     --processScript ./node-update-USFR-yields.js \
+    --nodeArg USFR \
     --pubDelay 20 --runDelay 2 "$@"
 exit 0
