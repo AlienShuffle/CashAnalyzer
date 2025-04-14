@@ -43,9 +43,8 @@ if [ ! -d "$MFPFilesDir" ]; then
     echo "$MFPFilesDir does not exist, exiting..."
     exit 1
 fi
-CIKmap="../EDGAR-a-CIK/CIK/company-map.json"
-if [ ! -s "$CIKmap" ]; then
-    echo "$CIKmap does not exist, exiting..."
+if [ ! -s "$companyMap" ]; then
+    echo "$companyMap does not exist, exiting..."
     exit 1
 fi
 fiscalYears="../EDGAR-b-submissions/fiscalYearFile.csv"
@@ -67,14 +66,14 @@ find $MFPFilesDir -type f -name '*.xml' -print |
         #echo "filingDate=$filingDate"
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$xmlFile" -nt "$newFile" ]; then
             echo processing $xmlFile
-            node node-parse-MFP-file.js "$CIKmap" "$fiscalYears" "$filingDate" <"$xmlFile" | jq . >"$newFile"
+            node node-parse-MFP-file.js "$companyMap" "$fiscalYears" "$filingDate" <"$xmlFile" | jq . >"$newFile"
         fi
         yieldDir="$yieldReports/$accession"
         [ -d "$yieldDir" ] || mkdir -p "$yieldDir"
         yieldFile="$yieldDir/$(basename $xmlFile | sed -e 's/\.xml/\.json/')"
         if [ -n "$forceRun" ] || [ ! -s "$yieldFile" ] || [ "$xmlFile" -nt "$yieldFile" ]; then
             echo processing yield for $xmlFile
-            node node-parse-MFP-yield.js "$CIKmap" <"$xmlFile" | jq . >"$yieldFile"
+            node node-parse-MFP-yield.js "$companyMap" <"$xmlFile" | jq . >"$yieldFile"
             ../bin/MM-update-common-job.sh --injectProcessedJson $yieldFile
         fi
     done

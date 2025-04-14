@@ -51,7 +51,7 @@ if [ -s "$submissionsCIKs" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$submissio
     [ -z "$forceRun" ] && exit 0
 fi
 
-node ./node-create-submissions-CIKs.js <../EDGAR-a-CIK/CIK/CIK-map.json | sort -u >$submissionsCIKs
+node ./node-create-submissions-CIKs.js <"$companyMap" | sort -u >$submissionsCIKs
 cat $submissionsCIKs |
     while IFS= read -r cik; do
         echo retrieving $cik

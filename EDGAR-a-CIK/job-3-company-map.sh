@@ -41,8 +41,9 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-# create data source file paths.
-companyMap="CIK/company-map.json"
+dir=$(dirname "$companyMap")
+#echo $companyMap = $dir
+[ -d "$dir" ] || mkdir "$dir"
 
 runDelaySeconds=$(($runDelayHours * 60 * 60))
 if [ -s "$companyMap" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$companyMap")))" -lt "$runDelaySeconds" ]; then
@@ -54,4 +55,4 @@ if [ -s "$companyMap" ] && [ "$(($(stat -c "%Y" "$fundsList") - $(stat -c "%Y" "
     [ -z "$forceRun" ] && exit 0
 fi
 ../bin/getEDGAR.sh "https://www.sec.gov/files/investment/data/other/investment-company-series-and-class-information/investment-company-series-class-2024.xml" >investment-map.xml
-node ./node-company-map-update.js "$fundsList" <investment-map.xml | jq . >"$companyMap"
+node ./node-company-map-update.js "$fundsList" "company-map-manual-entries.json" <investment-map.xml | jq . >"$companyMap"

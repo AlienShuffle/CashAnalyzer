@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import process from 'process';
+import dynamicSort from '../lib/dynamicSort.mjs';
 
 // create a lookup array of all the funds I want to track from the mmFun input list
 // the list is a file of tickers, per line.
@@ -29,4 +30,4 @@ for (let i = 0; i < json.data.length; i++) {
         "class": item[2]
     });
 }
-console.log(JSON.stringify(resp));
+console.log(JSON.stringify(resp.sort(dynamicSort('ticker'))));

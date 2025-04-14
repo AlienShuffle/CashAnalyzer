@@ -43,6 +43,8 @@ source ../meta.$(hostname).sh
 
 # create data source file paths.
 CIKmap="CIK/CIK-map.json"
+[ -d CIK ] || mkdir CIK
+
 
 runDelaySeconds=$(($runDelayHours * 60 * 60))
 if [ -s "$CIKmap" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$CIKmap")))" -lt "$runDelaySeconds" ]; then

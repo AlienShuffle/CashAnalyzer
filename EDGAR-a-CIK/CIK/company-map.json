@@ -1,35 +1,5 @@
 [
   {
-    "ticker": "WMPXX",
-    "entity_name": "ALLSPRING FUNDS TRUST",
-    "series_name": "Allspring Money Market Fund",
-    "class_name": "Premier Class",
-    "cik": 1081400,
-    "cikTen": "0001081400",
-    "series": "S000007425",
-    "class": "C000168181"
-  },
-  {
-    "ticker": "BUPXX",
-    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
-    "series_name": "FEDFUND",
-    "class_name": "PREMIER",
-    "cik": 97098,
-    "cikTen": "0000097098",
-    "series": "S000001475",
-    "class": "C000003926"
-  },
-  {
-    "ticker": "TFDXX",
-    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
-    "series_name": "FEDFUND",
-    "class_name": "INSTITUTIONAL",
-    "cik": 97098,
-    "cikTen": "0000097098",
-    "series": "S000001475",
-    "class": "C000003928"
-  },
-  {
     "ticker": "BFRXX",
     "entity_name": "BLACKROCK LIQUIDITY FUNDS",
     "series_name": "FEDFUND",
@@ -38,26 +8,6 @@
     "cikTen": "0000097098",
     "series": "S000001475",
     "class": "C000003931"
-  },
-  {
-    "ticker": "TSTXX",
-    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
-    "series_name": "T-FUND",
-    "class_name": "INSTITUTIONAL",
-    "cik": 97098,
-    "cikTen": "0000097098",
-    "series": "S000001476",
-    "class": "C000003938"
-  },
-  {
-    "ticker": "TFFXX",
-    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
-    "series_name": "BLACKROCK LIQUID FEDERAL TRUST FUND",
-    "class_name": "INSTITUTIONAL",
-    "cik": 97098,
-    "cikTen": "0000097098",
-    "series": "S000001477",
-    "class": "C000003948"
   },
   {
     "ticker": "BUCXX",
@@ -70,284 +20,14 @@
     "class": "C000003952"
   },
   {
-    "ticker": "TTTXX",
+    "ticker": "BUPXX",
     "entity_name": "BLACKROCK LIQUIDITY FUNDS",
-    "series_name": "TREASURY TRUST FUND",
-    "class_name": "INSTITUTIONAL",
+    "series_name": "FEDFUND",
+    "class_name": "PREMIER",
     "cik": 97098,
     "cikTen": "0000097098",
-    "series": "S000001478",
-    "class": "C000003954"
-  },
-  {
-    "ticker": "MCSXX",
-    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
-    "series_name": "MUNICASH",
-    "class_name": "INSTITUTIONAL",
-    "cik": 97098,
-    "cikTen": "0000097098",
-    "series": "S000001480",
-    "class": "C000003974"
-  },
-  {
-    "ticker": "TMCXX",
-    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
-    "series_name": "TEMPCASH",
-    "class_name": "INSTITUTIONAL",
-    "cik": 97098,
-    "cikTen": "0000097098",
-    "series": "S000001474",
-    "class": "C000003921"
-  },
-  {
-    "ticker": "SCTXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab AMT Tax-Free Money Fund",
-    "class_name": "Ultra Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004500",
-    "class": "C000219263"
-  },
-  {
-    "ticker": "SWWXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab AMT Tax-Free Money Fund",
-    "class_name": "Investor Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004500",
-    "class": "C000039063"
-  },
-  {
-    "ticker": "SWGXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab Government Money Fund",
-    "class_name": "Sweep Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004506",
-    "class": "C000012381"
-  },
-  {
-    "ticker": "SNSXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab U.S. Treasury Money Fund",
-    "class_name": "Investor Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004507",
-    "class": "C000198373"
-  },
-  {
-    "ticker": "SUTXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab U.S. Treasury Money Fund",
-    "class_name": "Ultra Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004507",
-    "class": "C000222230"
-  },
-  {
-    "ticker": "SWVXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab Value Advantage Money Fund",
-    "class_name": "Investor Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004508",
-    "class": "C000012383"
-  },
-  {
-    "ticker": "SNAXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab Value Advantage Money Fund",
-    "class_name": "Ultra Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004508",
-    "class": "C000038267"
-  },
-  {
-    "ticker": "SWTXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab Municipal Money Fund",
-    "class_name": "Investor Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004511",
-    "class": "C000012389"
-  },
-  {
-    "ticker": "SWOXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab Municipal Money Fund",
-    "class_name": "Ultra Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004511",
-    "class": "C000012391"
-  },
-  {
-    "ticker": "SWKXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab California Municipal Money Fund",
-    "class_name": "Investor Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004512",
-    "class": "C000012393"
-  },
-  {
-    "ticker": "SCAXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab California Municipal Money Fund",
-    "class_name": "Ultra Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004512",
-    "class": "C000219264"
-  },
-  {
-    "ticker": "SWYXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab New York Municipal Money Fund",
-    "class_name": "Investor Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004513",
-    "class": "C000012395"
-  },
-  {
-    "ticker": "SNYXX",
-    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
-    "series_name": "Schwab New York Municipal Money Fund",
-    "class_name": "Ultra Shares",
-    "cik": 857156,
-    "cikTen": "0000857156",
-    "series": "S000004513",
-    "class": "C000219265"
-  },
-  {
-    "ticker": "UTIXX",
-    "entity_name": "Federated Hermes Money Market Obligations Trust",
-    "series_name": "Federated Hermes U.S. Treasury Cash Reserves",
-    "class_name": "Institutional Shares",
-    "cik": 856517,
-    "cikTen": "0000856517",
-    "series": "S000009580",
-    "class": "C000026172"
-  },
-  {
-    "ticker": "GOIXX",
-    "entity_name": "Federated Hermes Money Market Obligations Trust",
-    "series_name": "Federated Hermes Government Obligations Fund",
-    "class_name": "Institutional Shares",
-    "cik": 856517,
-    "cikTen": "0000856517",
-    "series": "S000009536",
-    "class": "C000026060"
-  },
-  {
-    "ticker": "GOFXX",
-    "entity_name": "Federated Hermes Money Market Obligations Trust",
-    "series_name": "Federated Hermes Government Obligations Fund",
-    "class_name": "Premier Shares",
-    "cik": 856517,
-    "cikTen": "0000856517",
-    "series": "S000009536",
-    "class": "C000151096"
-  },
-  {
-    "ticker": "GOVXX",
-    "entity_name": "Federated Hermes Money Market Obligations Trust",
-    "series_name": "Federated Hermes Government Obligations Fund",
-    "class_name": "Advisor Shares",
-    "cik": 856517,
-    "cikTen": "0000856517",
-    "series": "S000009536",
-    "class": "C000190786"
-  },
-  {
-    "ticker": "GOTXX",
-    "entity_name": "Federated Hermes Money Market Obligations Trust",
-    "series_name": "Federated Hermes Government Obligations Tax-Managed Fund",
-    "class_name": "Institutional Shares",
-    "cik": 856517,
-    "cikTen": "0000856517",
-    "series": "S000009537",
-    "class": "C000026063"
-  },
-  {
-    "ticker": "PCOXX",
-    "entity_name": "Federated Hermes Money Market Obligations Trust",
-    "series_name": "Federated Hermes Prime Cash Obligations Fund",
-    "class_name": "Wealth Shares",
-    "cik": 856517,
-    "cikTen": "0000856517",
-    "series": "S000009571",
-    "class": "C000026147"
-  },
-  {
-    "ticker": "PVOXX",
-    "entity_name": "Federated Hermes Money Market Obligations Trust",
-    "series_name": "Federated Hermes Institutional Prime Value Obligations Fund",
-    "class_name": "Institutional Shares",
-    "cik": 856517,
-    "cikTen": "0000856517",
-    "series": "S000009575",
-    "class": "C000026159"
-  },
-  {
-    "ticker": "TOIXX",
-    "entity_name": "Federated Hermes Money Market Obligations Trust",
-    "series_name": "Federated Hermes Treasury Obligations Fund",
-    "class_name": "Institutional Shares",
-    "cik": 856517,
-    "cikTen": "0000856517",
-    "series": "S000009578",
-    "class": "C000026167"
-  },
-  {
-    "ticker": "FTFXX",
-    "entity_name": "Federated Hermes Money Market Obligations Trust",
-    "series_name": "Federated Hermes Institutional Tax-Free Cash Trust",
-    "class_name": "Premier Shares",
-    "cik": 856517,
-    "cikTen": "0000856517",
-    "series": "S000009533",
-    "class": "C000026054"
-  },
-  {
-    "ticker": "FFTXX",
-    "entity_name": "Federated Hermes Money Market Obligations Trust",
-    "series_name": "Federated Hermes Institutional Tax-Free Cash Trust",
-    "class_name": "Institutional Shares",
-    "cik": 856517,
-    "cikTen": "0000856517",
-    "series": "S000009533",
-    "class": "C000167073"
-  },
-  {
-    "ticker": "FSPXX",
-    "entity_name": "FIDELITY CALIFORNIA MUNICIPAL TRUST II",
-    "series_name": "Fidelity California Municipal Money Market Fund (Formerly known as Fidelity California AMT Tax-Free Money Market Fund)",
-    "class_name": "Premium Class",
-    "cik": 878662,
-    "cikTen": "0000878662",
-    "series": "S000005493",
-    "class": "C000014951"
-  },
-  {
-    "ticker": "FSBXX",
-    "entity_name": "FIDELITY CALIFORNIA MUNICIPAL TRUST II",
-    "series_name": "Fidelity California Municipal Money Market Fund (Formerly known as Fidelity California AMT Tax-Free Money Market Fund)",
-    "class_name": "Institutional Class",
-    "cik": 878662,
-    "cikTen": "0000878662",
-    "series": "S000005493",
-    "class": "C000047918"
+    "series": "S000001475",
+    "class": "C000003926"
   },
   {
     "ticker": "FABXX",
@@ -360,154 +40,34 @@
     "class": "C000238263"
   },
   {
-    "ticker": "FRSXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Treasury Only Portfolio",
-    "class_name": "Institutional Class",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004818",
-    "class": "C000141702"
+    "ticker": "FAUXX",
+    "entity_name": "FIDELITY MASSACHUSETTS MUNICIPAL TRUST",
+    "series_name": "Fidelity Massachusetts Municipal Money Market Fund (Formerly known as Fidelity Massachusetts AMT Tax-Free Money Market Fund)",
+    "class_name": "Fidelity Massachusetts Municipal Money Market Fund",
+    "cik": 357057,
+    "cikTen": "0000357057",
+    "series": "S000007113",
+    "class": "C000238262"
   },
   {
-    "ticker": "FMYXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Money Market Portfolio",
-    "class_name": "Select Class",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004822",
-    "class": "C000013088"
+    "ticker": "FAWXX",
+    "entity_name": "FIDELITY NEW YORK MUNICIPAL TRUST II",
+    "series_name": "Fidelity New York Municipal Money Market Fund (Formerly known as Fidelity New York AMT Tax-Free Money Market Fund)",
+    "class_name": "Fidelity New York Municipal Money Market Fund",
+    "cik": 878663,
+    "cikTen": "0000878663",
+    "series": "S000007146",
+    "class": "C000238264"
   },
   {
-    "ticker": "FCOXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Money Market Portfolio",
-    "class_name": "Class III",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004822",
-    "class": "C000013087"
-  },
-  {
-    "ticker": "FCIXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Money Market Portfolio",
-    "class_name": "Class II",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004822",
-    "class": "C000013086"
-  },
-  {
-    "ticker": "FMPXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Money Market Portfolio",
-    "class_name": "Class I",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004822",
-    "class": "C000013041"
-  },
-  {
-    "ticker": "FRGXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Government Portfolio",
-    "class_name": "Institutional Class",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004820",
-    "class": "C000141704"
-  },
-  {
-    "ticker": "FGEXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Government Portfolio",
-    "class_name": "Select Class",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004820",
-    "class": "C000013082"
-  },
-  {
-    "ticker": "FNSXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Money Market Portfolio",
-    "class_name": "Institutional Class",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004822",
-    "class": "C000056571"
-  },
-  {
-    "ticker": "FTCXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Tax-Exempt Portfolio",
-    "class_name": "Class I",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004823",
-    "class": "C000013042"
-  },
-  {
-    "ticker": "FEXXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Tax-Exempt Portfolio",
-    "class_name": "Class II",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004823",
-    "class": "C000013089"
-  },
-  {
-    "ticker": "FETXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Tax-Exempt Portfolio",
-    "class_name": "Class III",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004823",
-    "class": "C000013090"
-  },
-  {
-    "ticker": "FSXXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Tax-Exempt Portfolio",
-    "class_name": "Select Class",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004823",
-    "class": "C000013091"
-  },
-  {
-    "ticker": "FSIXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Treasury Only Portfolio",
-    "class_name": "Class I",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004818",
-    "class": "C000013037"
-  },
-  {
-    "ticker": "FTYXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Treasury Only Portfolio",
-    "class_name": "Select Class",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004818",
-    "class": "C000013076"
-  },
-  {
-    "ticker": "FISXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Treasury Portfolio",
-    "class_name": "Class I",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004819",
-    "class": "C000013038"
+    "ticker": "FAYXX",
+    "entity_name": "FIDELITY COURT STREET TRUST II",
+    "series_name": "Fidelity New Jersey Municipal Money Market Fund (Formerly known as Fidelity New Jersey AMT Tax-Free Money Market Fund)",
+    "class_name": "Fidelity New Jersey Municipal Money Market Fund",
+    "cik": 880709,
+    "cikTen": "0000880709",
+    "series": "S000006052",
+    "class": "C000238265"
   },
   {
     "ticker": "FCEXX",
@@ -520,6 +80,36 @@
     "class": "C000013077"
   },
   {
+    "ticker": "FCGXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Government Portfolio",
+    "class_name": "Class III",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004820",
+    "class": "C000013081"
+  },
+  {
+    "ticker": "FCIXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Money Market Portfolio",
+    "class_name": "Class II",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004822",
+    "class": "C000013086"
+  },
+  {
+    "ticker": "FCOXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Money Market Portfolio",
+    "class_name": "Class III",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004822",
+    "class": "C000013087"
+  },
+  {
     "ticker": "FCSXX",
     "entity_name": "Fidelity Colchester Street Trust",
     "series_name": "Treasury Portfolio",
@@ -528,6 +118,346 @@
     "cikTen": "0000356173",
     "series": "S000004819",
     "class": "C000013078"
+  },
+  {
+    "ticker": "FCVXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Government Portfolio",
+    "class_name": "Class II",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004820",
+    "class": "C000013080"
+  },
+  {
+    "ticker": "FDEXX",
+    "entity_name": "Fidelity Newbury Street Trust",
+    "series_name": "Fidelity Tax-Exempt Money Market Fund",
+    "class_name": "Daily Money Class",
+    "cik": 704207,
+    "cikTen": "0000704207",
+    "series": "S000007504",
+    "class": "C000020480"
+  },
+  {
+    "ticker": "FDLXX",
+    "entity_name": "FIDELITY HEREFORD STREET TRUST",
+    "series_name": "Fidelity Treasury Only Money Market Fund",
+    "class_name": "Fidelity Treasury Only Money Market Fund",
+    "cik": 917286,
+    "cikTen": "0000917286",
+    "series": "S000007053",
+    "class": "C000019232"
+  },
+  {
+    "ticker": "FDRXX",
+    "entity_name": "FIDELITY PHILLIPS STREET TRUST",
+    "series_name": "Fidelity Government Cash Reserves",
+    "class_name": "Fidelity Government Cash Reserves",
+    "cik": 278001,
+    "cikTen": "0000278001",
+    "series": "S000007149",
+    "class": "C000019553"
+  },
+  {
+    "ticker": "FDUXX",
+    "entity_name": "Fidelity Newbury Street Trust",
+    "series_name": "Fidelity Treasury Money Market Fund",
+    "class_name": "Daily Money Class",
+    "cik": 704207,
+    "cikTen": "0000704207",
+    "series": "S000007505",
+    "class": "C000020485"
+  },
+  {
+    "ticker": "FERXX",
+    "entity_name": "Fidelity Newbury Street Trust",
+    "series_name": "Fidelity Tax-Exempt Money Market Fund",
+    "class_name": "Capital Reserves Class",
+    "cik": 704207,
+    "cikTen": "0000704207",
+    "series": "S000007504",
+    "class": "C000020479"
+  },
+  {
+    "ticker": "FETXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Tax-Exempt Portfolio",
+    "class_name": "Class III",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004823",
+    "class": "C000013090"
+  },
+  {
+    "ticker": "FEXXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Tax-Exempt Portfolio",
+    "class_name": "Class II",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004823",
+    "class": "C000013089"
+  },
+  {
+    "ticker": "FFTXX",
+    "entity_name": "Federated Hermes Money Market Obligations Trust",
+    "series_name": "Federated Hermes Institutional Tax-Free Cash Trust",
+    "class_name": "Institutional Shares",
+    "cik": 856517,
+    "cikTen": "0000856517",
+    "series": "S000009533",
+    "class": "C000167073"
+  },
+  {
+    "ticker": "FGEXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Government Portfolio",
+    "class_name": "Select Class",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004820",
+    "class": "C000013082"
+  },
+  {
+    "ticker": "FIGXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Government Portfolio",
+    "class_name": "Class I",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004820",
+    "class": "C000013039"
+  },
+  {
+    "ticker": "FISXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Treasury Portfolio",
+    "class_name": "Class I",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004819",
+    "class": "C000013038"
+  },
+  {
+    "ticker": "FMAXX",
+    "entity_name": "FIDELITY MASSACHUSETTS MUNICIPAL TRUST",
+    "series_name": "Fidelity Massachusetts Municipal Money Market Fund (Formerly known as Fidelity Massachusetts AMT Tax-Free Money Market Fund)",
+    "class_name": "Institutional Class",
+    "cik": 357057,
+    "cikTen": "0000357057",
+    "series": "S000007113",
+    "class": "C000047913"
+  },
+  {
+    "ticker": "FMJXX",
+    "entity_name": "GOLDMAN SACHS TRUST",
+    "series_name": "Goldman Sachs Investor Money Market Fund",
+    "class_name": "Class I Shares",
+    "cik": 822977,
+    "cikTen": "0000822977",
+    "series": "S000051191",
+    "class": "C000161182"
+  },
+  {
+    "ticker": "FMOXX",
+    "entity_name": "Fidelity Newbury Street Trust",
+    "series_name": "Fidelity Tax-Exempt Money Market Fund",
+    "class_name": "Fidelity Tax-Exempt Money Market Fund",
+    "cik": 704207,
+    "cikTen": "0000704207",
+    "series": "S000007504",
+    "class": "C000020481"
+  },
+  {
+    "ticker": "FMPXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Money Market Portfolio",
+    "class_name": "Class I",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004822",
+    "class": "C000013041"
+  },
+  {
+    "ticker": "FMSXX",
+    "entity_name": "FIDELITY MASSACHUSETTS MUNICIPAL TRUST",
+    "series_name": "Fidelity Massachusetts Municipal Money Market Fund (Formerly known as Fidelity Massachusetts AMT Tax-Free Money Market Fund)",
+    "class_name": "Premium Class",
+    "cik": 357057,
+    "cikTen": "0000357057",
+    "series": "S000007113",
+    "class": "C000019442"
+  },
+  {
+    "ticker": "FMYXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Money Market Portfolio",
+    "class_name": "Select Class",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004822",
+    "class": "C000013088"
+  },
+  {
+    "ticker": "FNKXX",
+    "entity_name": "FIDELITY NEW YORK MUNICIPAL TRUST II",
+    "series_name": "Fidelity New York Municipal Money Market Fund (Formerly known as Fidelity New York AMT Tax-Free Money Market Fund)",
+    "class_name": "Institutional Class",
+    "cik": 878663,
+    "cikTen": "0000878663",
+    "series": "S000007146",
+    "class": "C000047915"
+  },
+  {
+    "ticker": "FNSXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Money Market Portfolio",
+    "class_name": "Institutional Class",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004822",
+    "class": "C000056571"
+  },
+  {
+    "ticker": "FRBXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Treasury Portfolio",
+    "class_name": "Institutional Class",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004819",
+    "class": "C000141703"
+  },
+  {
+    "ticker": "FRGXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Government Portfolio",
+    "class_name": "Institutional Class",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004820",
+    "class": "C000141704"
+  },
+  {
+    "ticker": "FRSXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Treasury Only Portfolio",
+    "class_name": "Institutional Class",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004818",
+    "class": "C000141702"
+  },
+  {
+    "ticker": "FSBXX",
+    "entity_name": "FIDELITY CALIFORNIA MUNICIPAL TRUST II",
+    "series_name": "Fidelity California Municipal Money Market Fund (Formerly known as Fidelity California AMT Tax-Free Money Market Fund)",
+    "class_name": "Institutional Class",
+    "cik": 878662,
+    "cikTen": "0000878662",
+    "series": "S000005493",
+    "class": "C000047918"
+  },
+  {
+    "ticker": "FSIXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Treasury Only Portfolio",
+    "class_name": "Class I",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004818",
+    "class": "C000013037"
+  },
+  {
+    "ticker": "FSJXX",
+    "entity_name": "FIDELITY COURT STREET TRUST II",
+    "series_name": "Fidelity New Jersey Municipal Money Market Fund (Formerly known as Fidelity New Jersey AMT Tax-Free Money Market Fund)",
+    "class_name": "Premium Class",
+    "cik": 880709,
+    "cikTen": "0000880709",
+    "series": "S000006052",
+    "class": "C000016621"
+  },
+  {
+    "ticker": "FSKXX",
+    "entity_name": "FIDELITY COURT STREET TRUST II",
+    "series_name": "Fidelity New Jersey Municipal Money Market Fund (Formerly known as Fidelity New Jersey AMT Tax-Free Money Market Fund)",
+    "class_name": "Institutional Class",
+    "cik": 880709,
+    "cikTen": "0000880709",
+    "series": "S000006052",
+    "class": "C000047920"
+  },
+  {
+    "ticker": "FSNXX",
+    "entity_name": "FIDELITY NEW YORK MUNICIPAL TRUST II",
+    "series_name": "Fidelity New York Municipal Money Market Fund (Formerly known as Fidelity New York AMT Tax-Free Money Market Fund)",
+    "class_name": "Premium Class",
+    "cik": 878663,
+    "cikTen": "0000878663",
+    "series": "S000007146",
+    "class": "C000019550"
+  },
+  {
+    "ticker": "FSPXX",
+    "entity_name": "FIDELITY CALIFORNIA MUNICIPAL TRUST II",
+    "series_name": "Fidelity California Municipal Money Market Fund (Formerly known as Fidelity California AMT Tax-Free Money Market Fund)",
+    "class_name": "Premium Class",
+    "cik": 878662,
+    "cikTen": "0000878662",
+    "series": "S000005493",
+    "class": "C000014951"
+  },
+  {
+    "ticker": "FSRXX",
+    "entity_name": "Fidelity Newbury Street Trust",
+    "series_name": "Fidelity Treasury Money Market Fund",
+    "class_name": "Capital Reserves Class",
+    "cik": 704207,
+    "cikTen": "0000704207",
+    "series": "S000007505",
+    "class": "C000020484"
+  },
+  {
+    "ticker": "FSXXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Tax-Exempt Portfolio",
+    "class_name": "Select Class",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004823",
+    "class": "C000013091"
+  },
+  {
+    "ticker": "FTCXX",
+    "entity_name": "Fidelity Colchester Street Trust",
+    "series_name": "Tax-Exempt Portfolio",
+    "class_name": "Class I",
+    "cik": 356173,
+    "cikTen": "0000356173",
+    "series": "S000004823",
+    "class": "C000013042"
+  },
+  {
+    "ticker": "FTEXX",
+    "entity_name": "FIDELITY UNION STREET TRUST II",
+    "series_name": "Fidelity Municipal Money Market Fund",
+    "class_name": "Fidelity Municipal Money Market Fund",
+    "cik": 880797,
+    "cikTen": "0000880797",
+    "series": "S000007502",
+    "class": "C000020476"
+  },
+  {
+    "ticker": "FTFXX",
+    "entity_name": "Federated Hermes Money Market Obligations Trust",
+    "series_name": "Federated Hermes Institutional Tax-Free Cash Trust",
+    "class_name": "Premier Shares",
+    "cik": 856517,
+    "cikTen": "0000856517",
+    "series": "S000009533",
+    "class": "C000026054"
   },
   {
     "ticker": "FTUXX",
@@ -550,84 +480,24 @@
     "class": "C000056568"
   },
   {
-    "ticker": "FRBXX",
+    "ticker": "FTYXX",
     "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Treasury Portfolio",
-    "class_name": "Institutional Class",
+    "series_name": "Treasury Only Portfolio",
+    "class_name": "Select Class",
     "cik": 356173,
     "cikTen": "0000356173",
-    "series": "S000004819",
-    "class": "C000141703"
+    "series": "S000004818",
+    "class": "C000013076"
   },
   {
-    "ticker": "FIGXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Government Portfolio",
-    "class_name": "Class I",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004820",
-    "class": "C000013039"
-  },
-  {
-    "ticker": "FCVXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Government Portfolio",
-    "class_name": "Class II",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004820",
-    "class": "C000013080"
-  },
-  {
-    "ticker": "FCGXX",
-    "entity_name": "Fidelity Colchester Street Trust",
-    "series_name": "Government Portfolio",
-    "class_name": "Class III",
-    "cik": 356173,
-    "cikTen": "0000356173",
-    "series": "S000004820",
-    "class": "C000013081"
-  },
-  {
-    "ticker": "FSKXX",
-    "entity_name": "FIDELITY COURT STREET TRUST II",
-    "series_name": "Fidelity New Jersey Municipal Money Market Fund (Formerly known as Fidelity New Jersey AMT Tax-Free Money Market Fund)",
-    "class_name": "Institutional Class",
-    "cik": 880709,
-    "cikTen": "0000880709",
-    "series": "S000006052",
-    "class": "C000047920"
-  },
-  {
-    "ticker": "FAYXX",
-    "entity_name": "FIDELITY COURT STREET TRUST II",
-    "series_name": "Fidelity New Jersey Municipal Money Market Fund (Formerly known as Fidelity New Jersey AMT Tax-Free Money Market Fund)",
-    "class_name": "Fidelity New Jersey Municipal Money Market Fund",
-    "cik": 880709,
-    "cikTen": "0000880709",
-    "series": "S000006052",
-    "class": "C000238265"
-  },
-  {
-    "ticker": "FSJXX",
-    "entity_name": "FIDELITY COURT STREET TRUST II",
-    "series_name": "Fidelity New Jersey Municipal Money Market Fund (Formerly known as Fidelity New Jersey AMT Tax-Free Money Market Fund)",
-    "class_name": "Premium Class",
-    "cik": 880709,
-    "cikTen": "0000880709",
-    "series": "S000006052",
-    "class": "C000016621"
-  },
-  {
-    "ticker": "SPAXX",
-    "entity_name": "FIDELITY HEREFORD STREET TRUST",
-    "series_name": "Fidelity Government Money Market Fund",
-    "class_name": "Fidelity Government Money Market Fund",
+    "ticker": "FYHXX",
+    "entity_name": "Fidelity Hereford Street Trust",
+    "series_name": "Fidelity Treasury Digital Fund",
+    "class_name": "Fidelity Treasury Digital Fund",
     "cik": 917286,
     "cikTen": "0000917286",
-    "series": "S000007051",
-    "class": "C000019230"
+    "series": "S000089156",
+    "class": "C000255665"
   },
   {
     "ticker": "FZAXX",
@@ -650,26 +520,6 @@
     "class": "C000154305"
   },
   {
-    "ticker": "FZGXX",
-    "entity_name": "FIDELITY HEREFORD STREET TRUST",
-    "series_name": "Fidelity Government Money Market Fund",
-    "class_name": "Advisor M Class",
-    "cik": 917286,
-    "cikTen": "0000917286",
-    "series": "S000007051",
-    "class": "C000190683"
-  },
-  {
-    "ticker": "SPRXX",
-    "entity_name": "FIDELITY HEREFORD STREET TRUST",
-    "series_name": "Fidelity Money Market Fund",
-    "class_name": "Fidelity Money Market Fund",
-    "cik": 917286,
-    "cikTen": "0000917286",
-    "series": "S000007052",
-    "class": "C000019231"
-  },
-  {
     "ticker": "FZDXX",
     "entity_name": "FIDELITY HEREFORD STREET TRUST",
     "series_name": "Fidelity Money Market Fund",
@@ -678,106 +528,6 @@
     "cikTen": "0000917286",
     "series": "S000007052",
     "class": "C000154306"
-  },
-  {
-    "ticker": "FDLXX",
-    "entity_name": "FIDELITY HEREFORD STREET TRUST",
-    "series_name": "Fidelity Treasury Only Money Market Fund",
-    "class_name": "Fidelity Treasury Only Money Market Fund",
-    "cik": 917286,
-    "cikTen": "0000917286",
-    "series": "S000007053",
-    "class": "C000019232"
-  },
-  {
-    "ticker": "FAUXX",
-    "entity_name": "FIDELITY MASSACHUSETTS MUNICIPAL TRUST",
-    "series_name": "Fidelity Massachusetts Municipal Money Market Fund (Formerly known as Fidelity Massachusetts AMT Tax-Free Money Market Fund)",
-    "class_name": "Fidelity Massachusetts Municipal Money Market Fund",
-    "cik": 357057,
-    "cikTen": "0000357057",
-    "series": "S000007113",
-    "class": "C000238262"
-  },
-  {
-    "ticker": "FMAXX",
-    "entity_name": "FIDELITY MASSACHUSETTS MUNICIPAL TRUST",
-    "series_name": "Fidelity Massachusetts Municipal Money Market Fund (Formerly known as Fidelity Massachusetts AMT Tax-Free Money Market Fund)",
-    "class_name": "Institutional Class",
-    "cik": 357057,
-    "cikTen": "0000357057",
-    "series": "S000007113",
-    "class": "C000047913"
-  },
-  {
-    "ticker": "FMSXX",
-    "entity_name": "FIDELITY MASSACHUSETTS MUNICIPAL TRUST",
-    "series_name": "Fidelity Massachusetts Municipal Money Market Fund (Formerly known as Fidelity Massachusetts AMT Tax-Free Money Market Fund)",
-    "class_name": "Premium Class",
-    "cik": 357057,
-    "cikTen": "0000357057",
-    "series": "S000007113",
-    "class": "C000019442"
-  },
-  {
-    "ticker": "FAWXX",
-    "entity_name": "FIDELITY NEW YORK MUNICIPAL TRUST II",
-    "series_name": "Fidelity New York Municipal Money Market Fund (Formerly known as Fidelity New York AMT Tax-Free Money Market Fund)",
-    "class_name": "Fidelity New York Municipal Money Market Fund",
-    "cik": 878663,
-    "cikTen": "0000878663",
-    "series": "S000007146",
-    "class": "C000238264"
-  },
-  {
-    "ticker": "FSNXX",
-    "entity_name": "FIDELITY NEW YORK MUNICIPAL TRUST II",
-    "series_name": "Fidelity New York Municipal Money Market Fund (Formerly known as Fidelity New York AMT Tax-Free Money Market Fund)",
-    "class_name": "Premium Class",
-    "cik": 878663,
-    "cikTen": "0000878663",
-    "series": "S000007146",
-    "class": "C000019550"
-  },
-  {
-    "ticker": "FNKXX",
-    "entity_name": "FIDELITY NEW YORK MUNICIPAL TRUST II",
-    "series_name": "Fidelity New York Municipal Money Market Fund (Formerly known as Fidelity New York AMT Tax-Free Money Market Fund)",
-    "class_name": "Institutional Class",
-    "cik": 878663,
-    "cikTen": "0000878663",
-    "series": "S000007146",
-    "class": "C000047915"
-  },
-  {
-    "ticker": "FERXX",
-    "entity_name": "Fidelity Newbury Street Trust",
-    "series_name": "Fidelity Tax-Exempt Money Market Fund",
-    "class_name": "Capital Reserves Class",
-    "cik": 704207,
-    "cikTen": "0000704207",
-    "series": "S000007504",
-    "class": "C000020479"
-  },
-  {
-    "ticker": "FDEXX",
-    "entity_name": "Fidelity Newbury Street Trust",
-    "series_name": "Fidelity Tax-Exempt Money Market Fund",
-    "class_name": "Daily Money Class",
-    "cik": 704207,
-    "cikTen": "0000704207",
-    "series": "S000007504",
-    "class": "C000020480"
-  },
-  {
-    "ticker": "FMOXX",
-    "entity_name": "Fidelity Newbury Street Trust",
-    "series_name": "Fidelity Tax-Exempt Money Market Fund",
-    "class_name": "Fidelity Tax-Exempt Money Market Fund",
-    "cik": 704207,
-    "cikTen": "0000704207",
-    "series": "S000007504",
-    "class": "C000020481"
   },
   {
     "ticker": "FZEXX",
@@ -790,26 +540,6 @@
     "class": "C000154297"
   },
   {
-    "ticker": "FSRXX",
-    "entity_name": "Fidelity Newbury Street Trust",
-    "series_name": "Fidelity Treasury Money Market Fund",
-    "class_name": "Capital Reserves Class",
-    "cik": 704207,
-    "cikTen": "0000704207",
-    "series": "S000007505",
-    "class": "C000020484"
-  },
-  {
-    "ticker": "FDUXX",
-    "entity_name": "Fidelity Newbury Street Trust",
-    "series_name": "Fidelity Treasury Money Market Fund",
-    "class_name": "Daily Money Class",
-    "cik": 704207,
-    "cikTen": "0000704207",
-    "series": "S000007505",
-    "class": "C000020485"
-  },
-  {
     "ticker": "FZFXX",
     "entity_name": "Fidelity Newbury Street Trust",
     "series_name": "Fidelity Treasury Money Market Fund",
@@ -820,24 +550,14 @@
     "class": "C000154298"
   },
   {
-    "ticker": "FDRXX",
-    "entity_name": "FIDELITY PHILLIPS STREET TRUST",
-    "series_name": "Fidelity Government Cash Reserves",
-    "class_name": "Fidelity Government Cash Reserves",
-    "cik": 278001,
-    "cikTen": "0000278001",
-    "series": "S000007149",
-    "class": "C000019553"
-  },
-  {
-    "ticker": "FTEXX",
-    "entity_name": "FIDELITY UNION STREET TRUST II",
-    "series_name": "Fidelity Municipal Money Market Fund",
-    "class_name": "Fidelity Municipal Money Market Fund",
-    "cik": 880797,
-    "cikTen": "0000880797",
-    "series": "S000007502",
-    "class": "C000020476"
+    "ticker": "FZGXX",
+    "entity_name": "FIDELITY HEREFORD STREET TRUST",
+    "series_name": "Fidelity Government Money Market Fund",
+    "class_name": "Advisor M Class",
+    "cik": 917286,
+    "cikTen": "0000917286",
+    "series": "S000007051",
+    "class": "C000190683"
   },
   {
     "ticker": "GABXX",
@@ -850,14 +570,54 @@
     "class": "C000002897"
   },
   {
-    "ticker": "FMJXX",
-    "entity_name": "GOLDMAN SACHS TRUST",
-    "series_name": "Goldman Sachs Investor Money Market Fund",
-    "class_name": "Class I Shares",
-    "cik": 822977,
-    "cikTen": "0000822977",
-    "series": "S000051191",
-    "class": "C000161182"
+    "ticker": "GMMF",
+    "entity_name": "BlackRock ETF Trust",
+    "series_name": "iShares Government Money Market ETF",
+    "class_name": "I",
+    "cik": 1761055,
+    "cikTen": "0001761055",
+    "series": "S000089874",
+    "class": "C000256702"
+  },
+  {
+    "ticker": "GOFXX",
+    "entity_name": "Federated Hermes Money Market Obligations Trust",
+    "series_name": "Federated Hermes Government Obligations Fund",
+    "class_name": "Premier Shares",
+    "cik": 856517,
+    "cikTen": "0000856517",
+    "series": "S000009536",
+    "class": "C000151096"
+  },
+  {
+    "ticker": "GOIXX",
+    "entity_name": "Federated Hermes Money Market Obligations Trust",
+    "series_name": "Federated Hermes Government Obligations Fund",
+    "class_name": "Institutional Shares",
+    "cik": 856517,
+    "cikTen": "0000856517",
+    "series": "S000009536",
+    "class": "C000026060"
+  },
+  {
+    "ticker": "GOTXX",
+    "entity_name": "Federated Hermes Money Market Obligations Trust",
+    "series_name": "Federated Hermes Government Obligations Tax-Managed Fund",
+    "class_name": "Institutional Shares",
+    "cik": 856517,
+    "cikTen": "0000856517",
+    "series": "S000009537",
+    "class": "C000026063"
+  },
+  {
+    "ticker": "GOVXX",
+    "entity_name": "Federated Hermes Money Market Obligations Trust",
+    "series_name": "Federated Hermes Government Obligations Fund",
+    "class_name": "Advisor Shares",
+    "cik": 856517,
+    "cikTen": "0000856517",
+    "series": "S000009536",
+    "class": "C000190786"
   },
   {
     "ticker": "HTSXX",
@@ -870,6 +630,16 @@
     "class": "C000008118"
   },
   {
+    "ticker": "MCSXX",
+    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
+    "series_name": "MUNICASH",
+    "class_name": "INSTITUTIONAL",
+    "cik": 97098,
+    "cikTen": "0000097098",
+    "series": "S000001480",
+    "class": "C000003974"
+  },
+  {
     "ticker": "MSUXX",
     "entity_name": "MORGAN STANLEY INSTITUTIONAL LIQUIDITY FUNDS",
     "series_name": "Treasury Securities Portfolio",
@@ -880,14 +650,254 @@
     "class": "C000011692"
   },
   {
-    "ticker": "VUSXX",
-    "entity_name": "VANGUARD ADMIRAL FUNDS",
-    "series_name": "Vanguard Treasury Money Market Fund",
+    "ticker": "PCOXX",
+    "entity_name": "Federated Hermes Money Market Obligations Trust",
+    "series_name": "Federated Hermes Prime Cash Obligations Fund",
+    "class_name": "Wealth Shares",
+    "cik": 856517,
+    "cikTen": "0000856517",
+    "series": "S000009571",
+    "class": "C000026147"
+  },
+  {
+    "ticker": "PMMF",
+    "entity_name": "BlackRock ETF Trust",
+    "series_name": "iShares Prime Money Market ETF",
+    "class_name": "I",
+    "cik": 1761055,
+    "cikTen": "0001761055",
+    "series": "S000089875",
+    "class": "C000256703"
+  },
+  {
+    "ticker": "PVOXX",
+    "entity_name": "Federated Hermes Money Market Obligations Trust",
+    "series_name": "Federated Hermes Institutional Prime Value Obligations Fund",
+    "class_name": "Institutional Shares",
+    "cik": 856517,
+    "cikTen": "0000856517",
+    "series": "S000009575",
+    "class": "C000026159"
+  },
+  {
+    "ticker": "SCAXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab California Municipal Money Fund",
+    "class_name": "Ultra Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004512",
+    "class": "C000219264"
+  },
+  {
+    "ticker": "SCTXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab AMT Tax-Free Money Fund",
+    "class_name": "Ultra Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004500",
+    "class": "C000219263"
+  },
+  {
+    "ticker": "SNAXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab Value Advantage Money Fund",
+    "class_name": "Ultra Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004508",
+    "class": "C000038267"
+  },
+  {
+    "ticker": "SNSXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab U.S. Treasury Money Fund",
     "class_name": "Investor Shares",
-    "cik": 891190,
-    "cikTen": "0000891190",
-    "series": "S000002233",
-    "class": "C000005732"
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004507",
+    "class": "C000198373"
+  },
+  {
+    "ticker": "SNYXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab New York Municipal Money Fund",
+    "class_name": "Ultra Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004513",
+    "class": "C000219265"
+  },
+  {
+    "ticker": "SPAXX",
+    "entity_name": "FIDELITY HEREFORD STREET TRUST",
+    "series_name": "Fidelity Government Money Market Fund",
+    "class_name": "Fidelity Government Money Market Fund",
+    "cik": 917286,
+    "cikTen": "0000917286",
+    "series": "S000007051",
+    "class": "C000019230"
+  },
+  {
+    "ticker": "SPRXX",
+    "entity_name": "FIDELITY HEREFORD STREET TRUST",
+    "series_name": "Fidelity Money Market Fund",
+    "class_name": "Fidelity Money Market Fund",
+    "cik": 917286,
+    "cikTen": "0000917286",
+    "series": "S000007052",
+    "class": "C000019231"
+  },
+  {
+    "ticker": "SUTXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab U.S. Treasury Money Fund",
+    "class_name": "Ultra Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004507",
+    "class": "C000222230"
+  },
+  {
+    "ticker": "SWGXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab Government Money Fund",
+    "class_name": "Sweep Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004506",
+    "class": "C000012381"
+  },
+  {
+    "ticker": "SWKXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab California Municipal Money Fund",
+    "class_name": "Investor Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004512",
+    "class": "C000012393"
+  },
+  {
+    "ticker": "SWOXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab Municipal Money Fund",
+    "class_name": "Ultra Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004511",
+    "class": "C000012391"
+  },
+  {
+    "ticker": "SWTXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab Municipal Money Fund",
+    "class_name": "Investor Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004511",
+    "class": "C000012389"
+  },
+  {
+    "ticker": "SWVXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab Value Advantage Money Fund",
+    "class_name": "Investor Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004508",
+    "class": "C000012383"
+  },
+  {
+    "ticker": "SWWXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab AMT Tax-Free Money Fund",
+    "class_name": "Investor Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004500",
+    "class": "C000039063"
+  },
+  {
+    "ticker": "SWYXX",
+    "entity_name": "CHARLES SCHWAB FAMILY OF FUNDS",
+    "series_name": "Schwab New York Municipal Money Fund",
+    "class_name": "Investor Shares",
+    "cik": 857156,
+    "cikTen": "0000857156",
+    "series": "S000004513",
+    "class": "C000012395"
+  },
+  {
+    "ticker": "TFDXX",
+    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
+    "series_name": "FEDFUND",
+    "class_name": "INSTITUTIONAL",
+    "cik": 97098,
+    "cikTen": "0000097098",
+    "series": "S000001475",
+    "class": "C000003928"
+  },
+  {
+    "ticker": "TFFXX",
+    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
+    "series_name": "BLACKROCK LIQUID FEDERAL TRUST FUND",
+    "class_name": "INSTITUTIONAL",
+    "cik": 97098,
+    "cikTen": "0000097098",
+    "series": "S000001477",
+    "class": "C000003948"
+  },
+  {
+    "ticker": "TMCXX",
+    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
+    "series_name": "TEMPCASH",
+    "class_name": "INSTITUTIONAL",
+    "cik": 97098,
+    "cikTen": "0000097098",
+    "series": "S000001474",
+    "class": "C000003921"
+  },
+  {
+    "ticker": "TOIXX",
+    "entity_name": "Federated Hermes Money Market Obligations Trust",
+    "series_name": "Federated Hermes Treasury Obligations Fund",
+    "class_name": "Institutional Shares",
+    "cik": 856517,
+    "cikTen": "0000856517",
+    "series": "S000009578",
+    "class": "C000026167"
+  },
+  {
+    "ticker": "TSTXX",
+    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
+    "series_name": "T-FUND",
+    "class_name": "INSTITUTIONAL",
+    "cik": 97098,
+    "cikTen": "0000097098",
+    "series": "S000001476",
+    "class": "C000003938"
+  },
+  {
+    "ticker": "TTTXX",
+    "entity_name": "BLACKROCK LIQUIDITY FUNDS",
+    "series_name": "TREASURY TRUST FUND",
+    "class_name": "INSTITUTIONAL",
+    "cik": 97098,
+    "cikTen": "0000097098",
+    "series": "S000001478",
+    "class": "C000003954"
+  },
+  {
+    "ticker": "UTIXX",
+    "entity_name": "Federated Hermes Money Market Obligations Trust",
+    "series_name": "Federated Hermes U.S. Treasury Cash Reserves",
+    "class_name": "Institutional Shares",
+    "cik": 856517,
+    "cikTen": "0000856517",
+    "series": "S000009580",
+    "class": "C000026172"
   },
   {
     "ticker": "VCTXX",
@@ -930,6 +940,16 @@
     "class": "C000007961"
   },
   {
+    "ticker": "VUSXX",
+    "entity_name": "VANGUARD ADMIRAL FUNDS",
+    "series_name": "Vanguard Treasury Money Market Fund",
+    "class_name": "Investor Shares",
+    "cik": 891190,
+    "cikTen": "0000891190",
+    "series": "S000002233",
+    "class": "C000005732"
+  },
+  {
     "ticker": "VYFXX",
     "entity_name": "VANGUARD NEW YORK TAX-FREE FUNDS",
     "series_name": "Vanguard New York Municipal Money Market Fund",
@@ -938,5 +958,15 @@
     "cikTen": "0000788599",
     "series": "S000002906",
     "class": "C000007971"
+  },
+  {
+    "ticker": "WMPXX",
+    "entity_name": "ALLSPRING FUNDS TRUST",
+    "series_name": "Allspring Money Market Fund",
+    "class_name": "Premier Class",
+    "cik": 1081400,
+    "cikTen": "0001081400",
+    "series": "S000007425",
+    "class": "C000168181"
   }
 ]

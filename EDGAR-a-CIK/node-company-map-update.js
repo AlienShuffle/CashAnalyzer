@@ -2,6 +2,8 @@ import { XMLParser } from 'fast-xml-parser';
 import { XMLValidator } from 'fast-xml-parser';
 import { readFileSync } from 'fs';
 import process from 'node:process';
+import dynamicSort from '../lib/dynamicSort.mjs';
+import { safeObjectRef } from '../lib/utils.mjs';
 
 // create a lookup array of all the funds I want to track from the mmFun input list
 // the list is a file of tickers, per line.
@@ -10,6 +12,11 @@ const fundListBuffer = readFileSync(process.argv[2], 'utf8');
 const fundList = fundListBuffer.split('\n');
 let funds = [];
 for (let i = 0; i < fundList.length; i++) if (fundList[i].length > 0) funds[fundList[i]] = true;
+
+if (!safeObjectRef(process.argv[3])) throw "manual entries file missing.";
+const manualListBuffer = readFileSync(process.argv[3], 'utf8');
+const manualJson = JSON.parse(manualListBuffer);
+//console.log(`manualJson.length=${manualJson.length}`);
 
 // read in the MFP XML file from stdin.
 const xmlFile = readFileSync(0, 'utf8');
@@ -41,4 +48,15 @@ for (let i = 0; i < companies.length; i++) {
         "class": co.class_id
     });
 }
-console.log(JSON.stringify(resp));
+
+// add manual entries if not already in the file from EDGAR.
+for (let m = 0; m < manualJson.length; m++) {
+    let found = false;
+    for (let j = 0; j < resp.length; j++) {
+        if (manualJson[m].ticker == resp[j].ticker) {
+            found = true;
+        }
+    }
+    if (!found) resp.push(manualJson[m]);
+}
+console.log(JSON.stringify(resp.sort(dynamicSort('ticker'))));

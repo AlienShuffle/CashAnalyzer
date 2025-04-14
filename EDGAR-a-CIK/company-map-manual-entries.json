@@ -1,0 +1,32 @@
+[
+    {
+        "ticker": "GMMF",
+        "entity_name": "BlackRock ETF Trust",
+        "series_name": "iShares Government Money Market ETF",
+        "class_name": "I",
+        "cik": 1761055,
+        "cikTen": "0001761055",
+        "series": "S000089874",
+        "class": "C000256702"
+    },
+    {
+        "ticker": "PMMF",
+        "entity_name": "BlackRock ETF Trust",
+        "series_name": "iShares Prime Money Market ETF",
+        "class_name": "I",
+        "cik": 1761055,
+        "cikTen": "0001761055",
+        "series": "S000089875",
+        "class": "C000256703"
+    },
+    {
+        "ticker": "FYHXX",
+        "entity_name": "Fidelity Hereford Street Trust",
+        "series_name": "Fidelity Treasury Digital Fund",
+        "class_name": "Fidelity Treasury Digital Fund",
+        "cik": 917286,
+        "cikTen": "0000917286",
+        "series": "S000089156",
+        "class": "C000255665"
+    }
+]
