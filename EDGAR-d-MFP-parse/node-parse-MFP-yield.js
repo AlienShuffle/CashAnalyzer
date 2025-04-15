@@ -62,13 +62,23 @@ function processClassInfo(classInfo) {
 
     // Find the last 7 day yields published on this report.
     const sevenDayYields = classInfo.sevenDayNetYield;
+    const dailyNetAssetValuePerShareClass = classInfo.dailyNetAssetValuePerShareClass;
     if (submissionType != 'N-MFP2') {
         for (let i = 1; i < sevenDayYields.length; i++) {
             const yieldNum = sevenDayYields[i].sevenDayNetYieldValue.toFixed(5) * 1;
             if (yieldNum > 0) {
+                // find daily NAV.
+                let nav = 1;
+                for (let n = 0; n < dailyNetAssetValuePerShareClass.length; n++) {
+                    if (sevenDayYields[i].sevenDayNetYieldDate ==
+                        dailyNetAssetValuePerShareClass[n].dailyNetAssetValuePerShareDateClass) {
+                        nav = dailyNetAssetValuePerShareClass[n].dailyNetAssetValuePerShareClass * 1;
+                        break;
+                    }
+                }
                 resp.push({
                     "asOfDate": sevenDayYields[i].sevenDayNetYieldDate,
-                    "price": 1,
+                    "price": nav,
                     "sevenDayYield": yieldNum,
                     "source": 'EDGAR MFP-3',
                     "ticker": match.ticker,

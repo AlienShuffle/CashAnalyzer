@@ -10,6 +10,16 @@
         "class": "C000256702"
     },
     {
+        "ticker": "MMKT",
+        "entity_name": "Texas Capital Funds Trust",
+        "series_name": "Texas Capital Government Money Market ETF",
+        "class_name": "Texas Capital Government Money Market ETF",
+        "cik": 1972459,
+        "cikTen": "0001972459",
+        "series": "S000086506",
+        "class": "C000252068"
+    },
+    {
         "ticker": "PMMF",
         "entity_name": "BlackRock ETF Trust",
         "series_name": "iShares Prime Money Market ETF",

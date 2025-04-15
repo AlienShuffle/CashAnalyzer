@@ -38,12 +38,11 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-CIKmap="../EDGAR-a-CIK/CIK/company-map.json"
-if [ ! -s "$CIKmap" ]; then
-    echo "$CIKmap does not exist, exiting..."
+if [ ! -s "$companyMap" ]; then
+    echo "$companyMap does not exist, exiting..."
     exit 1
 fi
-if [ -z "$fundsList" } || [ ! -s "$fundsList" ]; then
+if [ -z "$fundsList" ] || [ ! -s "$fundsList" ]; then
     echo "$fundsList does not exist, exiting..."
     exit 1
 fi
@@ -51,7 +50,7 @@ fi
 
 cat $fundsList |
     while read -r ticker; do
-        cik=$(node ./node-ticker-CIK-map.js "$ticker" <"$CIKmap")
+        cik=$(node ./node-ticker-CIK-map.js "$ticker" <"$companyMap")
         if [ ! -n "$cik" ]; then
             echo "$ticker: missing from CIK-map, skipping...."
             continue
