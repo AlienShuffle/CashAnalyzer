@@ -45,10 +45,13 @@ submissionsCIKs="submissionsCIKs.txt"
 dayOfMonth=$(date +'%d')
 [ $dayOfMonth -gt 3 ] && [ $dayOfMonth -lt 10 ] && runDelayHours=4
 
-runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -s "$submissionsCIKs" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$submissionsCIKs")))" -lt "$runDelaySeconds" ]; then
-    echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$submissionsCIKs" | cut -d: -f1,2)"
-    [ -z "$forceRun" ] && exit 0
+# if company file is newer, just run!, otherwise wait pubDelayHours
+if [ "$companyMap" -ot "$submissionsCIKs" ]; then
+    pubDelaySeconds=$(($pubDelayHours * 60 * 60))
+    if [ -s "$submissionsCIKs" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$submissionsCIKs")))" -lt "$pubDelaySeconds" ]; then
+        echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$submissionsCIKs" | cut -d: -f1,2)"
+        [ -z "$forceRun" ] && exit 0
+    fi
 fi
 
 node ./node-create-submissions-CIKs.js <"$companyMap" | sort -u >$submissionsCIKs
