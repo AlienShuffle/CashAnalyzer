@@ -89,7 +89,7 @@ csvRateAllFlare="$cloudFlareHome/$accountClass/all-rates.csv"
 #  - note, if -f is passed to this script, I will run the script regardless, but still report the aging status.
 #
 if [ -n "$injectProcessedJson" ] && [ -s "$injectProcessedJson" ]; then
-    #echo "Using $injectProcessedJson instead of querying online source."
+    echo "Using $injectProcessedJson instead of querying online source."
     jsonRateNew="$injectProcessedJson"
 else
     pubDelaySeconds=$(($pubDelayHours * 60 * 60))
@@ -153,7 +153,7 @@ rm -f tmp.sort.json
 # get list of rates that were updated.
 # Then loop through this list of names, extract them from the rate sheet and merge it into the history sheet.
 #
-grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed 's/",$//' | sort -u |
+grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e 's/"$//' | sort -u |
     while IFS= read -r ticker; do
         dirname="$(echo "$ticker" | sed -e 's/ /-/g')"
         echo "Processing $ticker"
