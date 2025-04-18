@@ -61,3 +61,4 @@ cat $submissionsCIKs |
         ../bin/getEDGAR.sh "https://data.sec.gov/submissions/CIK$cik.json" | jq . >submissions/$cik.json
         sleep 2
     done
+rm -f "$submissionsCIKs"

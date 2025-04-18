@@ -41,11 +41,6 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-# create data source file paths.
-CIKmap="CIK/CIK-map.json"
-[ -d CIK ] || mkdir CIK
-
-
 runDelaySeconds=$(($runDelayHours * 60 * 60))
 if [ -s "$CIKmap" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$CIKmap")))" -lt "$runDelaySeconds" ]; then
     echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$CIKmap" | cut -d: -f1,2)"
@@ -55,6 +50,8 @@ if [ -s "$CIKmap" ] && [ "$(($(stat -c "%Y" "$fundsList") - $(stat -c "%Y" "$CIK
     echo "$fundsList not updated since last run."
     [ -z "$forceRun" ] && exit 0
 fi
+tmpFile=co_tickers_mf.json
 ../bin/getEDGAR.sh "https://www.sec.gov/data/company_tickers_mf.json" |
-    jq . >co_tickers_mf.json
-node ./node-CIK-map-update.js "$fundsList" <co_tickers_mf.json | jq . >"$CIKmap"
+    jq . >"$tmpFile"
+node ./node-CIK-map-update.js "$fundsList" <"$tmpFile" | jq . >"$CIKmap"
+rm -f "$tmpFile"

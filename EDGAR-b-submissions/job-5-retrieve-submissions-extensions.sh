@@ -63,3 +63,4 @@ cat $submissionExtensionFiles |
         ../bin/getEDGAR.sh "https://data.sec.gov/submissions/$fileName" | jq . >"submissions-ext/$fileName"
         sleep 1
     done
+rm -r "$submissionExtensionFiles"

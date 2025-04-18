@@ -1,0 +1,19 @@
+{
+  "name": "meta-update",
+  "version": "0.0.1",
+  "description": "pull moneymarket.fun Rate using the current day report not fund-specific history.",
+  "main": "index.js",
+  "scripts": {
+    "start-nogood-we-arent-using-funcions-framework": "functions-framework --target=getFidelityQuotes"
+  },
+  "keywords": [
+    "Puppeteer",
+    "GCF",
+    "Fidelity Quotes"
+  ],
+  "author": "AlienShuffle",
+  "license": "MIT",
+  "dependencies": {
+    "latest": "^0.2.0"
+  }
+}

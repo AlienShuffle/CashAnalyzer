@@ -38,9 +38,6 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-# create data source file paths.
-fiscalYearFile="fiscalYearFile.csv"
-
 runDelaySeconds=$(($runDelayHours * 60 * 60))
 if [ -s "$fiscalYearFile" ]; then
     if [ "$(($(date +"%s") - $(stat -c "%Y" "$fiscalYearFile")))" -lt "$runDelaySeconds" ]; then
