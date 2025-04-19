@@ -16,8 +16,8 @@ submissionsFilesDir="../EDGAR-b-submissions/submissions"
 submissionsExtensionsDir="../EDGAR-b-submissions/submissions-ext"
 [ -d "$submissionsExtensionsDir" ] || mkdir -p "$submissionsExtensionsDir"
 
-MFPlistsDir="../EDGAR-d-MFP-lists/MFP-lists"
-[ -d "$MFPlistsDir" ] || mkdir -p "$MFPlistsDir"
+MFPListsDir="../EDGAR-d-MFP-lists/MFP-lists"
+[ -d "$MFPListsDir" ] || mkdir -p "$MFPListsDir"
 
 MFPFilesDir="../EDGAR-d-MFP-lists/MFP-files"
 [ -d "$MFPFilesDir" ] || mkdir -p "$MFPFilesDir"

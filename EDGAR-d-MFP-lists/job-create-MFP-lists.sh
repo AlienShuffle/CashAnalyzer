@@ -42,7 +42,7 @@ find $submissionsFilesDir -type f -print |
     while read -r submissionFile; do
         newFile="$MFPListsDir/$(basename $submissionFile)"
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$submissionFile" -nt "$newFile" ]; then
-            echo processing $submissionFile
+            echo processing $submissionFile # "=>" $newFile
             node node-parse-submission-file.js <"$submissionFile" | jq . >"$newFile"
         fi
     done

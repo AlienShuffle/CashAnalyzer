@@ -57,4 +57,5 @@ fi
 tmpFile=investment-map.xml
 ../bin/getEDGAR.sh "https://www.sec.gov/files/investment/data/other/investment-company-series-and-class-information/investment-company-series-class-2024.xml" >"$tmpFile"
 node ./node-company-map-update.js "$fundsList" "company-map-manual-entries.json" <"$tmpFile" | jq . >"$companyMap"
+echo updated $companyMap
 rm -f "$tmpFile"
