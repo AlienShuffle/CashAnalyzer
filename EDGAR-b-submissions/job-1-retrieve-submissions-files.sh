@@ -4,7 +4,7 @@
 # this is just the list of URLs to do the work.
 #
 # process the command argument list.
-pubDelayHours=144
+pubDelayHours=48
 runDelayHours=24
 accountClass=MM
 while [ -n "$1" ]; do
@@ -41,16 +41,21 @@ source ../meta.$(hostname).sh
 # create data source file paths.
 submissionsCIKs="submissionsCIKs.txt"
 
-# run more often during the reporting period of the month.
-dayOfMonth=$(date +'%d')
-[ $dayOfMonth -gt 3 ] && [ $dayOfMonth -lt 10 ] && runDelayHours=4
+source ../bin/skipWeekends.sh
 
-# if company file is newer, just run, otherwise wait pubDelayHours
-if [ "$companyMap" -ot "$submissionsCIKs" ]; then
-    pubDelaySeconds=$(($pubDelayHours * 60 * 60))
-    if [ -s "$submissionsCIKs" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$submissionsCIKs")))" -lt "$pubDelaySeconds" ]; then
-        echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$submissionsCIKs" | cut -d: -f1,2)"
-        [ -z "$forceRun" ] && exit 0
+# run extra during MFP reporting week.
+dayOfMonth=$(date +'%d')
+if [ $dayOfMonth -gt 4 ] && [ $dayOfMonth -lt 11 ]; then
+    runDelayHours=4
+fi
+
+# if company file is newer, just run, otherwise wait  runDelayHousrs
+# we can't track pub updates easily, just just use run delays.
+runDelaySeconds=$(($runDelayHours * 60 * 60))
+if [ -s "$submissionsCIKs" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$submissionsCIKs")))" -lt "$runDelaySeconds" ]; then
+    if [ -z "$forceRun" ]; then
+        echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$submissionsCIKs" | cut -d: -f1,2)"
+        exit 0
     fi
 fi
 

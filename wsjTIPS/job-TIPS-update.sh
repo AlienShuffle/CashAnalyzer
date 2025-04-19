@@ -51,6 +51,9 @@ fi
 # look for a -f to force run, overriding the time delays.
 
 source ../meta.$(hostname).sh
+
+source ../bin/skipWeekends.sh
+
 # current rate files
 injectRatesJson="inject-rates.json"
 jsonRateNew="$bankName-rate-new.json"
