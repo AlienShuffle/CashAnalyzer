@@ -92,16 +92,9 @@ if [ -n "$injectProcessedJson" ] && [ -s "$injectProcessedJson" ]; then
     echo "Using $injectProcessedJson instead of querying online source."
     jsonRateNew="$injectProcessedJson"
 else
-    pubDelaySeconds=$(($pubDelayHours * 60 * 60))
-    if [ -s "$jsonRateFlare" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateFlare")))" -lt "$pubDelaySeconds" ]; then
-        echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$jsonRateFlare" | cut -d: -f1,2)"
-        [ -z "$forceRun" ] && exit 0
-    fi
-    runDelaySeconds=$(($runDelayHours * 60 * 60))
-    if [ -s "$jsonRateNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateNew")))" -lt "$runDelaySeconds" ]; then
-        echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonRateNew" | cut -d: -f1,2)"
-        [ -z "$forceRun" ] && exit 0
-    fi
+    pubDelayFile="$jsonRateFlare"
+    runDelayFile="$jsonRateNew"
+    source ../bin/testDelays.sh
     #
     # run the scipts to prepare the data.
     #

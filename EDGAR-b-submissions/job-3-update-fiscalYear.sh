@@ -38,13 +38,9 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -s "$fiscalYearFile" ]; then
-    if [ "$(($(date +"%s") - $(stat -c "%Y" "$fiscalYearFile")))" -lt "$runDelaySeconds" ]; then
-        echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$fiscalYearFile" | cut -d: -f1,2)"
-        [ -z "$forceRun" ] && exit 0
-    fi
-fi
+pubDelayFile=""
+runDelayFile="$fiscalYearFile"
+source ../bin/testDelays.sh
 
 if [ -s "$fiscalYearFile" ]; then
     newCount=$(find submissions -name '*.json' -newer $fiscalYearFile -print | wc -l)

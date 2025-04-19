@@ -49,15 +49,9 @@ if [ $dayOfMonth -gt 4 ] && [ $dayOfMonth -lt 11 ]; then
     runDelayHours=4
 fi
 
-# if company file is newer, just run, otherwise wait  runDelayHousrs
-# we can't track pub updates easily, just just use run delays.
-runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -s "$submissionsCIKs" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$submissionsCIKs")))" -lt "$runDelaySeconds" ]; then
-    if [ -z "$forceRun" ]; then
-        echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$submissionsCIKs" | cut -d: -f1,2)"
-        exit 0
-    fi
-fi
+pubDelayFile=""
+runDelayFile="$submissionsCIKs"
+source ../bin/testDelays.sh
 
 node ./node-create-submissions-CIKs.js <"$companyMap" | sort -u >$submissionsCIKs
 cat $submissionsCIKs |

@@ -41,6 +41,7 @@ if [ ! -d "$HOME/CashAnalyzer/$sourceName" ]; then
     exit 1
 fi
 source ../meta.$(hostname).sh
+source ../bin/skipWeekends.sh
 # current rate files
 injectRatesJson="inject-rates.json"
 jsonRateNew="$sourceName-rate-new.json"
@@ -54,17 +55,10 @@ csvRateFlare="$cloudFlareHome/Treasuries/$sourceName/$sourceName-rate.csv"
 if [ -s "$injectRatesJson" ]; then
     echo "Using $injectRatesJson instead"
     jsonRateNew="$injectRatesJson"
-else
-    pubDelaySeconds=$(($pubDelayHours * 60 * 60))
-    if [ -s "$jsonRateFlare" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateFlare")))" -lt "$pubDelaySeconds" ]; then
-        echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$jsonRateFlare" | cut -d: -f1,2)"
-        [ -z "$forceRun" ] && exit 0
-    fi
-    runDelaySeconds=$(($runDelayHours * 60 * 60))
-    if [ -s "$jsonRateNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateNew")))" -lt "$runDelaySeconds" ]; then
-        echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonRateNew" | cut -d: -f1,2)"
-        [ -z "$forceRun" ] && exit 0
-    fi
+elcag se
+    pubDelayFile="$jsonRateFlare"
+    runDelayFile="$jsonRateNew"
+    source ../bin/testDelays.sh
     #
     # this script was used in fintools version 98 and later. This is intended to stick around long-term.
     #

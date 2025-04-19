@@ -42,11 +42,9 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -s "$fundsList" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$fundsList")))" -lt "$runDelaySeconds" ]; then
-    echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$fundsList" | cut -d: -f1,2)"
-    [ -z "$forceRun" ] && exit 0
-fi
+pubDelayFile=""
+runDelayFile="$fundsList"
+source ../bin/testDelays.sh
 
 if [ -s "$fundsList" ]; then
     newCount=$(find .. -name '*-funds.csv' -newer $fundsList -print | wc -l)
