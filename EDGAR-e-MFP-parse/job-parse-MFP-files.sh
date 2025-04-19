@@ -38,27 +38,12 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-MFPFilesDir="../EDGAR-c-MFP-lists/MFP-files"
-if [ ! -d "$MFPFilesDir" ]; then
-    echo "$MFPFilesDir does not exist, exiting..."
-    exit 1
-fi
-if [ ! -s "$companyMap" ]; then
-    echo "$companyMap does not exist, exiting..."
-    exit 1
-fi
-fiscalYears="../EDGAR-b-submissions/fiscalYearFile.csv"
-if [ ! -s "$fiscalYears" ]; then
-    echo "$fiscalYears does not exist, exiting..."
-    exit 1
-fi
-monthlyReport="reports"
-yieldReports="yields"
+yieldReportsDir="yields"
 
 find $MFPFilesDir -type f -name '*.xml' -print |
     while read -r xmlFile; do
         accession=$(dirname $xmlFile | sed -e 's/^.*\///')
-        cikDir="$monthlyReport/$accession"
+        cikDir="$MFPReportsDir/$accession"
         [ -d "$cikDir" ] || mkdir -p "$cikDir"
         #echo looking at $xmlFile
         newFile="$cikDir/$(basename $xmlFile | sed -e 's/\.xml/\.json/')"
@@ -66,14 +51,14 @@ find $MFPFilesDir -type f -name '*.xml' -print |
         #echo "filingDate=$filingDate"
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$xmlFile" -nt "$newFile" ]; then
             echo processing $xmlFile
-            node node-parse-MFP-file.js "$companyMap" "$fiscalYears" "$filingDate" <"$xmlFile" | jq . >"$newFile"
+            node node-parse-MFP-file.js "$fundsMetaFile" "$filingDate" <"$xmlFile" | jq . >"$newFile"
         fi
-        yieldDir="$yieldReports/$accession"
+        yieldDir="$yieldReportsDir/$accession"
         [ -d "$yieldDir" ] || mkdir -p "$yieldDir"
         yieldFile="$yieldDir/$(basename $xmlFile | sed -e 's/\.xml/\.json/')"
         if [ -n "$forceRun" ] || [ ! -s "$yieldFile" ] || [ "$xmlFile" -nt "$yieldFile" ]; then
             echo processing yield for $xmlFile
-            node node-parse-MFP-yield.js "$companyMap" <"$xmlFile" | jq . >"$yieldFile"
+            node node-parse-MFP-yield.js "$fundsMetaFile" <"$xmlFile" | jq . >"$yieldFile"
             ../bin/MM-update-common-job.sh --injectProcessedJson $yieldFile
         fi
     done

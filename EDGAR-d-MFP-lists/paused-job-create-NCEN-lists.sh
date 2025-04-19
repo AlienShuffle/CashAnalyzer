@@ -4,8 +4,8 @@
 # N-CEN reports eligible for processing.
 #
 # process the command argument list.
-pubDelayHours=48
-runDelayHours=24
+pubDelayHours=144
+runDelayHours=48
 accountClass=MM
 while [ -n "$1" ]; do
     case $1 in
@@ -38,15 +38,13 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-# create data source file paths.
-submissionsFiles="../EDGAR-b-submissions/submissions"
-NCENlists="NCEN-lists"
+# create data source file paths (move to meta.common.sh once this is fully implemented.)
+NCENlistsDir="../EDGAR-d-MFP-lists/NCEN-lists"
+[ -d "$NCENlistsDir" ] || mkdir -p "$NCENlistsDir"
 
-[ -d "$NCENlists" ] || mkdir -p "$NCENlists"
-
-find $submissionsFiles -type f -print |
+find $submissionsFilesDir -type f -print |
     while read -r submissionFile; do
-        newFile="$NCENlists/$(basename $submissionFile)"
+        newFile="$NCENlistsDir/$(basename $submissionFile)"
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$submissionFile" -nt "$newFile" ]; then
             echo processing $submissionFile
             node node-parse-submission-file.js 'N-CEN' <"$submissionFile" | jq . >"$newFile"

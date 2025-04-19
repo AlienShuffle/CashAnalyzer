@@ -38,25 +38,18 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-# create data source file paths.
-submissionsFiles="../EDGAR-b-submissions/submissions"
-submissionsExtensions="../EDGAR-b-submissions/submissions-ext"
-MFPlists="MFP-lists"
-
-[ -d "$MFPlists" ] || mkdir -p "$MFPlists"
-
-find $submissionsFiles -type f -print |
+find $submissionsFilesDir -type f -print |
     while read -r submissionFile; do
-        newFile="$MFPlists/$(basename $submissionFile)"
+        newFile="$MFPListsDir/$(basename $submissionFile)"
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$submissionFile" -nt "$newFile" ]; then
             echo processing $submissionFile
             node node-parse-submission-file.js <"$submissionFile" | jq . >"$newFile"
         fi
     done
 
-find $submissionsExtensions -type f -print |
+find $submissionsExtensionsDir -type f -print |
     while read -r submissionFile; do
-        newFile="$MFPlists/$(basename $submissionFile)"
+        newFile="$MFPListsDir/$(basename $submissionFile)"
         cik=$(basename $submissionFile | sed -e 's/^CIK//' | sed -e 's/-submissions-....json//')
         #echo $cik
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$submissionFile" -nt "$newFile" ]; then

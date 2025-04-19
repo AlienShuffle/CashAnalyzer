@@ -8,3 +8,19 @@ fiscalYearFile="../data/fiscalYearFile.csv"
 fundsList="../data/funds-list.txt"
 fundsMetaFile="../data/fundsMeta.json"
 [ -d "../data" ] || mkdir "../data"
+#
+# MFP source and intermediate file related folders
+submissionsFilesDir="../EDGAR-b-submissions/submissions"
+[ -d "$submissionsFilesDir" ] || mkdir -p "$submissionsFilesDir"
+
+submissionsExtensionsDir="../EDGAR-b-submissions/submissions-ext"
+[ -d "$submissionsExtensionsDir" ] || mkdir -p "$submissionsExtensionsDir"
+
+MFPlistsDir="../EDGAR-d-MFP-lists/MFP-lists"
+[ -d "$MFPlistsDir" ] || mkdir -p "$MFPlistsDir"
+
+MFPFilesDir="../EDGAR-d-MFP-lists/MFP-files"
+[ -d "$MFPFilesDir" ] || mkdir -p "$MFPFilesDir"
+
+MFPReportsDir="../EDGAR-e-MFP-parse/reports"
+[ -d "$MFPReportsDir" ] || mkdir -p "$MFPReportsDir"

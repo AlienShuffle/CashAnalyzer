@@ -31,21 +31,8 @@ function findFund(cik, series, classId) {
 }
 if (debug) console.log('fundList.length=' + fundList.length)
 
-// take the fund CIK,fiscalyear table and injest as well.
-const fiscalYearBuffer = readFileSync(process.argv[3], 'utf8');
-const fiscalYears = fiscalYearBuffer.split('\n');
-function findFiscalYear(cik) {
-    for (let i = 0; i < fiscalYears.length; i++) {
-        if (fiscalYears[i].indexOf(cik) > -1) {
-            const vals = fiscalYears[i].split(',');
-            return vals[1];
-        }
-    }
-}
-if (debug) console.log('fiscalYears.length=' + fiscalYears.length)
-
 // This is passed into the program as it is only known in the metadata.
-const filingDate = process.argv[4];
+const filingDate = process.argv[3];
 
 // read in the MFP XML file from stdin.
 const xmlFile = readFileSync(process.stdin.fd, 'utf8');
@@ -63,7 +50,6 @@ const headerData = json.edgarSubmission.headerData;
 const submissionType = headerData.submissionType.replace('/^NT /', '').replace('/\/A$/', '').substring(0, 6);
 if (debug) console.log('submissionType=' + submissionType)
 const cik = headerData.filerInfo.filer.filerCredentials.cik;
-const fiscalYear = findFiscalYear(cik);
 
 const formData = json.edgarSubmission.formData;
 const reportDate = formData.generalInfo.reportDate;
@@ -243,8 +229,8 @@ function processClassInfo(classInfo) {
     // let's find out if this class is one we want to report.
     const classesId = classInfo.classesId;
     if (debug) console.log('cik=' + cik + ' series=' + seriesId + ' classesId=' + classesId)
-    const match = findFund(cik, seriesId, classesId);
-    if (!match) return;
+    const fundMeta = findFund(cik, seriesId, classesId);
+    if (!fundMeta) return;
 
     // Find the last 7 day yield published on this report.
     const sevenDayYields = classInfo.sevenDayNetYield;
@@ -291,15 +277,22 @@ function processClassInfo(classInfo) {
         }
     }
 
+    const metaAsOfDateObj = duGetDateFromYYYYMMDD(fundMeta.asOfDate);
+    const metaYear = metaAsOfDateObj.getFullYear();
+    const reportDateObj = duGetDateFromYYYYMMDD(reportDate);
+    const reportYear = reportDateObj.getFullYear();
+    const expenseRatio = (metaYear == reportYear) ? fundMeta.expenseRatio : null;
+
     // create and export the resulting ticker symbol EDGAR report.
     let item = {
-        "ticker": match.ticker,
+        "ticker": fundMeta.ticker,
         "source": "parse-MFP-files.sh",
-        "registrantName": titleCase((registrantFullName) ? registrantFullName : match.entity_name),
-        "seriesName": titleCase((nameOfSeries) ? nameOfSeries : match.series_name),
-        "className": titleCase((classInfo.classFullName) ? classInfo.classFullName : match.class_name),
-        "expenseRatio": 0, // where do I find this?
-        "fiscalYearEnd": fiscalYear,
+        "registrantName": titleCase((registrantFullName) ? registrantFullName : fundMeta.entity_name),
+        "seriesName": titleCase((nameOfSeries) ? nameOfSeries : fundMeta.series_name),
+        "className": titleCase((classInfo.classFullName) ? classInfo.classFullName : fundMeta.class_name),
+        "mmName": fundMeta.mmName,
+        "expenseRatio": expenseRatio,
+        "fiscalYearEnd": fundMeta.fiscalYearEnd,
         "category": moneyMarketFundCategory,
         "totalNetAssets": classInfo.netAssetsOfClass,
         "investorType": retailMoneyMarketFlag,
@@ -330,5 +323,4 @@ if (Array.isArray(classLevelInfo)) {
 } else {
     processClassInfo(classLevelInfo);
 }
-
 console.log(JSON.stringify(resp));

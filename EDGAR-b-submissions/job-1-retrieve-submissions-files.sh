@@ -45,7 +45,7 @@ submissionsCIKs="submissionsCIKs.txt"
 dayOfMonth=$(date +'%d')
 [ $dayOfMonth -gt 3 ] && [ $dayOfMonth -lt 10 ] && runDelayHours=4
 
-# if company file is newer, just run!, otherwise wait pubDelayHours
+# if company file is newer, just run, otherwise wait pubDelayHours
 if [ "$companyMap" -ot "$submissionsCIKs" ]; then
     pubDelaySeconds=$(($pubDelayHours * 60 * 60))
     if [ -s "$submissionsCIKs" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$submissionsCIKs")))" -lt "$pubDelaySeconds" ]; then
@@ -61,4 +61,4 @@ cat $submissionsCIKs |
         ../bin/getEDGAR.sh "https://data.sec.gov/submissions/CIK$cik.json" | jq . >submissions/$cik.json
         sleep 2
     done
-rm -f "$submissionsCIKs"
+# do not remove this $submissionsCIKs, it is the run delay test variable!"

@@ -39,16 +39,9 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-# create data source file paths.
-submissionsFiles="../EDGAR-b-submissions/submissions"
-MFPlists="MFP-lists"
-MFPfiles="MFP-files"
-[ -d "$MFPlists" ] || mkdir -p "$MFPlists"
-[ -d "$MFPfiles" ] || mkdir -p "$MFPfiles"
-
 getCount=0
 listCount=0
-for list in $MFPlists/*.json; do
+for list in $MFPListsDir/*.json; do
     #echo "Processing $list"
     cat "$list" | jq -r '.[] | [.cik,.accessionNumber,.url,.filingDate] | @csv' | sed -e 's/"//g' |
         while read -r entry; do
@@ -57,7 +50,7 @@ for list in $MFPlists/*.json; do
             url=$(echo $entry | cut -d, -f3)
             filingDate=$(echo $entry | cut -d, -f4)
             #echo "filingDate=$filingDate"
-            targetDir="$MFPfiles/$cik"
+            targetDir="$MFPFilesDir/$cik"
             [ -d "$targetDir" ] || mkdir -p "$targetDir"
             targetFile="$targetDir/$filingDate-$accessionNumber.xml"
             if [ ! -s "$targetFile" ]; then
@@ -69,12 +62,11 @@ for list in $MFPlists/*.json; do
                     rm $targetFile
                 fi
                 getCount=$(($getCount + 1))
-            #else
-            #    echo "already downloaded: $cik/$filingDate-$accessionNumber"
             fi
             [ $getCount -gt 19 ] && exit 1
         done
     listCount=$(($listCount + 1))
+    # limit # of CIKs processed each time.
     #[ $listCount -gt 20 ] && exit 1
 done
 exit 0

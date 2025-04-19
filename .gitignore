@@ -208,7 +208,6 @@ EDGAR-e-MFP-parse/all.json
 EDGAR-a-CIK/co_tickers_mf.json
 EDGAR-a-CIK/investment-map.xml
 EDGAR-e-MFP-parse/tickers/*.json
-EDGAR-e-MFP-parse/sortReportDate.js
 EDGAR-d-MFP-lists/MFP-files.old/*/*.xml
 EDGAR-e-MFP-parse/yields/*/*.json
 EDGAR-e-MFP-parse/old.*
