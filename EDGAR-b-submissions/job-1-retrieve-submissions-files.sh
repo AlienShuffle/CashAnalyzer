@@ -60,4 +60,4 @@ cat $submissionsCIKs |
         ../bin/getEDGAR.sh "https://data.sec.gov/submissions/CIK$cik.json" | jq . >submissions/$cik.json
         sleep 2
     done
-# do not remove this $submissionsCIKs, it is the run delay test variable!"
+# do not remove this $submissionsCIKs, it is the run delay test variable!
