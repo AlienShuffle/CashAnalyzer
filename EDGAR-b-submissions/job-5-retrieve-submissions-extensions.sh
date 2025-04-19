@@ -5,7 +5,7 @@
 #
 # process the command argument list.
 pubDelayHours=144
-runDelayHours=24
+runDelayHours=144
 accountClass=MM
 while [ -n "$1" ]; do
     case $1 in
@@ -46,11 +46,9 @@ submissionExtensionFiles="submissionExtensionFile.json"
 #dayOfMonth=$(date +'%d')
 #[ $dayOfMonth -gt 3 ] && [ $dayOfMonth -lt 10 ] && runDelayHours=4
 
-runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -s "$submissionExtensionFiles" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$submissionExtensionFiles")))" -lt "$runDelaySeconds" ]; then
-    echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$submissionExtensionFiles" | cut -d: -f1,2)"
-    [ -z "$forceRun" ] && exit 0
-fi
+pubDelayFile=""
+runDelayFile="$submissionExtensionFiles"
+source ../bin/testDelays.sh
 
 for file in submissions/*.json; do
     node node-find-submission-extensions.js <$file

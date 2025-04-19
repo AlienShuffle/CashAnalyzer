@@ -40,25 +40,17 @@ if [ -z "$ticker" ]; then
 fi
 
 source ../meta.$(hostname).sh
+source ../bin/skipWeekends.sh
+
 jsonNew="history/$ticker-distro-new.json"
 jsonFlare="$cloudFlareHome/Funds/$ticker/$ticker-distros.json"
 jsonUnique="history/$ticker-distro-new-unique.json"
 [ -d history ] || mkdir -p history
-#
-# preamble - test to see how long since this last run occured, skip out if this run is too soon.
-#  - note, if $1 to to this script is not empty, I will run the script regardless, but report the aging status too.
-#
-# update these delayHours as appropriate for the data source.
-pubDelaySeconds=$(($pubDelayHours * 60 * 60))
-if [ -f "$jsonFlare" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonFlare")))" -lt "$pubDelaySeconds" ]; then
-  echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$jsonFlare" | cut -d: -f1,2)"
-  [ -z "$forceRun" ] && exit 0
-fi
-runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -f "$jsonNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonNew")))" -lt "$runDelaySeconds" ]; then
-  echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonNew" | cut -d: -f1,2)"
-  [ -z "$forceRun" ] && exit 0
-fi
+
+pubDelayFile="$jsonFlare"
+runDelayFile="$jsonNew"
+source ../bin/testDelays.sh
+
 #
 # this script was used in fintools version 98 and later. This is intended to stick around long-term.
 #

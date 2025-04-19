@@ -48,16 +48,8 @@ if [ ! -s "$fundsMetaFile" ] ||
     [ "$fundsMetaFile" -ot "$fiscalYearFile" ]; then
     echo source files updated, running script...
 else
-    pubDelaySeconds=$(($pubDelayHours * 60 * 60))
-    if [ -s "$fundsMetaFile" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$fundsMetaFile")))" -lt "$pubDelaySeconds" ]; then
-        echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$fundsMetaFile" | cut -d: -f1,2)"
-        [ -z "$forceRun" ] && exit 0
-    fi
-    runDelaySeconds=$(($runDelayHours * 60 * 60))
-    if [ -s "$fundsMetaFile" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$fundsMetaFile")))" -lt "$runDelaySeconds" ]; then
-        echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$fundsMetaFile" | cut -d: -f1,2)"
-        [ -z "$forceRun" ] && exit 0
-    fi
+    pubDelayFile=""
+    runDelayFile="$fundsMetaFile"
+    source ../bin/testDelays.sh
 fi
-
 ../mmFunCurr/mmFunCurrCollectionScript.sh | node ./node-mmFunCurr-metaData.js "$companyMap" "$fiscalYearFile" | jq . >"$fundsMetaFile"
