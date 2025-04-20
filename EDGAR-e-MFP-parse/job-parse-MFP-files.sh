@@ -59,7 +59,7 @@ find $MFPFilesDir -type f -name '*.xml' -print |
         if [ -n "$forceRun" ] || [ ! -s "$yieldFile" ] || [ "$xmlFile" -nt "$yieldFile" ]; then
             echo processing yield for $xmlFile
             node node-parse-MFP-yield.js "$fundsMetaFile" <"$xmlFile" | jq . >"$yieldFile"
-            ../bin/MM-update-common-job.sh --injectProcessedJson $yieldFile
+            ../bin/MM-update-common-job.sh -f --injectProcessedJson $yieldFile
         fi
     done
 exit 0
