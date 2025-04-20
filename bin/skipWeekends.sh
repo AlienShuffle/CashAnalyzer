@@ -11,13 +11,13 @@ hourOfDay=$(date +'%H') # 0..23
 case "$dayOfWeek" in
 Sat | Sun)
     if [ $hourOfDay -gt 9 ] && [ -z "$forceRun" ]; then
-        echo "Weekend, don't run"
+        echo "Weekend, don't run."
         exit 0
     fi
     ;;
 Mon)
     if [ $hourOfDay -lt 12 ] && [ -z "$forceRun" ]; then
-        echo "Weekend, don't run"
+        echo "Monday morning, don't run."
         exit 0
     fi
     ;;

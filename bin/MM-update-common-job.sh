@@ -69,6 +69,8 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
+source ../bin/skipWeekends.sh
+
 # if a sourceName is not specified, use the current directory name.
 if [ -z "$sourceName" ]; then
     sourceName=$(basename $(pwd))
