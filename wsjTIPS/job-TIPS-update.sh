@@ -48,11 +48,7 @@ if [ ! -d "$HOME/CashAnalyzer/$bankName" ]; then
     echo "$0: $bankName is not a valid bank name."
     exit 1
 fi
-# look for a -f to force run, overriding the time delays.
-
 source ../meta.$(hostname).sh
-
-source ../bin/skipWeekends.sh
 
 # current rate files
 injectRatesJson="inject-rates.json"
@@ -68,6 +64,7 @@ if [ -s "$injectRatesJson" ]; then
     echo "Using $injectRatesJson instead"
     jsonRateNew="$injectRatesJson"
 else
+    source ../bin/skipWeekends.sh
     pubDelayFile="$jsonRateFlare"
     runDelayFile="$jsonRateNew"
     source ../bin/testDelays.sh

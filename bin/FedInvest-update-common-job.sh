@@ -41,7 +41,7 @@ if [ ! -d "$HOME/CashAnalyzer/$sourceName" ]; then
     exit 1
 fi
 source ../meta.$(hostname).sh
-source ../bin/skipWeekends.sh
+
 # current rate files
 injectRatesJson="inject-rates.json"
 jsonRateNew="$sourceName-rate-new.json"
@@ -55,7 +55,8 @@ csvRateFlare="$cloudFlareHome/Treasuries/$sourceName/$sourceName-rate.csv"
 if [ -s "$injectRatesJson" ]; then
     echo "Using $injectRatesJson instead"
     jsonRateNew="$injectRatesJson"
-elcag se
+else
+    source ../bin/skipWeekends.sh
     pubDelayFile="$jsonRateFlare"
     runDelayFile="$jsonRateNew"
     source ../bin/testDelays.sh
