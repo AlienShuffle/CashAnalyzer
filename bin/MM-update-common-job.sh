@@ -69,7 +69,6 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
-source ../bin/skipWeekends.sh
 
 # if a sourceName is not specified, use the current directory name.
 if [ -z "$sourceName" ]; then
@@ -94,6 +93,7 @@ if [ -n "$injectProcessedJson" ] && [ -s "$injectProcessedJson" ]; then
     echo "Using $injectProcessedJson instead of querying online source."
     jsonRateNew="$injectProcessedJson"
 else
+    source ../bin/skipWeekends.sh
     pubDelayFile="$jsonRateFlare"
     runDelayFile="$jsonRateNew"
     source ../bin/testDelays.sh
