@@ -25,24 +25,6 @@ function safeObjectRef(obj) {
 // { "ticker","cik","series","class" }
 const fundListBuffer = fs.readFileSync(process.argv[2], 'utf8');
 const fundList = JSON.parse(fundListBuffer);
-function findFundByCik(cik, series, classId) {
-    for (let i = 0; i < fundList.length; i++) {
-        if (fundList[i].cik == cik && fundList[i].series == series, fundList[i].class == classId) {
-            if (debug) console.log('found:' + cik + ':' + series + ':' + classId)
-            return fundList[i];
-        }
-    }
-    return '';
-}
-function findFundByTicker(ticker) {
-    for (let i = 0; i < fundList.length; i++) {
-        if (fundList[i].ticker == ticker) {
-            if (debug) console.log('found:' + cik + ':' + series + ':' + classId)
-            return fundList[i];
-        }
-    }
-    return '';
-}
 if (debug) console.log('fundList.length=' + fundList.length)
 
 // take the fund CIK,fiscalyear table and injest as well.
@@ -60,25 +42,32 @@ if (debug) console.log('fiscalYears.length=' + fiscalYears.length)
 
 // read in from stdin, the moneymarket.fun source data json file.
 const stdinBuffer = fs.readFileSync(0, 'utf-8');
-const json = JSON.parse(stdinBuffer);
+const mmFundList = JSON.parse(stdinBuffer);
+function findmmFundByTicker(ticker) {
+    for (let i = 0; i < mmFundList.length; i++) {
+        if (mmFundList[i].ticker == ticker) {
+            return mmFundList[i];
+        }
+    }
+    return '';
+}
+
 const timestamp = new Date();
 let resp = [];
-// go through each ticker report provided, see if it is in the track list, publish result if in the list.
-for (let i = 0; i < json.length; i++) {
-    const ticker = json[i].ticker;
-    // pull data from Company Map file.
-    const coMap = findFundByTicker(ticker);
-
-    // skipped untracked tickers.
-    if (!coMap) continue;
+// go through each ticker report provided in the original fundlist, see if it is in the mmFund list, publish compbined result.
+for (let i = 0; i < fundList.length; i++) {
+    const coMap = fundList[i];
+    const ticker = coMap.ticker;
+    // pull data from mmFund Map file.
+    const mmFund = findmmFundByTicker(ticker);
 
     const cik = coMap.cik;
     // fiscalyear end from source data.
     const fiscalYear = findFiscalYear(cik);
 
     resp.push({
-        "asOfDate": json[i].reportDate,
-        "expenseRatio": (safeObjectRef(json[i].expenseRatio / 100)).toFixed(6) * 1,
+        "asOfDate": safeObjectRef(mmFund.reportDate),
+        "expenseRatio": (safeObjectRef(mmFund.expenseRatio) / 100).toFixed(6) * 1,
         "fiscalYearEnd": fiscalYear,
         "entity_name": coMap.entity_name,
         "series_name": coMap.series_name,
@@ -87,7 +76,7 @@ for (let i = 0; i < json.length; i++) {
         "cikTen": coMap.cikTen,
         "series": coMap.series,
         "class": coMap.class,
-        "mmName": json[i].name,
+        "mmName": safeObjectRef(mmFund.name),
         "ticker": ticker,
         "timestamp": timestamp,
     });

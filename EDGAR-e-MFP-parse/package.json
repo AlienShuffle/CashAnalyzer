@@ -15,6 +15,6 @@
   "author": "AlienShuffle",
   "license": "MIT",
   "dependencies": {
-    "fast-xml-parser": "^5.0.9"
+    "fast-xml-parser": "^5.2.3"
   }
 }

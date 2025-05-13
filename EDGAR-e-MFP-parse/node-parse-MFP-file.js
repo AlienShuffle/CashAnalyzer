@@ -36,17 +36,20 @@ const filingDate = process.argv[3];
 
 // read in the MFP XML file from stdin.
 const xmlFile = readFileSync(process.stdin.fd, 'utf8');
+if (debug) console.log('xmlFile.length=' + xmlFile.length);
 // validate the file to know it will parse.
 const result = XMLValidator.validate(xmlFile);
+if (debug) console.log('XMLValidator result=' + result);
 if (result.err) throw "XML invalid: " + result.err.msg
 
 // parse the XML into Javascript object tree (like normal JSON from a Javascript perspective)
 const parser = new XMLParser();
 const json = parser.parse(xmlFile);
-if (debug) console.log('json.length=' + json.length)
+//if (debug) console.log('json=' + JSON.stringify(json));
 
 // get header data about the fund.
 const headerData = json.edgarSubmission.headerData;
+if (debug) console.log('headerData.submissionType=' + headerData.submissionType)
 const submissionType = headerData.submissionType.replace('/^NT /', '').replace('/\/A$/', '').substring(0, 6);
 if (debug) console.log('submissionType=' + submissionType)
 const cik = headerData.filerInfo.filer.filerCredentials.cik;
@@ -80,7 +83,7 @@ const retailMoneyMarketFlag = (submissionType == 'N-MFP2') ?
     ((seriesLevelInfo.fundRetailMoneyMarketFlag.toUpperCase() == 'N') ? 'Institutional' : 'Retail')
 
 const classLevelInfo = formData.classLevelInfo;
-if (debug) console.log('classLevelInfo.length=' + classLevelInfo.length)
+if (debug) console.log('classLevelInfo.classesId=' + classLevelInfo.classesId);
 if (debug) console.log('Array.isArray(classLevelInfo)=' + Array.isArray(classLevelInfo))
 
 const scheduleOfPortfolioSecuritiesInfo = formData.scheduleOfPortfolioSecuritiesInfo;
@@ -230,6 +233,7 @@ function processClassInfo(classInfo) {
     const classesId = classInfo.classesId;
     if (debug) console.log('cik=' + cik + ' series=' + seriesId + ' classesId=' + classesId)
     const fundMeta = findFund(cik, seriesId, classesId);
+    if (debug) console.log('fundMeta=' + fundMeta);
     if (!fundMeta) return;
 
     // Find the last 7 day yield published on this report.
@@ -321,6 +325,7 @@ if (Array.isArray(classLevelInfo)) {
         processClassInfo(classInfo);
     }
 } else {
+    if (debug) console.log('classLevelInfo.classesId=' + classLevelInfo.classesId)
     processClassInfo(classLevelInfo);
 }
 console.log(JSON.stringify(resp));
