@@ -8,7 +8,7 @@
 # it is merged with the funds listed for yieldFinder, Vanguard, and Fidelity too.
 #
 # process the command argument list.
-pubDelayHours=48
+pubDelayHours=0
 runDelayHours=48
 accountClass=MM
 while [ -n "$1" ]; do
