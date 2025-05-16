@@ -7,7 +7,7 @@
 # the current funds list is updated by a script in the mmFunCurr directory.
 #
 # process the command argument list.
-pubDelayHours=72
+pubDelayHours=0     # turns off pubDelay testing.
 runDelayHours=24
 accountClass=MM
 while [ -n "$1" ]; do
@@ -45,11 +45,9 @@ dir=$(dirname "$companyMap")
 #echo $companyMap = $dir
 [ -d "$dir" ] || mkdir "$dir"
 
-runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -s "$companyMap" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$companyMap")))" -lt "$runDelaySeconds" ]; then
-    echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$companyMap" | cut -d: -f1,2)"
-    [ -z "$forceRun" ] && exit 0
-fi
+pubDelayFile="$companyMap"
+runDelayFile="$companyMap"
+source ../bin/testDelays.sh
 if [ -s "$companyMap" ] && [ "$(($(stat -c "%Y" "$fundsList") - $(stat -c "%Y" "$companyMap")))" -lt "0" ]; then
     echo "$fundsList not updated since last run."
     [ -z "$forceRun" ] && exit 0

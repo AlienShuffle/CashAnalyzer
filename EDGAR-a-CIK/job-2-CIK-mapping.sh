@@ -7,7 +7,7 @@
 # the current funds list is updated by a script in the mmFunCurr directory.
 #
 # process the command argument list.
-pubDelayHours=144
+pubDelayHours=0   # turns off pubDelay testing.
 runDelayHours=48
 accountClass=MM
 while [ -n "$1" ]; do
@@ -40,12 +40,9 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
-
-runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -s "$CIKmap" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$CIKmap")))" -lt "$runDelaySeconds" ]; then
-    echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$CIKmap" | cut -d: -f1,2)"
-    [ -z "$forceRun" ] && exit 0
-fi
+pubDelayFile="$CIKmap"
+runDelayFile="$CIKmap"
+source ../bin/testDelays.sh
 if [ -s "$CIKmap" ] && [ "$(($(stat -c "%Y" "$fundsList") - $(stat -c "%Y" "$CIKmap")))" -lt "0" ]; then
     echo "$fundsList not updated since last run."
     [ -z "$forceRun" ] && exit 0

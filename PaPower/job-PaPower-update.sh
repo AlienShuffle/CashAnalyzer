@@ -63,16 +63,9 @@ csvHistoryFlare="$cloudFlareHome/$bankName/$bankName-history.csv"
 #  - note, if -f is passed to this script, I will run the script regardless, but report the aging status too.
 #
 # update the delayHours values as appropriate for the data source.
-pubDelaySeconds=$(($pubDelayHours * 60 * 60))
-if [ -s "$jsonRateFlare" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateFlare")))" -lt "$pubDelaySeconds" ]; then
-    echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$jsonRateFlare" | cut -d: -f1,2)"
-    [ -z "$forceRun" ] && exit 0
-fi
-runDelaySeconds=$(($runDelayHours * 60 * 60))
-if [ -s "$jsonRateNew" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$jsonRateNew")))" -lt "$runDelaySeconds" ]; then
-    echo "Last Run is not yet $runDelayHours hours old - $(stat -c '%y' "$jsonRateNew" | cut -d: -f1,2)"
-    [ -z "$forceRun" ] && exit 0
-fi
+pubDelayFile="$jsonRateFlare"
+runDelayFile="$jsonRateNew"
+source ../bin/testDelays.sh
 #
 # this script was used in fintools version 98 and later. This is intended to stick around long-term.
 #
