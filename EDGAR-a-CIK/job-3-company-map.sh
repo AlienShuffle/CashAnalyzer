@@ -45,7 +45,7 @@ dir=$(dirname "$companyMap")
 #echo $companyMap = $dir
 [ -d "$dir" ] || mkdir "$dir"
 
-pubDelayFile="$companyMap"
+pubDelayFile=""
 runDelayFile="$companyMap"
 source ../bin/testDelays.sh
 if [ -s "$companyMap" ] && [ "$(($(stat -c "%Y" "$fundsList") - $(stat -c "%Y" "$companyMap")))" -lt "0" ]; then

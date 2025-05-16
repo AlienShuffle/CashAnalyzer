@@ -40,7 +40,7 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
-pubDelayFile="$CIKmap"
+pubDelayFile=""
 runDelayFile="$CIKmap"
 source ../bin/testDelays.sh
 if [ -s "$CIKmap" ] && [ "$(($(stat -c "%Y" "$fundsList") - $(stat -c "%Y" "$CIKmap")))" -lt "0" ]; then

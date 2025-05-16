@@ -4,7 +4,7 @@
 # this is just the list of fileNames to do the work.
 #
 # process the command argument list.
-pubDelayHours=144
+pubDelayHours=0
 runDelayHours=144
 accountClass=MM
 while [ -n "$1" ]; do
