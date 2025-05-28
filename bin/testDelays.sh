@@ -12,22 +12,25 @@
 # pubDelayFile - must be assigned in calling script to test. if empty, then no test.
 # runDelayFile - must be assigned in calling script to test. if empty, then no test.
 #
-# skip pubDelay if set to 0
-if [ "$pubDelayHours" -ne "0" ]; then
-    pubDelaySeconds=$(($pubDelayHours * 60 * 60))
-    #echo pubDelayFile=$pubDelayFile
-    #echo pubDelayHours=$pubDelayHours
-    #echo pubDelaySeconds=$pubDelaySeconds
+# skip test if pubDelayFile does not exist.
+if [ -s "$pubDelayFile" ]; then
+    # skip pubDelay if set to 0
+    if [ "$pubDelayHours" -ne "0" ]; then
+        pubDelaySeconds=$(($pubDelayHours * 60 * 60))
+        #echo pubDelayFile=$pubDelayFile
+        #echo pubDelayHours=$pubDelayHours
+        #echo pubDelaySeconds=$pubDelaySeconds
 
-    pubEpochSeconds=$(stat -c "%Y" "$pubDelayFile")
-    currEpochSeconds=$(date +"%s")
-    # If day of week has changed since last publish, run it!
-    if [ "$(date -d @$currEpochSeconds +'%u')" -eq "$(date -d @$pubEpochSeconds +'%u')" ]; then
-        # test if delay hours has passed.
-        if [ -s "$pubDelayFile" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$pubDelayFile")))" -lt "$pubDelaySeconds" ]; then
-            if [ -z "$forceRun" ]; then
-                echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$pubDelayFile" | cut -d: -f1,2)"
-                exit 0
+        pubEpochSeconds=$(stat -c "%Y" "$pubDelayFile")
+        currEpochSeconds=$(date +"%s")
+        # If day of week has changed since last publish, run it!
+        if [ "$(date -d @$currEpochSeconds +'%u')" -eq "$(date -d @$pubEpochSeconds +'%u')" ]; then
+            # test if delay hours has passed.
+            if [ -s "$pubDelayFile" ] && [ "$(($(date +"%s") - $(stat -c "%Y" "$pubDelayFile")))" -lt "$pubDelaySeconds" ]; then
+                if [ -z "$forceRun" ]; then
+                    echo "Published file is not yet $pubDelayHours hours old - $(stat -c '%y' "$pubDelayFile" | cut -d: -f1,2)"
+                    exit 0
+                fi
             fi
         fi
     fi

@@ -137,7 +137,7 @@ grep cusip "$jsonRateNew" | sed 's/^.*cusip": "//' | sed 's/",$//' | sort -u |
 #
 # process the rate file.
 #
-dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
+dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'| sort -u)
 if [ -z "$dateNew" ]; then
     echo "New $sourceName rate file does not include dates."
     exit 1
@@ -146,22 +146,25 @@ fi
 #
 # publish cloudFlare Rate files
 #
-if [ -s "$jsonRateFlare" ]; then
-    dateFlare=$(grep asOfDate "$jsonRateFlare" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
-else
-    dateFlare=""
+if [ ! -s "$jsonRateFlare" ]; then
     echo "$sourceName cloudFlare rate file has not been published."
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-#echo dateFlare=$dateFlare
-if [[ $dateFlare < $dateNew ]]; then
+dailyFolder="$cloudFlareHome/Treasuries/$sourceName/daily"
+[ -d "$dailyFolder" ] || mkdir -p "$dailyFolder"
+if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     # save the data file as a .csv as well.
     (
         echo 'asOfDate, cusip, securitytype, rate, maturitydate, calldate, buy, sell, endofday, key'
         jq -r '.[] | [.asOfDate, .cusip, .securitytype, .rate, .maturitydate, .calldate, .buy, .sell, .endofday, .key] | @csv' "$jsonRateNew"
     ) >"$csvRateFlare"
+    asOfDate=$(jq -r '.[] | .asOfDate' "$jsonRateFlare" | sort -u)
+    dailyRateFile="$dailyFolder/$asOfDate-rate.json"
+    dailyRateCSV="$dailyFolder/$asOfDate-rate.CSV"
+    cat "$jsonRateFlare" > "$dailyRateFile"
+    cat "$csvRateFlare" > "$dailyRateCSV"
     #echo "published updated $sourceName cloudFlare rate file."
 fi
 exit 0

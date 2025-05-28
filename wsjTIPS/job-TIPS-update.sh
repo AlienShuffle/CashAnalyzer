@@ -6,14 +6,9 @@
 # process the command argument list.
 pubDelayHours=18
 runDelayHours=2
-bankName=$(basename $(pwd))
+sourceName=$(basename $(pwd))
 while [ -n "$1" ]; do
     case $1 in
-    "-b")
-        bankName="$2"
-        #echo "bankname=$bankName"
-        shift
-        ;;
     "-f")
         forceRun=true
         #echo "forceRun=$forceRun"
@@ -37,24 +32,29 @@ while [ -n "$1" ]; do
         #echo "runDelayHours=$runDelayHours"
         shift
         ;;
+    "-sourceName")
+        sourceName="$2"
+        #echo "sourceName=$sourceName"
+        shift
+        ;;
     esac
     shift
 done
-if [ -z "$bankName" ]; then
-    echo "$0: -b bankName missing, need to specify a valid bank."
+if [ -z "$sourceName" ]; then
+    echo "$0: -b sourceName missing, need to specify a valid bank."
     exit 1
 fi
-if [ ! -d "$HOME/CashAnalyzer/$bankName" ]; then
-    echo "$0: $bankName is not a valid bank name."
+if [ ! -d "$HOME/CashAnalyzer/$sourceName" ]; then
+    echo "$0: $sourceName is not a valid bank name."
     exit 1
 fi
 source ../meta.$(hostname).sh
 
 # current rate files
 injectRatesJson="inject-rates.json"
-jsonRateNew="$bankName-rate-new.json"
-jsonRateFlare="$cloudFlareHome/Treasuries/$bankName/$bankName-rate.json"
-csvRateFlare="$cloudFlareHome/Treasuries/$bankName/$bankName-rate.csv"
+jsonRateNew="$sourceName-rate-new.json"
+jsonRateFlare="$cloudFlareHome/Treasuries/$sourceName/$sourceName-rate.json"
+csvRateFlare="$cloudFlareHome/Treasuries/$sourceName/$sourceName-rate.csv"
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
 #  - note, if -f is passed to this script, I will run the script regardless, but report the aging status too.
@@ -72,7 +72,7 @@ else
     #
     # this script was used in fintools version 98 and later. This is intended to stick around long-term.
     #
-    scriptFile="./node-$bankName-update.js"
+    scriptFile="./node-$sourceName-update.js"
     if [ ! -s "$scriptFile" ]; then
         echo "Missing $scriptFile file."
         exit 1
@@ -83,16 +83,16 @@ else
         node $scriptFile "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
     fi
     if [ ! $? ]; then
-        echo "$bankName rate retrieval failed, exiting."
+        echo "$sourceName rate retrieval failed, exiting."
         exit 1
     fi
     if [ ! -s "$jsonRateNew" ]; then
-        echo "Empty $bankName rate file."
+        echo "Empty $sourceName rate file."
         exit 1
     fi
     dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
     if [ -z "$dateNew" ] || [ "$dateNew" = "null" ]; then
-        echo "New $bankName rate file has empty timestamps."
+        echo "New $sourceName rate file has empty timestamps."
         exit 1
     fi
 fi
@@ -107,8 +107,8 @@ grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
         [ -d "$dirname" ] || mkdir -p "$dirname"
         jsonRatetipsKey="$dirname/rate-new.json"
         jsonHistoryUnique="$dirname/history-unique.json"
-        jsonHistoryFlare="$cloudFlareHome/Treasuries/$bankName/$dirname/rate-history.json"
-        csvHistoryFlare="$cloudFlareHome/Treasuries/$bankName/$dirname/rate-history.csv"
+        jsonHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.json"
+        csvHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.csv"
 
         # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
         cat "$jsonRateNew" | jq "[.[] | select(.key==\"$tipsKey\")]" >"$jsonRatetipsKey"
@@ -118,7 +118,7 @@ grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
                 jq 'sort_by([.key,.asOfDate])' >"$jsonHistoryUnique"
         else
             cat "$jsonRatetipsKey" | jq 'sort_by([.key,.asOfDate])' >"$jsonHistoryUnique"
-            echo "$bankName cloudFlare history file has not been published."
+            echo "$sourceName cloudFlare history file has not been published."
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         fi
@@ -132,7 +132,7 @@ grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
                 echo 'asOfDate,maturity,coupon,bid,asked,chg,yield,accruedprincipal,key'
                 jq -r '.[] | [.asOfDate, .maturity, .coupon, .bid, .asked, .chg, .yield, .accruedprincipal, .key] | @csv' "$jsonHistoryUnique"
             ) >"$csvHistoryFlare"
-            echo "published updated $bankName $tipsKey cloudFlare history file."
+            echo "published updated $sourceName $tipsKey cloudFlare history file."
         fi
     done
 ###################################
@@ -141,17 +141,19 @@ grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
 #
 dates=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
 if [ -z "$dates" ]; then
-    echo "New $bankName rate file does not include dates."
+    echo "New $sourceName rate file does not include dates."
     exit 1
 fi
 #
 # publish cloudFlare Rate files
 #
 if [ ! -s "$jsonRateFlare" ]; then
-    echo "$bankName cloudFlare rate file has not been published."
+    echo "$sourceName cloudFlare rate file has not been published."
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
+dailyFolder="$cloudFlareHome/Treasuries/$sourceName/daily"
+[ -d "$dailyFolder" ] || mkdir -p "$dailyFolder"
 if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     # save the data file as a .csv as well.
@@ -159,6 +161,12 @@ if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
         echo 'asOfDate,maturity,coupon,bid,asked,chg,yield,accruedprincipal,key'
         jq -r '.[] | [.asOfDate, .maturity, .coupon, .bid, .asked, .chg, .yield, .accruedprincipal, .key] | @csv' "$jsonRateNew"
     ) >"$csvRateFlare"
-    echo "published updated $bankName cloudFlare rate file."
+    echo "published updated $sourceName cloudFlare rate file."
+    asOfDate=$(jq -r '.[] | .asOfDate' "$jsonRateFlare" | sort -u)
+    dailyRateFile="$dailyFolder/$asOfDate-rate.json"
+    dailyRateCSV="$dailyFolder/$asOfDate-rate.CSV"
+    cat "$jsonRateFlare" >"$dailyRateFile"
+    cat "$csvRateFlare" >"$dailyRateCSV"
+
 fi
 exit 0
