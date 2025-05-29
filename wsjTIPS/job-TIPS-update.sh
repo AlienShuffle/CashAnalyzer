@@ -161,12 +161,11 @@ if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
         echo 'asOfDate,maturity,coupon,bid,asked,chg,yield,accruedprincipal,key'
         jq -r '.[] | [.asOfDate, .maturity, .coupon, .bid, .asked, .chg, .yield, .accruedprincipal, .key] | @csv' "$jsonRateNew"
     ) >"$csvRateFlare"
-    echo "published updated $sourceName cloudFlare rate file."
     asOfDate=$(jq -r '.[] | .asOfDate' "$jsonRateFlare" | sort -u)
     dailyRateFile="$dailyFolder/$asOfDate-rate.json"
     dailyRateCSV="$dailyFolder/$asOfDate-rate.csv"
     cat "$jsonRateFlare" >"$dailyRateFile"
     cat "$csvRateFlare" >"$dailyRateCSV"
-
+    echo "published updated $sourceName cloudFlare rate files."
 fi
 exit 0

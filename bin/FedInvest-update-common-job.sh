@@ -165,6 +165,6 @@ if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     dailyRateCSV="$dailyFolder/$asOfDate-rate.csv"
     cat "$jsonRateFlare" > "$dailyRateFile"
     cat "$csvRateFlare" > "$dailyRateCSV"
-    #echo "published updated $sourceName cloudFlare rate file."
+    echo "published updated $sourceName cloudFlare daily rate files."
 fi
 exit 0
