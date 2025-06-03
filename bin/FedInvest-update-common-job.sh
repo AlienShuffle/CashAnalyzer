@@ -4,7 +4,7 @@
 # I will be turning off the Google Drive target eventually.
 #
 # process the command argument list.
-pubDelayHours=20
+pubDelayHours=12
 runDelayHours=2
 sourceName=$(basename $(pwd))
 while [ -n "$1" ]; do
@@ -111,20 +111,23 @@ grep cusip "$jsonRateNew" | sed 's/^.*cusip": "//' | sed 's/",$//' | sort -u |
         else
             cat "$jasonRateCusip" | jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
         fi
-        lenHistoryUnique=$(grep -o asOfDate "$jsonHistoryUnique" | wc -l)
+        #lenHistoryUnique=$(grep -o asOfDate "$jsonHistoryUnique" | wc -l)
         #
         # cloudFlare publish history file
         #
-        if [ -s "$jsonHistoryFlare" ]; then
-            lenHistoryFlare=$(grep -o asOfDate "$jsonHistoryFlare" | wc -l)
-        else
-            lenHistoryFlare=0
-            echo "$sourceName cloudFlare history file has not been published."
+        #if [ -s "$jsonHistoryFlare" ]; then
+        #    lenHistoryFlare=$(grep -o asOfDate "$jsonHistoryFlare" | wc -l)
+        #else
+        #    lenHistoryFlare=0
+        #    echo "$sourceName cloudFlare history file has not been published."
+        #fi
+        if [ ! -s "$jsonHistoryFlare" ]; then
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         fi
         #echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
-        if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
+        #if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
+        if ../bin/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
             cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
             (
                 echo 'asOfDate, cusip, securitytype, rate, maturitydate, calldate, buy, sell, endofday, key'
@@ -137,12 +140,12 @@ grep cusip "$jsonRateNew" | sed 's/^.*cusip": "//' | sed 's/",$//' | sort -u |
 #
 # process the rate file.
 #
-dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g'| sort -u)
+dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g' | sort -u)
 if [ -z "$dateNew" ]; then
     echo "New $sourceName rate file does not include dates."
     exit 1
 fi
-#echo dateNew=$dateNew
+echo dateNew = $dateNew
 #
 # publish cloudFlare Rate files
 #
@@ -163,8 +166,8 @@ if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     asOfDate=$(jq -r '.[] | .asOfDate' "$jsonRateFlare" | sort -u)
     dailyRateFile="$dailyFolder/$asOfDate-rate.json"
     dailyRateCSV="$dailyFolder/$asOfDate-rate.csv"
-    cat "$jsonRateFlare" > "$dailyRateFile"
-    cat "$csvRateFlare" > "$dailyRateCSV"
+    cat "$jsonRateFlare" >"$dailyRateFile"
+    cat "$csvRateFlare" >"$dailyRateCSV"
     echo "published updated $sourceName cloudFlare daily rate files."
 fi
 exit 0
