@@ -4,7 +4,7 @@
 # I will be turning off the Google Drive target eventually.
 #
 # process the command argument list.
-pubDelayHours=12
+pubDelayHours=10
 runDelayHours=2
 sourceName=$(basename $(pwd))
 while [ -n "$1" ]; do
@@ -111,22 +111,10 @@ grep cusip "$jsonRateNew" | sed 's/^.*cusip": "//' | sed 's/",$//' | sort -u |
         else
             cat "$jasonRateCusip" | jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
         fi
-        #lenHistoryUnique=$(grep -o asOfDate "$jsonHistoryUnique" | wc -l)
-        #
-        # cloudFlare publish history file
-        #
-        #if [ -s "$jsonHistoryFlare" ]; then
-        #    lenHistoryFlare=$(grep -o asOfDate "$jsonHistoryFlare" | wc -l)
-        #else
-        #    lenHistoryFlare=0
-        #    echo "$sourceName cloudFlare history file has not been published."
-        #fi
         if [ ! -s "$jsonHistoryFlare" ]; then
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         fi
-        #echo "entries new($lenHistoryUnique) :: flare($lenHistoryFlare)"
-        #if [ $lenHistoryUnique -gt $lenHistoryFlare ]; then
         if ../bin/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
             cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
             (
