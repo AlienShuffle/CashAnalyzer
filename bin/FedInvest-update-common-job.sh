@@ -4,7 +4,7 @@
 # I will be turning off the Google Drive target eventually.
 #
 # process the command argument list.
-pubDelayHours=10
+pubDelayHours=8
 runDelayHours=2
 sourceName=$(basename $(pwd))
 while [ -n "$1" ]; do
