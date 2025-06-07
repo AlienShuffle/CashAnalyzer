@@ -58,7 +58,7 @@ node --trace-uncaught ./node-company-map-update.js "$fundsList" "company-map-man
 if [ -s "tt.json" ]; then
     cat tt.json | jq . >"$companyMap"
     echo updated $companyMap
-    rm -f "$tmpFile" tt.json
+    #rm -f "$tmpFile" tt.json
 else
     echo "company map was empty!"
 fi

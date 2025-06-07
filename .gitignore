@@ -230,3 +230,4 @@ Fido?/old-history/*.json
 mmFunCurr/fundMeta.json
 data/*
 EDGAR-b-submissions/submissionsCIKs.txt
+EDGAR-a-CIK/tt.json
