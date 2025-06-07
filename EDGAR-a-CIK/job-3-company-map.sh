@@ -54,11 +54,13 @@ if [ -s "$companyMap" ] && [ "$(($(stat -c "%Y" "$fundsList") - $(stat -c "%Y" "
 fi
 tmpFile=investment-map.xml
 ../bin/getEDGAR.sh "https://www.sec.gov/files/investment/data/other/investment-company-series-class-information/investment_company_series_class_2025-xml.xml" >"$tmpFile"
-node --trace-uncaught ./node-company-map-update.js "$fundsList" "company-map-manual-entries.json" <"$tmpFile" >tt.json
+node ./node-company-map-update.js "$fundsList" "company-map-manual-entries.json" <"$tmpFile" >tt.json
 if [ -s "tt.json" ]; then
-    cat tt.json | jq . >"$companyMap"
-    echo updated $companyMap
-    #rm -f "$tmpFile" tt.json
+    if ../bin/jsonDifferent.sh tt.json "$companyMap" ]; then
+        cat tt.json | jq . >"$companyMap"
+        echo updated $companyMap
+    fi
 else
     echo "company map was empty!"
 fi
+rm -f "$tmpFile" tt.json
