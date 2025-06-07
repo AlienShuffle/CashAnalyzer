@@ -48,7 +48,7 @@ if [ -s "$CIKmap" ] && [ "$(($(stat -c "%Y" "$fundsList") - $(stat -c "%Y" "$CIK
     [ -z "$forceRun" ] && exit 0
 fi
 tmpFile=co_tickers_mf.json
-../bin/getEDGAR.sh "https://www.sec.gov/data/company_tickers_mf.json" |
+../bin/getEDGAR.sh "https://www.sec.gov/files/company_tickers_mf.json" |
     jq . >"$tmpFile"
 node ./node-CIK-map-update.js "$fundsList" <"$tmpFile" | jq . >"$CIKmap"
 rm -f "$tmpFile"

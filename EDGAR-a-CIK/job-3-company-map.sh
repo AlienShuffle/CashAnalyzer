@@ -7,7 +7,7 @@
 # the current funds list is updated by a script in the mmFunCurr directory.
 #
 # process the command argument list.
-pubDelayHours=0     # turns off pubDelay testing.
+pubDelayHours=0 # turns off pubDelay testing.
 runDelayHours=24
 accountClass=MM
 while [ -n "$1" ]; do
@@ -53,7 +53,12 @@ if [ -s "$companyMap" ] && [ "$(($(stat -c "%Y" "$fundsList") - $(stat -c "%Y" "
     [ -z "$forceRun" ] && exit 0
 fi
 tmpFile=investment-map.xml
-../bin/getEDGAR.sh "https://www.sec.gov/files/investment/data/other/investment-company-series-and-class-information/investment-company-series-class-2024.xml" >"$tmpFile"
-node ./node-company-map-update.js "$fundsList" "company-map-manual-entries.json" <"$tmpFile" | jq . >"$companyMap"
-echo updated $companyMap
-rm -f "$tmpFile"
+../bin/getEDGAR.sh "https://www.sec.gov/files/investment/data/other/investment-company-series-class-information/investment_company_series_class_2025-xml.xml" >"$tmpFile"
+node --trace-uncaught ./node-company-map-update.js "$fundsList" "company-map-manual-entries.json" <"$tmpFile" >tt.json
+if [ -s "tt.json" ]; then
+    cat tt.json | jq . >"$companyMap"
+    echo updated $companyMap
+    rm -f "$tmpFile" tt.json
+else
+    echo "company map was empty!"
+fi
