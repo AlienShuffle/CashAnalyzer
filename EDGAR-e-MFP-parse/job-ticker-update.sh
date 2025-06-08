@@ -52,7 +52,7 @@ cat $fundsList |
     while read -r ticker; do
         cik=$(node ./node-ticker-CIK-map.js "$ticker" <"$companyMap")
         if [ ! -n "$cik" ]; then
-            echo "$ticker: missing from CIK-map, skipping...."
+            echo "$ticker: missing from company-map, skipping...."
             continue
         fi
         #echo "processing $ticker => $cik"
