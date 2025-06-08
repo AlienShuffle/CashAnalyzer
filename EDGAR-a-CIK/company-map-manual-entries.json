@@ -80,6 +80,16 @@
         "class": "C000060557"
     },
     {
+        "ticker": "BTFXX",
+        "entity_name": "BLACKROCK LIQUIDITY FUNDS",
+        "series_name": "TREASURY TRUST FUND",
+        "class_name": "CASH RESERVE",
+        "cik": 97098,
+        "cikTen": "0000097098",
+        "series": "S000001478",
+        "class": "C000003953"
+    },
+    {
         "ticker": "BTRXX",
         "entity_name": "BlackRock Liquidity Funds",
         "series_name": "T-Fund",
@@ -198,6 +208,36 @@
         "cikTen": "0001972459",
         "series": "S000086506",
         "class": "C000252068"
+    },
+    {
+        "ticker": "MCBXX",
+        "entity_name": "BLACKROCK FINANCIAL INSTITUTIONS SERIES TRUST",
+        "series_name": "BlackRock Summit Cash Reserves Fund",
+        "class_name": "Investor C",
+        "cik": 353281,
+        "cikTen": "0000353281",
+        "series": "S000004031",
+        "class": "C000199555"
+    },
+    {
+        "ticker": "MSAXX",
+        "entity_name": "BLACKROCK FINANCIAL INSTITUTIONS SERIES TRUST",
+        "series_name": "BlackRock Summit Cash Reserves Fund",
+        "class_name": "Investor A",
+        "cik": 353281,
+        "cikTen": "0000353281",
+        "series": "S000004031",
+        "class": "C000011303"
+    },
+     {
+        "ticker": "MSIXX",
+        "entity_name": "BLACKROCK FINANCIAL INSTITUTIONS SERIES TRUST",
+        "series_name": "BlackRock Summit Cash Reserves Fund",
+        "class_name": "Institutional",
+        "cik": 353281,
+        "cikTen": "0000353281",
+        "series": "S000004031",
+        "class": "C000213594"
     },
     {
         "ticker": "PMMF",
