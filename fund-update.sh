@@ -3,7 +3,9 @@
 # company-map-manual-entries
 (
     cd EDGAR-a-CIK
+    #echo "***** job-1-create-fund-list.sh -f"
     #./job-1-create-fund-list.sh -f
+    #echo "***** job-2-CIK-mapping.sh -f"
     #./job-2-CIK-mapping.sh -f
     echo "***** job-3-company-map.sh -f"
     ./job-3-company-map.sh -f
