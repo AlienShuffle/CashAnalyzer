@@ -130,6 +130,16 @@
         "class": "C000003942"
     },
     {
+        "ticker": "DMMKI",
+        "entity_name": "BlackRock Variable Series Funds, Inc.",
+        "series_name": "BlackRock Government Money Market V.I. Fund",
+        "class_name": "Institutional",
+        "cik": 355916,
+        "cikTen": "0000355916",
+        "series": "S000002884",
+        "class": "C000007929"
+    },
+    {
         "ticker": "EDUXX",
         "entity_name": "BlackRock Liquidity Funds",
         "series_name": "BlackRock Liquid Federal Trust Fund",
@@ -200,14 +210,14 @@
         "class": "C000223514"
     },
     {
-        "ticker": "MMKT",
-        "entity_name": "Texas Capital Funds Trust",
-        "series_name": "Texas Capital Government Money Market ETF",
-        "class_name": "Texas Capital Government Money Market ETF",
-        "cik": 1972459,
-        "cikTen": "0001972459",
-        "series": "S000086506",
-        "class": "C000252068"
+        "ticker": "HTSXX",
+        "entity_name": "JPMorgan Trust I",
+        "series_name": "JPMorgan 100% U.S. Treasury Securities Money Market Fund",
+        "class_name": "Morgan",
+        "cik": 1217286,
+        "cikTen": "0001217286",
+        "series": "S000002965",
+        "class": "C000008118"
     },
     {
         "ticker": "MCBXX",
@@ -220,6 +230,26 @@
         "class": "C000199555"
     },
     {
+        "ticker": "MMKT",
+        "entity_name": "Texas Capital Funds Trust",
+        "series_name": "Texas Capital Government Money Market ETF",
+        "class_name": "Texas Capital Government Money Market ETF",
+        "cik": 1972459,
+        "cikTen": "0001972459",
+        "series": "S000086506",
+        "class": "C000252068"
+    },
+    {
+        "ticker": "MNRSV",
+        "entity_name": "BlackRock Series Fund, Inc.",
+        "series_name": "BlackRock Government Money Market Portfolio",
+        "class_name": "BlackRock Government Money Market Portfolio",
+        "cik": 319108,
+        "cikTen": "0000319108",
+        "series": "S000003870",
+        "class": "C000010836"
+    },
+    {
         "ticker": "MSAXX",
         "entity_name": "BLACKROCK FINANCIAL INSTITUTIONS SERIES TRUST",
         "series_name": "BlackRock Summit Cash Reserves Fund",
@@ -229,7 +259,7 @@
         "series": "S000004031",
         "class": "C000011303"
     },
-     {
+    {
         "ticker": "MSIXX",
         "entity_name": "BLACKROCK FINANCIAL INSTITUTIONS SERIES TRUST",
         "series_name": "BlackRock Summit Cash Reserves Fund",
@@ -238,6 +268,16 @@
         "cikTen": "0000353281",
         "series": "S000004031",
         "class": "C000213594"
+    },
+     {
+        "ticker": "MSUXX",
+        "entity_name": "Morgan Stanley Institutional Liquidity Funds",
+        "series_name": "Treasury Securities Portfolio",
+        "class_name": "Institutional",
+        "cik": 1227155,
+        "cikTen": "0001227155",
+        "series": "S000004154",
+        "class": "C000011692"
     },
     {
         "ticker": "PMMF",
