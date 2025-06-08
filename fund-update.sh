@@ -21,6 +21,11 @@
     ./job-update-meta.sh -f
 )
 (
+    cd EDGAR-e-MFP-parse
+    echo "*****  reset-ticker-dates.sh $*"
+    ./reset-ticker-dates.sh $*
+)
+(
     cd EDGAR-d-MFP-lists
     echo "***** job-create-MFP-lists.sh"
     ./job-create-MFP-lists.sh
