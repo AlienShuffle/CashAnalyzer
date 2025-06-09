@@ -281,8 +281,8 @@ function processClassInfo(classInfo) {
         }
     }
 
-    const metaAsOfDateObj = duGetDateFromYYYYMMDD(fundMeta.asOfDate);
-    const metaYear = metaAsOfDateObj.getFullYear();
+    const metaDateObj = new Date(fundMeta.timestamp);
+    const metaYear = metaDateObj.getFullYear();
     const reportDateObj = duGetDateFromYYYYMMDD(reportDate);
     const reportYear = reportDateObj.getFullYear();
     const expenseRatio = (metaYear == reportYear) ? fundMeta.expenseRatio : null;

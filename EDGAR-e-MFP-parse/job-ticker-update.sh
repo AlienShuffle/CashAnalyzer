@@ -38,8 +38,8 @@ done
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-if [ ! -s "$companyMap" ]; then
-    echo "$companyMap does not exist, exiting..."
+if [ ! -s "$fundsMetaFile" ]; then
+    echo "$fundsMetaFile does not exist, exiting..."
     exit 1
 fi
 if [ -z "$fundsList" ] || [ ! -s "$fundsList" ]; then
@@ -50,7 +50,7 @@ fi
 
 cat $fundsList |
     while read -r ticker; do
-        cik=$(node ./node-ticker-CIK-map.js "$ticker" <"$companyMap")
+        cik=$(node ./node-ticker-CIK-map.js "$ticker" <"$fundsMetaFile")
         if [ ! -n "$cik" ]; then
             echo "$ticker: missing from company-map, skipping...."
             continue
