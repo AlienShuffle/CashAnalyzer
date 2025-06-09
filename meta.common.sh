@@ -4,6 +4,7 @@ export oldestDate="12/31/2019"
 # Fund list related generated data files shared across the environment.
 CIKmap="../data/CIK-map.json"
 companyMap="../data/company-map.json"
+finraFile="../data/finra.json"
 fiscalYearFile="../data/fiscalYearFile.csv"
 fundsList="../data/funds-list.txt"
 fundsMetaFile="../data/fundsMeta.json"

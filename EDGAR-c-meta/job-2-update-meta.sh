@@ -1,7 +1,5 @@
 #!/usr/bin/bash
-#!/usr/bin/bash
-#
-# script pulss the list of funds being tracked across all the different queries into a single
+# script pulls the list of funds being tracked across all the different queries into a single
 # list of fund tickers. This is used by this query to get a full list of funds from moneymarket.fun.
 # it is also used by the EDGAR tools to define a list of tickers to track EDGAR reports for too.
 #
@@ -45,11 +43,17 @@ source ../meta.$(hostname).sh
 
 if [ ! -s "$fundsMetaFile" ] ||
     [ "$fundsMetaFile" -ot "$companyMap" ] ||
-    [ "$fundsMetaFile" -ot "$fiscalYearFile" ]; then
+    [ "$fundsMetaFile" -ot "$fiscalYearFile" ] ||
+    [ "$fundsMetaFile" -ot "$finraFile" ]; then
     echo source files updated, running script...
 else
     pubDelayFile=""
     runDelayFile="$fundsMetaFile"
     source ../bin/testDelays.sh
 fi
-../mmFunCurr/mmFunCurrCollectionScript.sh | node ./node-mmFunCurr-metaData.js "$companyMap" "$fiscalYearFile" | jq . >"$fundsMetaFile"
+cat "$finraFile" | node ./node-update-metaData.js "$companyMap" "$fiscalYearFile" | jq . >fundMeta.tmp.json
+if ../bin/jsonDifferent.sh fundMeta.tmp.json "$fundsMetaFile"; then
+    cat fundMeta.tmp.json >"$fundsMetaFile"
+    echo $fundsMetaFile updated.
+fi
+rm -f fundMeta.tmp.json

@@ -40,13 +40,13 @@ function findFiscalYear(cik) {
 }
 if (debug) console.log('fiscalYears.length=' + fiscalYears.length)
 
-// read in from stdin, the moneymarket.fun source data json file.
+// read in from stdin, the finra.org source data json file.
 const stdinBuffer = fs.readFileSync(0, 'utf-8');
-const mmFundList = JSON.parse(stdinBuffer);
-function findmmFundByTicker(ticker) {
-    for (let i = 0; i < mmFundList.length; i++) {
-        if (mmFundList[i].ticker == ticker) {
-            return mmFundList[i];
+const finraFundList = JSON.parse(stdinBuffer);
+function findfinraFundByTicker(ticker) {
+    for (let i = 0; i < finraFundList.length; i++) {
+        if (finraFundList[i].ticker == ticker) {
+            return finraFundList[i];
         }
     }
     return '';
@@ -54,20 +54,19 @@ function findmmFundByTicker(ticker) {
 
 const timestamp = new Date();
 let resp = [];
-// go through each ticker report provided in the original fundlist, see if it is in the mmFund list, publish compbined result.
+// go through each ticker report provided in the original fundlist, see if it is in the finraFund list, publish compbined result.
 for (let i = 0; i < fundList.length; i++) {
     const coMap = fundList[i];
     const ticker = coMap.ticker;
-    // pull data from mmFund Map file.
-    const mmFund = findmmFundByTicker(ticker);
+    // pull data from finraFund Map file.
+    const finraFund = findfinraFundByTicker(ticker);
 
     const cik = coMap.cik;
     // fiscalyear end from source data.
     const fiscalYear = findFiscalYear(cik);
 
     resp.push({
-        "asOfDate": safeObjectRef(mmFund.reportDate),
-        "expenseRatio": (safeObjectRef(mmFund.expenseRatio) / 100).toFixed(6) * 1,
+        "expenseRatio": safeObjectRef(finraFund.expenseRatio),
         "fiscalYearEnd": fiscalYear,
         "entity_name": coMap.entity_name,
         "series_name": coMap.series_name,
@@ -76,7 +75,7 @@ for (let i = 0; i < fundList.length; i++) {
         "cikTen": coMap.cikTen,
         "series": coMap.series,
         "class": coMap.class,
-        "mmName": safeObjectRef(mmFund.name),
+        "mmName": safeObjectRef(finraFund.mmName),
         "ticker": ticker,
         "timestamp": timestamp,
     });

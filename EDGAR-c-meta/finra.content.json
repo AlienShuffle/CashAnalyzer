@@ -1,0 +1,19 @@
+{
+    "filters": {
+        "productType": [
+            "Money Market Fund"
+        ]
+    },
+    "paging": {
+        "page": 0,
+        "limit": 1500
+    },
+    "selectedFilters": {
+        "productType": {
+            "1": "Money Market Fund"
+        }
+    },
+    "visibleFilters": {
+        "productType": true
+    }
+}
