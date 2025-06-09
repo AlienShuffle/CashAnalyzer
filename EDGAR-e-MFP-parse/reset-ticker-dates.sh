@@ -11,13 +11,13 @@ while [ -n "$1" ]; do
         echo "ticker: missing argument"
         continue
     fi
-    if [ ! -s "$companyMap" ]; then
-        echo "$companyMap does not exist, exiting..."
+    if [ ! -s "$fundsMetaFile" ]; then
+        echo "$fundsMetaFile does not exist, exiting..."
         continue
     fi
-    class=$(node ./node-ticker-CIK-map.js "$ticker" class <"$companyMap")
+    class=$(node ./node-ticker-CIK-map.js "$ticker" class <"$fundsMetaFile")
     if [ ! -n "$class" ]; then
-        echo "$ticker: missing from $companyMap, skipping...."
+        echo "$ticker: missing from $fundsMetaFile, skipping...."
        continue
     fi
     xmlFiles=$(grep "$class" ../EDGAR-d-MFP-lists/MFP-files/*/*.xml | cut -d: -f1 | sort -u)
