@@ -7,7 +7,7 @@ function safeObjectRef(obj) {
     return obj;
 }
 
-// read in from stdin, the yieldFinder.app source data rows file.
+// read in from stdin, the Vanguard price history tool source data rows file.
 const stdinBuffer = fs.readFileSync(0, 'utf-8');
 const rows = stdinBuffer.split('\n');
 const timestamp = new Date();

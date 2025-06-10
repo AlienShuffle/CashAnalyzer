@@ -48,7 +48,7 @@ csrf=$(grep CSRF-TOKEN $cookies | cut -f7)
 # pull a full list of funds from the query.
 #
 curl --header 'Accept:application/json, text/plain, */*' \
-    --header 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \
+    --header "$curlAgentHeader" \
     --header 'Content-Type: application/json;charset=utf-8' \
     --header "X-Csrf-Token: $csrf" \
     --header "Referer: https://tools.finra.org/fund_analyzer/search" \
