@@ -1,0 +1,5 @@
+{
+    "operationName": "GetModToken",
+    "variables": {},
+    "query": "query GetModToken {\n  getModToken {\n    accessToken\n    tokenType\n    ts\n    __typename\n  }\n}"
+}

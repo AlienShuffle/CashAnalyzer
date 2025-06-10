@@ -232,3 +232,4 @@ data/*
 EDGAR-b-submissions/submissionsCIKs.txt
 EDGAR-a-CIK/tt.json
 EDGAR-c-meta/finra.cookie.jar.txt
+markit/content-xid.json

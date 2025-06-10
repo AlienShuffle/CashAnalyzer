@@ -1,0 +1,23 @@
+{
+    "days": 60,
+    "dataNormalized": false,
+    "dataPeriod": "Day",
+    "dataInterval": 1,
+    "realtime": true,
+    "yFormat": "0.###",
+    "timeServiceFormat": "JSON",
+    "returnDateType": "ISO8601",
+    "rulerIntradayStart": 31,
+    "rulerIntradayStop": 3,
+    "rulerInterdayStart": 12783,
+    "rulerInterdayStop": 365,
+    "elements": [
+        {
+            "Label": "ff0a004c",
+            "Type": "price",
+            "Symbol": "XXxidXX",
+            "OverlayIndicators": [],
+            "Params": {}
+        }
+    ]
+}
