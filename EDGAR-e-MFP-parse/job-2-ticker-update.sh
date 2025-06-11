@@ -83,10 +83,7 @@ cat $fundsList |
         if ../bin/jsonDifferent.sh "$tickerFile" "$jsonFlare"; then
             cat "$tickerFile" >"$jsonFlare"
             echo "published updated $ticker EDGAR cloudFlare history file."
-            (
-                echo 'ticker,source,registrantName,seriesName,className,expenseRatio,fiscalYearEnd,category,totalNetAssets,investorType,minimumInitialInvestment,wam,wal,reportDate,yield,yieldDate,usTreasuryDebt,usGovernmentAgencyDebt,usGovernmentAgencyCouponDebt,usGovernmentAgencyZeroCouponDebt,nonUSSovereignDebt,certificateofDeposit,nonNegotiableTimeDeposit,variableRateDemandNote,otherMunicipalSecurity,assetBackedCommercialPaper,otherAssetBackedSecurities,usTreasuryRepurchaseAgreement,usGovernmentAgencyRepurchaseAgreement,otherRepurchaseAgreement,insuranceCompanyFundingAgreement,financialCompanyCommercialPaper,nonFinancialCompanyCommercialPaper,tenderOptionBond,otherInstrument,USGO,Muni'
-                jq -r '.[] | [.ticker,.source,.registrantName,.seriesName,.className,.expenseRatio,.fiscalYearEnd,.category,.totalNetAssets,.investorType,.minimumInitialInvestment,.wam,.wal,.reportDate,.yield,.yieldDate,.usTreasuryDebt,.usGovernmentAgencyDebt,.usGovernmentAgencyCouponDebt,.usGovernmentAgencyZeroCouponDebt,.nonUSSovereignDebt,.certificateofDeposit,.nonNegotiableTimeDeposit,.variableRateDemandNote,.otherMunicipalSecurity,.assetBackedCommercialPaper,.otherAssetBackedSecurities,.usTreasuryRepurchaseAgreement,.usGovernmentAgencyRepurchaseAgreement,.otherRepurchaseAgreement,.insuranceCompanyFundingAgreement,.financialCompanyCommercialPaper,.nonFinancialCompanyCommercialPaper,.tenderOptionBond,.otherInstrument,.USGO,.Muni] | @csv' "$jsonFlare"
-            ) >"$csvFlare"
+            ./exportEDGARcsv.sh "$jsonFlare" >"$csvFlare"
             #echo "published updated cloudflare csv file."
         fi
     done
