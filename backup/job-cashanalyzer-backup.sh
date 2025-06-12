@@ -23,7 +23,7 @@ BACKUP_INTERVAL=1440                                                   # How oft
 LOG_FILE="/home/gebelea/log/CA_backup.log"                             # Log file location
 DATE_FORMAT="%Y-%m-%d_%H-%M-%S"                                        # Format for date in backup name
 COMPRESSION_TYPE="gzip"                                                # Options: gzip, bzip2, xz
-REQUIRED_SPACE_GB=1                                                    # Required free space in GB
+REQUIRED_SPACE_GB=10                                                   # Required free space in GB
 
 # =====================================================================
 # FUNCTIONS
@@ -208,10 +208,11 @@ if [ $# -gt 0 ]; then
     load_config "$1"
 fi
 
+# Only complete a backup if it's time.
+delay_daily_backups
+
 # Check if running as root
 #check_root
-
-delay_daily_backups
 
 # Begin backup process
 log "INFO" "=== BACKUP STARTED ==="
@@ -229,5 +230,4 @@ create_backup
 clean_old_backups
 
 log "INFO" "=== BACKUP COMPLETED ==="
-
 exit 0

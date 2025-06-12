@@ -10,8 +10,6 @@ token=$(curl --header 'Content-Type: application/json' \
     -sSL "https://www.reuters.com/service/graphql" \
     --data @token-query.json |
     jq -r '.data.getModToken.accessToken')
-#echo $token
-#exit 0
 firstRow=true
 echo "{"
 # note, this cut is reading from stdin and expects a csv list of fund ticker, ticker, names to drive the queries.
