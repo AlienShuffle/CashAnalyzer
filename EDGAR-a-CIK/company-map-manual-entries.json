@@ -369,6 +369,16 @@
         "series": "S000007425",
         "class": "C000168181"
     },
+     {
+        "ticker": "WOTXX",
+        "entity_name": "Allspring Funds Trust",
+        "series_name": "Allspring 100% Treasury Money Market Fund",
+        "class_name": "Institutional Shares",
+        "cik": 1081400,
+        "cikTen": "0001081400",
+        "series": "S000007432",
+        "class": "C000150668"
+    },
     {
         "ticker": "WSTXX",
         "entity_name": "BlackRock Liquidity Funds",
