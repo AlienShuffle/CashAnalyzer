@@ -15,9 +15,9 @@ echo nvm version
 echo nvm install --lts
 echo
 echo "##### jq"
-echo "Make sure jq is installed"
-echo sudo apt install jq
-#sudo apt install jq
+echo "Make sure jq and tree is installed"
+echo sudo apt install jq tree
+#sudo apt install jq tree
 
 #
 # Updates to the NPM/Node Environment This needs to be done in each directory
