@@ -1,20 +1,15 @@
 {
   "name": "mfpparse",
-  "version": "0.0.1",
-  "description": "create a CIK -> ticker mapping for EDGAR",
-  "main": "index.js",
+  "version": "1.0.",
+  "description": "create a CIK -> ticker mapping for EDGAR data, MFP reports and daily yields.",
   "type": "module",
-  "scripts": {
-    "start-nogood-we-arent-using-funcions-framework": "functions-framework --target=getFidelityQuotes"
-  },
   "keywords": [
-    "Puppeteer",
-    "GCF",
-    "Fidelity Quotes"
+    "xml",
+    "EDGAR"
   ],
   "author": "AlienShuffle",
   "license": "MIT",
   "dependencies": {
-    "fast-xml-parser": "^5.2.3"
+    "fast-xml-parser": "^5.2.5"
   }
 }

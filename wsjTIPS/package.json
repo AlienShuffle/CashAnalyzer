@@ -1,12 +1,7 @@
 {
-  "name": "TIPS Quotes",
+  "name": "wsjtips",
   "version": "0.0.1",
   "description": "retrieve TIPS quotes from WSJ.com",
-  "main": "node-wsjTIPS-update.js",
-  "type": "module",
-  "scripts": {
-    "start-nogood-we-arent-using-funcions-framework": "functions-framework --target=getAllyQuotes"
-  },
   "keywords": [
     "Puppeteer",
     "TIPS",
@@ -15,6 +10,6 @@
   "author": "AlienShuffle",
   "license": "MIT",
   "dependencies": {
-    "puppeteer": "^23.2.1"
+    "puppeteer": "^24.10.1"
   }
 }

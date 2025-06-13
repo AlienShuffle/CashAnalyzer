@@ -2,14 +2,10 @@
   "name": "schwab",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start-broken": "functions-framework --target=getTreasuryQuotes"
-  },
   "keywords": [],
   "author": "AlienShuffle",
   "license": "MIT",
   "dependencies": {
-    "puppeteer": "^23.2.1"
+    "puppeteer": "^24.10.1"
   }
 }

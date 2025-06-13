@@ -1,11 +1,7 @@
 {
-  "name": "PaPowerSwitch",
-  "version": "0.0.1",
+  "name": "papowerswitch",
+  "version": "1.0.0",
   "description": "retrieve Pa Power quotes from papowerswitch.com",
-  "main": "node-PaPower-update.js",
-  "scripts": {
-    "start-nogood-we-arent-using-funcions-framework": "functions-framework --target=getAllyQuotes"
-  },
   "keywords": [
     "Puppeteer",
     "PA Power",
@@ -14,6 +10,6 @@
   "author": "AlienShuffle",
   "license": "MIT",
   "dependencies": {
-    "puppeteer": "^23.2.1"
+    "puppeteer": "^24.10.1"
   }
 }
