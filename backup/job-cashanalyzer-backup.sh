@@ -17,7 +17,7 @@
 # Default configuration (can be overridden by config file)
 BACKUP_DIR="/home/gebelea/cdocs/backups"                               # Where backups are stored
 DIRECTORIES_TO_BACKUP=("/home/gebelea/CashAnalyzer")                   # Directories to backup
-EXCLUDE_PATTERNS=("*.tmp" "*.swp" "/home/*/Downloads" "/home/*/Trash") # Patterns to exclude
+EXCLUDE_PATTERNS=("*.log *.tmp" "*.swp" "/home/*/Downloads" "/home/*/Trash") # Patterns to exclude
 RETENTION_DAYS=10                                                      # How many days to keep backups
 BACKUP_INTERVAL=1440                                                   # How often to backup in minutes (1440 = 24 hours).
 LOG_FILE="/home/gebelea/log/CA_backup.log"                             # Log file location
@@ -190,7 +190,7 @@ delay_daily_backups() {
     if [ "$BACKUP_INTERVAL" -gt 0 ]; then
         hours=$(expr $BACKUP_INTERVAL / 60)
         log "INFO" "Running backups every $hours hours"
-        FILES_FOUND=$(find "$BACKUP_DIR" -name "*.tar.*" -amin -$BACKUP_INTERVAL -print | wc -l)
+        FILES_FOUND=$(find "$BACKUP_DIR" -name "*_backup_${hostname}.tar.*" -amin -$BACKUP_INTERVAL -print | wc -l)
         #echo FILES_FOUND=$FILES_FOUND
         if [ "$FILES_FOUND" -gt 0 ]; then
             log "INFO" "current backup file found."
