@@ -189,11 +189,10 @@ clean_old_backups() {
 delay_daily_backups() {
     if [ "$BACKUP_INTERVAL" -gt 0 ]; then
         hours=$(expr $BACKUP_INTERVAL / 60)
-        log "INFO" "Running backups every $hours hours"
-        FILES_FOUND=$(find "$BACKUP_DIR" -name "*_backup_${hostname}.tar.*" -amin -$BACKUP_INTERVAL -print | wc -l)
-        #echo FILES_FOUND=$FILES_FOUND
+        #log "INFO" "Running backups every $hours hours"
+        FILES_FOUND=$(find "$BACKUP_DIR" -name '*_backup_'$(hostname)'.tar.*' -amin -$BACKUP_INTERVAL -print | wc -l)
         if [ "$FILES_FOUND" -gt 0 ]; then
-            log "INFO" "current backup file found."
+            log "INFO" "$FILES_FOUND current backup file(s) found."
             exit 0
         fi
     fi
