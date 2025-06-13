@@ -1,7 +1,7 @@
 {
   "name": "allyquotes",
   "version": "0.0.1",
-  "description": "Uses puppeteer to scrape daily APY for Ally savings accounts.",
+  "description": "Scrape daily APY for Ally savings accounts.",
   "keywords": [
     "Puppeteer",
     "Ally Bank"

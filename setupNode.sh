@@ -1,35 +1,41 @@
 #!/usr/bin/bash
 #
-# One Time Setup Tasks.
+# npm maintenance tasks.
 #
-#echo If you need to update NVM, do the following:s
-echo steps to update NVM:
+# If you need to update NVM, do the following:
+#
+echo "steps to update NVM (update the version number as appropriate)"
 echo "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash"
 echo "steps to get current long-term support (--lts) Node Version"
 echo "##### Get latest Node version"
-echo "nvm version"
-echo "nvm install --lts"
-[ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh" 
-nvm version
-nvm install --lts
+echo nvm version
+echo nvm install --lts
+echo [ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh" 
+echo nvm version
+echo nvm install --lts
 echo
 echo "##### jq"
 echo "Make sure jq is installed"
 echo sudo apt install jq
-sudo apt install jq
+#sudo apt install jq
 
 #
 # Updates to the NPM/Node Environment This needs to be done in each directory
 #
-for dir in Ally FedInvest FedInvestToday PaPower TIPS Treasury USFR Vanguard yieldFinder yieldMM; do
+# directories that need puppeteer or xml-parser use:
+for package in $(ls */package.json); do
+    echo found $package
+    dir=$(dirname $package)
     (
         cd $dir
         echo "##### $dir"
-        echo "Update npm and the node libraries"
-        #npm install -g npm 
-        # this is the correct way
-        npm outdated
-        npm update
+        if grep puppeteer package.json; then
+             grep puppeteer package-lock.json >/dev/null || npm install puppeteer
+        fi
+        if grep fast-xml-parser package.json; then
+            grep fast-xml-parser package-lock.json >/dev/null || npm install fast-xml-parser
+        fi
+        npm outdated || npm update
         echo
     )
 done
