@@ -17,7 +17,7 @@
 # Default configuration (can be overridden by config file)
 BACKUP_DIR="/home/gebelea/cdocs/backups"                               # Where backups are stored
 DIRECTORIES_TO_BACKUP=("/home/gebelea/CashAnalyzer")                   # Directories to backup
-EXCLUDE_PATTERNS=("*.log *.tmp" "*.swp" "/home/*/Downloads" "/home/*/Trash") # Patterns to exclude
+EXCLUDE_PATTERNS=("*.log" "*.tmp" "*.swp" "/home/*/Downloads" "/home/*/Trash") # Patterns to exclude
 RETENTION_DAYS=10                                                      # How many days to keep backups
 BACKUP_INTERVAL=1440                                                   # How often to backup in minutes (1440 = 24 hours).
 LOG_FILE="/home/gebelea/log/CA_backup.log"                             # Log file location
@@ -143,7 +143,7 @@ create_backup() {
 
     # Create the backup command
     # We use eval because we need to expand the exclude_args array
-    backup_cmd="tar $compression_opt -cvf \"$backup_file\" $exclude_args ${DIRECTORIES_TO_BACKUP[*]} 2>/tmp/backup_errors.log"
+    backup_cmd="tar $compression_opt -cf \"$backup_file\" $exclude_args ${DIRECTORIES_TO_BACKUP[*]} 2>/tmp/backup_errors.log"
 
     log "INFO" "Executing: $backup_cmd"
 
