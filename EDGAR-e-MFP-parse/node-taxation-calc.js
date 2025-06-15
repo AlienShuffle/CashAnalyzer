@@ -48,6 +48,7 @@ function findYearObj(year, createNew = true) {
 
 
 // fiscal year calendar for the fund, find the months for the 4 qtr ends.
+// if fiscal year is missing from the EDGAR file, fall back to calendar year.
 if (debug) console.log(fiscalYearEnd);
 const qFourMonth = (fiscalYearEnd) ? fiscalYearEnd.substring(0, 2) * 1 : 12;
 const qThreeMonth = (fiscalYearEnd) ? (qFourMonth + 9) % 12 : 9;

@@ -73,6 +73,7 @@ cat $fundsList |
             cat "$taxFile" >"$jsonFlare"
             echo "published updated $ticker taxation cloudFlare history file."
             # put csv export here.
+            ./exportTaxationcsv.sh "$jsonFlare" >"$csvFlare"
             #echo "published updated cloudflare csv file."
         fi
     done
