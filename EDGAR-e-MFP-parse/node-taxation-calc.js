@@ -98,13 +98,6 @@ for (let i = 0; i < years.length; i++) {
     if (debug) console.error(`year=${year}`);
     const twelveMosAssets = years[i].assets;
 
-    // remove a future year with fiscal quarters only and no asset reports.
-    if (!twelveMosAssets) {
-        if (debug) console.error(`empty assets in year=${year}`);
-        years.splice(i, 1);
-        continue;
-    }
-
     years[i].fiscalYearEnd = fiscalYearEnd;
     years[i].usgo = (years[i].usgo / twelveMosAssets).toFixed(5) * 1;
     years[i].muni = (years[i].muni / twelveMosAssets).toFixed(5) * 1;
@@ -112,26 +105,26 @@ for (let i = 0; i < years.length; i++) {
     years[i].estimateType = (years[i].months == 12) ? "complete" : "YTD";
 
     // I am interpreting the 50 percent rule for CA/NY/CT very conservatively. It says if any quarter in the fiscal year
-    // ends with USGO assets less than 50%, it is not qualified. I assume that any quarters in the more recently completed
+    // ends with USGO assets less than 50%, it is not qualified. I assume that any quarters in the most recently completed
     // fiscal year count, and just to be safe, any quarters in the current calendar year also.
     const thisYear = findYearObj(year);
     years[i].fiftyPctRule = true;
     years[i].fiftyPctHistory = (fiscalYearEnd) ? 'complete' : 'missing fiscal year';
     if (years[i].months == 12) {
         // Full year, use the most recent complete fiscal year, and also current calendar year.
-        const q1PCt = years[i].q1Pct;
+        const q1Pct = years[i].q1Pct;
         const q2Pct = years[i].q2Pct;
         const q3Pct = years[i].q3Pct;
         const q4Pct = years[i].q4Pct;
         // Check each fiscal quarter for 50% rule.
-        if ((q1PCt >= 0 && q1PCt < .5) ||
+        if ((q1Pct >= 0 && q1Pct < .5) ||
             (q2Pct >= 0 && q2Pct < .5) ||
             (q3Pct >= 0 && q3Pct < .5) ||
             (q4Pct >= 0 && q4Pct < .5)) {
             years[i].fiftyPctRule = false;
         }
         // Check if any fiscal quarter data is missing.
-        if (q1PCt < 0 || q2Pct < 0 || q3Pct < 0 || q4Pct < 0) {
+        if (q1Pct < 0 || q2Pct < 0 || q3Pct < 0 || q4Pct < 0) {
             years[i].fiftyPctHistory = "incomplete";
         }
         // The 4 quarters during the current calendar year, by my reading must also be checked.
@@ -165,15 +158,13 @@ for (let i = 0; i < years.length; i++) {
     }
 }
 years.sort(dynamicSort('year'));
-// loop through the year reports and calculate the fifty percent rule results.
+//remove the future year with fiscal quarters only and no asset reports.
 for (let i = 0; i < years.length; i++) {
     const year = years[i].year;
-    const twelveMosAssets = years[i].assets;
-    if (!twelveMosAssets) {
+    if (!years[i].assets) {
         if (debug) console.error(`empty assets in year=${year}`);
         years.splice(i, 1);
     }
 }
 console.log(JSON.stringify(years));
-//if (debug) console.error(JSON.stringify(json));
 process.exit(0);
