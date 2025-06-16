@@ -139,13 +139,13 @@ for (let i = 0; i < years.length; i++) {
     } else {
         // in process year, need an alternative process. Will use the last four quarters on the run lined up with the fiscal year quarters.
         const month = years[i].months;
-        const lastYear = findYearObj(year - 1);
-        years[i].fiftyPctHistory = (years[lastYear].months == 12) ? "current-year" : "incomplete";
+        const lastYear = findYearObj(year - 1, false);
+        years[i].fiftyPctHistory = (lastYear && years[lastYear].months == 12) ? "current-year" : "incomplete";
 
-        const q1Pct = years[(month >= qMonths[1]) ? thisYear : lastYear].q1Pct;
-        const q2Pct = years[(month >= qMonths[2]) ? thisYear : lastYear].q2Pct;
-        const q3Pct = years[(month >= qMonths[3]) ? thisYear : lastYear].q3Pct;
-        const q4Pct = years[(month >= qMonths[4]) ? thisYear : lastYear].q4Pct;
+        const q1Pct = (month >= qMonths[1]) ? years[thisYear].q1Pct : ((lastYear) ? years[thisYear].q1Pct : -1);
+        const q2Pct = (month >= qMonths[2]) ? years[thisYear].q2Pct : ((lastYear) ? years[thisYear].q2Pct : -1);
+        const q3Pct = (month >= qMonths[3]) ? years[thisYear].q3Pct : ((lastYear) ? years[thisYear].q3Pct : -1);
+        const q4Pct = (month >= qMonths[4]) ? years[thisYear].q4Pct : ((lastYear) ? years[thisYear].q4Pct : -1);
 
         if ((q1Pct >= 0 && q1Pct < .5) ||
             (q2Pct >= 0 && q2Pct < .5) ||

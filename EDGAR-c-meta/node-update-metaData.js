@@ -7,12 +7,24 @@ require('../lib/dynamicSort.js')();
 const debug = false;
 
 // start some utilities here.
-function titleCase(str) {
+function formatFundName(str) {
     let splitStr = str.toLowerCase().split(' ');
     for (let i = 0; i < splitStr.length; i++) {
         splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
     }
-    return splitStr.join(' ');
+    return splitStr.join(' ')
+        .replace(/ Fund$/, "")
+        .replace("® ", " ")
+        .replace("™", "")
+        .replace(" - ", " ")
+        .replace("Etf", "ETF")
+        .replace("etf", "ETF")
+        .replace("Money Market", "MM")
+        .replace("Money Fund", "MM")
+        .replace("U.S. ", "US ")
+        .replace("U.S ", "US ")
+        .replace("U.s ", "US ")
+        .replace("U.s. ", "US ");
 }
 
 function safeObjectRef(obj) {
@@ -75,7 +87,10 @@ for (let i = 0; i < fundList.length; i++) {
         "cikTen": coMap.cikTen,
         "series": coMap.series,
         "class": coMap.class,
-        "mmName": safeObjectRef(finraFund.mmName),
+        "mmName": formatFundName(
+            (safeObjectRef(finraFund.mmName)) ?
+                safeObjectRef(finraFund.mmName) :
+                coMap.series_name + ((coMap.series_name != coMap.class_name) ? (' ' + coMap.class_name) : '')),
         "ticker": ticker,
         "timestamp": timestamp,
     });

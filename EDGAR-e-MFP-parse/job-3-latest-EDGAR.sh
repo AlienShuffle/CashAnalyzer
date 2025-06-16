@@ -31,6 +31,7 @@ source ../meta.$(hostname).sh
 jsonNew="history/latestEDGAR.json"
 jsonFlare="$cloudFlareHome/EDGAR/latestEDGAR.json"
 csvFlare="$cloudFlareHome/EDGAR/latestEDGAR.csv"
+csvSummaryFlare="$cloudFlareHome/EDGAR/latestEDGAR-summary.csv"
 pubDelayFile="$jsonFlare"
 runDelayFile="$jsonNew"
 source ../bin/testDelays.sh
@@ -53,5 +54,6 @@ source ../bin/testDelays.sh
 if ../bin/jsonDifferent.sh "$jsonNew" "$jsonFlare"; then
     cat "$jsonNew" >"$jsonFlare"
     ./exportEDGARcsv.sh "$jsonFlare" >"$csvFlare"
-    echo $jsonFlare updated.
+    ./exportEDGAR-summary-csv.sh "$jsonFlare" >"$csvSummaryFlare"
+    echo "$jsonFlare updated (csv too)."
 fi

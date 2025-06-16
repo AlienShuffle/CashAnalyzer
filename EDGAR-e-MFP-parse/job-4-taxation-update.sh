@@ -60,7 +60,7 @@ cat $fundsList |
             [ ! -n "$forceRun" ] &&
             continue
 
-        #echo "updating $ticker..."
+        echo "updating $ticker..."
         node ./node-taxation-calc.js <"$tickerFile" |
             jq . >"$taxFile"
 

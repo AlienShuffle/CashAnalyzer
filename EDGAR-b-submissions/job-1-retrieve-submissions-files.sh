@@ -58,6 +58,6 @@ cat $submissionsCIKs |
     while IFS= read -r cik; do
         echo retrieving $cik
         ../bin/getEDGAR.sh "https://data.sec.gov/submissions/CIK$cik.json" | jq . >submissions/$cik.json
-        sleep 2
+        sleep 1
     done
-# do not remove this $submissionsCIKs, it is the run delay test variable!
+# do not remove $submissionsCIKs, it is the run delay test variable!
