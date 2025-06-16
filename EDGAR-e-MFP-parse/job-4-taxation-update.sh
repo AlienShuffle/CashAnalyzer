@@ -54,6 +54,10 @@ cat $fundsList |
         tickerFile="tickers/$ticker.json"
         taxFile="tax/$ticker-taxation.json"
 
+    # skip emtpy ticker files.
+        tickerFileSize=$(stat -c '%s' "$tickerFile")
+        [ "$tickerFileSize" -lt 6 ] && continue
+
         # continue if file exists, no new files, and force not specified.
         [ -s "$taxFile" ] &&
             [ "$taxFile" -nt "$tickerFile" ] &&
