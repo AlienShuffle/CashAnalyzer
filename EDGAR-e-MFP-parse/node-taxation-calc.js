@@ -157,10 +157,21 @@ for (let i = 0; i < years.length; i++) {
         if ((q1Pct >= 0 && q1Pct < .5) ||
             (q2Pct >= 0 && q2Pct < .5) ||
             (q3Pct >= 0 && q3Pct < .5) ||
-            (q4Pct >= 0 && q4Pct < .5)
+            (q4Pct >= 0 && q4Pct < .5) ||
+            (q1Pct < 0 && q2Pct < 0 && q3Pct < 0 && q4Pct < 0)
         ) {
             years[i].fiftyPctRule = false;
         }
+    }
+}
+years.sort(dynamicSort('year'));
+// loop through the year reports and calculate the fifty percent rule results.
+for (let i = 0; i < years.length; i++) {
+    const year = years[i].year;
+    const twelveMosAssets = years[i].assets;
+    if (!twelveMosAssets) {
+        if (debug) console.error(`empty assets in year=${year}`);
+        years.splice(i, 1);
     }
 }
 console.log(JSON.stringify(years));
