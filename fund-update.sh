@@ -40,4 +40,6 @@
     ./job-2-ticker-update.sh
     echo "***** job-3-latest-EDGAR.sh"
     ./job-3-latest-EDGAR.sh -f
+     echo "***** job-4-taxation-update.sh"
+    ./job-4-taxation-update.sh -f
 )
