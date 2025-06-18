@@ -21,6 +21,7 @@ function formatFundName(str) {
         .replace("etf", "ETF")
         .replace("Money Market", "MM")
         .replace("Money Fund", "MM")
+        .replace("Fidelity Investments Money Market","FIMM")
         .replace(/ MM Fund/, " MM")
         .replace(" Investor Shares", " Investor")
         .replace(" Premium Class", " Premium")
