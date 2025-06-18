@@ -51,6 +51,7 @@ source ../bin/testDelays.sh
     echo "]"
 ) | jq . >"$jsonNew"
 
+[ -d "$(dirname $jsonFlare)" ] || mkdir -p "$(dirname $jsonFlare)"
 if ../bin/jsonDifferent.sh "$jsonNew" "$jsonFlare"; then
     cat "$jsonNew" >"$jsonFlare"
     ./exportEDGARcsv.sh "$jsonFlare" >"$csvFlare"

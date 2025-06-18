@@ -54,8 +54,11 @@ if (debug) console.error(fiscalYearEnd);
 let qMonths = [];
 qMonths[4] = (fiscalYearEnd) ? fiscalYearEnd.substring(0, 2) * 1 : 12;
 qMonths[3] = (qMonths[4] + 9) % 12;
+if (qMonths[3] == 0) qMonths[3] = 12;
 qMonths[2] = (qMonths[3] + 9) % 12;
+if (qMonths[2] == 0) qMonths[2] = 12;
 qMonths[1] = (qMonths[2] + 9) % 12;
+if (qMonths[1] == 0) qMonths[1] = 12;
 const firstQuarterInNextCalendarYear = (qMonths[4] <= 3) ? 4
     : ((qMonths[3] <= 3) ? 3
         : ((qMonths[2] <= 3) ? 2
@@ -164,7 +167,10 @@ for (let i = 0; i < years.length; i++) {
     if (!years[i].assets) {
         if (debug) console.error(`empty assets in year=${year}`);
         years.splice(i, 1);
+    } else {
+        delete years[i].assets;
     }
+
 }
 console.log(JSON.stringify(years));
 process.exit(0);
