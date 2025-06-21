@@ -54,15 +54,16 @@ cat $fundsList |
         tickerFile="tickers/$ticker.json"
         taxFile="tax/$ticker-taxation.json"
 
-    # skip emtpy ticker files.
-        tickerFileSize=$(stat -c '%s' "$tickerFile")
-        [ "$tickerFileSize" -lt 6 ] && continue
+        if [ ! -s "$tickerFile" ]; then
+            echo "$tickerFile does not exist, skipping...."
+            continue
+        fi
 
         # continue if file exists, no new files, and force not specified.
         [ -s "$taxFile" ] &&
             [ "$taxFile" -nt "$tickerFile" ] &&
             [ ! -n "$forceRun" ] &&
-            continue
+            [ "$(stat -c '%s' $tickerFile)" -lt 6 ] && continue
 
         #echo "updating $ticker..."
         node ./node-taxation-calc.js <"$tickerFile" |

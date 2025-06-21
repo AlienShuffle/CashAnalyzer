@@ -269,7 +269,7 @@
         "series": "S000004031",
         "class": "C000213594"
     },
-     {
+    {
         "ticker": "MSUXX",
         "entity_name": "Morgan Stanley Institutional Liquidity Funds",
         "series_name": "Treasury Securities Portfolio",
@@ -308,6 +308,16 @@
         "cikTen": "0000097098",
         "series": "S000001475",
         "class": "C000237277"
+    },
+    {
+        "ticker": "SGVT",
+        "entity_name": "SCHWAB STRATEGIC TRUST",
+        "series_name": "Schwab Government Money Market ETF",
+        "class_name": "Schwab Government Money Market ETF",
+        "cik": 1454889,
+        "cikTen": "0001454889",
+        "series": "S000092777",
+        "class": "C000260816"
     },
     {
         "ticker": "SIGXX",
@@ -369,7 +379,7 @@
         "series": "S000007425",
         "class": "C000168181"
     },
-     {
+    {
         "ticker": "WOTXX",
         "entity_name": "Allspring Funds Trust",
         "series_name": "Allspring 100% Treasury Money Market Fund",
