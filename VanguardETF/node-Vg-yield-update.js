@@ -9,7 +9,7 @@ const du = require('../lib/dateUtils.js');
 //    console.error(`argv[${i}]="${process.argv[i]}"`);
 //}
 const ticker = (process.argv[2] && process.argv[2].length > 1) ? process.argv[2] : '';
-if (ticker == '') throw 'missing arv[2]=ticker!';
+if (ticker == '') throw 'missing argv[2]=ticker!';
 
 // read in from stdin, the source data json file.
 const stdinBuffer = fs.readFileSync(0, 'utf-8');
