@@ -91,39 +91,41 @@ fi
 # Process the daily history results in rate and merge with history.
 #
 ##################################
-grep cusip "$jsonRateNew" | sed 's/^.*cusip": "//' | sed 's/",$//' | sort -u |
-    while IFS= read -r cusip; do
-        dirname="history/$cusip"
-        #echo "Processing $cusip"
-        [ -d "$dirname" ] || mkdir -p "$dirname"
-        jasonRateCusip="$dirname/rate-new.json"
-        jsonHistoryUnique="$dirname/history-unique.json"
-        jsonHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.json"
-        csvHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.csv"
+if false; then
+    grep cusip "$jsonRateNew" | sed 's/^.*cusip": "//' | sed 's/",$//' | sort -u |
+        while IFS= read -r cusip; do
+            dirname="history/$cusip"
+            #echo "Processing $cusip"
+            [ -d "$dirname" ] || mkdir -p "$dirname"
+            jasonRateCusip="$dirname/rate-new.json"
+            jsonHistoryUnique="$dirname/history-unique.json"
+            jsonHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.json"
+            csvHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.csv"
 
-        # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
-        cat "$jsonRateNew" | jq "[.[] | select(.cusip==\"$cusip\")]" >"$jasonRateCusip"
+            # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
+            cat "$jsonRateNew" | jq "[.[] | select(.cusip==\"$cusip\")]" >"$jasonRateCusip"
 
-        if [ -f "$jsonHistoryFlare" ]; then
-            jq -s 'flatten | unique_by([.cusip,.asOfDate]) | sort_by([.cusip,.asOfDate])' "$jasonRateCusip" "$jsonHistoryFlare" >tmp-flatten.json
-            cat tmp-flatten.json | jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
-            rm tmp-flatten.json
-        else
-            cat "$jasonRateCusip" | jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
-        fi
-        if [ ! -s "$jsonHistoryFlare" ]; then
-            dir=$(dirname "$jsonHistoryFlare")
-            [ -d "$dir" ] || mkdir -p "$dir"
-        fi
-        if ../bin/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
-            cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
-            (
-                echo 'asOfDate, cusip, securitytype, rate, maturitydate, calldate, buy, sell, endofday, key'
-                jq -r '.[] | [.asOfDate, .cusip, .securitytype, .rate, .maturitydate, .calldate, .buy, .sell, .endofday, .key] | @csv' "$jsonHistoryUnique"
-            ) >"$csvHistoryFlare"
-            #echo "published updated $sourceName cloudFlare history file."
-        fi
-    done
+            if [ -f "$jsonHistoryFlare" ]; then
+                jq -s 'flatten | unique_by([.cusip,.asOfDate]) | sort_by([.cusip,.asOfDate])' "$jasonRateCusip" "$jsonHistoryFlare" >tmp-flatten.json
+                cat tmp-flatten.json | jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
+                rm tmp-flatten.json
+            else
+                cat "$jasonRateCusip" | jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
+            fi
+            if [ ! -s "$jsonHistoryFlare" ]; then
+                dir=$(dirname "$jsonHistoryFlare")
+                [ -d "$dir" ] || mkdir -p "$dir"
+            fi
+            if ../bin/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
+                cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
+                (
+                    echo 'asOfDate, cusip, securitytype, rate, maturitydate, calldate, buy, sell, endofday, key'
+                    jq -r '.[] | [.asOfDate, .cusip, .securitytype, .rate, .maturitydate, .calldate, .buy, .sell, .endofday, .key] | @csv' "$jsonHistoryUnique"
+                ) >"$csvHistoryFlare"
+                #echo "published updated $sourceName cloudFlare history file."
+            fi
+        done
+fi
 ###################################################
 #
 # process the rate file.

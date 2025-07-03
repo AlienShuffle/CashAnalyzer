@@ -100,41 +100,43 @@ fi
 # Process the daily history results in rate and merge with history.
 #
 ##################################
-grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
-    while IFS= read -r tipsKey; do
-        dirname="history/$(echo "$tipsKey" | sed -e 's/ /-/g')"
-        #echo "Processing $tipsKey"
-        [ -d "$dirname" ] || mkdir -p "$dirname"
-        jsonRatetipsKey="$dirname/rate-new.json"
-        jsonHistoryUnique="$dirname/history-unique.json"
-        jsonHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.json"
-        csvHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.csv"
+if false; then
+    grep key "$jsonRateNew" | sed 's/^.*key": "//' | sed 's/"$//' | sort -u |
+        while IFS= read -r tipsKey; do
+            dirname="history/$(echo "$tipsKey" | sed -e 's/ /-/g')"
+            #echo "Processing $tipsKey"
+            [ -d "$dirname" ] || mkdir -p "$dirname"
+            jsonRatetipsKey="$dirname/rate-new.json"
+            jsonHistoryUnique="$dirname/history-unique.json"
+            jsonHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.json"
+            csvHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.csv"
 
-        # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
-        cat "$jsonRateNew" | jq "[.[] | select(.key==\"$tipsKey\")]" >"$jsonRatetipsKey"
+            # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
+            cat "$jsonRateNew" | jq "[.[] | select(.key==\"$tipsKey\")]" >"$jsonRatetipsKey"
 
-        if [ -s "$jsonHistoryFlare" ]; then
-            jq -s 'flatten | unique_by([.key,.asOfDate]) | sort_by([.key,.asOfDate])' "$jsonRatetipsKey" "$jsonHistoryFlare" |
-                jq 'sort_by([.key,.asOfDate])' >"$jsonHistoryUnique"
-        else
-            cat "$jsonRatetipsKey" | jq 'sort_by([.key,.asOfDate])' >"$jsonHistoryUnique"
-            echo "$sourceName cloudFlare history file has not been published."
-            dir=$(dirname "$jsonHistoryFlare")
-            [ -d "$dir" ] || mkdir -p "$dir"
-        fi
-        #
-        # cloudFlare publish history file
-        #
-        if ../bin/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
-            cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
-            # save the history file as a .csv as well.
-            (
-                echo 'asOfDate,maturity,coupon,bid,asked,chg,yield,accruedprincipal,key'
-                jq -r '.[] | [.asOfDate, .maturity, .coupon, .bid, .asked, .chg, .yield, .accruedprincipal, .key] | @csv' "$jsonHistoryUnique"
-            ) >"$csvHistoryFlare"
-            echo "published updated $sourceName $tipsKey cloudFlare history file."
-        fi
-    done
+            if [ -s "$jsonHistoryFlare" ]; then
+                jq -s 'flatten | unique_by([.key,.asOfDate]) | sort_by([.key,.asOfDate])' "$jsonRatetipsKey" "$jsonHistoryFlare" |
+                    jq 'sort_by([.key,.asOfDate])' >"$jsonHistoryUnique"
+            else
+                cat "$jsonRatetipsKey" | jq 'sort_by([.key,.asOfDate])' >"$jsonHistoryUnique"
+                echo "$sourceName cloudFlare history file has not been published."
+                dir=$(dirname "$jsonHistoryFlare")
+                [ -d "$dir" ] || mkdir -p "$dir"
+            fi
+            #
+            # cloudFlare publish history file
+            #
+            if ../bin/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
+                cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
+                # save the history file as a .csv as well.
+                (
+                    echo 'asOfDate,maturity,coupon,bid,asked,chg,yield,accruedprincipal,key'
+                    jq -r '.[] | [.asOfDate, .maturity, .coupon, .bid, .asked, .chg, .yield, .accruedprincipal, .key] | @csv' "$jsonHistoryUnique"
+                ) >"$csvHistoryFlare"
+                echo "published updated $sourceName $tipsKey cloudFlare history file."
+            fi
+        done
+fi
 ###################################
 #
 # process the rate file.
