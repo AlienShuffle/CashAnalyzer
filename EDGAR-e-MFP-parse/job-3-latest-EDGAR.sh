@@ -43,7 +43,8 @@ source ../bin/testDelays.sh
     firstRow=true
     echo "["
     # note, this cut is reading from stdin and expects a csv list of fund ticker, ticker, names to drive the queries.
-    for ticker in $(find tickers/*.json -size +5b -print); do
+    # empty files have [] includes, so they must be at least 5 characeters in size.
+    for ticker in $(find tickers/*.json -size +5c -print); do
         [ "$firstRow" = "false" ] && echo ","
         jq '.[0]' <$ticker
         firstRow=false

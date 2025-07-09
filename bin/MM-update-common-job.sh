@@ -50,6 +50,10 @@ while [ -n "$1" ]; do
         #echo "processScript=$processScript"
         shift
         ;;
+    "-q" | "--quiet")
+        quiet="true"
+        #echo "quiet=true"
+        ;;
     "--runDelay")
         runDelayHours="$2"
         #echo "runDelayHours=$runDelayHours"
@@ -151,7 +155,7 @@ rm -f tmp.sort.json
 grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e 's/"$//' | sort -u |
     while IFS= read -r ticker; do
         dirname="$(echo "$ticker" | sed -e 's/ /-/g')"
-        echo "Processing $ticker"
+        [ "$quiet" = "true" ] || echo "Processing $ticker"
         [ -d "history/$dirname" ] || mkdir -p "history/$dirname"
         # rates only for this query from this tool.
         jsonRateTicker="history/$dirname/rate-new.json"
