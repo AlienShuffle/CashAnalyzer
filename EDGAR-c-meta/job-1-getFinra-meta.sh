@@ -56,6 +56,7 @@ curl --header 'Accept:application/json, text/plain, */*' \
     --data @finra.content.json \
     -sSL "https://tools.finra.org/fa_api/search/funds" | tee |
     node ./node-process-finra.js | jq . >finra.tmp.json
+# need to put logic in to error out of the .tmp file emmpty.
 
 if ../bin/jsonDifferent.sh finra.tmp.json "$finraFile"; then
     cat finra.tmp.json >"$finraFile"
