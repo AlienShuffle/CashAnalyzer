@@ -1,0 +1,14 @@
+{
+    "name": "nasdaq",
+    "version": "0.0.1",
+    "description": "retrieve nadsaq fund quotes from nasdaq.com",
+    "keywords": [
+        "nasdaq"
+    ],
+    "author": "AlienShuffle",
+    "license": "MIT",
+    "type": "module",
+    "dependencies": {
+        "puppeteer": "^24.10.1"
+    }
+}

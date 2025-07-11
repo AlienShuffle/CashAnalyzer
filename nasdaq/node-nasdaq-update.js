@@ -1,12 +1,12 @@
-const { time, timeStamp } = require('console');
+import { time, timeStamp } from 'console';
 // Work on POSIX and Windows
-const fs = require("fs");
-const {
+import fs from "fs";
+import {
     duGetDateFromYYYYMMDD,
     duDateEqualTo,
     duGetISOString,
     getDateDelta
-} = require('../lib/dateUtils.mjs');
+} from '../lib/dateUtils.mjs';
 
 function safeObjectRef(obj) {
     if (typeof obj === 'undefined') return '';
