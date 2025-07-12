@@ -48,8 +48,11 @@ fi
 
 source ../meta.$(hostname).sh
 
+echo "cd $cloudFlareHome/.."
+cd "$cloudFlareHome/.."
 echo "git pull"
 git pull
+echo "cd $cloudFlareHome"
 cd "$cloudFlareHome"
 echo "../tree.sh"
 ../tree.sh
