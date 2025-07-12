@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 source ../meta.$(hostname).sh
-echo "cd $cloudFlareHome/.."
-cd "$cloudFlareHome/.."
+dir=$(dirname $cloudFlareHome)
+echo "cd $dir"
+cd "$dir"
 echo "git pull"
 git pull
