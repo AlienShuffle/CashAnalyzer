@@ -4,7 +4,7 @@ const du = require('../lib/dateUtils.js');
 // shared global browser instance.
 let browserPromise = puppeteer.launch({
     defaultViewport: null,
-    //headless: false,  // comment out to make this run headless for production.
+    headless: false,  // comment out to make this run headless for production.
     ignoreDefaultArgs: ['--disable-extensions'],
     //args: ['--window-size=1920,1080']
     args: ['--window-size=800,600', '--no-sandbox']
@@ -20,6 +20,7 @@ function run() {
         // browse to the marketable securities page
         // alternative url is: https://treasurydirect.gov/GA-FI/FedInvest/selectSecurityPriceDate
         await page.goto("https://savingsbonds.gov/GA-FI/FedInvest/selectSecurityPriceDate");
+        await page.waitForSelector("[id='priceDate.month']");
 
         // this looks for an elements <input>, with id attribute priceDate.xxxx 
         // and stores the contents of the attribute 'value'.
