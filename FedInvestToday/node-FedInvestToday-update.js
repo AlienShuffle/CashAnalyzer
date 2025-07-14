@@ -4,7 +4,7 @@ const du = require('../lib/dateUtils.js');
 // shared global browser instance.
 let browserPromise = puppeteer.launch({
     defaultViewport: null,
-    //headless: false,  // comment out to make this run headless for production.
+    headless: false,  // comment out to make this run headless for production.
     ignoreDefaultArgs: ['--disable-extensions'],
     //args: ['--window-size=1920,1080']
     args: ['--window-size=800,600', '--no-sandbox']
@@ -19,7 +19,7 @@ function run() {
 
         // browse to the marketable securities page
         await page.goto("https://treasurydirect.gov/GA-FI/FedInvest/todaySecurityPriceDetail");
-
+        await page.waitForSelector('h2');
         // grab the current days price date.
         let h2s = await page.$$('h2');
         let dateString = '';
