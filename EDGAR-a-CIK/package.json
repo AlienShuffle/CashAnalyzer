@@ -4,9 +4,7 @@
   "description": "create a CIK -> ticker mapping for EDGAR",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "start-nogood-we-arent-using-funcions-framework": "functions-framework --target=getFidelityQuotes"
-  },
+  "scripts": {},
   "keywords": [
     "EDGAR Quotes"
   ],
