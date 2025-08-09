@@ -17,8 +17,9 @@ echo
 echo "##### jq"
 echo "Make sure jq and tree is installed"
 echo sudo apt install jq tree
-#sudo apt install jq tree
-
+sudo apt install jq tree
+echo npm outdated -g || npm update -g
+npm outdated -g || npm update -g
 #
 # Updates to the NPM/Node Environment This needs to be done in each directory
 #
