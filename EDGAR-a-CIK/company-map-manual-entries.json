@@ -300,6 +300,16 @@
         "class": "C000252319"
     },
     {
+        "ticker": "SBIL",
+        "entity_name": "Simplify Exchange Traded Funds",
+        "series_name": "Simplify Government Money Market ETF",
+        "class_name": "Simplify Government Money Market ETF",
+        "cik": 1810747,
+        "cikTen": "0001810747",
+        "series": "S000093622",
+        "class": "C000262018"
+    },
+    {
         "ticker": "SBIXX",
         "entity_name": "BlackRock Liquidity Funds",
         "series_name": "BlackRock Liquid FEDFUND Series",
