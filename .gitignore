@@ -235,3 +235,4 @@ EDGAR-c-meta/finra.cookie.jar.txt
 markit/content-xid.json
 EDGAR-e-MFP-parse/history/latestEDGAR.json
 EDGAR-e-MFP-parse/tax/*.json
+VanguardPrices/history.orig/*
