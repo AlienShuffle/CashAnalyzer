@@ -2,7 +2,6 @@
 # Must be run as a source in another shell to get the exit to work!
 # source ../bin/testDelays.sh
 #
-#
 # using the delay hours interval, and specified file, tests to see if the enough
 # time has elapsed to run the script based upon either execution time, or last published update time.
 #
