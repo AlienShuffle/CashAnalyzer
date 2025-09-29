@@ -24,7 +24,7 @@ url="https://institutional.vanguard.com/investments/fundPricesServiceProxy?price
 # current Yield History
 #url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$fundId&timePeriodCode=D&effectiveDate=$beginDate:to:$endDate&yieldCodes=1DISTYLD,CMPNDYLDPC,SEC,7DISTYLD,30DISTYLD&offset=$offset"
 #the next one works with 0033 (VMFXX)
-#url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$fundId&timePeriodCode=D&effectiveDate=$beginDate:to:$endDate&yieldCodes=1DISTYLD,CMPNDYLDPC,SEC,7DISTYLD,30DISTYLD"
+url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$fundId&timePeriodCode=D&effectiveDate=$beginDate:to:$endDate&yieldCodes=1DISTYLD,CMPNDYLDPC,SEC,7DISTYLD,30DISTYLD"
 
 #url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$fundId&timePeriodCode=D&effectiveDate=$beginDate:to:$endDate&yieldCodes=1DISTYLD"
 #url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$fundId&yieldCodes=1DISTYLD"
