@@ -236,3 +236,9 @@ markit/content-xid.json
 EDGAR-e-MFP-parse/history/latestEDGAR.json
 EDGAR-e-MFP-parse/tax/*.json
 VanguardPrices/history.orig/*
+EDGAR-c-meta/finra.etf.json
+EDGAR-c-meta/finra.merge.json
+EDGAR-c-meta/finra.tmp.json
+EDGAR-c-meta/raw.jq.json
+EDGAR-c-meta/raw.json
+VanguardPrices/out.json
