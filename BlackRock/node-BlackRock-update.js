@@ -26,8 +26,9 @@ for (let key in json) {
         let rowData = {};
         const dateInt = fund.oneWeekSecYieldAsOf.r;
         const year = Math.trunc(dateInt / 10000);
-        const month = Math.trunc(dateInt % 1000 / 100);
+        const month = Math.trunc((dateInt % 10000) / 100);
         const day = Math.trunc(dateInt % 100);
+        //console.error(`${ticker}: dateInt = ${dateInt} -> year = ${year}, month = ${month}, day = ${day}`);
         rowData.asOfDate = du.getISOString(new Date(year, month - 1, day));
         rowData.price = 1;
         rowData.sevenDayYield = (sevenDayYield / 100).toFixed(5) * 1;
