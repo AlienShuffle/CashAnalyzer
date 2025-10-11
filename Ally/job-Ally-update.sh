@@ -1,1 +1,1 @@
-../bin/Bank-update-common-job.sh --pubDelay 18 --runDelay 4 "$@"
+../bin/Bank-update-common-job.sh --pubDelay 18 --runDelay 4  --nightDelayHour 3 "$@"

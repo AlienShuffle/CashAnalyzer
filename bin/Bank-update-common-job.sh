@@ -30,6 +30,11 @@ while [ -n "$1" ]; do
         #echo "injectProcessedJson=$injectProcessedJson"
         shift
         ;;
+    "--nightDelayHour")
+        nightDelayHour="$2"
+        echo "nightDelayHour=$nightDelayHour"
+        shift
+        ;;
     "--nodearg")
         nodeArg="$2"
         #echo "nodeArg=$nodeArg"
