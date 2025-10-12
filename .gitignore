@@ -242,3 +242,5 @@ EDGAR-c-meta/finra.tmp.json
 EDGAR-c-meta/raw.jq.json
 EDGAR-c-meta/raw.json
 VanguardPrices/out.json
+EDGAR-c-meta/@finra.etf.json.tmp.json
+EDGAR-c-meta/@finra.mmf.json.tmp.json

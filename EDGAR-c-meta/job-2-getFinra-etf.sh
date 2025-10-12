@@ -1,0 +1,1 @@
+./getFinra-data.sh --searchFile "@finra.etf.json" "$@"
