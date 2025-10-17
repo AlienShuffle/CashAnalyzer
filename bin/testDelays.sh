@@ -34,9 +34,9 @@ if [ -s "$pubDelayFile" ]; then
         fi
         if [ -n "$nightDelayHour" ]; then
             hour=$(date +'%H')
-            echo "Night Delay: $nightDelayHour test against $hour"
+            #echo "Night Delay: $nightDelayHour test against $hour"
             if [ "$hour" -lt "$nightDelayHour" ]; then
-                echo "Wait until $nightDelayHour:00 to run"
+                echo "Wait until $nightDelayHour:00 to run."
                 exit 0
             fi
         fi
