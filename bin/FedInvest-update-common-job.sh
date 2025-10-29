@@ -6,12 +6,31 @@
 # process the command argument list.
 pubDelayHours=8
 runDelayHours=2
-sourceName=$(basename $(pwd))
 while [ -n "$1" ]; do
     case $1 in
+    "--collectionScript")
+        collectionScript="$2"
+        #echo "collectionScript=$collectionScript"
+        shift
+        ;;
+    "--collectionArg")
+        collectionArg="$2"
+        #echo "collectionArg=$collectionArg"
+        shift
+        ;;
     "-f")
         forceRun=true
         #echo "forceRun=$forceRun"
+        ;;
+    "--injectProcessedJson")
+        injectProcessedJson="$2"
+        #echo "injectProcessedJson=$injectProcessedJson"
+        shift
+        ;;
+    "--nightDelayHour")
+        nightDelayHour="$2"
+        echo "nightDelayHour=$nightDelayHour"
+        shift
         ;;
     "-nodeArg")
         nodeArg="$2"
@@ -21,6 +40,11 @@ while [ -n "$1" ]; do
     "--pubDelay")
         pubDelayHours="$2"
         #echo "pubDelayHours=$pubDelayHours"
+        shift
+        ;;
+    "--processScript")
+        processScript="$2"
+        #echo "processScript=$processScript"
         shift
         ;;
     "--runDelay")
@@ -36,15 +60,26 @@ while [ -n "$1" ]; do
     esac
     shift
 done
+# computer-specific configurations.
+source ../meta.$(hostname).sh
+# if a sourceName is not specified, use the current directory name.
+if [ -z "$sourceName" ]; then
+    sourceName=$(basename $(pwd))
+fi
 if [ ! -d "$HOME/CashAnalyzer/$sourceName" ]; then
-    echo "$0: $sourceName is not a valid bank name."
+    echo "$0: $sourceName is not a valid FedInvest source name."
     exit 1
 fi
-source ../meta.$(hostname).sh
+
+# if a script file is not specified, try a default name.
+if [ -z "$processScript" ]; then
+    processScript="./node-$sourceName-update.js"
+fi
 
 # current rate files
+[ -d history ] || mkdir history
 injectRatesJson="inject-rates.json"
-jsonRateNew="$sourceName-rate-new.json"
+jsonRateNew="history/$sourceName-rate-new.json"
 jsonRateFlare="$cloudFlareHome/Treasuries/$sourceName/$sourceName-rate.json"
 csvRateFlare="$cloudFlareHome/Treasuries/$sourceName/$sourceName-rate.csv"
 #
@@ -63,15 +98,28 @@ else
     #
     # this script was used in fintools version 98 and later. This is intended to stick around long-term.
     #
-    scriptFile="./node-$sourceName-update.js"
-    if [ ! -s "$scriptFile" ]; then
-        echo "Missing $scriptFile file."
+    if [ ! -s "$processScript" ]; then
+        echo "Missing $processScript file."
         exit 1
     fi
-    if [ -z "$stdInFile" ]; then
-        node $scriptFile "$nodeArg" | jq . >"$jsonRateNew"
+    if [ "$collectionScript" ]; then
+        if [ ! -x "$collectionScript" ]; then
+            echo "invalid collectionScript $collectionScript, exiting..."
+            exit 1
+        fi
+        tmpCollect="tmpCollect.json"
+        #echo "running $collectionScript"
+        if [ -n "$collectionArg" ]; then
+            $collectionScript "$collectionArg" >"$tmpCollect"
+        else
+            $collectionScript >"$tmpCollect"
+        fi
+        #echo "running node $processScript"
+        cat "$tmpCollect" | node $processScript "$nodeArg" | jq . >"$jsonRateNew"
+        rm -f "$tmpCollect"
     else
-        node $scriptFile "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
+        #echo "node $processScript $nodeArg | jq . >$jsonRateNew"; exit 1
+        node $processScript "$nodeArg" | jq . >"$jsonRateNew"
     fi
     if [ ! $? ]; then
         echo "$sourceName rate retrieval failed, exiting."
@@ -83,7 +131,7 @@ else
     fi
     dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g')
     if [ -z "$dateNew" ] || [ "$dateNew" = "null" ]; then
-        echo "New $sourceName rate file has empty timestamps."
+        echo "New $sourceName rate file is empty."
         exit 1
     fi
 fi
