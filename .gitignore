@@ -244,3 +244,5 @@ EDGAR-c-meta/raw.json
 VanguardPrices/out.json
 EDGAR-c-meta/@finra.etf.json.tmp.json
 EDGAR-c-meta/@finra.mmf.json.tmp.json
+lwlots/excel.csv
+lwlots/street.html

@@ -1,0 +1,17 @@
+{
+  "name": "lwlots",
+  "version": "0.0.1",
+  "description": "The Lake Wynonah lake lot assessments and taxes retrievel tool.",
+  "type": "module",
+  "keywords": [
+    "Lake Wynonah",
+    "html",
+    "taxes",
+    "assessments"
+  ],
+  "author": "AlienShuffle",
+  "license": "MIT",
+  "dependencies": {
+    "node-html-parser": "^7.0.1"
+  }
+}
