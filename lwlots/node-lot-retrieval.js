@@ -18,7 +18,7 @@ function isValidParcel(parcelString) {
     }
     return false;
 }
-const htmlString = readFileSync(process.stdin.fd, 'utf8');
+const htmlString = readFileSync(process.argv[3], 'utf8');
 const root = parse(htmlString);
 const lotListElement = root.querySelector('#list');
 const childCnt = lotListElement.children.length;

@@ -15,12 +15,14 @@ tmpFile=street.html
             url="https://gis.vgsi.com/SchuylkillCountyPA/Streets.aspx?Name=$street"
             echo $url 1>&2
             curl -ksSL "$url" >"$tmpFile"
-            cat $tmpFile | node ./node-lot-retrieval.js parcel-prefix.csv
+            [ $? -ne 0 ] && echo "Error retrieving $url" 1>&2 && exit 1
+            # note, the return speed of the site is causing an issue with stdin.
+            node ./node-lot-retrieval.js parcel-prefix.csv "$tmpFile"
             firstRow=false
             count=$(($count + 1))
             [ $count -ge 500 ] && break
         done
     echo "]"
 ) > lots.tmp.json
-cat lots.tmp.json | jq -s 'flatten' > lots.json
-rm -f $tmpFile
+cat lots.tmp.json | jq -s 'flatten | unique_by(.lot) | sort_by(.lot)' > lots.json
+rm -f lots.tmp.json $tmpFile
