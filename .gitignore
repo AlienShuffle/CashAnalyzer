@@ -246,3 +246,5 @@ EDGAR-c-meta/@finra.etf.json.tmp.json
 EDGAR-c-meta/@finra.mmf.json.tmp.json
 lwlots/excel.csv
 lwlots/street.html
+lwlots/lots.json
+lwlots/lots.tmp.json
