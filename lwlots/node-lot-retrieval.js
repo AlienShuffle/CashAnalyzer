@@ -2,9 +2,9 @@ import dynamicSort from '../lib/dynamicSort.mjs'
 import { parse } from 'node-html-parser';
 import { readFileSync } from 'fs';
 import process from 'node:process';
+import { timeStamp } from 'node:console';
 
-// import filter list for parcel prefixes.
-
+// import filter list for parcel prefixes. All entries must start with one of these prefixes.
 const prefixesString = readFileSync(process.argv[2], 'utf8');
 const prefixes = prefixesString
     .split('\n')
@@ -18,6 +18,8 @@ function isValidParcel(parcelString) {
     }
     return false;
 }
+
+// read HTML from file given as 2nd argument, this is a street report from the county GIS site.
 const htmlString = readFileSync(process.argv[3], 'utf8');
 const root = parse(htmlString);
 const lotListElement = root.querySelector('#list');
@@ -30,36 +32,37 @@ const result = [];
 for (let i = 0; i < childCnt; i++) {
 
     const row = lotListElement.children[i];
-    //console.error(row.structure);
+    const linkElement = row.children[0];
 
-    const parcelString = row.textContent
+    const locationString = linkElement.text;
+
+    const parcelStringRaw = row.textContent
         .replace(/^.*Mblu:/, '')
         .replace(/[\s\n\r]/g, '')
         .trim()
         .replace(/\/$/, '')
         .replace(/\//g, '-')
+    const parcelStringSplit = parcelStringRaw.split('-');
+    const parcelString = parcelStringSplit[0] + '-' + parcelStringSplit[1] + '-' + parcelStringSplit[2] + '.' + parcelStringSplit[3];
 
     if (!isValidParcel(parcelString)) {
-        console.error(`Skipping invalid parcel: ${parcelString}`);
+        console.error(`Skipping invalid parcel: ${locationString} : ${parcelString}`);
         continue;
     }
 
-    const lot = parcelString.split('-')[2];
-    const linkElement = row.children[0];
+    const lotString = parcelStringSplit[2];
 
-    const addressString = linkElement.text;
 
     const pidString = linkElement.getAttribute('href')
         .replace(/Parcel.aspx\?pid=/, '');
 
     result.push({
-        lot: lot*1,
-        address: addressString,
-        pid: pidString*1,
+        location: locationString,
         parcel: parcelString,
-        updateDate: oldDate,
-        queryDate: oldDate
+        lot: lotString * 1,
+        pid: pidString * 1,
+        timetamp: oldDate,
     })
 }
 
-console.log(JSON.stringify(result.sort(dynamicSort('lot')), null, 2));
+console.log(JSON.stringify(result.sort(dynamicSort('lot'))));

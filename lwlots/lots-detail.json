@@ -1,0 +1,97 @@
+[
+  {
+    "location": "1 NAVAJO DRIVE",
+    "parcel": "34-21-0001.000",
+    "lot": 1,
+    "propertyType": "Residential Bldg, <10 Acres",
+    "pid": 42562,
+    "address": "1 NAVAJO DR\nAUBURN, PA 17922",
+    "acres": 0.6,
+    "generalOwner": "SELSAVAGE, SEAN L",
+    "owners": [
+      "SELSAVAGE, DEBRA",
+      "SELSAVAGE, SEAN L"
+    ],
+    "valuationYearString": 2026,
+    "valuationImproveString": 246000,
+    "valuationLandString": 28800,
+    "valuationTotalString": 274800,
+    "timestamp": "2025-11-29T04:13:24.040Z"
+  },
+  {
+    "location": "3 NAVAJO DRIVE",
+    "parcel": "34-21-0003.000",
+    "lot": 3,
+    "propertyType": "Residential Bldg, <10 Acres",
+    "pid": 42563,
+    "address": "3 NAVAJO DR\nAUBURN, PA 17922",
+    "acres": 0.3,
+    "generalOwner": "SPIESS, ROBERT T",
+    "owners": [
+      "KUNKEL, SUZANNE",
+      "SPIESS, ROBERT T"
+    ],
+    "valuationYearString": 2026,
+    "valuationImproveString": 224200,
+    "valuationLandString": 24500,
+    "valuationTotalString": 248700,
+    "timestamp": "2025-11-29T04:13:24.495Z"
+  },
+  {
+    "location": "4 NAVAJO DRIVE",
+    "parcel": "34-21-0004.000",
+    "lot": 4,
+    "propertyType": "Residential Bldg, <10 Acres",
+    "pid": 42564,
+    "address": "4 NAVAJO DR\nAUBURN, PA 17922",
+    "acres": 0.3,
+    "generalOwner": "HEPLER, AARON S",
+    "owners": [
+      "HEPLER, AARON S",
+      "HEPLER, ELIZABETH A"
+    ],
+    "valuationYearString": 2026,
+    "valuationImproveString": 227500,
+    "valuationLandString": 24500,
+    "valuationTotalString": 252000,
+    "timestamp": "2025-11-29T04:13:24.972Z"
+  },
+  {
+    "location": "5 NAVAJO DRIVE",
+    "parcel": "34-21-0005.000",
+    "lot": 5,
+    "propertyType": "Vacant Land, <1 Acre",
+    "pid": 42565,
+    "address": "1077 POLE RD\nRINGTOWN, PA 17967",
+    "acres": 0.3,
+    "generalOwner": "GRABOSKY, RICHARD C",
+    "owners": [
+      "GRABOSKY, ANGELA M",
+      "GRABOSKY, RICHARD C"
+    ],
+    "valuationYearString": 2026,
+    "valuationImproveString": 0,
+    "valuationLandString": 16300,
+    "valuationTotalString": 16300,
+    "timestamp": "2025-11-29T04:13:25.354Z"
+  },
+  {
+    "location": "7 NAVAJO DRIVE ",
+    "parcel": "34-21-0007.000",
+    "lot": 7,
+    "propertyType": "Residential Bldg, <10 Acres",
+    "pid": 42567,
+    "address": "1077 POLE RD\nRINGTOWN, PA 17967",
+    "acres": 0.6,
+    "generalOwner": "GRABOSKY, RICHARD C",
+    "owners": [
+      "GRABOSKY, ANGELA M",
+      "GRABOSKY, RICHARD C"
+    ],
+    "valuationYearString": 2026,
+    "valuationImproveString": 229400,
+    "valuationLandString": 28800,
+    "valuationTotalString": 258200,
+    "timestamp": "2025-11-29T04:13:25.774Z"
+  }
+]
