@@ -25,6 +25,6 @@ tmpFile=street.html
     echo "]"
 ) > lots.tmp.json
 cat lots.tmp.json | jq -s 'flatten | unique_by(.lot) | sort_by(.lot)' > lots.json
-cat lots.json | jq -r '.[] | [.lot,.pid,.parcel] | @csv' > lots.csv
+cat lots.json | jq -r '.[] | [.lot,.pid,.parcel,.location] | @csv' > lots.csv
 # need to add export to cvs file, and get ready for delivery to the cloud.
 rm -f lots.tmp.json $tmpFile
