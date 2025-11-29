@@ -9,7 +9,7 @@
 # 0791 - RS
 # 0743 - delinquent
 
-xportPrefix=$exportPrefix
+exportPrefix=lot-taxes
 curlTmpFile=$exportPrefix.html
 listTmpFile=$exportPrefix.tmp.json
 (

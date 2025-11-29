@@ -29,7 +29,7 @@ listTmpFile=$exportPrefix.tmp.json
 ) >$listTmpFile
 cat $listTmpFile | jq -s 'flatten | unique_by(.lot) | sort_by(.lot)' >$exportPrefix.json
 cat $exportPrefix.json | (
-    echo         "lot,pid,parcel,location,generalOwner,address,acres,valuationImprove,valuationLand,valuationTotal,valuationYear,owners"
-    jq -r '.[] | [.lot,.pid,.parcel,.location,.generalOwner,.address,.acres,.valuationImprove,.valuationLand,.valuationTotal,.valuationYear.owners] | @csv'
+    echo         "lot,pid,parcel,location,generalOwner,address,acres,valuationImprove,valuationLand,valuationTotal,valuationYear,saleDate"
+    jq -r '.[] | [.lot,.pid,.parcel,.location,.generalOwner,.address,.acres,.valuationImprove,.valuationLand,.valuationTotal,.valuationYear,.saleDate] | @csv'
 ) >$exportPrefix.csv
 rm -f $listTmpFile $curlTmpFile

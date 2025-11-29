@@ -1,4 +1,4 @@
-import dynamicSort from '../lib/dynamicSort.mjs'
+import { duGetISOString } from "../lib/dateUtils.mjs";
 import { parse } from 'node-html-parser';
 import { readFileSync } from 'fs';
 import process from 'node:process';
@@ -38,6 +38,8 @@ const owners = ownersString
     .map(name => name.trim())
     .filter(name => name.length > 0);
 
+const saleDateString = new Date(ownersRootElement.children[2].children[4].text);
+
 // latest valuations table retrieval
 const valuationRootElement = root.querySelector('#MainContent_grdHistoryValuesAsmt');
 const valuationSectionElement = valuationRootElement.children[2];
@@ -57,6 +59,7 @@ const result = {
     acres: acresString * 1,
     generalOwner: generalOwnerString,
     owners: owners,
+    saleDate: duGetISOString(saleDateString),
     valuationYear: valuationYearString * 1,
     valuationImprove: valuationImproveString.replace(/[\$,]/g, '') * 1,
     valuationLand: valuationLandString.replace(/[\$,]/g, '') * 1,
