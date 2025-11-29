@@ -249,3 +249,7 @@ lwlots/street.html
 lwlots/lots.json
 lwlots/lots.tmp.json
 lwlots/lots.csv
+lwlots/lots-detail.json
+lwlots/lots-taxes.json
+lwlots/lot-taxes.html
+lwlots/lot-taxes.tmp.json
