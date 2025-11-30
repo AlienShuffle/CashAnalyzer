@@ -15,6 +15,9 @@ if (!contentElementArray) {
     process.exit(1);
 }
 //console.error(`Found content element with ${contentElementArray.length} child nodes.`);
+const inputElementArray = root.querySelectorAll('input');
+//console.error(`Found ${inputElementArray.length} input element child nodes.`);
+const currentDeliquency = inputElementArray.length > 0;
 
 let result = {
     lot: process.argv[3].split('-')[2].split('.')[0] * 1,
@@ -49,16 +52,25 @@ for (let i = 0; i < contentElementArray.length; i++) {
     }
     if (element.text.includes("Delinquent Taxes Due")) {
         console.error(`\tDelinquent Taxes Due`);
-        result.lastDeliquentYear = contentElementArray[i + 2].text.trim() * 1;
-        result.taxesDue = contentElementArray[i + 3].text.trim().replace(/[\$,]/g, '') * 1;
-        for (let j = i + 2; j < contentElementArray.length; j++) {
+        result.delinquent = true;
+        result.status = {
+            lastDeliquentYear: contentElementArray[i + 2].text.trim() * 1,
+            taxesDue: contentElementArray[i + 3].text.trim().replace(/[\$,]/g, '') * 1,
+        };
+        if (currentDeliquency)
+            break;
+        result.status.historicalDelinquency = 0;
+        for (let j = i + 2; j < contentElementArray.length; j += 5) {
             if (contentElementArray[j].text.trim() == "Total") {
                 //console.error(`${j}: Found Total`);
-                result.taxesDue = contentElementArray[j + 2].text.trim().replace(/[\$,]/g, '') * 1;
-                result.saleType = contentElementArray[j - 3].text.trim()
-                result.firstDeliquentYear = contentElementArray[j - 5].text.trim() * 1;
+                result.status.taxesDue = contentElementArray[j + 2].text.trim().replace(/[\$,]/g, '') * 1;
+                result.status.saleType = contentElementArray[j - 3].text.trim()
+                result.status.firstDeliquentYear = contentElementArray[j - 5].text.trim() * 1;
                 break;
             }
+            const amount = (contentElementArray[j + 1].text.trim().replace(/[\$,]/g, '') * 1).toFixed(2) * 1;
+            //console.error(`${j}: amount: ${amount} Year: ${contentElementArray[j].text.trim()}`);
+            result.status.historicalDelinquency = (result.status.historicalDelinquency + amount).toFixed(2) * 1;
         }
         break;
     }

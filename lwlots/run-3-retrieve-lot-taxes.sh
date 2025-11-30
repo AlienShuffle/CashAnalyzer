@@ -4,6 +4,7 @@
 #
 
 # good test cases
+# 0008 - currently delinquent
 # 0057 - CS
 # 0625 - current taxes
 # 0791 - RS
@@ -16,7 +17,7 @@ listTmpFile=$exportPrefix.tmp.json
     count=1
     firstparcel=true
     echo "["
-    cat lot-list.csv | # grep 625 |
+    cat lot-list.csv |  #grep 0057 |
         while IFS= read -r row; do
             parcel=$(echo $row | cut -d',' -f3 | tr -d '"')
             [ "$parcel" = "parcel" ] && continue # skip header
