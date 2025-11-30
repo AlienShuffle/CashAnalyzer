@@ -6,14 +6,12 @@ import process from 'node:process';
 const htmlString = readFileSync(process.argv[2], 'utf8');
 const root = parse(htmlString);
 
-// body > table > tbody > tr:nth-child(3) > td > div > center > table > tbody > tr:nth-child(3) > td > table > tbody > tr:nth-child(5) > td:nth-child(1) > b
-
 const contentElementArray = root.querySelectorAll('td');
 if (!contentElementArray) {
-
     console.error("Error: Could not find td elements in HTML.");
     process.exit(1);
 }
+
 //console.error(`Found content element with ${contentElementArray.length} child nodes.`);
 const inputElementArray = root.querySelectorAll('input');
 //console.error(`Found ${inputElementArray.length} input element child nodes.`);
@@ -24,6 +22,7 @@ let result = {
     parcel: process.argv[3],
     timestamp: new Date()
 };
+
 for (let i = 0; i < contentElementArray.length; i++) {
     const element = contentElementArray[i];
     const nextElement = contentElementArray[i + 1];
@@ -48,17 +47,23 @@ for (let i = 0; i < contentElementArray.length; i++) {
     if (element.text.includes("No Delinquent Taxes on file.")) {
         console.error(`\tNo Delinquent Taxes on file.`);
         result.delinquent = false;
+        result.previousDelinquency = false;
         break;
     }
     if (element.text.includes("Delinquent Taxes Due")) {
         console.error(`\tDelinquent Taxes Due`);
-        result.delinquent = true;
         result.status = {
             lastDeliquentYear: contentElementArray[i + 2].text.trim() * 1,
             taxesDue: contentElementArray[i + 3].text.trim().replace(/[\$,]/g, '') * 1,
         };
-        if (currentDeliquency)
+        if (currentDeliquency) {
+            result.delinquent = true;
+            result.previousDelinquency = false;
             break;
+        } else {
+            result.delinquent = false;
+            result.previousDelinquency = true;
+        }
         result.status.historicalDelinquency = 0;
         for (let j = i + 2; j < contentElementArray.length; j += 5) {
             if (contentElementArray[j].text.trim() == "Total") {

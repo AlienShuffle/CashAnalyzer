@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 
 // [{ owner, lots:[{type, lot}, ...] }, ...]
 let ownersList = [];
+let oid = 50001;
 
 function addOwnerToList(owner, lot, type) {
     for (let i = 0; i < ownersList.length; i++) {
@@ -28,6 +29,7 @@ function addOwnerToList(owner, lot, type) {
     }
     ownersList.push({
         owner: owner,
+        oid: oid++,
         lots: [{
             lot: lot,
             type: [type],
@@ -41,7 +43,7 @@ const json = JSON.parse(inputBuffer);
 
 for (let i = 0; i < json.length; i++) {
     const lot = json[i];
-    console.error(`Processing ${lot.lot}, owner list size ${ownersList.length}`);
+    //console.error(`Processing ${lot.lot}, owner list size ${ownersList.length}`);
     addOwnerToList(lot.generalOwner, lot.lot, 'General');
     for (let j = 0; j < lot.owners.length; j++) {
         addOwnerToList(lot.owners[j], lot.lot, 'Deed');
