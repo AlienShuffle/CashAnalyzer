@@ -9,7 +9,7 @@ listTmpFile=$exportPrefix.tmp.json
     count=0
     firstRow=true
     echo "["
-    cat meta-streets.csv |  grep WYNONAH |
+    cat meta-streets.csv | # grep WYNONAH |
         while IFS= read -r row; do
             [ "$firstRow" = "false" ] && echo ","
             street=$(echo $row | sed -e 's/ /%20/g')

@@ -259,3 +259,7 @@ lwlots/lot-list.csv
 lwlots/lot-list.json
 lwlots/lot-taxes.csv
 lwlots/lot-taxes.json
+lwlots/addr-list.json
+lwlots/addr-list.tmp.json
+lwlots/owner-list.json
+lwlots/owner-list.tmp.json

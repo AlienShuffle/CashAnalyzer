@@ -7,7 +7,6 @@ import process from 'node:process';
 const htmlString = readFileSync(process.argv[2], 'utf8');
 const root = parse(htmlString);
 
-
 const parcelStringRaw = root.querySelector('#MainContent_lblMblu').text
     .replace(/^.*Mblu:/, '')
     .replace(/[\s\n\r]/g, '')
@@ -20,10 +19,10 @@ const pidString = root.querySelector('#MainContent_lblPid').text;
 const parcelString = parcelStringSplit[0] + '-' + parcelStringSplit[1] + '-' + parcelStringSplit[2] + '.' + parcelStringSplit[3];
 const locationString = root.querySelector('#MainContent_lblLocation').text;
 
-//#MainContent_lblGenOwner
 const generalOwnerString = root.querySelector('#MainContent_lblGenOwner').text;
 
 const propertyTypeString = root.querySelector('#MainContent_lblPbn').text;
+const propertyUseCode = root.querySelector('#MainContent_lblUseCode2').text * 1;
 const propertyAssessment = root.querySelector('#MainContent_lblGenAssessment').text;
 
 const addressString = root.querySelector('#MainContent_lblAddr1').text
@@ -37,8 +36,27 @@ const owners = ownersString
     .split(';')
     .map(name => name.trim())
     .filter(name => name.length > 0);
-
+const salePriceString = ownersRootElement.children[2].children[1].text;
 const saleDateString = new Date(ownersRootElement.children[2].children[4].text);
+const previousOwners = [];
+//console.error(`Found ${ownersRootElement.children.length} previous owners.`);
+if (ownersRootElement.children.length > 3) {
+    for (let j = 3; j < ownersRootElement.children.length; j++) {
+        const previousOwnerString = ownersRootElement.children[j].children[0].text;
+        const previousSalesPriceString = ownersRootElement.children[j].children[1].text;
+        const previousSaleDateString = new Date(ownersRootElement.children[j].children[4].text);
+        previousOwners.push(
+            {
+                owners: previousOwnerString
+                    .split(';')
+                    .map(name => name.trim())
+                    .filter(name => name.length > 0),
+                salePrice: previousSalesPriceString.replace(/[\$,]/g, '') * 1,
+                saleDate: duGetISOString(previousSaleDateString)
+            }
+        );
+    }
+}
 
 // latest valuations table retrieval
 const valuationRootElement = root.querySelector('#MainContent_grdHistoryValuesAsmt');
@@ -54,12 +72,15 @@ const result = {
     parcel: parcelString,
     location: locationString,
     propertyType: propertyTypeString,
+    propertyUseCode: propertyUseCode,
     assessment: propertyAssessment.replace(/[\$,]/g, '') * 1,
     address: addressString,
     acres: acresString * 1,
     generalOwner: generalOwnerString,
-    owners: owners,
+    salePrice: salePriceString.replace(/[\$,]/g, '') * 1,
     saleDate: duGetISOString(saleDateString),
+    owners: owners,
+    previousOwners: previousOwners,
     valuationYear: valuationYearString * 1,
     valuationImprove: valuationImproveString.replace(/[\$,]/g, '') * 1,
     valuationLand: valuationLandString.replace(/[\$,]/g, '') * 1,

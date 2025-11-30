@@ -16,7 +16,7 @@ listTmpFile=$exportPrefix.tmp.json
     count=1
     firstparcel=true
     echo "["
-    cat lot-list.csv | grep 625 |
+    cat lot-list.csv | # grep 625 |
         while IFS= read -r row; do
             [ "$firstparcel" = "false" ] && echo ","
             parcel=$(echo $row | cut -d',' -f3 | tr -d '"')

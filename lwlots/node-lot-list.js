@@ -1,8 +1,7 @@
-import dynamicSort from '../lib/dynamicSort.mjs'
+import dynamicSort from '../lib/dynamicSort.mjs';
 import { parse } from 'node-html-parser';
 import { readFileSync } from 'fs';
 import process from 'node:process';
-import { timeStamp } from 'node:console';
 
 // import filter list for parcel prefixes. All entries must start with one of these prefixes.
 const prefixesString = readFileSync(process.argv[2], 'utf8');

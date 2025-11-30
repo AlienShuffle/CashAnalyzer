@@ -1,7 +1,6 @@
 import { parse } from 'node-html-parser';
 import { readFileSync } from 'fs';
 import process from 'node:process';
-import { time } from 'node:console';
 
 // read HTML from file given as 1st argument, this is a parcel detail report from the county GIS site.
 const htmlString = readFileSync(process.argv[2], 'utf8');
