@@ -18,9 +18,10 @@ listTmpFile=$exportPrefix.tmp.json
     echo "["
     cat lot-list.csv | # grep 625 |
         while IFS= read -r row; do
-            [ "$firstparcel" = "false" ] && echo ","
             parcel=$(echo $row | cut -d',' -f3 | tr -d '"')
+            [ "$parcel" = "parcel" ] && continue # skip header
             location=$(echo $row | cut -d',' -f4 | tr -d '"')
+            [ "$firstparcel" = "false" ] && echo ","
             echo $count $parcel $location 1>&2
             url="https://eliterevenue.rba.com/taxes/schuylkill/trirsp2pp.asp?parcel=$parcel+++++++++++&currentlist=0&"
             #echo $url 1>&2

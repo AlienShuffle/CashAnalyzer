@@ -11,9 +11,10 @@ listTmpFile=$exportPrefix.tmp.json
     echo "["
     cat lot-list.csv | # grep 625 |
         while IFS= read -r row; do
-            [ "$firstpid" = "false" ] && echo ","
             pid=$(echo $row | cut -d',' -f2)
+            [ "$pid" = "pid" ] && continue # skip header
             location=$(echo $row | cut -d',' -f4 | tr -d '"')
+            [ "$firstpid" = "false" ] && echo ","
             echo $count $pid $location 1>&2
             url="https://gis.vgsi.com/SchuylkillCountyPA/Parcel.aspx?pid=$pid"
             #echo $url 1>&2
@@ -29,7 +30,7 @@ listTmpFile=$exportPrefix.tmp.json
 ) >$listTmpFile
 cat $listTmpFile | jq -s 'flatten | unique_by(.lot) | sort_by(.lot)' >$exportPrefix.json
 cat $exportPrefix.json | (
-    echo         "lot,pid,parcel,location,generalOwner,address,acres,valuationImprove,valuationLand,valuationTotal,valuationYear,saleDate"
+    echo "lot,pid,parcel,location,generalOwner,address,acres,valuationImprove,valuationLand,valuationTotal,valuationYear,saleDate"
     jq -r '.[] | [.lot,.pid,.parcel,.location,.generalOwner,.address,.acres,.valuationImprove,.valuationLand,.valuationTotal,.valuationYear,.saleDate] | @csv'
 ) >$exportPrefix.csv
 rm -f $listTmpFile $curlTmpFile

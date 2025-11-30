@@ -17,12 +17,13 @@ function addOwnerToList(owner, lot, type) {
                         return;
                     }
                 }
-                ownersList[i].lots.push({
-                    lot: lot,
-                    type: [type],
-                });
-                ownersList[i].lots = ownersList[i].lots.sort(dynamicSort('lot'));
             }
+            ownersList[i].lots.push({
+                lot: lot,
+                type: [type],
+            });
+            ownersList[i].lots = ownersList[i].lots.sort(dynamicSort('lot'));
+            return;
         }
     }
     ownersList.push({
@@ -40,7 +41,7 @@ const json = JSON.parse(inputBuffer);
 
 for (let i = 0; i < json.length; i++) {
     const lot = json[i];
-
+    console.error(`Processing ${lot.lot}, owner list size ${ownersList.length}`);
     addOwnerToList(lot.generalOwner, lot.lot, 'General');
     for (let j = 0; j < lot.owners.length; j++) {
         addOwnerToList(lot.owners[j], lot.lot, 'Deed');
