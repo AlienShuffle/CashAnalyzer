@@ -39,10 +39,19 @@ function addOwnerToList(owner, lot, type) {
 
 // read HTML from file given as stdin, this is a lot-detail.json.
 const inputBuffer = readFileSync(0, 'utf8');
-const json = JSON.parse(inputBuffer);
+const lotDetailJson = JSON.parse(inputBuffer);
+function getLotDetail(lot) {
+    for (let i = 0; i < lotDetailJson.length; i++) {
+        const lotDetail = lotDetailJson[i];
+        if (lotDetail.lot === lot) {
+            return lotDetail;
+        }
+    }
+    return null;
+}
 
-for (let i = 0; i < json.length; i++) {
-    const lot = json[i];
+for (let i = 0; i < lotDetailJson.length; i++) {
+    const lot = lotDetailJson[i];
     //console.error(`Processing ${lot.lot}, owner list size ${ownersList.length}`);
     addOwnerToList(lot.generalOwner, lot.lot, 'General');
     for (let j = 0; j < lot.owners.length; j++) {
@@ -51,6 +60,35 @@ for (let i = 0; i < json.length; i++) {
     for (let p = 0; p < lot.previousOwners.length; p++) {
         for (let j = 0; j < lot.previousOwners[p].owners.length; j++) {
             addOwnerToList(lot.previousOwners[p].owners[j], lot.lot, 'Previous');
+        }
+    }
+}
+
+for (let i = 0; i < ownersList.length; i++) {
+    ownersList[i].emptyLotCnt = 0;
+    ownersList[i].homeLotCnt = 0;
+    for (let j = 0; j < ownersList[i].lots.length; j++) {
+        if (!ownersList[i].lots[j].type.includes('Deed') &&
+            !ownersList[i].lots[j].type.includes('General'))
+            continue;
+
+        const lotDetail = getLotDetail(ownersList[i].lots[j].lot);
+        if (lotDetail) {
+            const propertyUseCode = lotDetail.propertyUseCode;
+            console.error(`propertyType for lot ${ownersList[i].lots[j].lot} is ${propertyUseCode}`);
+            switch (propertyUseCode) {
+                case 100:
+                    ownersList[i].emptyLotCnt++;
+                    break;
+                case 101:
+                case 108:
+                case 109:
+                case 121:
+                    ownersList[i].homeLotCnt++;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

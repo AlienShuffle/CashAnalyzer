@@ -7,8 +7,8 @@ if (process.argv.length != 6) {
     console.error('Usage: node node-full-report.js lot-detail.json lot-taxes.json addr-list.json owner-list.json');
     process.exit(1);
 }
-const detailBuffer = readFileSync(process.argv[2], 'utf8');
-const detailJson = JSON.parse(detailBuffer);
+const lotDetailBuffer = readFileSync(process.argv[2], 'utf8');
+const lotDetailJson = JSON.parse(lotDetailBuffer);
 const taxesBuffer = readFileSync(process.argv[3], 'utf8');
 const taxesJson = JSON.parse(taxesBuffer);
 const addrBuffer = readFileSync(process.argv[4], 'utf8');
@@ -16,6 +16,7 @@ const addrJson = JSON.parse(addrBuffer);
 // [{ owner, lots:[{type, lot}, ...] }, ...]
 const ownerBuffer = readFileSync(process.argv[5], 'utf8');
 const ownerJson = JSON.parse(ownerBuffer);
+
 
 function getTaxStatusForLot(lot) {
     for (let i = 0; i < taxesJson.length; i++) {
@@ -66,8 +67,8 @@ function getLotListForOwner(owner) {
 
 // walk through all the lots, then full report including related lots and tax status.
 let result = [];
-for (let i = 0; i < detailJson.length; i++) {
-    result[i] = detailJson[i];
+for (let i = 0; i < lotDetailJson.length; i++) {
+    result[i] = lotDetailJson[i];
     const thisLot = result[i].lot;
 
     // create related lots list
@@ -134,6 +135,13 @@ for (let i = 0; i < detailJson.length; i++) {
     result[i].ownersOid = [];
     for (let j = 0; j < result[i].owners.length; j++) {
         result[i].ownersOid[j] = getIdForOwner(result[i].owners[j]);
+    }
+    // insert previous owners link ids
+    for (let j = 0; j < result[i].previousOwners.length; j++) {
+        result[i].previousOwners[j].ownersOid = [];
+        for (let k = 0; k < result[i].previousOwners[j].owners.length; k++) {
+            result[i].previousOwners[j].ownersOid[k] = getIdForOwner(result[i].previousOwners[j].owners[k]);
+        }
     }
 }
 console.log(JSON.stringify(result));
