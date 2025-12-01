@@ -29,17 +29,16 @@ function getTaxStatusForLot(lot) {
 
 function getIdForAddress(address) {
     for (let i = 0; i < addrJson.length; i++) {
-        const addrObj = ownerJson[i];
+        const addrObj = addrJson[i];
         if (addrObj.address === address) {
             return addrObj.aid;
         }
     }
     return;
 }
-
 function getLotListForAddress(address) {
     for (let i = 0; i < addrJson.length; i++) {
-        const addrObj = ownerJson[i];
+        const addrObj = addrJson[i];
         if (addrObj.address === address) {
             return addrObj.lots;
         }
@@ -80,17 +79,36 @@ for (let i = 0; i < detailJson.length; i++) {
             if (lotObj.lot === thisLot)
                 continue;
             // only insert Deed and General lots, not previos owner lots.
-            if (!lotObj.lot.includes('Deed') &&
-                !lotObj.lot.includes('General'))
+            if (!lotObj.type.includes('Deed') &&
+                !lotObj.type.includes('Address') &&
+                !lotObj.type.includes('General'))
                 continue;
             // don't insert duplicates
+            let newLot = true;
             for (let i = 0; i < relatedLots.length; i++) {
-                if (lotObj.lot === relatedLots[i])
-                    continue;
+                if (lotObj.lot === relatedLots[i]) {
+                    newLot = false;
+                    break;
+                }
             }
-            // insert lot
-            relatedLots.push(lotObj.lot);
+            // insert lot it is a new one.
+            if (newLot) relatedLots.push(lotObj.lot);
         }
+    }
+
+    // find related lots by address and owners
+    const addressLots = getLotListForAddress(result[i].address);
+    if (addressLots) insertRelatedLots(addressLots);
+    const generalOwnerLots = getLotListForOwner(result[i].generalOwner);
+    if (generalOwnerLots) insertRelatedLots(generalOwnerLots);
+    for (let j = 0; j < result[i].owners.length; j++) {
+        const ownerLots = getLotListForOwner(result[i].owners[j]);
+        if (ownerLots) insertRelatedLots(ownerLots);
+    }
+
+    // if we found related lots, insert in result object.
+    if (relatedLots.length > 0) {
+        result[i].relatedLots = relatedLots.sort();
     }
 
     // get tax status for lot
@@ -109,26 +127,13 @@ for (let i = 0; i < detailJson.length; i++) {
 
     // insert address link id
     result[i].aid = getIdForAddress(result[i].address);
+    //console.error(`Processed aid=${result[i].aid}, lot=${result[i].lot}`);
     // insert general owner link id
     result[i].oid = getIdForOwner(result[i].generalOwner);
     // insert owner link ids
+    result[i].ownersOid = [];
     for (let j = 0; j < result[i].owners.length; j++) {
-        result[i].owners[j].oid = getIdForOwner(result[i].owners[j]);
-    }
-
-    // find related lots by address and owners
-    const addressLots = getLotListForAddress(result[i].address);
-    if (addressLots) insertRelatedLots(addressLots);
-    const generalOwnerLots = getLotListForOwner(result[i].generalOwner);
-    if (generalOwnerLots) insertRelatedLots(generalOwnerLots);
-    for (let j = 0; j < result[i].owners.length; j++) {
-        const ownerLots = getLotListForOwner(result[i].owners[j]);
-        if (ownerLots) insertRelatedLots(ownerLots);
-    }
-
-    // if we found related lots, insert in result object.
-    if (relatedLots.length > 0) {
-        result[i].relatedLots = relatedLots.sort();
+        result[i].ownersOid[j] = getIdForOwner(result[i].owners[j]);
     }
 }
 console.log(JSON.stringify(result));

@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 let addrList = [];
 let aid = 70001;
 
-function addAddressToList(address, lot, owner) {
+function addAddressToList(address, lot) {
     for (let i = 0; i < addrList.length; i++) {
         if (addrList[i].address === address) {
             for (let j = 0; j < addrList[i].lots.length; j++) {
@@ -13,14 +13,20 @@ function addAddressToList(address, lot, owner) {
                     return;
                 }
             }
-            addrList[i].lots.push(lot);
+            addrList[i].lots.push({
+                lot: lot,
+                type: ['Address']
+            });
             addrList[i].lots = addrList[i].lots.sort();
         }
     }
     addrList.push({
         address: address,
         aid: aid++,
-        lots: [lot]
+        lots: [{
+            lot: lot,
+            type: ['Address']
+        }]
     });
 }
 
