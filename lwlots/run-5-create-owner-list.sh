@@ -4,7 +4,7 @@
 #
 exportPrefix=owner-list
 listTmpFile=$exportPrefix.tmp.json
-cat lot-detail.json |
+cat lot-normalized.json |
     node ./node-owner-list.js >"$listTmpFile"
 #echo flatten now....
 cat "$listTmpFile" | jq -s 'flatten | unique_by(.owner) | sort_by(.owner)' >$exportPrefix.json

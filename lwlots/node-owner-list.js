@@ -1,3 +1,4 @@
+import { isEmptyLot, isHomeLot } from './node-common-code.js';
 import dynamicSort from '../lib/dynamicSort.mjs';
 import { readFileSync } from 'fs';
 
@@ -75,20 +76,9 @@ for (let i = 0; i < ownersList.length; i++) {
         const lotDetail = getLotDetail(ownersList[i].lots[j].lot);
         if (lotDetail) {
             const propertyUseCode = lotDetail.propertyUseCode;
-            console.error(`propertyType for lot ${ownersList[i].lots[j].lot} is ${propertyUseCode}`);
-            switch (propertyUseCode) {
-                case 100:
-                    ownersList[i].emptyLotCnt++;
-                    break;
-                case 101:
-                case 108:
-                case 109:
-                case 121:
-                    ownersList[i].homeLotCnt++;
-                    break;
-                default:
-                    break;
-            }
+            //console.error(`propertyType for lot ${ownersList[i].lots[j].lot} is ${propertyUseCode}`);
+            if (isEmptyLot(propertyUseCode)) ownersList[i].emptyLotCnt++;
+            if (isHomeLot(propertyUseCode)) ownersList[i].homeLotCnt++;
         }
     }
 }

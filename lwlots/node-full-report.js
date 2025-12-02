@@ -1,3 +1,4 @@
+import { isEmptyLot, isHomeLot } from './node-common-code.js';
 import dynamicSort from '../lib/dynamicSort.mjs';
 import { readFileSync } from 'fs';
 
@@ -17,7 +18,15 @@ const addrJson = JSON.parse(addrBuffer);
 const ownerBuffer = readFileSync(process.argv[5], 'utf8');
 const ownerJson = JSON.parse(ownerBuffer);
 
-
+function getLotDetail(lot) {
+    for (let i = 0; i < lotDetailJson.length; i++) {
+        const lotDetail = lotDetailJson[i];
+        if (lotDetail.lot === lot) {
+            return lotDetail;
+        }
+    }
+    return null;
+}
 function getTaxStatusForLot(lot) {
     for (let i = 0; i < taxesJson.length; i++) {
         const taxEntry = taxesJson[i];
@@ -46,15 +55,21 @@ function getLotListForAddress(address) {
     }
     return;
 }
-function getIdForOwner(owner) {
+function getOwnerObj(owner) {
     for (let i = 0; i < ownerJson.length; i++) {
         const ownerObj = ownerJson[i];
         if (ownerObj.owner === owner) {
-            return ownerObj.oid;
+            return ownerObj;
         }
     }
     return;
 }
+function getIdForOwner(owner) {
+    const ownerObj = getOwnerObj(owner);
+    if (!ownerObj) return;
+    return ownerObj.oid;
+}
+
 function getLotListForOwner(owner) {
     for (let i = 0; i < ownerJson.length; i++) {
         const ownerObj = ownerJson[i];
@@ -73,6 +88,9 @@ for (let i = 0; i < lotDetailJson.length; i++) {
 
     // create related lots list
     let relatedLots = [];
+    let relatedEmptyLotCnt = 0;
+    let relatedHomeLotCnt = 0;
+
     function insertRelatedLots(lotObjList) {
         for (let i = 0; i < lotObjList.length; i++) {
             const lotObj = lotObjList[i];
@@ -93,7 +111,13 @@ for (let i = 0; i < lotDetailJson.length; i++) {
                 }
             }
             // insert lot it is a new one.
-            if (newLot) relatedLots.push(lotObj.lot);
+            if (newLot) {
+                relatedLots.push(lotObj.lot);
+                // update related lot count.
+                const lotDetail = getLotDetail(lotObj.lot);
+                if (isEmptyLot(lotDetail.propertyUseCode)) relatedEmptyLotCnt++;
+                if (isHomeLot(lotDetail.propertyUseCode)) relatedHomeLotCnt++;
+            }
         }
     }
 
@@ -110,6 +134,8 @@ for (let i = 0; i < lotDetailJson.length; i++) {
     // if we found related lots, insert in result object.
     if (relatedLots.length > 0) {
         result[i].relatedLots = relatedLots.sort();
+        result[i].relatedEmptyLotCnt = relatedEmptyLotCnt;
+        result[i].relatedHomeLotCnt = relatedHomeLotCnt;
     }
 
     // get tax status for lot
@@ -121,11 +147,16 @@ for (let i = 0; i < lotDetailJson.length; i++) {
     } else {
         result[i].delinquent = taxObj.delinquent;
         result[i].previousDelinquency = taxObj.previousDelinquency;
-        if (taxObj.taxStatus) {
+        //console.error(`found taxObj lot=${result[i].lot}`);
+        if (taxObj.status) {
+            //console.error(`Adding tax status for lot=${result[i].lot}`);
             result[i].taxStatus = structuredClone(taxObj.status);
         }
     }
 
+    result[i].gisLink = `https://gis.vgsi.com/SchuylkillCountyPA/Parcel.aspx?pid=${result[i].pid}`;
+    result[i].taxLink = `https://eliterevenue.rba.com/taxes/schuylkill/trirsp2pp.asp?parcel=${result[i].parcel}+++++++++++&currentlist=0&`;
+ 
     // insert address link id
     result[i].aid = getIdForAddress(result[i].address);
     //console.error(`Processed aid=${result[i].aid}, lot=${result[i].lot}`);

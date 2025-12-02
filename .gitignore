@@ -266,3 +266,6 @@ lwlots/owner-list.tmp.json
 lwlots/lot-detail.html
 lwlots/lot-detail.tmp.json
 lwlots/full-report.json
+lwlots/full-report.csv
+lwlots/lot-normalized.csv
+lwlots/lot-normalized.json
