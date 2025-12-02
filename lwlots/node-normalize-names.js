@@ -6,7 +6,7 @@ import { readFileSync } from 'fs';
 const lotDetailBuffer = readFileSync(0, 'utf8');
 const lotDetailJson = JSON.parse(lotDetailBuffer);
 
-// walk through all the lots, then full report including related lots and tax status.
+// walk through all the lots, then rectify the names.
 let result = [];
 for (let i = 0; i < lotDetailJson.length; i++) {
     result[i] = lotDetailJson[i];
