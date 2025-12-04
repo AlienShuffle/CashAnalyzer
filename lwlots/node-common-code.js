@@ -36,6 +36,7 @@ export function normalizeName(name) {
         .replace(/NAT'L /, 'NATL ')
         .replace(/SECRETARY /, 'SEC ')
         .replace(/SEC\. /g, 'SEC ')
+        .replace(/SECRETARY FO /g, 'SEC OF')
         .replace(/HOUSING AND$/, 'HUD')
         .replace(/HOUSING &$/, 'HUD')
         .replace(/HOUSING & URBAN DEVL$/, 'HUD')

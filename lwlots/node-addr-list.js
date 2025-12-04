@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 
 // [{ address, lots:[lot, ...] }, ...]
 let addrList = [];
+
 let aid = 70001;
 
 function addAddressToList(address, lot) {

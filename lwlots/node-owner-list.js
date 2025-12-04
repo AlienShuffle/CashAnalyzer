@@ -66,20 +66,35 @@ for (let i = 0; i < lotDetailJson.length; i++) {
 }
 
 for (let i = 0; i < ownersList.length; i++) {
+    ownersList[i].generalOwner = false;
     ownersList[i].emptyLotCnt = 0;
     ownersList[i].homeLotCnt = 0;
+    ownersList[i].previousLotCnt = 0;
+    //ownersList[i].delinquentCnt = 0;
+    //ownersList[i].previousDelinquencyCnt = 0;
+    ownersList[i].relatedLots = [];
+    ownersList[i].previousLots = [];
     for (let j = 0; j < ownersList[i].lots.length; j++) {
         if (!ownersList[i].lots[j].type.includes('Deed') &&
-            !ownersList[i].lots[j].type.includes('General'))
+            !ownersList[i].lots[j].type.includes('General')) {
+            ownersList[i].previousLots.push(ownersList[i].lots[j].lot);
+            ownersList[i].previousLotCnt++;
             continue;
-
+        }
+        if (ownersList[i].lots[j].type.includes('General')) ownersList[i].generalOwner = true;
+        ownersList[i].relatedLots.push(ownersList[i].lots[j].lot);
         const lotDetail = getLotDetail(ownersList[i].lots[j].lot);
         if (lotDetail) {
             const propertyUseCode = lotDetail.propertyUseCode;
             //console.error(`propertyType for lot ${ownersList[i].lots[j].lot} is ${propertyUseCode}`);
             if (isEmptyLot(propertyUseCode)) ownersList[i].emptyLotCnt++;
             if (isHomeLot(propertyUseCode)) ownersList[i].homeLotCnt++;
+            //console.error(`${lotDetail.lot}: ${lotDetail.delinquent} ${lotDetail.previousDelinquency} `)
+            //if (lotDetail.delinquent) ownersList[i].delinquentCnt++;
+            //if (lotDetail.previousDelinquency) ownersList[i].previousDelinquencyCnt++
         }
     }
+    ownersList[i].relatedLots = ownersList[i].relatedLots.sort();
+    ownersList[i].previousLots = ownersList[i].previousLots.sort();
 }
 console.log(JSON.stringify(ownersList.sort(dynamicSort('owner'))));

@@ -12,4 +12,13 @@ cat "$listTmpFile" | jq -s 'flatten | unique_by(.owner) | sort_by(.owner)' >$exp
 #    echo "lot,pid,parcel,location"
 #    jq -r '.[] | [.lot,.pid,.parcel,.location] | @csv'
 #) >"$exportPrefix".csv
+
+cat $exportPrefix.json | (
+    echo ".owner,.generalOwner,.emptyLotCnt,.homeLotCnt,.previousLotCnt,.delinquentCnt,.previousDelinquencyCnt,relatedLots,previousLots"
+    jq -r '.[] | [.owner,.generalOwner,.emptyLotCnt,.homeLotCnt,.previousLotCnt,.delinquentCnt,.previousDelinquencyCnt,(.relatedLots|join(";")),(.previousLots|join(";"))] | @csv'
+) >"$exportPrefix".csv
+rm -f "$listTmpFile"
+
+
+
 rm -f "$listTmpFile"

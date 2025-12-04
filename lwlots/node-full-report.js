@@ -136,6 +136,10 @@ for (let i = 0; i < lotDetailJson.length; i++) {
         result[i].relatedLots = relatedLots.sort();
         result[i].relatedEmptyLotCnt = relatedEmptyLotCnt;
         result[i].relatedHomeLotCnt = relatedHomeLotCnt;
+    } else {
+        result[i].relatedLots = [];
+        result[i].relatedEmptyLotCnt = 0;
+        result[i].relatedHomeLotCnt = 0;
     }
 
     // get tax status for lot
@@ -156,7 +160,7 @@ for (let i = 0; i < lotDetailJson.length; i++) {
 
     result[i].gisLink = `https://gis.vgsi.com/SchuylkillCountyPA/Parcel.aspx?pid=${result[i].pid}`;
     result[i].taxLink = `https://eliterevenue.rba.com/taxes/schuylkill/trirsp2pp.asp?parcel=${result[i].parcel}+++++++++++&currentlist=0&`;
- 
+
     // insert address link id
     result[i].aid = getIdForAddress(result[i].address);
     //console.error(`Processed aid=${result[i].aid}, lot=${result[i].lot}`);
