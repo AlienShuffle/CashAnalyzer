@@ -9,6 +9,9 @@ else
     beginDate=$(date -d "30 days ago" +'%Y-%m-%d')
     endDate=$(date +'%Y-%m-%d')
 fi
+
+source ../meta.$(hostname).sh
+
 (
     firstRow=true
     echo "["
@@ -19,7 +22,7 @@ fi
         #echo $ticker 1>&2
         url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$(echo $fundId)&timePeriodCode=D&effectiveDate=$beginDate:to:$endDate&yieldCodes=1DISTYLD,CMPNDYLDPC,SEC,7DISTYLD,30DISTYLD"
         #echo $url 1>&2
-        curl -sSL $url |
+        curl -sSL --header "$curlAgentHeader" $url |
             sed -e 's/\"yields\":{/\"ticker\":\"'$ticker'\", \"yields\": {/g'
         firstRow=false
     done
