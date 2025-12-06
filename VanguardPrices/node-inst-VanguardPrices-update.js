@@ -1,3 +1,7 @@
+//
+// this is now retired for the version in the lib folder that handles both prices and yields for ETFs and MM funds.
+
+
 const { isArrayBufferView } = require('util/types');
 const du = require('../lib/dateUtils.js');
 // Work on POSIX and Windows
