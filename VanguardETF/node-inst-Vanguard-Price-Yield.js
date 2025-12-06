@@ -42,10 +42,13 @@ for (let i = 0; i < json.length; i++) {
                 buffer[effectiveDate].oneDayYield = (parseFloat(yield.percent) / 100).toFixed(6) * 1;
                 break;
             case 'SEC':
-                if (safeObjectRef(yield.methCode) && yield.methCode === 'SEC-30-D')
+                if (safeObjectRef(yield.methodCode) && yield.methodCode === 'SEC-30-D') {
+                    //console.error('Found SEC-30-D yield code, mapping to thirtyDayYield');
                     buffer[effectiveDate].thirtyDayYield = (parseFloat(yield.percent) / 100).toFixed(6) * 1;
-                else
+                } else {
+                    //console.error('Found SEC yield code, mapping to sevenDayYield');
                     buffer[effectiveDate].sevenDayYield = (parseFloat(yield.percent) / 100).toFixed(6) * 1;
+                }
                 break;
             case '30DISTYLD':
                 buffer[effectiveDate].thirtyDayYield = (parseFloat(yield.percent) / 100).toFixed(6) * 1;
@@ -56,14 +59,14 @@ for (let i = 0; i < json.length; i++) {
     }
     for (const effectiveDate of Object.keys(buffer)) {
         if (!safeObjectRef(buffer[effectiveDate])) continue;
-        if (!safeObjectRef(buffer[effectiveDate].sevenDayYield)) continue;
+        //if (!safeObjectRef(buffer[effectiveDate].sevenDayYield)) continue;
         let tickerData = {};
         tickerData.asOfDate = effectiveDate;
         tickerData.price = 1;
         if (safeObjectRef(buffer[effectiveDate].oneDayYield)) tickerData.oneDayYield = buffer[effectiveDate].oneDayYield;
         if (safeObjectRef(buffer[effectiveDate].sevenDayYield)) tickerData.sevenDayYield = buffer[effectiveDate].sevenDayYield;
         if (safeObjectRef(buffer[effectiveDate].thirtyDayYield)) tickerData.thirtyDayYield = buffer[effectiveDate].thirtyDayYield;
-        tickerData.source = 'Vanguard.com Inst Price History';
+        tickerData.source = 'Vanguard.com Inst Price Yield History';
         tickerData.ticker = ticker;
         tickerData.timestamp = timestamp;
         resp.push(tickerData);
