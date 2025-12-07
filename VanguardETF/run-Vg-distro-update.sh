@@ -10,6 +10,7 @@ while [ -n "$1" ]; do
     ;;
   "-f")
     forceRun=true
+    dashF='-f'
     #echo "forceRun=$forceRun"
     ;;
   "--nodearg")
@@ -89,6 +90,6 @@ cat "$curlFile" |
     --accountClass Funds \
     --nodeArg "$ticker" \
     --processScript ./node-Vg-yield-update.js \
-    --pubDelay $pubDelayHours --runDelay $runDelayHours "$@"
+    --pubDelay $pubDelayHours --runDelay $runDelayHours "$@" $dashF
 rm -f "$curlFile"
 exit 0

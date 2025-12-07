@@ -21,7 +21,7 @@ source ../meta.$(hostname).sh
         fundId=$(echo $row | cut -d, -f2)
         ticker=$(echo $row | cut -d, -f1)
         [ -z "$ticker" ] && continue
-        echo $ticker 1>&2
+        #echo $ticker 1>&2
         url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$(echo $fundId)&timePeriodCode=D&effectiveDate=$beginDate:to:$endDate&yieldCodes=1DISTYLD,CMPNDYLDPC,SEC,7DISTYLD,30DISTYLD"
         #echo $url 1>&2
         curl -sSL --header "$curlAgentHeader" "$url" | # tee curl.tmp.json |
