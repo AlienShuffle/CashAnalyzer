@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-cat "$(basename $(pwd))-funds.csv" |
+cat "$(basename $(pwd))-ETFs.csv" |
     ../bin/MM-update-common-job.sh \
         --accountClass Funds \
         --collectionScript ../VanguardPrices/inst-collectionScript.sh \
