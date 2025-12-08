@@ -1,5 +1,5 @@
 #!/bin/bash
-
+source ../meta.$(hostname).sh
 beginDate='2024-12-30'
 endDate='2025-08-29'
 #endDate=$(date +'%Y-%m-%d')
@@ -17,14 +17,14 @@ offset=0
 #
 # fund price history
 # - offset is not working.
-url="https://institutional.vanguard.com/investments/fundPricesServiceProxy?priceTypeCodes=NAV&timePeriodCode=D&portIds=$fundId&effectiveDate=$beginDate:to:$endDate&offset=$offset"
+url="https://institutional.vanguard.com/investments/fundPricesServiceProxy?priceTypeCodes=NAV&timePeriodCode=D&portIds=$fundId&effectiveDate=$beginDate:to:$endDate&offset=$offset&limit=300"
 # example: "https://institutional.vanguard.com/investments/fundPricesServiceProxy?priceTypeCodes=NAV&timePeriodCode=D&portIds=0033&effectiveDate=2024-08-31:to:2024-11-28"
 # example: "https://institutional.vanguard.com/investments/fundPricesServiceProxy?priceTypeCodes=NAV&timePeriodCode=D&portIds=0033&effectiveDate=2024-08-31:to:2024-11-28"
 #
 # current Yield History
 #url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$fundId&timePeriodCode=D&effectiveDate=$beginDate:to:$endDate&yieldCodes=1DISTYLD,CMPNDYLDPC,SEC,7DISTYLD,30DISTYLD&offset=$offset"
 #the next one works with 0033 (VMFXX)
-url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$fundId&timePeriodCode=D&effectiveDate=$beginDate:to:$endDate&yieldCodes=1DISTYLD,CMPNDYLDPC,SEC,7DISTYLD,30DISTYLD"
+#url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$fundId&timePeriodCode=D&effectiveDate=$beginDate:to:$endDate&yieldCodes=1DISTYLD,CMPNDYLDPC,SEC,7DISTYLD,30DISTYLD"
 
 #url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$fundId&timePeriodCode=D&effectiveDate=$beginDate:to:$endDate&yieldCodes=1DISTYLD"
 #url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$fundId&yieldCodes=1DISTYLD"
@@ -39,12 +39,12 @@ url="https://institutional.vanguard.com/investments/yieldsServiceProxy?portIds=$
 echo $url 1>&2
 #echo hit enter to continue...
 #read line
-curl -sSL $url > tmp.json
+curl -sSL --header "$curlAgentHeader" "$url" | jq . > tmp.json
 if [ "$(cat tmp.json)" = "Internal Server Error" ]; then
-cat tmp.json 1>&2
+jq . tmp.json 1>&2
 echo 1>&2
 rm -f tmp.json
 exit 1
 fi
-jq . < tmp.json
-rm -f tmp.json
+#jq . < tmp.json
+#rm -f tmp.json
