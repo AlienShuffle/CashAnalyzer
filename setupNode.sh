@@ -10,9 +10,9 @@ echo "steps to get current long-term support (--lts) Node Version"
 echo "##### Get latest Node version"
 echo nvm version
 echo nvm install --lts
-echo [ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh" 
-echo nvm version
-echo nvm install --lts
+[ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh" 
+nvm version
+nvm install --lts
 echo
 echo "##### jq"
 echo "Make sure jq and tree is installed"
@@ -40,3 +40,6 @@ for package in $(ls */package.json); do
         echo
     )
 done
+echo Make sure all bash files are executable.
+echo 'chmod +x */*.sh'
+chmod +x */*.sh
