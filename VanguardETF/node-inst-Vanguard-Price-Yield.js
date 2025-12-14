@@ -59,9 +59,14 @@ for (let i = 0; i < json.length; i++) {
     }
     for (const effectiveDate of Object.keys(buffer)) {
         if (!safeObjectRef(buffer[effectiveDate])) continue;
+        if (effectiveDate == 'NaN-NaN-NaN') {
+            console.error(`${ticker}: Found invalid effectiveDate for ticker, skipping entry.`);
+            continue;
+        }
         //if (!safeObjectRef(buffer[effectiveDate].sevenDayYield)) continue;
         let tickerData = {};
         tickerData.asOfDate = effectiveDate;
+
         tickerData.price = 1;
         if (safeObjectRef(buffer[effectiveDate].oneDayYield)) tickerData.oneDayYield = buffer[effectiveDate].oneDayYield;
         if (safeObjectRef(buffer[effectiveDate].sevenDayYield)) tickerData.sevenDayYield = buffer[effectiveDate].sevenDayYield;
