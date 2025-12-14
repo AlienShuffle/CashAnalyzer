@@ -1,0 +1,10 @@
+1.) Lookup the Trust name in the Prospectus for the fund.
+
+2.) using Company Search to find the CIK for the fund.
+    https://www.sec.gov/search-filings/cik-lookup
+
+3.) If it works, then you can click through the CIK to the list of filings.
+
+4.) Open [+] Company Information and click on 'List all funds and classes/contracts for ...'
+
+The fund will hopefully be there!

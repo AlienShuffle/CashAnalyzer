@@ -220,6 +220,16 @@
         "class": "C000008118"
     },
     {
+        "ticker": "JMMF",
+        "entity_name": "J.P. Morgan Exchange-Traded Fund Trust",
+        "series_name": "JPMorgan 100% U.S. Treasury Securities Money Market ETF",
+        "class_name": "Morgan",
+        "cik": 1485894,
+        "cikTen": "0001485894",
+        "series": "S000095264",
+        "class": "C000263971"
+    },
+    {
         "ticker": "MCBXX",
         "entity_name": "BLACKROCK FINANCIAL INSTITUTIONS SERIES TRUST",
         "series_name": "BlackRock Summit Cash Reserves Fund",
