@@ -15,7 +15,7 @@ function parseIt(item) {
         "thirtyDayYield": item.secYield,
         "source": "Wisdomtree yields",
         "ticker": ticker,
-        "timestamp": new Date(item.timestamp),
+        "timestamp": item.timestamp,
     };
 }
 let resp = [];

@@ -89,7 +89,7 @@ function run() {
             });
             // format return JSON message.
             let facts = {
-                timestamp: String(new Date()),
+                timestamp: new Date(),
                 ticker: 'USFR',
                 asOfDate: (asOfDate) ? asOfDate : '',
                 nav: (navValue) ? navValue.toFixed(5) * 1 : '',
