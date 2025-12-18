@@ -7,12 +7,15 @@ jsonFlare="$cloudFlareHome/Funds/USFR/USFR-facts.json"
 #  - note, if $1 to to this script is not empty, I will run the script regardless, but report the aging status too.
 #
 # update these delayHours as appropriate for the data source.
-pubDelayHours=18
-runDelayHours=4
-pubDelayFile="$jsonFlare"
-runDelayFile="$jsonNew"
-source ../bin/testDelays.sh
-
+if [ "$1" = "-f" ] || [ "$1" = "--force" ]; then
+  forceRun=true
+else
+  pubDelayHours=18
+  runDelayHours=8
+  pubDelayFile="$jsonFlare"
+  runDelayFile="$jsonNew"
+  source ../bin/testDelays.sh
+fi
 #
 # this script was used in fintools version 98 and later. This is intended to stick around long-term.
 #
@@ -56,5 +59,5 @@ cat $jsonNew |
     --accountClass Funds \
     --processScript ./node-update-USFR-yields.js \
     --nodeArg USFR \
-    --pubDelay 20 --runDelay 2 "$@"
+    --pubDelay 20 --runDelay 2 "$@" -f
 exit 0

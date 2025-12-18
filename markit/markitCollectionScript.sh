@@ -5,10 +5,11 @@
 # computer-specific configurations.
 source ../meta.$(hostname).sh
 
-token=$(curl --header 'Content-Type: application/json' \
+token=$(curl --header "$curlAgentHeader" \
+    --header 'Content-Type: application/json' \
     --header "$curlAgentHeader" \
-    -sSL "https://www.reuters.com/service/graphql" \
-    --data @token-query.json |
+    -sSL --request POST --url "https://www.reuters.com/service/graphql" \
+    --data @token-query.json | tee accessToken.json |
     jq -r '.data.getModToken.accessToken')
 firstRow=true
 echo "{"
@@ -26,9 +27,9 @@ while IFS= read -r ticker; do
         --header "$curlAgentHeader" \
         --header 'Content-Type: application/json' \
         --data @content-xid.json |
-        #tee $ticker.json |
+        tee "$ticker.json" |
         node ./node-parse-markit-file.js
     firstRow=false
 done
 echo "}"
-rm -f content-xid.json
+#rm -f content-xid.json
