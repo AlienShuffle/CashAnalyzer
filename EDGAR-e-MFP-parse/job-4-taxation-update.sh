@@ -54,6 +54,7 @@ cat $fundsList |
         tickerFile="tickers/$ticker.json"
         taxFile="tax/$ticker-taxation.json"
 
+        [ -z "$ticker" ] && continue
         if [ ! -s "$tickerFile" ]; then
             echo "$tickerFile does not exist, skipping...."
             continue

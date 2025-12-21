@@ -274,3 +274,4 @@ lwlots/full-report.xlsx
 lwlots/good.json
 lwlots/owner-list.csv
 SGOV/*-distro.json
+*/curl.*.json

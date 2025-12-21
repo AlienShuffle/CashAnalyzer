@@ -3,6 +3,7 @@ const fs = require("fs");
 const process = require("process");
 require('../lib/dynamicSort.js')();
 const du = require('../lib/dateUtils.js');
+const { time } = require("console");
 
 const ticker = (process.argv[2] && process.argv[2].length > 1) ? process.argv[2] : '';
 if (ticker == '') throw 'missing argv[2]=ticker!';
@@ -17,6 +18,7 @@ goodStuff = goodStuff.replace(/ss:/g, '');
 
 let results = [];
 let dataRemaining = true;
+const timestamp = new Date();
 while (dataRemaining) {
     const nextRow = goodStuff.indexOf('<Row>');
     const workSheetEnd = goodStuff.indexOf('</Worksheet>');
@@ -25,7 +27,8 @@ while (dataRemaining) {
         break;
     }
     let rowData = {
-        ticker: ticker
+        ticker: ticker,
+        timestamp: timestamp
     };
     for (let col = 1; col < 9; col++) {
         const dataStartString = '<Data ';

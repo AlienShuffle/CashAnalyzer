@@ -4,10 +4,6 @@ const process = require("process");
 require('../lib/dynamicSort.js')();
 const du = require('../lib/dateUtils.js');
 
-//console.error(`argv.length=${process.argv.length}`);
-//for (let i = 0; i<process.argv.length;i++) {
-//    console.error(`argv[${i}]="${process.argv[i]}"`);
-//}
 const ticker = (process.argv[2] && process.argv[2].length > 1) ? process.argv[2] : '';
 if (ticker == '') throw 'missing argv[2]=ticker!';
 
@@ -19,8 +15,11 @@ const distros = json.divCapGain.item;
 if ((typeof distros === "undefined")) process.exit(1);
 const timestamp = new Date();
 function parseIt(item) {
+    const asOfDate = du.getISOString(new Date(item.yield.asOfDate))
+    if (asOfDate.includes("NaN-NaN"))
+        return;
     return {
-        "asOfDate": du.getISOString(new Date(item.yield.asOfDate)),
+        "asOfDate": asOfDate,
         "thirtyDayYield": (item.yield.yieldPct / 100).toFixed(4) * 1,
         "source": "Vanguard.com Distro",
         "ticker": ticker,
