@@ -46,8 +46,8 @@ for (let key in json) {
     rowData.source = 'BlackRock'
         if (safeObjectRef(fund.fundName)) rowData.fundName = safeObjectRef(fund.fundName);
     rowData.blackRockId = key * 1;
-    rowData.baseUrl = `https://www.blackrock.com/us/individual/products/${key}`;
-    rowData.distroUrl = `${rowData.baseUrl}/fund/1515394931018.ajax?fileType=xls&dataType=fund`;
+    rowData.baseUrl = `https://blackrock.com/us/individual/products/${key}/`;
+    rowData.distroUrl = `${rowData.baseUrl}fund/1515394931018.ajax?fileType=xls&dataType=fund`;
     rowData.ticker = ticker;
     rowData.timestamp = timestamp;
     resp.push(rowData);

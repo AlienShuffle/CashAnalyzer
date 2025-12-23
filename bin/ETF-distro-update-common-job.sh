@@ -36,21 +36,17 @@ while [ -n "$1" ]; do
   shift
 done
 if [ -z "$ticker" ]; then
-  echo "missing ETF name"
+  echo "missing ETF name. --ticker argument is required."
   exit 1
 fi
-
 source ../meta.$(hostname).sh
-source ../bin/skipWeekends.sh
-
-[ -z "$ticker" ] && exit 1
-#echo $ticker 1>&2
 
 jsonNew="history/$ticker/$ticker-distro-new.json"
 jsonFlare="$cloudFlareHome/Funds/$ticker/$ticker-distros.json"
 jsonUnique="history/$ticker/$ticker-distro-new-unique.json"
 [ -d "history/$ticker" ] || mkdir -p "history/$ticker"
 
+source ../bin/skipWeekends.sh
 pubDelayFile="$jsonFlare"
 runDelayFile="$jsonNew"
 source ../bin/testDelays.sh
