@@ -29,7 +29,7 @@ while [ -n "$1" ]; do
         ;;
     "--nightDelayHour")
         nightDelayHour="$2"
-        echo "nightDelayHour=$nightDelayHour"
+        #echo "nightDelayHour=$nightDelayHour"
         shift
         ;;
     "-nodeArg")
