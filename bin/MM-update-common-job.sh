@@ -204,12 +204,12 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
         #
         if ../bin/jsonDifferent.sh "$jsonHistoryFlareTemp" "$jsonHistoryFlare"; then
             cat "$jsonHistoryFlareTemp" >"$jsonHistoryFlare"
-            echo "published updated $sourceName $ticker cloudFlare history file."
+            [ "$quiet" = "true" ] || echo "published updated $sourceName $ticker cloudFlare yields file."
             (
                 echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
                 jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield,.source] | @csv' "$jsonHistoryFlare"
             ) >"$csvHistoryFlare"
-            echo "published updated cloudflare csv file."
+            [ "$quiet" = "true" ] || echo "published updated cloudflare csv file."
         fi
     done
 #
@@ -226,12 +226,12 @@ if [ ! -s "$jsonRateFlare" ]; then
 fi
 if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
-    echo "published updated cloudflare $sourceName-rates.json file."
+     [ "$quiet" = "true" ] ||echo "published updated cloudflare $sourceName-rates.json file."
     (
         echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield'
         jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield] | @csv' "$jsonRateFlare"
     ) >"$csvRateFlare"
-    echo "published updated cloudflare $sourceName-rates.csv file."
+    [ "$quiet" = "true" ] || echo "published updated cloudflare $sourceName-rates.csv file."
 fi
 #
 # Merge current tool's current rates into the All tools rate file (keeping only best, most recent reported values)
@@ -251,11 +251,11 @@ fi
 # if the new merged file is different, then publish it.
 if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
     cat tmp-all-flare.json >"$jsonRateAllFlare"
-    echo "published updated cloudflare $jsonRateAllFlare file."
+    [ "$quiet" = "true" ] || echo "published updated cloudflare $(basename $jsonRateAllFlare) file."
     (
         echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
         jq -r '.[] | [.asOfDate,.ticker,.oneDayYield,.sevenDayYield,.thirtyDayYield,.source] | @csv' "$jsonRateAllFlare"
     ) >"$csvRateAllFlare"
-    echo "published updated cloudflare $csvRateAllFlare file."
+    [ "$quiet" = "true" ] || echo "published updated cloudflare $(basename $csvRateAllFlare) file."
 fi
 rm -f tmp-all-flare.json

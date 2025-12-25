@@ -18,6 +18,10 @@ while [ -n "$1" ]; do
     #echo "pubDelayHours=$pubDelayHours"
     shift
     ;;
+  "-q" | "--quiet")
+    quiet="true"
+    #echo "quiet=true"
+    ;;
   "--runDelay")
     runDelayHours="$2"
     #echo "runDelayHours=$runDelayHours"
@@ -43,6 +47,7 @@ source ../meta.$(hostname).sh
 
 jsonNew="history/$ticker/$ticker-distro-new.json"
 jsonFlare="$cloudFlareHome/Funds/$ticker/$ticker-distros.json"
+csvFlare="$cloudFlareHome/Funds/$ticker/$ticker-distros.csv"
 jsonUnique="history/$ticker/$ticker-distro-new-unique.json"
 [ -d "history/$ticker" ] || mkdir -p "history/$ticker"
 
@@ -94,4 +99,8 @@ dir=$(dirname "$jsonFlare")
 if ../bin/jsonDifferent.sh "$jsonUnique" "$jsonFlare"; then
   cat "$jsonUnique" >"$jsonFlare"
   echo "published updated cloudFlare $ticker distro history file."
+  (
+    echo 'recordDate,exDividendDate,payableDate,totalDistribution,ordinaryIncome,stcg,ltcg,returnOfCapital'
+    jq -r '.[] | [.recordDate,.exDividendDate,.payableDate,.totalDistribution,.ordinaryIncome,.stcg,.ltcg,.returnOfCapital] | @csv' "$jsonUnique"
+  ) >"$csvFlare"
 fi

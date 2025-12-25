@@ -13,5 +13,5 @@ url=$(echo $row | cut -d, -f2 | tr -d '"')
 #echo $ticker 1>&2
 #echo $url 1>&2
 curl -sSL $url | #tee "curl.${ticker}.json" |
-    node ./node-parse-BlackRock-distributions.js "$ticker" |
+    node ./node-BlackRock-distro-update.js "$ticker" |
     jq .
