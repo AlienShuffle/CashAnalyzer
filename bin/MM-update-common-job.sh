@@ -179,7 +179,8 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
 
         # sort/filter/gap fill the combined history and current date's rates using only this tool's data.
         if [ -f "$jsonHistoryUnique" ]; then
-            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateTicker" "$jsonHistoryUnique" >"$jsonHistoryTemp"
+             #echo "$sourceName $ticker unique file exists, sorting it in."
+             jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateTicker" "$jsonHistoryUnique" >"$jsonHistoryTemp"
         else
             cat "$jsonRateTicker" >"$jsonHistoryTemp"
         fi
