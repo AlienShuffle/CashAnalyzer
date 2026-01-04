@@ -2,6 +2,7 @@ import { duGetDateFromYYYYMMDD } from "../lib/dateUtils.mjs";
 import { readFileSync } from 'fs';
 import dynamicSort from '../lib/dynamicSort.mjs'
 import process from 'node:process';
+import { time } from "node:console";
 
 const debug = false;    // turn on for more logging.
 
@@ -161,16 +162,34 @@ for (let i = 0; i < years.length; i++) {
     }
 }
 years.sort(dynamicSort('year'));
-//remove the future year with fiscal quarters only and no asset reports.
+// insert placeholder a year with fiscal quarters only and no asset reports in January, otherwise remove empty years.
+const tsYear = timestamp.getFullYear();
+let tsYearFound = false;
 for (let i = 0; i < years.length; i++) {
     const year = years[i].year;
     if (!years[i].assets) {
         if (debug) console.error(`empty assets in year=${year}`);
-        years.splice(i, 1);
+        if (tsYear == year) {
+            if (debug) console.error(` ${tsYear}=${year}`);
+            Object.assign(years[i], years[i - 1]);
+            years[i].year = year;
+            years[i].estimateType = "new-year-placeholder";
+            delete years[i].assets;
+        } else {
+            years.splice(i, 1);
+        }
     } else {
         delete years[i].assets;
     }
-
+    if (!tsYearFound){
+        if (debug) console.error(`tsYear ${year} not found, creating placeholder`);
+        let obj = {};
+        Object.assign(obj, years[years.length - 1]);
+        obj.year = tsYear;
+        obj.estimateType = "new-year-placeholder";
+        years.push(obj);
+        tsYearFound = true;
+    }
 }
 console.log(JSON.stringify(years));
 process.exit(0);
