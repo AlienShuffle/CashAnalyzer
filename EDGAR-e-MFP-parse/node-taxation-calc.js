@@ -175,21 +175,23 @@ for (let i = 0; i < years.length; i++) {
             years[i].year = year;
             years[i].estimateType = "new-year-placeholder";
             delete years[i].assets;
+            tsYearFound = true;
         } else {
             years.splice(i, 1);
         }
     } else {
         delete years[i].assets;
     }
-    if (!tsYearFound){
-        if (debug) console.error(`tsYear ${year} not found, creating placeholder`);
-        let obj = {};
-        Object.assign(obj, years[years.length - 1]);
-        obj.year = tsYear;
-        obj.estimateType = "new-year-placeholder";
-        years.push(obj);
-        tsYearFound = true;
-    }
+
+}
+if (!tsYearFound) {
+    if (debug) console.error(`tsYear ${year} not found, creating placeholder`);
+    let obj = {};
+    Object.assign(obj, years[years.length - 1]);
+    obj.year = tsYear;
+    obj.estimateType = "new-year-placeholder";
+    years.push(obj);
+    tsYearFound = true;
 }
 console.log(JSON.stringify(years));
 process.exit(0);
