@@ -29,4 +29,4 @@ source ../meta.$(hostname).sh
         firstRow=false
     done
     echo "]"
-) | jq .
+) #| jq .
