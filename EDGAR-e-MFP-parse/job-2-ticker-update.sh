@@ -50,7 +50,7 @@ fi
 
 cat $fundsList |
     while read -r ticker; do
-        [ -z "$ticker" ] || continue
+        [ ! -z "$ticker" ] || continue
         cik=$(node ./node-ticker-CIK-map.js "$ticker" <"$fundsMetaFile")
         if [ ! -n "$cik" ]; then
             echo "$ticker: missing from company-map, skipping...."
