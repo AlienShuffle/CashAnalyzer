@@ -1,0 +1,15 @@
+{
+  "name": "vanguardadvisors",
+  "version": "0.0.1",
+  "description": "Scrape daily Yields for Vanguard Advisors accounts.",
+  "keywords": [
+    "Puppeteer",
+    "Vanguard Advisors"
+  ],
+  "author": "AlienShuffle",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "puppeteer": "^24.10.1"
+  }
+}
