@@ -15,14 +15,17 @@ const browserPromise = puppeteer.launch({
   headless: false,
   defaultViewport: null
 });
+const browser = await browserPromise;
 
 // this is the main function
-async function processFund(ticker = "VTEC") {
+const rawTickers = readFileSync(0, 'utf8');
+const tickers = rawTickers.split('\n').filter(line => line.trim().length > 0);
+let results = [];
+for (const ticker of tickers) {
+  console.error(`Processing fund: ${ticker}`);
   // set fund information
   const downloadPath = `./downloads/${ticker}`;
   const url = `https://advisors.vanguard.com/investments/products/${ticker}`;
-
-  const browser = await browserPromise;
   const page = await browser.newPage();
 
   async function exportButtonFinder(matchText) {
@@ -40,10 +43,13 @@ async function processFund(ticker = "VTEC") {
     return exportButtonHandle.asElement();
   }
 
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   // Helper: wait until no .crdownload files remain
   async function waitForDownloadComplete(dir) {
     // make sure download starts
-    function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
     await sleep(800);
     // return once the .crdownload file is removed (completed).
     return new Promise(resolve => {
@@ -78,7 +84,7 @@ async function processFund(ticker = "VTEC") {
     const exportButton = await exportButtonFinder(buttonText);
     if (!exportButton) {
       console.error(`Button with text '${buttonText}' not found.`);
-      return;
+      return false;
     }
     await page._client().send("Page.setDownloadBehavior", {
       behavior: "allow",
@@ -90,6 +96,7 @@ async function processFund(ticker = "VTEC") {
     if (debug) console.error("Waiting for CSV download...");
     await waitForDownloadComplete(downloadPath);
     await renameLatestFile(downloadPath, csvFileName);
+    return true;
   }
 
   async function selectElement(selector, click = true) {
@@ -115,9 +122,11 @@ async function processFund(ticker = "VTEC") {
     { waitUntil: "networkidle2" }
   );
 
-  await selectElement('.distribution-table');
-  await selectElement('button[class="button button--black"]', false);
-  await downloadFile("Export distribution data", downloadPath, `${ticker}-distributions.csv`);
+  if (!await selectElement('.distribution-table')) break;
+  await sleep(2000);
+  if (!await selectElement('button[class="button button--black"]', false)) break;
+  await sleep(2000);
+  if (!await downloadFile("Export distribution data", downloadPath, `${ticker}-distributions.csv`)) break;
 
   //await downloadFile("Export full holdings", downloadPath, `${ticker}-holdings.csv`);
 
@@ -127,43 +136,41 @@ async function processFund(ticker = "VTEC") {
   const rawSecYield = await selectElement('span[data-rpa-tag-id="hero-ff-secYield-pct"]', false);
   if (!rawSecYield) {
     console.error(`No thirtyDayYield found for ticker '${ticker}'`);
-    return null;
+    break;
   }
   const secYield = rawSecYield.replace("%", "").trim() / 100;
-  if (true) console.error(`rawSecYield= '${rawSecYield}'=${secYield}`);
+  if (debug) console.error(`rawSecYield= '${rawSecYield}'=${secYield}`);
   const rawSecYieldAsOfDate = await selectElement('span[data-rpa-tag-id="hero-ff-secYield-asOfDate"]', false);
   if (!rawSecYieldAsOfDate) {
     console.error(`No asOfDate found for ticker '${ticker}'`);
-    return null;
+    break;
   }
   const secYieldAsOfDate = new Date(rawSecYieldAsOfDate.replace("as of ", "")).toISOString().split("T")[0];
-  if (true) console.error(`rawSecYieldAsOfDate='${rawSecYieldAsOfDate}'='${secYieldAsOfDate}'`);
-
-  await selectElement('#in-page-section-id-portfolio');
-  await selectElement('.weighted-exposures');
-  await selectElement('#weighted-exposures-tab-issuer-type');
-  await downloadFile("Export issuer type data", downloadPath, `${ticker}-issuer-type.csv`);
-  page.close();
-  return {
+  if (debug) console.error(`rawSecYieldAsOfDate='${rawSecYieldAsOfDate}'='${secYieldAsOfDate}'`);
+  results.push({
     "ticker": ticker,
     "thirtyDayYield": secYield,
     "asOfDate": secYieldAsOfDate,
     "source": "advisors.vanguard.com",
     "timestamp": new Date()
-  };
+  });
+
+  if (!await selectElement('#in-page-section-id-portfolio')) break;
+  await sleep(2000);
+  if (!await selectElement('.weighted-exposures')) break;
+  await sleep(2000);
+  if (!await selectElement('#weighted-exposures-tab-issuer-type')) break;
+  await sleep(2000);
+  if (!await downloadFile("Export issuer type data", downloadPath, `${ticker}-issuer-type.csv`)) break;
+  if (true) console.error("Completed processing for ticker:", ticker);
+  await sleep(2000);
+  await page.close();
+  // do only a few due to rate limiting concerns...
+  if (results.length > 5) break;
 }
 
-const rawTickers = readFileSync(0, 'utf8');
-const tickers = rawTickers.split('\n').filter(line => line.trim().length > 0);
-let results = [];
-for (const ticker of tickers) {
-  console.error(`Processing fund: ${ticker}`);
-  const tickerResult = await processFund(ticker);
-  if (tickerResult) results.push(tickerResult);
-}
 if (debug) console.error("Script complete.");
 console.log(JSON.stringify(results));
-const browser = await browserPromise;
 browser.close();
 
 // grep '^[a-zA-Z]' VTEC-distributions.csv
