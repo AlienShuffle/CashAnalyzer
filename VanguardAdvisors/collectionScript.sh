@@ -15,4 +15,4 @@ while read -r ticker; do
     fi
     echo $ticker
 done |
-    node ./node-vtec-scrape.js | jq .
+    node ./node-advisors-scrape.js | jq .

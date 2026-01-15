@@ -122,6 +122,7 @@ for (const ticker of tickers) {
     { waitUntil: "networkidle2" }
   );
 
+    // download distributions data
   if (!await selectElement('.distribution-table')) break;
   await sleep(2000);
   if (!await selectElement('button[class="button button--black"]', false)) break;
@@ -133,12 +134,14 @@ for (const ticker of tickers) {
   //document.querySelector("#in-page-section-id-portfolio")
   // class = .
   // id = #
+
+  // now get thirty day yield and as of date
   const rawSecYield = await selectElement('span[data-rpa-tag-id="hero-ff-secYield-pct"]', false);
   if (!rawSecYield) {
     console.error(`No thirtyDayYield found for ticker '${ticker}'`);
     break;
   }
-  const secYield = rawSecYield.replace("%", "").trim() / 100;
+  const secYield = (rawSecYield.replace("%", "").trim() / 100).toFixed(4) * 1;
   if (debug) console.error(`rawSecYield= '${rawSecYield}'=${secYield}`);
   const rawSecYieldAsOfDate = await selectElement('span[data-rpa-tag-id="hero-ff-secYield-asOfDate"]', false);
   if (!rawSecYieldAsOfDate) {
@@ -147,10 +150,22 @@ for (const ticker of tickers) {
   }
   const secYieldAsOfDate = new Date(rawSecYieldAsOfDate.replace("as of ", "")).toISOString().split("T")[0];
   if (debug) console.error(`rawSecYieldAsOfDate='${rawSecYieldAsOfDate}'='${secYieldAsOfDate}'`);
+
+  // Distribution Yield
+
+  const rawExpenseRatio = await selectElement('span[data-rpa-tag-id="dashboard-expenseRatio"]', false);
+  if (!rawExpenseRatio) {
+    console.error(`No rawExpenseRatio found for ticker '${ticker}'`);
+    break;
+  }
+  const expenseRatio = (rawExpenseRatio.replace("%", "").trim() / 100).toFixed(4) * 1;
+  if (debug) console.error(`rawExpenseRatio= '${rawExpenseRatio}'=${expenseRatio}`);
+  
   results.push({
     "ticker": ticker,
     "thirtyDayYield": secYield,
     "asOfDate": secYieldAsOfDate,
+    "expenseRatio": expenseRatio,
     "source": "advisors.vanguard.com",
     "timestamp": new Date()
   });
