@@ -1,6 +1,7 @@
 source ../meta.$(hostname).sh
 jsonNew="USFR-distro-new-v98.json"
 jsonFlare="$cloudFlareHome/Funds/USFR/USFR-distros.json"
+csvFlare="$cloudFlareHome/Funds/USFR/USFR-distros.csv"
 jsonUnique="USFR-distro-new-unique-v98.json"
 #echo jsonNew=$jsonNew
 #
@@ -38,5 +39,9 @@ dir=$(dirname "$jsonFlare")
 if ../bin/jsonDifferent.sh "$jsonUnique" "$jsonFlare"; then
   cat "$jsonUnique" >"$jsonFlare"
   echo "published updated cloudFlare USFR distro history file."
+  (
+    echo 'recordDate,exDividendDate,payableDate,totalDistribution,ordinaryIncome,stcg,ltcg,returnOfCapital'
+    jq -r '.[] | [.recordDate,.exDividendDate,.payableDate,.totalDistribution,.ordinaryIncome,.stcg,.ltcg,.returnOfCapital] | @csv' "$jsonUnique"
+  ) >"$csvFlare"
 fi
 exit 0

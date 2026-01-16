@@ -45,6 +45,7 @@ source ../bin/skipWeekends.sh
 
 jsonNew="history/$ticker-distro-new.json"
 jsonFlare="$cloudFlareHome/Funds/$ticker/$ticker-distros.json"
+csvFlare="$cloudFlareHome/Funds/$ticker/$ticker-distros.csv"
 jsonUnique="history/$ticker-distro-new-unique.json"
 [ -d history ] || mkdir -p history
 
@@ -81,6 +82,10 @@ dir=$(dirname "$jsonFlare")
 if ../bin/jsonDifferent.sh "$jsonUnique" "$jsonFlare"; then
   cat "$jsonUnique" >"$jsonFlare"
   echo "published updated cloudFlare $ticker distro history file."
+  (
+    echo 'recordDate,exDividendDate,payableDate,totalDistribution,ordinaryIncome,stcg,ltcg,returnOfCapital'
+    jq -r '.[] | [.recordDate,.exDividendDate,.payableDate,.totalDistribution,.ordinaryIncome,.stcg,.ltcg,.returnOfCapital] | @csv' "$jsonUnique"
+  ) >"$csvFlare"
 fi
 #
 # Turn current SEC Yield data into a rates history similar to MM funds, but in the Funds folder.
