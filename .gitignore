@@ -276,3 +276,4 @@ lwlots/owner-list.csv
 SGOV/*-distro.json
 */curl.*.json
 VanguardAdvisors/downloads/*/*.csv
+lwlots/history/*

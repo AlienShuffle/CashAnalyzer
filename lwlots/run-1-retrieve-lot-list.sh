@@ -9,7 +9,7 @@ listTmpFile=$exportPrefix.tmp.json
     count=0
     firstRow=true
     echo "["
-    cat meta-streets.csv | # grep WYNONAH |
+    cat meta-streets.txt | # grep WYNONAH |
         while IFS= read -r row; do
             [ "$firstRow" = "false" ] && echo ","
             street=$(echo $row | sed -e 's/ /%20/g')
@@ -19,7 +19,7 @@ listTmpFile=$exportPrefix.tmp.json
             curl -ksSL "$url" >"$curlTmpFile"
             [ $? -ne 0 ] && echo "Error retrieving $url" 1>&2 && exit 1
             # note, the return speed of the site is causing an issue with stdin.
-            node ./node-$exportPrefix.js meta-parcel-prefixes.csv $curlTmpFile
+            node ./node-$exportPrefix.js meta-parcel-prefixes.txt $curlTmpFile
             firstRow=false
             count=$(($count + 1))
             [ $count -ge 500 ] && break
