@@ -18,7 +18,9 @@
 (
     cd EDGAR-c-meta
     echo "***** job-2-update-meta.sh -f"
-    ./job-2-update-meta.sh -f
+    ./job-1-getFinra-mmf.sh
+    ./job-2-getFinra-etf.sh
+    ./job-5-update-meta.sh -f
 )
 (
     cd EDGAR-e-MFP-parse
@@ -38,8 +40,8 @@
     ./job-1-parse-MFP-files.sh
     echo "***** job-2-ticker-update.sh"
     ./job-2-ticker-update.sh
-    echo "***** job-3-latest-EDGAR.sh"
-    ./job-3-latest-EDGAR.sh -f
      echo "***** job-4-taxation-update.sh"
     ./job-4-taxation-update.sh -f
+     echo "***** job-5-latest-EDGAR.sh"
+    ./job-5-latest-EDGAR.sh -f
 )

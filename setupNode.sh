@@ -5,7 +5,7 @@
 # If you need to update NVM, do the following:
 #
 echo "steps to update NVM (update the version number as appropriate)"
-echo "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash"
+echo "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash"
 echo "steps to get current long-term support (--lts) Node Version"
 echo "##### Get latest Node version"
 echo nvm version
