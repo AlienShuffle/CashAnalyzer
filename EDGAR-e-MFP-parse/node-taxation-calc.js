@@ -167,6 +167,7 @@ const tsYear = timestamp.getFullYear();
 let tsYearFound = false;
 for (let i = 0; i < years.length; i++) {
     const year = years[i].year;
+    if (tsYear == year) tsYearFound = true;
     if (!years[i].assets) {
         if (debug) console.error(`empty assets in year=${year}`);
         if (tsYear == year) {
@@ -175,7 +176,6 @@ for (let i = 0; i < years.length; i++) {
             years[i].year = year;
             years[i].estimateType = "new-year-placeholder";
             delete years[i].assets;
-            tsYearFound = true;
         } else {
             years.splice(i, 1);
         }
