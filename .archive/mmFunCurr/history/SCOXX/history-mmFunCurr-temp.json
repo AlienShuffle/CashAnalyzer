@@ -1,0 +1,850 @@
+[
+  {
+    "asOfDate": "2025-06-18",
+    "price": 1,
+    "sevenDayYield": 0.041505,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-06-20T05:04:53.320Z"
+  },
+  {
+    "asOfDate": "2025-06-19",
+    "price": 1,
+    "sevenDayYield": 0.041505,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-06-20",
+    "price": 1,
+    "sevenDayYield": 0.041534,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-06-21T09:47:06.996Z"
+  },
+  {
+    "asOfDate": "2025-06-21",
+    "price": 1,
+    "sevenDayYield": 0.041534,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-06-22",
+    "price": 1,
+    "sevenDayYield": 0.041534,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-06-23",
+    "price": 1,
+    "sevenDayYield": 0.041526,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-06-24T09:01:29.841Z"
+  },
+  {
+    "asOfDate": "2025-06-24",
+    "price": 1,
+    "sevenDayYield": 0.041526,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-06-25",
+    "price": 1,
+    "sevenDayYield": 0.041526,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-06-26",
+    "price": 1,
+    "sevenDayYield": 0.041599,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-06-27T10:44:56.102Z"
+  },
+  {
+    "asOfDate": "2025-06-27",
+    "price": 1,
+    "sevenDayYield": 0.041733,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-06-28T09:18:26.338Z"
+  },
+  {
+    "asOfDate": "2025-06-28",
+    "price": 1,
+    "sevenDayYield": 0.041733,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-06-29",
+    "price": 1,
+    "sevenDayYield": 0.041733,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-06-30",
+    "price": 1,
+    "sevenDayYield": 0.041733,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-01",
+    "price": 1,
+    "sevenDayYield": 0.041733,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-02",
+    "price": 1,
+    "sevenDayYield": 0.041733,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-03",
+    "price": 1,
+    "sevenDayYield": 0.041733,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-04",
+    "price": 1,
+    "sevenDayYield": 0.041733,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-05",
+    "price": 1,
+    "sevenDayYield": 0.041733,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-06",
+    "price": 1,
+    "sevenDayYield": 0.041733,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-07",
+    "price": 1,
+    "sevenDayYield": 0.041795,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-07-09T06:53:14.375Z"
+  },
+  {
+    "asOfDate": "2025-07-08",
+    "price": 1,
+    "sevenDayYield": 0.041752,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-07-10T03:21:41.899Z"
+  },
+  {
+    "asOfDate": "2025-07-09",
+    "price": 1,
+    "sevenDayYield": 0.04171,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-07-10T07:29:31.880Z"
+  },
+  {
+    "asOfDate": "2025-07-10",
+    "price": 1,
+    "sevenDayYield": 0.041691,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-07-11T11:08:17.224Z"
+  },
+  {
+    "asOfDate": "2025-07-11",
+    "price": 1,
+    "sevenDayYield": 0.041633,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-07-12T09:40:59.498Z"
+  },
+  {
+    "asOfDate": "2025-07-12",
+    "price": 1,
+    "sevenDayYield": 0.041633,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-13",
+    "price": 1,
+    "sevenDayYield": 0.041633,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-14",
+    "price": 1,
+    "sevenDayYield": 0.041642,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-07-15T08:38:49.103Z"
+  },
+  {
+    "asOfDate": "2025-07-15",
+    "price": 1,
+    "sevenDayYield": 0.041657,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-07-16T09:09:29.041Z"
+  },
+  {
+    "asOfDate": "2025-07-16",
+    "price": 1,
+    "sevenDayYield": 0.041669,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-07-17T09:40:48.464Z"
+  },
+  {
+    "asOfDate": "2025-07-17",
+    "price": 1,
+    "sevenDayYield": 0.041686,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-07-18T09:51:09.529Z"
+  },
+  {
+    "asOfDate": "2025-07-18",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-07-19T08:20:05.875Z"
+  },
+  {
+    "asOfDate": "2025-07-19",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-20",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-21",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-22",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-23",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-24",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-25",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-26",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-27",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-28",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-29",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-30",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-07-31",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-01",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-02",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-03",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-04",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-05",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-06",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-07",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-08",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-09",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-10",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-11",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-12",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-13",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-14",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-15",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-16",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-17",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-18",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-19",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-20",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-21",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-22",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-23",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-24",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-25",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-26",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-27",
+    "price": 1,
+    "sevenDayYield": 0.04169,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-28",
+    "price": 1,
+    "sevenDayYield": 0.041663,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-08-29T17:52:25.815Z"
+  },
+  {
+    "asOfDate": "2025-08-29",
+    "price": 1,
+    "sevenDayYield": 0.041663,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-30",
+    "price": 1,
+    "sevenDayYield": 0.041663,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-08-31",
+    "price": 1,
+    "sevenDayYield": 0.041663,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-01",
+    "price": 1,
+    "sevenDayYield": 0.041663,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-02",
+    "price": 1,
+    "sevenDayYield": 0.041663,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-03",
+    "price": 1,
+    "sevenDayYield": 0.041663,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-04",
+    "price": 1,
+    "sevenDayYield": 0.041663,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-05",
+    "price": 1,
+    "sevenDayYield": 0.041663,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-06",
+    "price": 1,
+    "sevenDayYield": 0.041663,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-07",
+    "price": 1,
+    "sevenDayYield": 0.041663,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-08",
+    "price": 1,
+    "sevenDayYield": 0.041522,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-09-09T08:58:21.843Z"
+  },
+  {
+    "asOfDate": "2025-09-09",
+    "price": 1,
+    "sevenDayYield": 0.0415,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-09-11T02:59:56.028Z"
+  },
+  {
+    "asOfDate": "2025-09-10",
+    "price": 1,
+    "sevenDayYield": 0.041491,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-09-11T11:12:22.275Z"
+  },
+  {
+    "asOfDate": "2025-09-11",
+    "price": 1,
+    "sevenDayYield": 0.041483,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-09-12T09:46:26.048Z"
+  },
+  {
+    "asOfDate": "2025-09-12",
+    "price": 1,
+    "sevenDayYield": 0.041413,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-09-13T08:19:06.856Z"
+  },
+  {
+    "asOfDate": "2025-09-13",
+    "price": 1,
+    "sevenDayYield": 0.041413,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-14",
+    "price": 1,
+    "sevenDayYield": 0.041413,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-15",
+    "price": 1,
+    "sevenDayYield": 0.041423,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-09-16T11:51:52.244Z"
+  },
+  {
+    "asOfDate": "2025-09-16",
+    "price": 1,
+    "sevenDayYield": 0.041407,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-09-17T09:21:25.582Z"
+  },
+  {
+    "asOfDate": "2025-09-17",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-11-07T04:09:03.757Z"
+  },
+  {
+    "asOfDate": "2025-09-18",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-19",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-20",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-21",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-22",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-23",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-24",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-25",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-26",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-27",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-28",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-29",
+    "price": 1,
+    "sevenDayYield": 0.04137,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-06T22:45:07.213Z"
+  },
+  {
+    "asOfDate": "2025-09-30",
+    "price": 1,
+    "sevenDayYield": 0.0398,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2025-12-02T05:48:12.015Z"
+  },
+  {
+    "asOfDate": "2025-11-30",
+    "price": 1,
+    "sevenDayYield": 0.0385,
+    "source": "moneymarket.fun",
+    "ticker": "SCOXX",
+    "timestamp": "2026-02-07T02:51:24.130Z"
+  }
+]

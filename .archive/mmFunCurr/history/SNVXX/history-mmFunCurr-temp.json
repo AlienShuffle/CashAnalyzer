@@ -1,0 +1,90 @@
+[
+  {
+    "asOfDate": "2025-06-18",
+    "price": 1,
+    "sevenDayYield": 0.040178,
+    "source": "moneymarket.fun",
+    "ticker": "SNVXX",
+    "timestamp": "2025-06-20T05:04:53.320Z"
+  },
+  {
+    "asOfDate": "2025-06-19",
+    "price": 1,
+    "sevenDayYield": 0.040178,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SNVXX",
+    "timestamp": "2026-02-13T11:15:42.067Z"
+  },
+  {
+    "asOfDate": "2025-06-20",
+    "price": 1,
+    "sevenDayYield": 0.040121,
+    "source": "moneymarket.fun",
+    "ticker": "SNVXX",
+    "timestamp": "2025-06-21T09:47:06.996Z"
+  },
+  {
+    "asOfDate": "2025-06-21",
+    "price": 1,
+    "sevenDayYield": 0.040121,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SNVXX",
+    "timestamp": "2026-02-13T11:15:42.067Z"
+  },
+  {
+    "asOfDate": "2025-06-22",
+    "price": 1,
+    "sevenDayYield": 0.040121,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SNVXX",
+    "timestamp": "2026-02-13T11:15:42.067Z"
+  },
+  {
+    "asOfDate": "2025-06-23",
+    "price": 1,
+    "sevenDayYield": 0.040091,
+    "source": "moneymarket.fun",
+    "ticker": "SNVXX",
+    "timestamp": "2025-06-24T09:01:29.841Z"
+  },
+  {
+    "asOfDate": "2025-06-24",
+    "price": 1,
+    "sevenDayYield": 0.040091,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SNVXX",
+    "timestamp": "2026-02-13T11:15:42.067Z"
+  },
+  {
+    "asOfDate": "2025-06-25",
+    "price": 1,
+    "sevenDayYield": 0.040091,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "SNVXX",
+    "timestamp": "2026-02-13T11:15:42.067Z"
+  },
+  {
+    "asOfDate": "2025-06-26",
+    "price": 1,
+    "sevenDayYield": 0.040192,
+    "source": "moneymarket.fun",
+    "ticker": "SNVXX",
+    "timestamp": "2025-06-27T10:44:56.102Z"
+  },
+  {
+    "asOfDate": "2025-06-27",
+    "price": 1,
+    "sevenDayYield": 0.04049,
+    "source": "moneymarket.fun",
+    "ticker": "SNVXX",
+    "timestamp": "2025-06-28T09:18:26.338Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.035,
+    "source": "moneymarket.fun",
+    "ticker": "SNVXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  }
+]

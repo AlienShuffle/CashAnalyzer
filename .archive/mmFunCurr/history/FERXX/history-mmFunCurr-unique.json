@@ -1,0 +1,1858 @@
+[
+  {
+    "asOfDate": "2025-03-14",
+    "price": 1,
+    "sevenDayYield": 0.0201,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-03-25T22:20:01.307Z"
+  },
+  {
+    "asOfDate": "2025-03-15",
+    "price": 1,
+    "sevenDayYield": 0.0201,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.826Z"
+  },
+  {
+    "asOfDate": "2025-03-16",
+    "price": 1,
+    "sevenDayYield": 0.0201,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.826Z"
+  },
+  {
+    "asOfDate": "2025-03-17",
+    "price": 1,
+    "sevenDayYield": 0.0201,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.826Z"
+  },
+  {
+    "asOfDate": "2025-03-18",
+    "price": 1,
+    "sevenDayYield": 0.0201,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.826Z"
+  },
+  {
+    "asOfDate": "2025-03-19",
+    "price": 1,
+    "sevenDayYield": 0.0201,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.826Z"
+  },
+  {
+    "asOfDate": "2025-03-20",
+    "price": 1,
+    "sevenDayYield": 0.0201,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.826Z"
+  },
+  {
+    "asOfDate": "2025-03-21",
+    "price": 1,
+    "sevenDayYield": 0.0201,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.826Z"
+  },
+  {
+    "asOfDate": "2025-03-22",
+    "price": 1,
+    "sevenDayYield": 0.0201,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.826Z"
+  },
+  {
+    "asOfDate": "2025-03-23",
+    "price": 1,
+    "sevenDayYield": 0.0201,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.826Z"
+  },
+  {
+    "asOfDate": "2025-03-24",
+    "price": 1,
+    "sevenDayYield": 0.0237,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-03-26T02:22:34.013Z"
+  },
+  {
+    "asOfDate": "2025-03-25",
+    "price": 1,
+    "sevenDayYield": 0.0234,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-03-26T22:33:43.814Z"
+  },
+  {
+    "asOfDate": "2025-03-26",
+    "price": 1,
+    "sevenDayYield": 0.0229,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-03-27T18:50:39.829Z"
+  },
+  {
+    "asOfDate": "2025-03-27",
+    "price": 1,
+    "sevenDayYield": 0.0225,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-03-28T15:11:20.444Z"
+  },
+  {
+    "asOfDate": "2025-03-28",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-04-01T03:46:51.846Z"
+  },
+  {
+    "asOfDate": "2025-03-29",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-03-30",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-03-31",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-01",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-02",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-03",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-04",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-05",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-06",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-07",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-08",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-09",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-10",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-11",
+    "price": 1,
+    "sevenDayYield": 0.024,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-04-15T02:53:14.848Z"
+  },
+  {
+    "asOfDate": "2025-04-12",
+    "price": 1,
+    "sevenDayYield": 0.024,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-13",
+    "price": 1,
+    "sevenDayYield": 0.024,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-14",
+    "price": 1,
+    "sevenDayYield": 0.0298,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-04-16T00:05:56.510Z"
+  },
+  {
+    "asOfDate": "2025-04-15",
+    "price": 1,
+    "sevenDayYield": 0.0314,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-04-16T21:19:39.721Z"
+  },
+  {
+    "asOfDate": "2025-04-16",
+    "price": 1,
+    "sevenDayYield": 0.0325,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-04-17T17:34:32.020Z"
+  },
+  {
+    "asOfDate": "2025-04-17",
+    "price": 1,
+    "sevenDayYield": 0.0323,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-04-23T06:31:13.559Z"
+  },
+  {
+    "asOfDate": "2025-04-18",
+    "price": 1,
+    "sevenDayYield": 0.0323,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-19",
+    "price": 1,
+    "sevenDayYield": 0.0323,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-20",
+    "price": 1,
+    "sevenDayYield": 0.0323,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-21",
+    "price": 1,
+    "sevenDayYield": 0.0323,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-22",
+    "price": 1,
+    "sevenDayYield": 0.0314,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-04-24T06:51:28.646Z"
+  },
+  {
+    "asOfDate": "2025-04-23",
+    "price": 1,
+    "sevenDayYield": 0.031,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-04-25T07:11:34.535Z"
+  },
+  {
+    "asOfDate": "2025-04-24",
+    "price": 1,
+    "sevenDayYield": 0.0301,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-04-26T07:32:03.621Z"
+  },
+  {
+    "asOfDate": "2025-04-25",
+    "price": 1,
+    "sevenDayYield": 0.0293,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-04-29T04:24:04.078Z"
+  },
+  {
+    "asOfDate": "2025-04-26",
+    "price": 1,
+    "sevenDayYield": 0.0293,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-27",
+    "price": 1,
+    "sevenDayYield": 0.0293,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-04-28",
+    "price": 1,
+    "sevenDayYield": 0.0269,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-04-30T04:44:43.673Z"
+  },
+  {
+    "asOfDate": "2025-04-29",
+    "price": 1,
+    "sevenDayYield": 0.026,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-01T05:04:37.671Z"
+  },
+  {
+    "asOfDate": "2025-04-30",
+    "price": 1,
+    "sevenDayYield": 0.0251,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-02T05:25:20.357Z"
+  },
+  {
+    "asOfDate": "2025-05-01",
+    "price": 1,
+    "sevenDayYield": 0.0241,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-03T05:48:08.221Z"
+  },
+  {
+    "asOfDate": "2025-05-02",
+    "price": 1,
+    "sevenDayYield": 0.0231,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-06T04:50:15.733Z"
+  },
+  {
+    "asOfDate": "2025-05-03",
+    "price": 1,
+    "sevenDayYield": 0.0231,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-04",
+    "price": 1,
+    "sevenDayYield": 0.0231,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-05",
+    "price": 1,
+    "sevenDayYield": 0.0197,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-07T05:16:13.296Z"
+  },
+  {
+    "asOfDate": "2025-05-06",
+    "price": 1,
+    "sevenDayYield": 0.0186,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-08T05:48:06.651Z"
+  },
+  {
+    "asOfDate": "2025-05-07",
+    "price": 1,
+    "sevenDayYield": 0.0174,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-09T06:13:28.981Z"
+  },
+  {
+    "asOfDate": "2025-05-08",
+    "price": 1,
+    "sevenDayYield": 0.0162,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-10T06:39:00.972Z"
+  },
+  {
+    "asOfDate": "2025-05-09",
+    "price": 1,
+    "sevenDayYield": 0.0151,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-13T05:33:10.901Z"
+  },
+  {
+    "asOfDate": "2025-05-10",
+    "price": 1,
+    "sevenDayYield": 0.0151,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-11",
+    "price": 1,
+    "sevenDayYield": 0.0151,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-12",
+    "price": 1,
+    "sevenDayYield": 0.0126,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-13T09:36:36.552Z"
+  },
+  {
+    "asOfDate": "2025-05-13",
+    "price": 1,
+    "sevenDayYield": 0.012,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-15T00:25:35.679Z"
+  },
+  {
+    "asOfDate": "2025-05-14",
+    "price": 1,
+    "sevenDayYield": 0.0123,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-15T20:39:14.376Z"
+  },
+  {
+    "asOfDate": "2025-05-15",
+    "price": 1,
+    "sevenDayYield": 0.0142,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-17T05:05:43.161Z"
+  },
+  {
+    "asOfDate": "2025-05-16",
+    "price": 1,
+    "sevenDayYield": 0.016,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-20T05:45:34.526Z"
+  },
+  {
+    "asOfDate": "2025-05-17",
+    "price": 1,
+    "sevenDayYield": 0.016,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-18",
+    "price": 1,
+    "sevenDayYield": 0.016,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-19",
+    "price": 1,
+    "sevenDayYield": 0.021,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-21T04:05:43.512Z"
+  },
+  {
+    "asOfDate": "2025-05-20",
+    "price": 1,
+    "sevenDayYield": 0.0224,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-22T04:27:10.248Z"
+  },
+  {
+    "asOfDate": "2025-05-21",
+    "price": 1,
+    "sevenDayYield": 0.023,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-05-23T04:49:20.326Z"
+  },
+  {
+    "asOfDate": "2025-05-22",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-06-04T12:57:04.693Z"
+  },
+  {
+    "asOfDate": "2025-05-23",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-24",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-25",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-26",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-27",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-28",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-29",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-30",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-05-31",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-01",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-02",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-03",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-04",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-05",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-06",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-07",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-08",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-09",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-10",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-11",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-12",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-13",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-14",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-15",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-16",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-17",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-18",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-19",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-20",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-21",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-22",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-23",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-24",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-25",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-26",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-27",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-28",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-29",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-06-30",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-01",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-02",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-03",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-04",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-05",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-06",
+    "price": 1,
+    "sevenDayYield": 0.022,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-07",
+    "price": 1,
+    "sevenDayYield": 0.0106,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-07-09T06:53:14.375Z"
+  },
+  {
+    "asOfDate": "2025-07-08",
+    "price": 1,
+    "sevenDayYield": 0.0101,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-07-10T03:21:41.899Z"
+  },
+  {
+    "asOfDate": "2025-07-09",
+    "price": 1,
+    "sevenDayYield": 0.0099,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-07-10T07:29:31.880Z"
+  },
+  {
+    "asOfDate": "2025-07-10",
+    "price": 1,
+    "sevenDayYield": 0.0099,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-07-11T11:08:17.224Z"
+  },
+  {
+    "asOfDate": "2025-07-11",
+    "price": 1,
+    "sevenDayYield": 0.0099,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-07-12T09:40:59.498Z"
+  },
+  {
+    "asOfDate": "2025-07-12",
+    "price": 1,
+    "sevenDayYield": 0.0099,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-13",
+    "price": 1,
+    "sevenDayYield": 0.0099,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-14",
+    "price": 1,
+    "sevenDayYield": 0.0102,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-07-15T08:38:49.103Z"
+  },
+  {
+    "asOfDate": "2025-07-15",
+    "price": 1,
+    "sevenDayYield": 0.0104,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-07-16T09:09:29.041Z"
+  },
+  {
+    "asOfDate": "2025-07-16",
+    "price": 1,
+    "sevenDayYield": 0.0108,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-07-17T09:40:48.464Z"
+  },
+  {
+    "asOfDate": "2025-07-17",
+    "price": 1,
+    "sevenDayYield": 0.0118,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-07-18T09:51:09.529Z"
+  },
+  {
+    "asOfDate": "2025-07-18",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-07-19T08:20:05.875Z"
+  },
+  {
+    "asOfDate": "2025-07-19",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-20",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-21",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-22",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-23",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-24",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-25",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-26",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-27",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-28",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-29",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-30",
+    "price": 1,
+    "sevenDayYield": 0.0127,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-07-31",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-08-08T10:03:51.093Z"
+  },
+  {
+    "asOfDate": "2025-08-01",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-02",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-03",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-04",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-05",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-06",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-07",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-08",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-09",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-10",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-11",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-12",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-13",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-14",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-15",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-16",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-17",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-18",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-19",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-20",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-21",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-22",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-23",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-24",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-25",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-26",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-27",
+    "price": 1,
+    "sevenDayYield": 0.0185,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-28",
+    "price": 1,
+    "sevenDayYield": 0.0193,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-08-29T17:52:25.815Z"
+  },
+  {
+    "asOfDate": "2025-08-29",
+    "price": 1,
+    "sevenDayYield": 0.0194,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-09-01T17:10:04.072Z"
+  },
+  {
+    "asOfDate": "2025-08-30",
+    "price": 1,
+    "sevenDayYield": 0.0194,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-08-31",
+    "price": 1,
+    "sevenDayYield": 0.0194,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-01",
+    "price": 1,
+    "sevenDayYield": 0.0194,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-02",
+    "price": 1,
+    "sevenDayYield": 0.0194,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-03",
+    "price": 1,
+    "sevenDayYield": 0.0196,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-09-04T10:18:05.625Z"
+  },
+  {
+    "asOfDate": "2025-09-04",
+    "price": 1,
+    "sevenDayYield": 0.0192,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-09-05T08:51:42.002Z"
+  },
+  {
+    "asOfDate": "2025-09-05",
+    "price": 1,
+    "sevenDayYield": 0.0189,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-09-06T09:29:26.236Z"
+  },
+  {
+    "asOfDate": "2025-09-06",
+    "price": 1,
+    "sevenDayYield": 0.0189,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-07",
+    "price": 1,
+    "sevenDayYield": 0.0189,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-08",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-09-09T08:58:21.843Z"
+  },
+  {
+    "asOfDate": "2025-09-09",
+    "price": 1,
+    "sevenDayYield": 0.0176,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-09-11T02:59:56.028Z"
+  },
+  {
+    "asOfDate": "2025-09-10",
+    "price": 1,
+    "sevenDayYield": 0.0176,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-09-11T11:12:22.275Z"
+  },
+  {
+    "asOfDate": "2025-09-11",
+    "price": 1,
+    "sevenDayYield": 0.0177,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-09-12T09:46:26.048Z"
+  },
+  {
+    "asOfDate": "2025-09-12",
+    "price": 1,
+    "sevenDayYield": 0.0178,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-09-13T08:19:06.856Z"
+  },
+  {
+    "asOfDate": "2025-09-13",
+    "price": 1,
+    "sevenDayYield": 0.0178,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-14",
+    "price": 1,
+    "sevenDayYield": 0.0178,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-15",
+    "price": 1,
+    "sevenDayYield": 0.0181,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-09-16T11:51:52.244Z"
+  },
+  {
+    "asOfDate": "2025-09-16",
+    "price": 1,
+    "sevenDayYield": 0.0181,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-09-17T09:21:25.582Z"
+  },
+  {
+    "asOfDate": "2025-09-17",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-10-01T02:04:55.956Z"
+  },
+  {
+    "asOfDate": "2025-09-18",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-19",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-20",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-21",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-22",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-23",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-24",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-25",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-26",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-27",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-28",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-29",
+    "price": 1,
+    "sevenDayYield": 0.018,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-09-30",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-11-08T04:51:13.749Z"
+  },
+  {
+    "asOfDate": "2025-10-01",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-02",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-03",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-04",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-05",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-06",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-07",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-08",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-09",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-10",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-11",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-12",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-13",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-14",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-15",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-16",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-17",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-18",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-19",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-20",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-21",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-22",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-23",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-24",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-25",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-26",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-27",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-28",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-29",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-30",
+    "price": 1,
+    "sevenDayYield": 0.0204,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:23.827Z"
+  },
+  {
+    "asOfDate": "2025-10-31",
+    "price": 1,
+    "sevenDayYield": 0.0203,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2025-12-31T06:10:26.040Z"
+  }
+]

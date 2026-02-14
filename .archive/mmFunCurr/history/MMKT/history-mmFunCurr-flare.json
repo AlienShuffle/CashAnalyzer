@@ -1,0 +1,3890 @@
+[
+  {
+    "asOfDate": "2024-10-02",
+    "price": 100.0948,
+    "sevenDayYield": 0.0469,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-03",
+    "price": 100.1075,
+    "sevenDayYield": 0.047,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-04",
+    "price": 100.1316,
+    "sevenDayYield": 0.0472,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-05",
+    "price": 100.1316,
+    "sevenDayYield": 0.0472,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-10-06",
+    "price": 100.1316,
+    "sevenDayYield": 0.0472,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-10-07",
+    "price": 100.1559,
+    "sevenDayYield": 0.0477,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-08",
+    "price": 100.1677,
+    "sevenDayYield": 0.048,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-09",
+    "price": 100.171,
+    "sevenDayYield": 0.0442,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-10",
+    "price": 100.1861,
+    "sevenDayYield": 0.0447,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-11",
+    "price": 100.2168,
+    "sevenDayYield": 0.0447,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-12",
+    "price": 100.2168,
+    "sevenDayYield": 0.0447,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-10-13",
+    "price": 100.2168,
+    "sevenDayYield": 0.0447,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-10-14",
+    "price": 100.2373,
+    "sevenDayYield": 0.0448,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-15",
+    "price": 100.2509,
+    "sevenDayYield": 0.0447,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-16",
+    "price": 100.2613,
+    "sevenDayYield": 0.0483,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-17",
+    "price": 100.2723,
+    "sevenDayYield": 0.0474,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-18",
+    "price": 100.2981,
+    "sevenDayYield": 0.0474,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-19",
+    "price": 100.2981,
+    "sevenDayYield": 0.0474,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-10-20",
+    "price": 100.2981,
+    "sevenDayYield": 0.0474,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-10-21",
+    "price": 100.3219,
+    "sevenDayYield": 0.0474,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-22",
+    "price": 100.3369,
+    "sevenDayYield": 0.0474,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-23",
+    "price": 100.348,
+    "sevenDayYield": 0.0473,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-24",
+    "price": 100.3628,
+    "sevenDayYield": 0.0476,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-25",
+    "price": 100.385,
+    "sevenDayYield": 0.0475,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-26",
+    "price": 100.385,
+    "sevenDayYield": 0.0475,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-10-27",
+    "price": 100.385,
+    "sevenDayYield": 0.0475,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-10-28",
+    "price": 100.4137,
+    "sevenDayYield": 0.0474,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-29",
+    "price": 100.1571,
+    "sevenDayYield": 0.0474,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-30",
+    "price": 100.1742,
+    "sevenDayYield": 0.0474,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-10-31",
+    "price": 100.1862,
+    "sevenDayYield": 0.0475,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:10.716Z"
+  },
+  {
+    "asOfDate": "2024-11-01",
+    "price": 100.1862,
+    "sevenDayYield": 0.0475,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-11-02",
+    "price": 100.1862,
+    "sevenDayYield": 0.0475,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-11-03",
+    "price": 100.1862,
+    "sevenDayYield": 0.0475,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-11-04",
+    "price": 100.2427,
+    "sevenDayYield": 0.0504,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-05",
+    "price": 100.2547,
+    "sevenDayYield": 0.0503,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-06",
+    "price": 100.2663,
+    "sevenDayYield": 0.0503,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-07",
+    "price": 100.2823,
+    "sevenDayYield": 0.0501,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-08",
+    "price": 100.3118,
+    "sevenDayYield": 0.05,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-09",
+    "price": 100.3118,
+    "sevenDayYield": 0.05,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-11-10",
+    "price": 100.3118,
+    "sevenDayYield": 0.05,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-11-11",
+    "price": 100.3283,
+    "sevenDayYield": 0.0466,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-12",
+    "price": 100.3381,
+    "sevenDayYield": 0.0466,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-13",
+    "price": 100.3595,
+    "sevenDayYield": 0.0465,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-14",
+    "price": 100.3656,
+    "sevenDayYield": 0.0465,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-15",
+    "price": 100.3943,
+    "sevenDayYield": 0.0464,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-16",
+    "price": 100.3943,
+    "sevenDayYield": 0.0464,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-11-17",
+    "price": 100.3943,
+    "sevenDayYield": 0.0464,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-11-18",
+    "price": 100.4142,
+    "sevenDayYield": 0.0464,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-19",
+    "price": 100.4297,
+    "sevenDayYield": 0.0464,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-20",
+    "price": 100.4398,
+    "sevenDayYield": 0.0464,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-21",
+    "price": 100.4499,
+    "sevenDayYield": 0.0464,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-22",
+    "price": 100.4742,
+    "sevenDayYield": 0.0464,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-23",
+    "price": 100.4742,
+    "sevenDayYield": 0.0464,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-11-24",
+    "price": 100.4742,
+    "sevenDayYield": 0.0464,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-11-25",
+    "price": 100.4986,
+    "sevenDayYield": 0.0464,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-26",
+    "price": 100.5113,
+    "sevenDayYield": 0.0464,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-27",
+    "price": 100.1781,
+    "sevenDayYield": 0.0464,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-28",
+    "price": 100.182,
+    "sevenDayYield": 0.0464,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-29",
+    "price": 100.2077,
+    "sevenDayYield": 0.0464,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:07.756Z"
+  },
+  {
+    "asOfDate": "2024-11-30",
+    "price": 100.2077,
+    "sevenDayYield": 0.0464,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-01",
+    "price": 100.2077,
+    "sevenDayYield": 0.0464,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-02",
+    "price": 100.2077,
+    "sevenDayYield": 0.0464,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-03",
+    "price": 100.2467,
+    "sevenDayYield": 0.0463,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-04",
+    "price": 100.2592,
+    "sevenDayYield": 0.0448,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-05",
+    "price": 100.2704,
+    "sevenDayYield": 0.0447,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-06",
+    "price": 100.2974,
+    "sevenDayYield": 0.0446,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-07",
+    "price": 100.2974,
+    "sevenDayYield": 0.0446,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-08",
+    "price": 100.2974,
+    "sevenDayYield": 0.0446,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-09",
+    "price": 100.3183,
+    "sevenDayYield": 0.0443,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-10",
+    "price": 100.331,
+    "sevenDayYield": 0.0442,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-11",
+    "price": 100.3482,
+    "sevenDayYield": 0.0456,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-12",
+    "price": 100.3619,
+    "sevenDayYield": 0.0451,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-13",
+    "price": 100.3878,
+    "sevenDayYield": 0.0451,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-14",
+    "price": 100.3878,
+    "sevenDayYield": 0.0451,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-15",
+    "price": 100.3878,
+    "sevenDayYield": 0.0451,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-16",
+    "price": 100.4076,
+    "sevenDayYield": 0.045,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-17",
+    "price": 100.4179,
+    "sevenDayYield": 0.0449,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-18",
+    "price": 100.427,
+    "sevenDayYield": 0.0448,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-19",
+    "price": 100.4442,
+    "sevenDayYield": 0.0449,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-20",
+    "price": 100.4674,
+    "sevenDayYield": 0.0448,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-21",
+    "price": 100.4674,
+    "sevenDayYield": 0.0448,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-22",
+    "price": 100.4674,
+    "sevenDayYield": 0.0448,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-23",
+    "price": 100.4893,
+    "sevenDayYield": 0.0445,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-24",
+    "price": 100.5073,
+    "sevenDayYield": 0.0444,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-25",
+    "price": 100.5073,
+    "sevenDayYield": 0.0444,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-26",
+    "price": 100.5268,
+    "sevenDayYield": 0.0446,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-27",
+    "price": 100.106,
+    "sevenDayYield": 0.0445,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-28",
+    "price": 100.106,
+    "sevenDayYield": 0.0445,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-29",
+    "price": 100.106,
+    "sevenDayYield": 0.0445,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2024-12-30",
+    "price": 100.1285,
+    "sevenDayYield": 0.0444,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.634Z"
+  },
+  {
+    "asOfDate": "2024-12-31",
+    "price": 100.1285,
+    "sevenDayYield": 0.0444,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-01-01",
+    "price": 100.1285,
+    "sevenDayYield": 0.0444,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-01-02",
+    "price": 100.1617,
+    "sevenDayYield": 0.0441,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-03",
+    "price": 100.1883,
+    "sevenDayYield": 0.044,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-04",
+    "price": 100.1883,
+    "sevenDayYield": 0.044,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-01-05",
+    "price": 100.1883,
+    "sevenDayYield": 0.044,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-01-06",
+    "price": 100.2087,
+    "sevenDayYield": 0.0437,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-07",
+    "price": 100.2181,
+    "sevenDayYield": 0.0436,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-08",
+    "price": 100.2287,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-09",
+    "price": 100.2287,
+    "sevenDayYield": 0.043,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-10",
+    "price": 100.2655,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-11",
+    "price": 100.2655,
+    "sevenDayYield": 0.0433,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-01-12",
+    "price": 100.2655,
+    "sevenDayYield": 0.0433,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-01-13",
+    "price": 100.2838,
+    "sevenDayYield": 0.0431,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-14",
+    "price": 100.2965,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-15",
+    "price": 100.31,
+    "sevenDayYield": 0.0435,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-16",
+    "price": 100.3227,
+    "sevenDayYield": 0.0438,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-17",
+    "price": 100.3561,
+    "sevenDayYield": 0.0435,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-18",
+    "price": 100.3561,
+    "sevenDayYield": 0.0435,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-01-19",
+    "price": 100.3561,
+    "sevenDayYield": 0.0435,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-01-20",
+    "price": 100.3561,
+    "sevenDayYield": 0.0435,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-21",
+    "price": 100.3775,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-22",
+    "price": 100.3874,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-23",
+    "price": 100.3995,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-24",
+    "price": 100.428,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-25",
+    "price": 100.428,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-01-26",
+    "price": 100.428,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-01-27",
+    "price": 100.4469,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-28",
+    "price": 100.4581,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-29",
+    "price": 100.2039,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-30",
+    "price": 100.2184,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-01-31",
+    "price": 100.2483,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.368Z"
+  },
+  {
+    "asOfDate": "2025-02-01",
+    "price": 100.2483,
+    "sevenDayYield": 0.0433,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-02-02",
+    "price": 100.2483,
+    "sevenDayYield": 0.0433,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-02-03",
+    "price": 100.2483,
+    "sevenDayYield": 0.0433,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-02-04",
+    "price": 100.2758,
+    "sevenDayYield": 0.0442,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-05",
+    "price": 100.289,
+    "sevenDayYield": 0.0442,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-06",
+    "price": 100.2988,
+    "sevenDayYield": 0.0442,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-07",
+    "price": 100.3236,
+    "sevenDayYield": 0.0442,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-08",
+    "price": 100.3236,
+    "sevenDayYield": 0.0442,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-02-09",
+    "price": 100.3236,
+    "sevenDayYield": 0.0442,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-02-10",
+    "price": 100.3405,
+    "sevenDayYield": 0.0443,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-11",
+    "price": 100.3501,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-12",
+    "price": 100.3643,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-13",
+    "price": 100.3753,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-14",
+    "price": 100.4125,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-15",
+    "price": 100.4125,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-02-16",
+    "price": 100.4125,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-02-17",
+    "price": 100.4125,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-18",
+    "price": 100.4288,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-19",
+    "price": 100.4429,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-20",
+    "price": 100.4547,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-21",
+    "price": 100.4863,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-22",
+    "price": 100.4863,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-02-23",
+    "price": 100.4863,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-02-24",
+    "price": 100.5022,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-25",
+    "price": 100.5151,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-26",
+    "price": 100.2029,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-27",
+    "price": 100.2145,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-02-28",
+    "price": 100.2451,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:09.061Z"
+  },
+  {
+    "asOfDate": "2025-03-01",
+    "price": 100.2451,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-03-02",
+    "price": 100.2451,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-03-03",
+    "price": 100.2451,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-03-04",
+    "price": 100.2719,
+    "sevenDayYield": 0.0431,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-05",
+    "price": 100.2837,
+    "sevenDayYield": 0.0431,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-06",
+    "price": 100.2968,
+    "sevenDayYield": 0.043,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-07",
+    "price": 100.1991,
+    "sevenDayYield": 0.043,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-08",
+    "price": 100.1991,
+    "sevenDayYield": 0.043,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-03-09",
+    "price": 100.1991,
+    "sevenDayYield": 0.043,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-03-10",
+    "price": 100.2162,
+    "sevenDayYield": 0.043,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-11",
+    "price": 100.2271,
+    "sevenDayYield": 0.043,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-12",
+    "price": 100.2382,
+    "sevenDayYield": 0.043,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-13",
+    "price": 100.2506,
+    "sevenDayYield": 0.043,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-14",
+    "price": 100.188,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-15",
+    "price": 100.188,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-03-16",
+    "price": 100.188,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-03-17",
+    "price": 100.2046,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-18",
+    "price": 100.2165,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-19",
+    "price": 100.2288,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-20",
+    "price": 100.2405,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-21",
+    "price": 100.1859,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-22",
+    "price": 100.1859,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-03-23",
+    "price": 100.1859,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-03-24",
+    "price": 100.2023,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-25",
+    "price": 100.213,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-26",
+    "price": 100.2237,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-27",
+    "price": 100.2325,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-28",
+    "price": 100.184,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-03-29",
+    "price": 100.184,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-03-30",
+    "price": 100.184,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-03-31",
+    "price": 100.1994,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-07T16:05:08.305Z"
+  },
+  {
+    "asOfDate": "2025-04-01",
+    "price": 100.1994,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-04-02",
+    "price": 100.2182,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-03",
+    "price": 100.2337,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-04",
+    "price": 100.1849,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-05",
+    "price": 100.1849,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-04-06",
+    "price": 100.1849,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-04-07",
+    "price": 100.1973,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-08",
+    "price": 100.2065,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-09",
+    "price": 100.2135,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-10",
+    "price": 100.2266,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-11",
+    "price": 100.1722,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-12",
+    "price": 100.1722,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-04-13",
+    "price": 100.1722,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-04-14",
+    "price": 100.1914,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-15",
+    "price": 100.2045,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-16",
+    "price": 100.2171,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-17",
+    "price": 100.1829,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-18",
+    "price": 100.1829,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-19",
+    "price": 100.1829,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-04-20",
+    "price": 100.1829,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-04-21",
+    "price": 100.2023,
+    "sevenDayYield": 0.043,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-22",
+    "price": 100.2167,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-23",
+    "price": 100.2264,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-24",
+    "price": 100.2394,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-25",
+    "price": 100.1736,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-26",
+    "price": 100.1736,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-04-27",
+    "price": 100.1736,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-04-28",
+    "price": 100.1922,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-29",
+    "price": 100.207,
+    "sevenDayYield": 0.0424,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-04-30",
+    "price": 100.2177,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-05-07T21:35:53.721Z"
+  },
+  {
+    "asOfDate": "2025-05-01",
+    "price": 100.2177,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-05-02",
+    "price": 100.1761,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-03",
+    "price": 100.1761,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-05-04",
+    "price": 100.1761,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-05-05",
+    "price": 100.1923,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-06",
+    "price": 100.2043,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-07",
+    "price": 100.2154,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-08",
+    "price": 100.2259,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-09",
+    "price": 100.176,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-10",
+    "price": 100.176,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-05-11",
+    "price": 100.176,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-05-12",
+    "price": 100.1863,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-13",
+    "price": 100.1967,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-14",
+    "price": 100.2094,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-15",
+    "price": 100.223,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-16",
+    "price": 100.1734,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-17",
+    "price": 100.1734,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-05-18",
+    "price": 100.1734,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-05-19",
+    "price": 100.1902,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-20",
+    "price": 100.2024,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-21",
+    "price": 100.2143,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-22",
+    "price": 100.2252,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-23",
+    "price": 100.1832,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-24",
+    "price": 100.1832,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-05-25",
+    "price": 100.1832,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-05-26",
+    "price": 100.1832,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-05-27",
+    "price": 100.2046,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-28",
+    "price": 100.2167,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-29",
+    "price": 100.2252,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-30",
+    "price": 100.1765,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-06-06T22:17:43.338Z"
+  },
+  {
+    "asOfDate": "2025-05-31",
+    "price": 100.1765,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-01",
+    "price": 100.1765,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-02",
+    "price": 100.1765,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-03",
+    "price": 100.2032,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-04",
+    "price": 100.2161,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-05",
+    "price": 100.2285,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-06",
+    "price": 100.1813,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-07",
+    "price": 100.1813,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-08",
+    "price": 100.1813,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-09",
+    "price": 100.1955,
+    "sevenDayYield": 0.0412,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-10",
+    "price": 100.2068,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-11",
+    "price": 100.2181,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-12",
+    "price": 100.2273,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-13",
+    "price": 100.1789,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-14",
+    "price": 100.1789,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-15",
+    "price": 100.1789,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-16",
+    "price": 100.1943,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-17",
+    "price": 100.206,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-18",
+    "price": 100.2263,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-19",
+    "price": 100.2263,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-20",
+    "price": 100.1911,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-21",
+    "price": 100.1911,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-22",
+    "price": 100.1911,
+    "sevenDayYield": 0.0427,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-23",
+    "price": 100.2066,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-24",
+    "price": 100.219,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-25",
+    "price": 100.2301,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-26",
+    "price": 100.2413,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-27",
+    "price": 100.18,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-06-28",
+    "price": 100.18,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-29",
+    "price": 100.18,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-06-30",
+    "price": 100.1946,
+    "sevenDayYield": 0.0418,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-07-08T22:38:51.025Z"
+  },
+  {
+    "asOfDate": "2025-07-01",
+    "price": 100.1946,
+    "sevenDayYield": 0.0418,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-07-02",
+    "price": 100.2182,
+    "sevenDayYield": 0.0419,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-03",
+    "price": 100.1979,
+    "sevenDayYield": 0.0416,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-04",
+    "price": 100.1979,
+    "sevenDayYield": 0.0416,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-07-05",
+    "price": 100.1979,
+    "sevenDayYield": 0.0416,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-07-06",
+    "price": 100.1979,
+    "sevenDayYield": 0.0416,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-07-07",
+    "price": 100.2163,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-08",
+    "price": 100.2275,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-09",
+    "price": 100.2402,
+    "sevenDayYield": 0.0426,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-10",
+    "price": 100.2517,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-11",
+    "price": 100.1914,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-12",
+    "price": 100.1914,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-07-13",
+    "price": 100.1914,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-07-14",
+    "price": 100.2067,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-15",
+    "price": 100.2179,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-16",
+    "price": 100.2296,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-17",
+    "price": 100.2409,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-18",
+    "price": 100.1922,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-19",
+    "price": 100.1922,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-07-20",
+    "price": 100.1922,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-07-21",
+    "price": 100.2066,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-22",
+    "price": 100.2186,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-23",
+    "price": 100.2294,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-24",
+    "price": 100.2401,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-25",
+    "price": 100.1896,
+    "sevenDayYield": 0.0428,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-26",
+    "price": 100.1896,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-07-27",
+    "price": 100.1896,
+    "sevenDayYield": 0.0428,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-07-28",
+    "price": 100.2061,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-29",
+    "price": 100.2176,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-30",
+    "price": 100.2291,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-07-31",
+    "price": 100.2399,
+    "sevenDayYield": 0.0429,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-08-07T19:37:08.400Z"
+  },
+  {
+    "asOfDate": "2025-08-01",
+    "price": 100.2399,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-08-02",
+    "price": 100.2399,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-08-03",
+    "price": 100.2399,
+    "sevenDayYield": 0.0429,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-08-04",
+    "price": 100.2098,
+    "sevenDayYield": 0.0426,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-05",
+    "price": 100.2213,
+    "sevenDayYield": 0.0426,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-06",
+    "price": 100.2345,
+    "sevenDayYield": 0.0426,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-07",
+    "price": 100.246,
+    "sevenDayYield": 0.0425,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-08",
+    "price": 100.1987,
+    "sevenDayYield": 0.0425,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-09",
+    "price": 100.1987,
+    "sevenDayYield": 0.0425,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-08-10",
+    "price": 100.1987,
+    "sevenDayYield": 0.0425,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-08-11",
+    "price": 100.2118,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-12",
+    "price": 100.2249,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-13",
+    "price": 100.2384,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-14",
+    "price": 100.2497,
+    "sevenDayYield": 0.0427,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-15",
+    "price": 100.1993,
+    "sevenDayYield": 0.0413,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-16",
+    "price": 100.1993,
+    "sevenDayYield": 0.0413,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-08-17",
+    "price": 100.1993,
+    "sevenDayYield": 0.0413,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-08-18",
+    "price": 100.2118,
+    "sevenDayYield": 0.0412,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-19",
+    "price": 100.2232,
+    "sevenDayYield": 0.0412,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-20",
+    "price": 100.234,
+    "sevenDayYield": 0.0411,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-21",
+    "price": 100.2431,
+    "sevenDayYield": 0.0411,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-22",
+    "price": 100.1982,
+    "sevenDayYield": 0.0425,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-23",
+    "price": 100.1982,
+    "sevenDayYield": 0.0425,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-08-24",
+    "price": 100.1982,
+    "sevenDayYield": 0.0425,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-08-25",
+    "price": 100.2101,
+    "sevenDayYield": 0.0424,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-26",
+    "price": 100.2221,
+    "sevenDayYield": 0.0424,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-27",
+    "price": 100.2359,
+    "sevenDayYield": 0.0424,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-28",
+    "price": 100.2495,
+    "sevenDayYield": 0.0439,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-29",
+    "price": 100.2145,
+    "sevenDayYield": 0.043,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-09-08T20:36:02.286Z"
+  },
+  {
+    "asOfDate": "2025-08-30",
+    "price": 100.2145,
+    "sevenDayYield": 0.043,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-08-31",
+    "price": 100.2145,
+    "sevenDayYield": 0.043,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-09-01",
+    "price": 100.2145,
+    "sevenDayYield": 0.043,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-09-02",
+    "price": 100.2145,
+    "sevenDayYield": 0.043,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-09-03",
+    "price": 100.2421,
+    "sevenDayYield": 0.0424,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-04",
+    "price": 100.2563,
+    "sevenDayYield": 0.0409,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-05",
+    "price": 100.2171,
+    "sevenDayYield": 0.0417,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-06",
+    "price": 100.2171,
+    "sevenDayYield": 0.0417,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-09-07",
+    "price": 100.2171,
+    "sevenDayYield": 0.0417,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-09-08",
+    "price": 100.23,
+    "sevenDayYield": 0.0416,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-09",
+    "price": 100.2391,
+    "sevenDayYield": 0.0425,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-10",
+    "price": 100.2514,
+    "sevenDayYield": 0.0421,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-11",
+    "price": 100.2629,
+    "sevenDayYield": 0.0421,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-12",
+    "price": 100.2115,
+    "sevenDayYield": 0.042,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-13",
+    "price": 100.2115,
+    "sevenDayYield": 0.042,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-09-14",
+    "price": 100.2115,
+    "sevenDayYield": 0.042,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-09-15",
+    "price": 100.2281,
+    "sevenDayYield": 0.0419,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-16",
+    "price": 100.2407,
+    "sevenDayYield": 0.0418,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-17",
+    "price": 100.2549,
+    "sevenDayYield": 0.0418,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-18",
+    "price": 100.2647,
+    "sevenDayYield": 0.0417,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-19",
+    "price": 100.2149,
+    "sevenDayYield": 0.0417,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-20",
+    "price": 100.2149,
+    "sevenDayYield": 0.0417,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-09-21",
+    "price": 100.2149,
+    "sevenDayYield": 0.0417,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-09-22",
+    "price": 100.2281,
+    "sevenDayYield": 0.0415,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-23",
+    "price": 100.2384,
+    "sevenDayYield": 0.0415,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-24",
+    "price": 100.2479,
+    "sevenDayYield": 0.0415,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-25",
+    "price": 100.2559,
+    "sevenDayYield": 0.0414,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-26",
+    "price": 100.208,
+    "sevenDayYield": 0.0414,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-27",
+    "price": 100.208,
+    "sevenDayYield": 0.0414,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-09-28",
+    "price": 100.208,
+    "sevenDayYield": 0.0414,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-09-29",
+    "price": 100.2216,
+    "sevenDayYield": 0.0419,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-09-30",
+    "price": 100.2319,
+    "sevenDayYield": 0.0413,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-10-07T18:32:46.740Z"
+  },
+  {
+    "asOfDate": "2025-10-01",
+    "price": 100.2319,
+    "sevenDayYield": 0.0413,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-10-02",
+    "price": 100.2543,
+    "sevenDayYield": 0.0413,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-03",
+    "price": 100.2074,
+    "sevenDayYield": 0.041,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-04",
+    "price": 100.2074,
+    "sevenDayYield": 0.041,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-10-05",
+    "price": 100.2074,
+    "sevenDayYield": 0.041,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-10-06",
+    "price": 100.2212,
+    "sevenDayYield": 0.0404,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-07",
+    "price": 100.2314,
+    "sevenDayYield": 0.0409,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-08",
+    "price": 100.242,
+    "sevenDayYield": 0.0408,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-09",
+    "price": 100.2513,
+    "sevenDayYield": 0.0408,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-10",
+    "price": 100.2144,
+    "sevenDayYield": 0.041,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-11",
+    "price": 100.2144,
+    "sevenDayYield": 0.041,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-10-12",
+    "price": 100.2144,
+    "sevenDayYield": 0.041,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-10-13",
+    "price": 100.2191,
+    "sevenDayYield": 0.041,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-14",
+    "price": 100.2287,
+    "sevenDayYield": 0.041,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-15",
+    "price": 100.2376,
+    "sevenDayYield": 0.041,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-16",
+    "price": 100.2492,
+    "sevenDayYield": 0.041,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-17",
+    "price": 100.2102,
+    "sevenDayYield": 0.041,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-18",
+    "price": 100.2102,
+    "sevenDayYield": 0.041,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-10-19",
+    "price": 100.2102,
+    "sevenDayYield": 0.041,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-10-20",
+    "price": 100.2186,
+    "sevenDayYield": 0.0407,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-21",
+    "price": 100.2299,
+    "sevenDayYield": 0.0407,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-22",
+    "price": 100.2408,
+    "sevenDayYield": 0.0406,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-23",
+    "price": 100.2509,
+    "sevenDayYield": 0.0405,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-24",
+    "price": 100.2081,
+    "sevenDayYield": 0.0405,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-25",
+    "price": 100.2081,
+    "sevenDayYield": 0.0405,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-10-26",
+    "price": 100.2081,
+    "sevenDayYield": 0.0405,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-10-27",
+    "price": 100.2231,
+    "sevenDayYield": 0.0403,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-28",
+    "price": 100.2356,
+    "sevenDayYield": 0.0403,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-29",
+    "price": 100.2437,
+    "sevenDayYield": 0.0402,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-30",
+    "price": 100.2537,
+    "sevenDayYield": 0.0402,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-31",
+    "price": 100.2073,
+    "sevenDayYield": 0.0402,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-11-08T00:41:15.512Z"
+  },
+  {
+    "asOfDate": "2025-11-01",
+    "price": 100.2073,
+    "sevenDayYield": 0.0402,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-11-02",
+    "price": 100.2073,
+    "sevenDayYield": 0.0402,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-11-03",
+    "price": 100.2187,
+    "sevenDayYield": 0.0401,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-04",
+    "price": 100.2304,
+    "sevenDayYield": 0.0399,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-05",
+    "price": 100.2404,
+    "sevenDayYield": 0.0399,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-06",
+    "price": 100.254,
+    "sevenDayYield": 0.0399,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-07",
+    "price": 100.2068,
+    "sevenDayYield": 0.0398,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-08",
+    "price": 100.2068,
+    "sevenDayYield": 0.0398,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-11-09",
+    "price": 100.2068,
+    "sevenDayYield": 0.0398,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-11-10",
+    "price": 100.2259,
+    "sevenDayYield": 0.0396,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-11",
+    "price": 100.2277,
+    "sevenDayYield": 0.0397,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-12",
+    "price": 100.2382,
+    "sevenDayYield": 0.0397,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-13",
+    "price": 100.2473,
+    "sevenDayYield": 0.0397,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-14",
+    "price": 100.2006,
+    "sevenDayYield": 0.0397,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-15",
+    "price": 100.2006,
+    "sevenDayYield": 0.0397,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-11-16",
+    "price": 100.2006,
+    "sevenDayYield": 0.0397,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-11-17",
+    "price": 100.2137,
+    "sevenDayYield": 0.0396,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-18",
+    "price": 100.2252,
+    "sevenDayYield": 0.0395,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-19",
+    "price": 100.2346,
+    "sevenDayYield": 0.0394,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-20",
+    "price": 100.2452,
+    "sevenDayYield": 0.0394,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-21",
+    "price": 100.2032,
+    "sevenDayYield": 0.0393,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-22",
+    "price": 100.2032,
+    "sevenDayYield": 0.0393,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-11-23",
+    "price": 100.2032,
+    "sevenDayYield": 0.0393,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-11-24",
+    "price": 100.2163,
+    "sevenDayYield": 0.0392,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-25",
+    "price": 100.2272,
+    "sevenDayYield": 0.0392,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-26",
+    "price": 100.2446,
+    "sevenDayYield": 0.0392,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-27",
+    "price": 100.2446,
+    "sevenDayYield": 0.0392,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-11-28",
+    "price": 100.2146,
+    "sevenDayYield": 0.0392,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2025-12-05T22:12:46.357Z"
+  },
+  {
+    "asOfDate": "2025-11-29",
+    "price": 100.2146,
+    "sevenDayYield": 0.0392,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-11-30",
+    "price": 100.2146,
+    "sevenDayYield": 0.0392,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-12-01",
+    "price": 100.2146,
+    "sevenDayYield": 0.0392,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-12-02",
+    "price": 100.2472,
+    "sevenDayYield": 0.039,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-03",
+    "price": 100.2627,
+    "sevenDayYield": 0.039,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-04",
+    "price": 100.2733,
+    "sevenDayYield": 0.0389,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-05",
+    "price": 100.2151,
+    "sevenDayYield": 0.0388,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-06",
+    "price": 100.2151,
+    "sevenDayYield": 0.0388,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-12-07",
+    "price": 100.2151,
+    "sevenDayYield": 0.0388,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-12-08",
+    "price": 100.2261,
+    "sevenDayYield": 0.0386,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-09",
+    "price": 100.2359,
+    "sevenDayYield": 0.0386,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-10",
+    "price": 100.2513,
+    "sevenDayYield": 0.0385,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-11",
+    "price": 100.2645,
+    "sevenDayYield": 0.0384,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-12",
+    "price": 100.2215,
+    "sevenDayYield": 0.0383,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-13",
+    "price": 100.2215,
+    "sevenDayYield": 0.0383,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-12-14",
+    "price": 100.2215,
+    "sevenDayYield": 0.0383,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-12-15",
+    "price": 100.2369,
+    "sevenDayYield": 0.038,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-16",
+    "price": 100.2477,
+    "sevenDayYield": 0.0379,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-17",
+    "price": 100.2574,
+    "sevenDayYield": 0.0378,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-18",
+    "price": 100.2695,
+    "sevenDayYield": 0.0377,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-19",
+    "price": 100.224,
+    "sevenDayYield": 0.0377,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-20",
+    "price": 100.224,
+    "sevenDayYield": 0.0377,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-12-21",
+    "price": 100.224,
+    "sevenDayYield": 0.0377,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-12-22",
+    "price": 100.2377,
+    "sevenDayYield": 0.0375,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-23",
+    "price": 100.2466,
+    "sevenDayYield": 0.0374,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-24",
+    "price": 100.2616,
+    "sevenDayYield": 0.0374,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-25",
+    "price": 100.2616,
+    "sevenDayYield": 0.0374,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-12-26",
+    "price": 100.1715,
+    "sevenDayYield": 0.0373,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-27",
+    "price": 100.1715,
+    "sevenDayYield": 0.0373,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-12-28",
+    "price": 100.1715,
+    "sevenDayYield": 0.0373,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2025-12-29",
+    "price": 100.1851,
+    "sevenDayYield": 0.0373,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-30",
+    "price": 100.1968,
+    "sevenDayYield": 0.0372,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 100.2132,
+    "sevenDayYield": 0.0372,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-01-08T19:21:26.832Z"
+  },
+  {
+    "asOfDate": "2026-01-01",
+    "price": 100.2132,
+    "sevenDayYield": 0.0372,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2026-01-02",
+    "price": 100.2132,
+    "sevenDayYield": 0.0372,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2026-01-03",
+    "price": 100.2132,
+    "sevenDayYield": 0.0372,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2026-01-04",
+    "price": 100.2132,
+    "sevenDayYield": 0.0372,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2026-01-05",
+    "price": 100.2254,
+    "sevenDayYield": 0.037,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-06",
+    "price": 100.235,
+    "sevenDayYield": 0.037,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-07",
+    "price": 100.2443,
+    "sevenDayYield": 0.0369,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-08",
+    "price": 100.2539,
+    "sevenDayYield": 0.0368,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-09",
+    "price": 100.2445,
+    "sevenDayYield": 0.0368,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-10",
+    "price": 100.2445,
+    "sevenDayYield": 0.0368,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2026-01-11",
+    "price": 100.2445,
+    "sevenDayYield": 0.0368,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2026-01-12",
+    "price": 100.2571,
+    "sevenDayYield": 0.0367,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-13",
+    "price": 100.2656,
+    "sevenDayYield": 0.0367,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-14",
+    "price": 100.2744,
+    "sevenDayYield": 0.0367,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-15",
+    "price": 100.2808,
+    "sevenDayYield": 0.0366,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-16",
+    "price": 100.2426,
+    "sevenDayYield": 0.0366,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-17",
+    "price": 100.2426,
+    "sevenDayYield": 0.0366,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2026-01-18",
+    "price": 100.2426,
+    "sevenDayYield": 0.0366,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2026-01-19",
+    "price": 100.2426,
+    "sevenDayYield": 0.0366,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2026-01-20",
+    "price": 100.2608,
+    "sevenDayYield": 0.0365,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-21",
+    "price": 100.2687,
+    "sevenDayYield": 0.0364,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-22",
+    "price": 100.2765,
+    "sevenDayYield": 0.0364,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-23",
+    "price": 100.2082,
+    "sevenDayYield": 0.0364,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-24",
+    "price": 100.2082,
+    "sevenDayYield": 0.0364,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2026-01-25",
+    "price": 100.2082,
+    "sevenDayYield": 0.0364,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:26.989Z"
+  },
+  {
+    "asOfDate": "2026-01-26",
+    "price": 100.2249,
+    "sevenDayYield": 0.0364,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-27",
+    "price": 100.2352,
+    "sevenDayYield": 0.0364,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-28",
+    "price": 100.241,
+    "sevenDayYield": 0.0364,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-29",
+    "price": 100.2525,
+    "sevenDayYield": 0.0364,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 100.2095,
+    "sevenDayYield": 0.0364,
+    "source": "EDGAR MFP-3",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-06T22:39:40.766Z"
+  }
+]

@@ -1,0 +1,362 @@
+[
+  {
+    "asOfDate": "2025-12-17",
+    "price": 100.1313,
+    "sevenDayYield": 0.0355,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-01-08T23:29:16.760Z"
+  },
+  {
+    "asOfDate": "2025-12-18",
+    "price": 100.1435,
+    "sevenDayYield": 0.0355,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-01-08T23:29:16.760Z"
+  },
+  {
+    "asOfDate": "2025-12-19",
+    "price": 100.1055,
+    "sevenDayYield": 0.0354,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-01-08T23:29:16.760Z"
+  },
+  {
+    "asOfDate": "2025-12-20",
+    "price": 100.1055,
+    "sevenDayYield": 0.0354,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2025-12-21",
+    "price": 100.1055,
+    "sevenDayYield": 0.0354,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2025-12-22",
+    "price": 100.1161,
+    "sevenDayYield": 0.0354,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-01-08T23:29:16.760Z"
+  },
+  {
+    "asOfDate": "2025-12-23",
+    "price": 100.1261,
+    "sevenDayYield": 0.0353,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-01-08T23:29:16.760Z"
+  },
+  {
+    "asOfDate": "2025-12-24",
+    "price": 100.0774,
+    "sevenDayYield": 0.0353,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-01-08T23:29:16.760Z"
+  },
+  {
+    "asOfDate": "2025-12-25",
+    "price": 100.0774,
+    "sevenDayYield": 0.0353,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2025-12-26",
+    "price": 100.1075,
+    "sevenDayYield": 0.0353,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-01-08T23:29:16.760Z"
+  },
+  {
+    "asOfDate": "2025-12-27",
+    "price": 100.1075,
+    "sevenDayYield": 0.0353,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2025-12-28",
+    "price": 100.1075,
+    "sevenDayYield": 0.0353,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2025-12-29",
+    "price": 100.1176,
+    "sevenDayYield": 0.0352,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-01-08T23:29:16.760Z"
+  },
+  {
+    "asOfDate": "2025-12-30",
+    "price": 100.1295,
+    "sevenDayYield": 0.0351,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-01-08T23:29:16.760Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 100.0787,
+    "sevenDayYield": 0.0351,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-01-08T23:29:16.760Z"
+  },
+  {
+    "asOfDate": "2026-01-01",
+    "price": 100.0787,
+    "sevenDayYield": 0.0351,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2026-01-02",
+    "price": 100.0787,
+    "sevenDayYield": 0.0351,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2026-01-03",
+    "price": 100.0787,
+    "sevenDayYield": 0.0351,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2026-01-04",
+    "price": 100.0787,
+    "sevenDayYield": 0.0351,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2026-01-05",
+    "price": 100.1165,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-06",
+    "price": 100.1273,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-07",
+    "price": 100.1362,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-08",
+    "price": 100.1447,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-09",
+    "price": 100.1039,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-10",
+    "price": 100.1039,
+    "sevenDayYield": 0.0349,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2026-01-11",
+    "price": 100.1039,
+    "sevenDayYield": 0.0349,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2026-01-12",
+    "price": 100.1138,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-13",
+    "price": 100.123,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-14",
+    "price": 100.1316,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-15",
+    "price": 100.1398,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-16",
+    "price": 100.1095,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-17",
+    "price": 100.1095,
+    "sevenDayYield": 0.0349,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2026-01-18",
+    "price": 100.1095,
+    "sevenDayYield": 0.0349,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2026-01-19",
+    "price": 100.1095,
+    "sevenDayYield": 0.0349,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2026-01-20",
+    "price": 100.1202,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-21",
+    "price": 100.1291,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-22",
+    "price": 100.1383,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-23",
+    "price": 100.0993,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-24",
+    "price": 100.0993,
+    "sevenDayYield": 0.0349,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2026-01-25",
+    "price": 100.0993,
+    "sevenDayYield": 0.0349,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:26.705Z"
+  },
+  {
+    "asOfDate": "2026-01-26",
+    "price": 100.1096,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-27",
+    "price": 100.1196,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-28",
+    "price": 100.1273,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-29",
+    "price": 100.1373,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 100.1,
+    "sevenDayYield": 0.0349,
+    "source": "EDGAR MFP-3",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-06T18:31:17.786Z"
+  }
+]

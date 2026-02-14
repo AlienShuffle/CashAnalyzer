@@ -1,0 +1,378 @@
+[
+  {
+    "asOfDate": "2025-03-14",
+    "price": 1,
+    "sevenDayYield": 0.02606,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-03-25T22:20:01.307Z"
+  },
+  {
+    "asOfDate": "2025-03-15",
+    "price": 1,
+    "sevenDayYield": 0.02606,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-03-16",
+    "price": 1,
+    "sevenDayYield": 0.02606,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-03-17",
+    "price": 1,
+    "sevenDayYield": 0.02606,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-03-18",
+    "price": 1,
+    "sevenDayYield": 0.02606,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-03-19",
+    "price": 1,
+    "sevenDayYield": 0.02606,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-03-20",
+    "price": 1,
+    "sevenDayYield": 0.02606,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-03-21",
+    "price": 1,
+    "sevenDayYield": 0.02606,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-03-22",
+    "price": 1,
+    "sevenDayYield": 0.02606,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-03-23",
+    "price": 1,
+    "sevenDayYield": 0.02606,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-03-24",
+    "price": 1,
+    "sevenDayYield": 0.026126,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-03-26T02:22:34.013Z"
+  },
+  {
+    "asOfDate": "2025-03-25",
+    "price": 1,
+    "sevenDayYield": 0.025796,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-03-26T22:33:43.814Z"
+  },
+  {
+    "asOfDate": "2025-03-26",
+    "price": 1,
+    "sevenDayYield": 0.025461,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-03-27T18:50:39.829Z"
+  },
+  {
+    "asOfDate": "2025-03-27",
+    "price": 1,
+    "sevenDayYield": 0.025181,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-03-28T15:11:20.444Z"
+  },
+  {
+    "asOfDate": "2025-03-28",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-04-01T03:46:51.846Z"
+  },
+  {
+    "asOfDate": "2025-03-29",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-03-30",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-03-31",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-01",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-02",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-03",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-04",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-05",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-06",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-07",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-08",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-09",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-10",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-11",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-12",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-13",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-14",
+    "price": 1,
+    "sevenDayYield": 0.024898,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-15",
+    "price": 1,
+    "sevenDayYield": 0.03583,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-04-16T21:19:39.721Z"
+  },
+  {
+    "asOfDate": "2025-04-16",
+    "price": 1,
+    "sevenDayYield": 0.036589,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-04-17T17:34:32.020Z"
+  },
+  {
+    "asOfDate": "2025-04-17",
+    "price": 1,
+    "sevenDayYield": 0.035132,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-04-22T06:10:47.343Z"
+  },
+  {
+    "asOfDate": "2025-04-18",
+    "price": 1,
+    "sevenDayYield": 0.035132,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-19",
+    "price": 1,
+    "sevenDayYield": 0.035132,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-20",
+    "price": 1,
+    "sevenDayYield": 0.035132,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-21",
+    "price": 1,
+    "sevenDayYield": 0.034981,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-04-23T06:31:13.559Z"
+  },
+  {
+    "asOfDate": "2025-04-22",
+    "price": 1,
+    "sevenDayYield": 0.034689,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-04-24T06:51:28.646Z"
+  },
+  {
+    "asOfDate": "2025-04-23",
+    "price": 1,
+    "sevenDayYield": 0.034224,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-04-25T07:11:34.535Z"
+  },
+  {
+    "asOfDate": "2025-04-24",
+    "price": 1,
+    "sevenDayYield": 0.033363,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-04-26T07:32:03.621Z"
+  },
+  {
+    "asOfDate": "2025-04-25",
+    "price": 1,
+    "sevenDayYield": 0.030644,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-04-29T04:24:04.078Z"
+  },
+  {
+    "asOfDate": "2025-04-26",
+    "price": 1,
+    "sevenDayYield": 0.030644,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-27",
+    "price": 1,
+    "sevenDayYield": 0.030644,
+    "source": "gapFiller (moneymarket.fun)",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:45.596Z"
+  },
+  {
+    "asOfDate": "2025-04-28",
+    "price": 1,
+    "sevenDayYield": 0.029731,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-04-30T04:44:43.673Z"
+  },
+  {
+    "asOfDate": "2025-04-29",
+    "price": 1,
+    "sevenDayYield": 0.028709,
+    "source": "moneymarket.fun",
+    "ticker": "VCTXX",
+    "timestamp": "2025-05-01T05:04:37.671Z"
+  }
+]

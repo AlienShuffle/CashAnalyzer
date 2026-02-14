@@ -1,0 +1,890 @@
+[
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0389,
+    "source": "moneymarket.fun",
+    "ticker": "BISXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0378,
+    "source": "moneymarket.fun",
+    "ticker": "POIXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0372,
+    "source": "moneymarket.fun",
+    "ticker": "USDXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0365,
+    "source": "moneymarket.fun",
+    "ticker": "SGUXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0363,
+    "source": "moneymarket.fun",
+    "ticker": "TTTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0362,
+    "source": "moneymarket.fun",
+    "ticker": "MSUXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0361,
+    "source": "moneymarket.fun",
+    "ticker": "FGTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0361,
+    "source": "moneymarket.fun",
+    "ticker": "SUTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0358,
+    "source": "moneymarket.fun",
+    "ticker": "BUCXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0353,
+    "source": "moneymarket.fun",
+    "ticker": "FZCXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0353,
+    "source": "moneymarket.fun",
+    "ticker": "BITXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.035,
+    "source": "moneymarket.fun",
+    "ticker": "SNVXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0346,
+    "source": "moneymarket.fun",
+    "ticker": "SNSXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0343,
+    "source": "moneymarket.fun",
+    "ticker": "SPAXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.034,
+    "source": "moneymarket.fun",
+    "ticker": "SWGXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0338,
+    "source": "moneymarket.fun",
+    "ticker": "TTDXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0323,
+    "source": "moneymarket.fun",
+    "ticker": "BTFXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0315,
+    "source": "moneymarket.fun",
+    "ticker": "FZGXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0313,
+    "source": "moneymarket.fun",
+    "ticker": "BTCXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0294,
+    "source": "moneymarket.fun",
+    "ticker": "FTCXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.029,
+    "source": "moneymarket.fun",
+    "ticker": "FZAXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0289,
+    "source": "moneymarket.fun",
+    "ticker": "FSXXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.028,
+    "source": "moneymarket.fun",
+    "ticker": "TSLXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0279,
+    "source": "moneymarket.fun",
+    "ticker": "FEXXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.0269,
+    "source": "moneymarket.fun",
+    "ticker": "FETXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0365,
+    "source": "moneymarket.fun",
+    "ticker": "GABXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0359,
+    "source": "moneymarket.fun",
+    "ticker": "GOVXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0359,
+    "source": "moneymarket.fun",
+    "ticker": "GOFXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0354,
+    "source": "moneymarket.fun",
+    "ticker": "TOIXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0354,
+    "source": "moneymarket.fun",
+    "ticker": "GOIXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0353,
+    "source": "moneymarket.fun",
+    "ticker": "UTIXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0351,
+    "source": "moneymarket.fun",
+    "ticker": "GOTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.035,
+    "source": "moneymarket.fun",
+    "ticker": "FTIXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0349,
+    "source": "moneymarket.fun",
+    "ticker": "JMMF",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0317,
+    "source": "moneymarket.fun",
+    "ticker": "HTSXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0197,
+    "source": "moneymarket.fun",
+    "ticker": "FTXXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0173,
+    "source": "moneymarket.fun",
+    "ticker": "FTFXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.0168,
+    "source": "moneymarket.fun",
+    "ticker": "FFTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0374,
+    "source": "moneymarket.fun",
+    "ticker": "WMPXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0373,
+    "source": "moneymarket.fun",
+    "ticker": "TCPXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0372,
+    "source": "moneymarket.fun",
+    "ticker": "GPCXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0372,
+    "source": "moneymarket.fun",
+    "ticker": "TMCXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0368,
+    "source": "moneymarket.fun",
+    "ticker": "PNIXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0368,
+    "source": "moneymarket.fun",
+    "ticker": "BMMXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0367,
+    "source": "moneymarket.fun",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0364,
+    "source": "moneymarket.fun",
+    "ticker": "VMRXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0364,
+    "source": "moneymarket.fun",
+    "ticker": "MMKT",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0364,
+    "source": "moneymarket.fun",
+    "ticker": "XTSLA",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0362,
+    "source": "moneymarket.fun",
+    "ticker": "VMFXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0361,
+    "source": "moneymarket.fun",
+    "ticker": "BRIXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0361,
+    "source": "moneymarket.fun",
+    "ticker": "FRBXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0359,
+    "source": "moneymarket.fun",
+    "ticker": "BEMXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0359,
+    "source": "moneymarket.fun",
+    "ticker": "TSTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0358,
+    "source": "moneymarket.fun",
+    "ticker": "WSTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0358,
+    "source": "moneymarket.fun",
+    "ticker": "SBIXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0358,
+    "source": "moneymarket.fun",
+    "ticker": "TFDXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0358,
+    "source": "moneymarket.fun",
+    "ticker": "TIGXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0358,
+    "source": "moneymarket.fun",
+    "ticker": "HUAXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0358,
+    "source": "moneymarket.fun",
+    "ticker": "BUPXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0357,
+    "source": "moneymarket.fun",
+    "ticker": "FISXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0354,
+    "source": "moneymarket.fun",
+    "ticker": "BCHXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0354,
+    "source": "moneymarket.fun",
+    "ticker": "WOTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0353,
+    "source": "moneymarket.fun",
+    "ticker": "BFCXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0352,
+    "source": "moneymarket.fun",
+    "ticker": "TFFXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0352,
+    "source": "moneymarket.fun",
+    "ticker": "SIGXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0352,
+    "source": "moneymarket.fun",
+    "ticker": "EVEXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0352,
+    "source": "moneymarket.fun",
+    "ticker": "EDUXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0352,
+    "source": "moneymarket.fun",
+    "ticker": "FTUXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0351,
+    "source": "moneymarket.fun",
+    "ticker": "FZDXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0349,
+    "source": "moneymarket.fun",
+    "ticker": "BTAXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0349,
+    "source": "moneymarket.fun",
+    "ticker": "TCDXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0348,
+    "source": "moneymarket.fun",
+    "ticker": "BLFXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0346,
+    "source": "moneymarket.fun",
+    "ticker": "DMMKI",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0342,
+    "source": "moneymarket.fun",
+    "ticker": "BFTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0342,
+    "source": "moneymarket.fun",
+    "ticker": "FCEXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0341,
+    "source": "moneymarket.fun",
+    "ticker": "FDRXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.034,
+    "source": "moneymarket.fun",
+    "ticker": "PNPXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.034,
+    "source": "moneymarket.fun",
+    "ticker": "PINXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0339,
+    "source": "moneymarket.fun",
+    "ticker": "SPRXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0334,
+    "source": "moneymarket.fun",
+    "ticker": "TFEXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0333,
+    "source": "moneymarket.fun",
+    "ticker": "FDLXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0333,
+    "source": "moneymarket.fun",
+    "ticker": "TDDXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0333,
+    "source": "moneymarket.fun",
+    "ticker": "MNRSV",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0332,
+    "source": "moneymarket.fun",
+    "ticker": "MSAXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0332,
+    "source": "moneymarket.fun",
+    "ticker": "MSIXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0332,
+    "source": "moneymarket.fun",
+    "ticker": "FCSXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0327,
+    "source": "moneymarket.fun",
+    "ticker": "TSDXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0319,
+    "source": "moneymarket.fun",
+    "ticker": "BTRXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0318,
+    "source": "moneymarket.fun",
+    "ticker": "BFRXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0312,
+    "source": "moneymarket.fun",
+    "ticker": "CPFXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0309,
+    "source": "moneymarket.fun",
+    "ticker": "BPTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0309,
+    "source": "moneymarket.fun",
+    "ticker": "BFFXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0307,
+    "source": "moneymarket.fun",
+    "ticker": "FTVXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0307,
+    "source": "moneymarket.fun",
+    "ticker": "BRPXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0302,
+    "source": "moneymarket.fun",
+    "ticker": "BFMXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0276,
+    "source": "moneymarket.fun",
+    "ticker": "BSLXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0275,
+    "source": "moneymarket.fun",
+    "ticker": "BFBXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0258,
+    "source": "moneymarket.fun",
+    "ticker": "BMCXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0257,
+    "source": "moneymarket.fun",
+    "ticker": "MCBXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0216,
+    "source": "moneymarket.fun",
+    "ticker": "SWOXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0213,
+    "source": "moneymarket.fun",
+    "ticker": "SCTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0203,
+    "source": "moneymarket.fun",
+    "ticker": "VYFXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0201,
+    "source": "moneymarket.fun",
+    "ticker": "SWTXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0198,
+    "source": "moneymarket.fun",
+    "ticker": "SWWXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0179,
+    "source": "moneymarket.fun",
+    "ticker": "SCAXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0166,
+    "source": "moneymarket.fun",
+    "ticker": "FZEXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0166,
+    "source": "moneymarket.fun",
+    "ticker": "MCSXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0164,
+    "source": "moneymarket.fun",
+    "ticker": "SWKXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0154,
+    "source": "moneymarket.fun",
+    "ticker": "FMOXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0126,
+    "source": "moneymarket.fun",
+    "ticker": "FDEXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.0101,
+    "source": "moneymarket.fun",
+    "ticker": "FERXX",
+    "timestamp": "2026-02-13T15:58:20.573Z"
+  }
+]

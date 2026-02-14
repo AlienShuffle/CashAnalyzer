@@ -1,0 +1,3901 @@
+[
+  {
+    "asOfDate": "2024-12-01",
+    "price": 1,
+    "sevenDayYield": 0.04087,
+    "thirtyDayYield": 0.04184,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-02T05:40:25.201Z"
+  },
+  {
+    "asOfDate": "2024-12-02",
+    "price": 1,
+    "sevenDayYield": 0.04087,
+    "thirtyDayYield": 0.04178,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-03T06:18:34.932Z"
+  },
+  {
+    "asOfDate": "2024-12-03",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-07T00:43:29.069Z"
+  },
+  {
+    "asOfDate": "2024-12-04",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-05",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-06",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-07",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-08",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-09",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-10",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-11",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-12",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-13",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-14",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-15",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-16",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-17",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-18",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-19",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-20",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-21",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-22",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-23",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-24",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-25",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-26",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-27",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-28",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-29",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-30",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2024-12-31",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-01",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-02",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-03",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-04",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-05",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-06",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-07",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-08",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-09",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-10",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-11",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-12",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-13",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-14",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-15",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-16",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-17",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-18",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-19",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-20",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-21",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-22",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-23",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-24",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-25",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-26",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-27",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-28",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-29",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-30",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-01-31",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-01",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-02",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-03",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-04",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-05",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-06",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-07",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-08",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-09",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-10",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-11",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-12",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-13",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-14",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-15",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-16",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-17",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-18",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-19",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-20",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-21",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-22",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-23",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-24",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-25",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-26",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-27",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-02-28",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-01",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-02",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-03",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-04",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-05",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-06",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-07",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-08",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-09",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-10",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-11",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-12",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-13",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-14",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-15",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-16",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-17",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-18",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-19",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-20",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-21",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-22",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-23",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-24",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-25",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-26",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-27",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-28",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-29",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-30",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-03-31",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-01",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-02",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-03",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-04",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-05",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-06",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-07",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-08",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-09",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-10",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-11",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-12",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-13",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-14",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-15",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-16",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-17",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-18",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-19",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-20",
+    "price": 1,
+    "sevenDayYield": 0.04089,
+    "thirtyDayYield": 0.04162,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-21",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:58.605Z"
+  },
+  {
+    "asOfDate": "2025-04-22",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:58.605Z"
+  },
+  {
+    "asOfDate": "2025-04-23",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:58.605Z"
+  },
+  {
+    "asOfDate": "2025-04-24",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:58.605Z"
+  },
+  {
+    "asOfDate": "2025-04-25",
+    "price": 1.0004,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:58.605Z"
+  },
+  {
+    "asOfDate": "2025-04-26",
+    "price": 1.0004,
+    "sevenDayYield": 0.0433,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-27",
+    "price": 1.0004,
+    "sevenDayYield": 0.0433,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-04-28",
+    "price": 1.0004,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:58.605Z"
+  },
+  {
+    "asOfDate": "2025-04-29",
+    "price": 1.0004,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:58.605Z"
+  },
+  {
+    "asOfDate": "2025-04-30",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:58.605Z"
+  },
+  {
+    "asOfDate": "2025-05-01",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-05-02",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-03",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-05-04",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-05-05",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-06",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-07",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-08",
+    "price": 1.0004,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-09",
+    "price": 1.0004,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-10",
+    "price": 1.0004,
+    "sevenDayYield": 0.0433,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-05-11",
+    "price": 1.0004,
+    "sevenDayYield": 0.0433,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-05-12",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-13",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-14",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-15",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-16",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-17",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-05-18",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-05-19",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-20",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-21",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-22",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-23",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-24",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-05-25",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-05-26",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-05-27",
+    "price": 1.0004,
+    "sevenDayYield": 0.0431,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-28",
+    "price": 1.0004,
+    "sevenDayYield": 0.0431,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-29",
+    "price": 1.0004,
+    "sevenDayYield": 0.0431,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-30",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T18:10:48.975Z"
+  },
+  {
+    "asOfDate": "2025-05-31",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-01",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-02",
+    "price": 1.0004,
+    "sevenDayYield": 0.0432,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-03",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-07T17:55:12.062Z"
+  },
+  {
+    "asOfDate": "2025-06-04",
+    "price": 1.0004,
+    "sevenDayYield": 0.0434,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-07T17:55:12.062Z"
+  },
+  {
+    "asOfDate": "2025-06-05",
+    "price": 1.0004,
+    "sevenDayYield": 0.0433,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-07T17:55:12.062Z"
+  },
+  {
+    "asOfDate": "2025-06-06",
+    "price": 1,
+    "sevenDayYield": 0.04313,
+    "thirtyDayYield": 0.0432,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-07T01:50:49.513Z"
+  },
+  {
+    "asOfDate": "2025-06-07",
+    "price": 1,
+    "sevenDayYield": 0.04313,
+    "thirtyDayYield": 0.0432,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-08",
+    "price": 1,
+    "sevenDayYield": 0.04313,
+    "thirtyDayYield": 0.0432,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-09",
+    "price": 1,
+    "sevenDayYield": 0.0431,
+    "thirtyDayYield": 0.0432,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-10T02:16:21.394Z"
+  },
+  {
+    "asOfDate": "2025-06-10",
+    "price": 1,
+    "sevenDayYield": 0.04305,
+    "thirtyDayYield": 0.04319,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-11T02:56:46.035Z"
+  },
+  {
+    "asOfDate": "2025-06-11",
+    "price": 1,
+    "sevenDayYield": 0.04304,
+    "thirtyDayYield": 0.04319,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-12T03:31:29.780Z"
+  },
+  {
+    "asOfDate": "2025-06-12",
+    "price": 1,
+    "sevenDayYield": 0.04304,
+    "thirtyDayYield": 0.04318,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-13T05:04:12.685Z"
+  },
+  {
+    "asOfDate": "2025-06-13",
+    "price": 1,
+    "sevenDayYield": 0.04301,
+    "thirtyDayYield": 0.04315,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-14T03:06:44.271Z"
+  },
+  {
+    "asOfDate": "2025-06-14",
+    "price": 1,
+    "sevenDayYield": 0.04301,
+    "thirtyDayYield": 0.04315,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-15",
+    "price": 1,
+    "sevenDayYield": 0.04301,
+    "thirtyDayYield": 0.04315,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-16",
+    "price": 1,
+    "sevenDayYield": 0.04294,
+    "thirtyDayYield": 0.04313,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-17T20:23:48.580Z"
+  },
+  {
+    "asOfDate": "2025-06-17",
+    "price": 1,
+    "sevenDayYield": 0.04289,
+    "thirtyDayYield": 0.04311,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-18T05:22:20.231Z"
+  },
+  {
+    "asOfDate": "2025-06-18",
+    "price": 1,
+    "sevenDayYield": 0.04279,
+    "thirtyDayYield": 0.04308,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-19T03:54:21.784Z"
+  },
+  {
+    "asOfDate": "2025-06-19",
+    "price": 1,
+    "sevenDayYield": 0.04279,
+    "thirtyDayYield": 0.04308,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-20",
+    "price": 1,
+    "sevenDayYield": 0.04261,
+    "thirtyDayYield": 0.04302,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-21T01:31:52.530Z"
+  },
+  {
+    "asOfDate": "2025-06-21",
+    "price": 1,
+    "sevenDayYield": 0.04261,
+    "thirtyDayYield": 0.04302,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-22",
+    "price": 1,
+    "sevenDayYield": 0.04261,
+    "thirtyDayYield": 0.04302,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-23",
+    "price": 1,
+    "sevenDayYield": 0.04261,
+    "thirtyDayYield": 0.043,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-24T02:50:23.892Z"
+  },
+  {
+    "asOfDate": "2025-06-24",
+    "price": 1,
+    "sevenDayYield": 0.04259,
+    "thirtyDayYield": 0.04299,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-25T03:22:25.480Z"
+  },
+  {
+    "asOfDate": "2025-06-25",
+    "price": 1,
+    "sevenDayYield": 0.04259,
+    "thirtyDayYield": 0.04297,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-26T01:51:37.024Z"
+  },
+  {
+    "asOfDate": "2025-06-26",
+    "price": 1,
+    "sevenDayYield": 0.04262,
+    "thirtyDayYield": 0.04297,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-27T02:26:43.101Z"
+  },
+  {
+    "asOfDate": "2025-06-27",
+    "price": 1,
+    "sevenDayYield": 0.04279,
+    "thirtyDayYield": 0.04293,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-06-28T03:02:08.299Z"
+  },
+  {
+    "asOfDate": "2025-06-28",
+    "price": 1,
+    "sevenDayYield": 0.04279,
+    "thirtyDayYield": 0.04293,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-29",
+    "price": 1,
+    "sevenDayYield": 0.04279,
+    "thirtyDayYield": 0.04293,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-06-30",
+    "price": 1,
+    "sevenDayYield": 0.04286,
+    "thirtyDayYield": 0.04291,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-01T10:59:59.468Z"
+  },
+  {
+    "asOfDate": "2025-07-01",
+    "price": 1,
+    "sevenDayYield": 0.04292,
+    "thirtyDayYield": 0.04289,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-02T05:22:25.931Z"
+  },
+  {
+    "asOfDate": "2025-07-02",
+    "price": 1,
+    "sevenDayYield": 0.04297,
+    "thirtyDayYield": 0.04288,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-03T05:51:45.972Z"
+  },
+  {
+    "asOfDate": "2025-07-03",
+    "price": 1,
+    "sevenDayYield": 0.04289,
+    "thirtyDayYield": 0.04284,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-04T02:17:08.539Z"
+  },
+  {
+    "asOfDate": "2025-07-04",
+    "price": 1,
+    "sevenDayYield": 0.04289,
+    "thirtyDayYield": 0.04284,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-07-05",
+    "price": 1,
+    "sevenDayYield": 0.04289,
+    "thirtyDayYield": 0.04284,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-07-06",
+    "price": 1,
+    "sevenDayYield": 0.04289,
+    "thirtyDayYield": 0.04284,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-07-07",
+    "price": 1,
+    "sevenDayYield": 0.04284,
+    "thirtyDayYield": 0.04283,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-08T04:09:53.651Z"
+  },
+  {
+    "asOfDate": "2025-07-08",
+    "price": 1,
+    "sevenDayYield": 0.0428,
+    "thirtyDayYield": 0.04282,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-09T04:47:07.457Z"
+  },
+  {
+    "asOfDate": "2025-07-09",
+    "price": 1,
+    "sevenDayYield": 0.04274,
+    "thirtyDayYield": 0.0428,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-10T01:14:48.872Z"
+  },
+  {
+    "asOfDate": "2025-07-10",
+    "price": 1,
+    "sevenDayYield": 0.04271,
+    "thirtyDayYield": 0.04279,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-11T01:50:56.622Z"
+  },
+  {
+    "asOfDate": "2025-07-11",
+    "price": 1,
+    "sevenDayYield": 0.04252,
+    "thirtyDayYield": 0.04272,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-12T05:32:07.383Z"
+  },
+  {
+    "asOfDate": "2025-07-12",
+    "price": 1,
+    "sevenDayYield": 0.04252,
+    "thirtyDayYield": 0.04272,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-07-13",
+    "price": 1,
+    "sevenDayYield": 0.04252,
+    "thirtyDayYield": 0.04272,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-07-14",
+    "price": 1,
+    "sevenDayYield": 0.0425,
+    "thirtyDayYield": 0.04271,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-15T02:27:35.306Z"
+  },
+  {
+    "asOfDate": "2025-07-15",
+    "price": 1,
+    "sevenDayYield": 0.04251,
+    "thirtyDayYield": 0.0427,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-16T00:55:57.571Z"
+  },
+  {
+    "asOfDate": "2025-07-16",
+    "price": 1,
+    "sevenDayYield": 0.04253,
+    "thirtyDayYield": 0.0427,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-17T01:27:22.608Z"
+  },
+  {
+    "asOfDate": "2025-07-17",
+    "price": 1,
+    "sevenDayYield": 0.04255,
+    "thirtyDayYield": 0.04271,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-18T01:59:12.302Z"
+  },
+  {
+    "asOfDate": "2025-07-18",
+    "price": 1,
+    "sevenDayYield": 0.04267,
+    "thirtyDayYield": 0.04271,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-19T02:08:45.772Z"
+  },
+  {
+    "asOfDate": "2025-07-19",
+    "price": 1,
+    "sevenDayYield": 0.04267,
+    "thirtyDayYield": 0.04271,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-07-20",
+    "price": 1,
+    "sevenDayYield": 0.04267,
+    "thirtyDayYield": 0.04271,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-07-21",
+    "price": 1,
+    "sevenDayYield": 0.04266,
+    "thirtyDayYield": 0.04271,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-22T01:24:03.121Z"
+  },
+  {
+    "asOfDate": "2025-07-22",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.04271,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-23T01:59:20.324Z"
+  },
+  {
+    "asOfDate": "2025-07-23",
+    "price": 1,
+    "sevenDayYield": 0.0426,
+    "thirtyDayYield": 0.0427,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-24T00:30:42.524Z"
+  },
+  {
+    "asOfDate": "2025-07-24",
+    "price": 1,
+    "sevenDayYield": 0.04257,
+    "thirtyDayYield": 0.0427,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-25T03:43:02.450Z"
+  },
+  {
+    "asOfDate": "2025-07-25",
+    "price": 1,
+    "sevenDayYield": 0.04259,
+    "thirtyDayYield": 0.04269,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-26T01:30:06.355Z"
+  },
+  {
+    "asOfDate": "2025-07-26",
+    "price": 1,
+    "sevenDayYield": 0.04259,
+    "thirtyDayYield": 0.04269,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-07-27",
+    "price": 1,
+    "sevenDayYield": 0.04259,
+    "thirtyDayYield": 0.04269,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-07-28",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.04268,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-29T02:54:17.997Z"
+  },
+  {
+    "asOfDate": "2025-07-29",
+    "price": 1,
+    "sevenDayYield": 0.04268,
+    "thirtyDayYield": 0.04268,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-30T05:32:32.078Z"
+  },
+  {
+    "asOfDate": "2025-07-30",
+    "price": 1,
+    "sevenDayYield": 0.04272,
+    "thirtyDayYield": 0.04267,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-07-31T02:53:42.593Z"
+  },
+  {
+    "asOfDate": "2025-07-31",
+    "price": 1,
+    "sevenDayYield": 0.04276,
+    "thirtyDayYield": 0.04266,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-01T01:23:15.861Z"
+  },
+  {
+    "asOfDate": "2025-08-01",
+    "price": 1,
+    "sevenDayYield": 0.04275,
+    "thirtyDayYield": 0.04264,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-02T01:57:17.007Z"
+  },
+  {
+    "asOfDate": "2025-08-02",
+    "price": 1,
+    "sevenDayYield": 0.04275,
+    "thirtyDayYield": 0.04264,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-08-03",
+    "price": 1,
+    "sevenDayYield": 0.04275,
+    "thirtyDayYield": 0.04264,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-08-04",
+    "price": 1,
+    "sevenDayYield": 0.04273,
+    "thirtyDayYield": 0.04264,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-05T01:13:52.063Z"
+  },
+  {
+    "asOfDate": "2025-08-05",
+    "price": 1,
+    "sevenDayYield": 0.0427,
+    "thirtyDayYield": 0.04263,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-06T02:48:20.464Z"
+  },
+  {
+    "asOfDate": "2025-08-06",
+    "price": 1,
+    "sevenDayYield": 0.04268,
+    "thirtyDayYield": 0.04263,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-07T03:04:53.447Z"
+  },
+  {
+    "asOfDate": "2025-08-07",
+    "price": 1,
+    "sevenDayYield": 0.04265,
+    "thirtyDayYield": 0.04263,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-08T01:44:42.334Z"
+  },
+  {
+    "asOfDate": "2025-08-08",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.04264,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-09T02:28:44.007Z"
+  },
+  {
+    "asOfDate": "2025-08-09",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.04264,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-08-10",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.04264,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-08-11",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.04265,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-12T01:49:35.523Z"
+  },
+  {
+    "asOfDate": "2025-08-12",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.04266,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-13T02:03:24.084Z"
+  },
+  {
+    "asOfDate": "2025-08-13",
+    "price": 1,
+    "sevenDayYield": 0.04264,
+    "thirtyDayYield": 0.04266,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-14T01:31:27.484Z"
+  },
+  {
+    "asOfDate": "2025-08-14",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.04266,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-15T02:07:58.757Z"
+  },
+  {
+    "asOfDate": "2025-08-15",
+    "price": 1,
+    "sevenDayYield": 0.04264,
+    "thirtyDayYield": 0.04265,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-16T02:44:59.892Z"
+  },
+  {
+    "asOfDate": "2025-08-16",
+    "price": 1,
+    "sevenDayYield": 0.04264,
+    "thirtyDayYield": 0.04265,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-08-17",
+    "price": 1,
+    "sevenDayYield": 0.04264,
+    "thirtyDayYield": 0.04265,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-08-18",
+    "price": 1,
+    "sevenDayYield": 0.04264,
+    "thirtyDayYield": 0.04265,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-19T02:02:26.738Z"
+  },
+  {
+    "asOfDate": "2025-08-19",
+    "price": 1,
+    "sevenDayYield": 0.04264,
+    "thirtyDayYield": 0.04265,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-20T02:36:41.596Z"
+  },
+  {
+    "asOfDate": "2025-08-20",
+    "price": 1,
+    "sevenDayYield": 0.04262,
+    "thirtyDayYield": 0.04265,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-21T03:30:43.785Z"
+  },
+  {
+    "asOfDate": "2025-08-21",
+    "price": 1,
+    "sevenDayYield": 0.0426,
+    "thirtyDayYield": 0.04265,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-22T01:42:54.829Z"
+  },
+  {
+    "asOfDate": "2025-08-22",
+    "price": 1,
+    "sevenDayYield": 0.04257,
+    "thirtyDayYield": 0.04265,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-23T02:28:50.728Z"
+  },
+  {
+    "asOfDate": "2025-08-23",
+    "price": 1,
+    "sevenDayYield": 0.04257,
+    "thirtyDayYield": 0.04265,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-08-24",
+    "price": 1,
+    "sevenDayYield": 0.04257,
+    "thirtyDayYield": 0.04265,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-08-25",
+    "price": 1,
+    "sevenDayYield": 0.04256,
+    "thirtyDayYield": 0.04265,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-26T01:50:15.231Z"
+  },
+  {
+    "asOfDate": "2025-08-26",
+    "price": 1,
+    "sevenDayYield": 0.04258,
+    "thirtyDayYield": 0.04265,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-27T12:03:13.758Z"
+  },
+  {
+    "asOfDate": "2025-08-27",
+    "price": 1,
+    "sevenDayYield": 0.04259,
+    "thirtyDayYield": 0.04264,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-28T04:55:07.406Z"
+  },
+  {
+    "asOfDate": "2025-08-28",
+    "price": 1,
+    "sevenDayYield": 0.04262,
+    "thirtyDayYield": 0.04264,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-29T01:23:31.523Z"
+  },
+  {
+    "asOfDate": "2025-08-29",
+    "price": 1,
+    "sevenDayYield": 0.0426,
+    "thirtyDayYield": 0.04261,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-08-30T02:00:11.349Z"
+  },
+  {
+    "asOfDate": "2025-08-30",
+    "price": 1,
+    "sevenDayYield": 0.0426,
+    "thirtyDayYield": 0.04261,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-08-31",
+    "price": 1,
+    "sevenDayYield": 0.0426,
+    "thirtyDayYield": 0.04261,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-09-01",
+    "price": 1,
+    "sevenDayYield": 0.0426,
+    "thirtyDayYield": 0.04261,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-09-02",
+    "price": 1,
+    "sevenDayYield": 0.04256,
+    "thirtyDayYield": 0.0426,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-03T01:53:20.175Z"
+  },
+  {
+    "asOfDate": "2025-09-03",
+    "price": 1,
+    "sevenDayYield": 0.04254,
+    "thirtyDayYield": 0.0426,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-04T02:26:05.845Z"
+  },
+  {
+    "asOfDate": "2025-09-04",
+    "price": 1,
+    "sevenDayYield": 0.04254,
+    "thirtyDayYield": 0.0426,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-05T02:37:37.036Z"
+  },
+  {
+    "asOfDate": "2025-09-05",
+    "price": 1,
+    "sevenDayYield": 0.04257,
+    "thirtyDayYield": 0.0426,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-06T03:15:55.428Z"
+  },
+  {
+    "asOfDate": "2025-09-06",
+    "price": 1,
+    "sevenDayYield": 0.04257,
+    "thirtyDayYield": 0.0426,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-09-07",
+    "price": 1,
+    "sevenDayYield": 0.04257,
+    "thirtyDayYield": 0.0426,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-09-08",
+    "price": 1,
+    "sevenDayYield": 0.04259,
+    "thirtyDayYield": 0.0426,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-09T02:45:27.135Z"
+  },
+  {
+    "asOfDate": "2025-09-09",
+    "price": 1,
+    "sevenDayYield": 0.04261,
+    "thirtyDayYield": 0.0426,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-10T03:25:39.644Z"
+  },
+  {
+    "asOfDate": "2025-09-10",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.0426,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-11T02:56:51.082Z"
+  },
+  {
+    "asOfDate": "2025-09-11",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.0426,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-12T03:33:56.699Z"
+  },
+  {
+    "asOfDate": "2025-09-12",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.0426,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-13T02:05:25.177Z"
+  },
+  {
+    "asOfDate": "2025-09-13",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.0426,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-09-14",
+    "price": 1,
+    "sevenDayYield": 0.04263,
+    "thirtyDayYield": 0.0426,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-09-15",
+    "price": 1,
+    "sevenDayYield": 0.04266,
+    "thirtyDayYield": 0.04261,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-16T02:43:40.805Z"
+  },
+  {
+    "asOfDate": "2025-09-16",
+    "price": 1,
+    "sevenDayYield": 0.04267,
+    "thirtyDayYield": 0.04261,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-17T02:07:29.187Z"
+  },
+  {
+    "asOfDate": "2025-09-17",
+    "price": 1,
+    "sevenDayYield": 0.04266,
+    "thirtyDayYield": 0.0426,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-18T01:38:10.349Z"
+  },
+  {
+    "asOfDate": "2025-09-18",
+    "price": 1,
+    "sevenDayYield": 0.04252,
+    "thirtyDayYield": 0.04257,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-19T02:12:46.760Z"
+  },
+  {
+    "asOfDate": "2025-09-19",
+    "price": 1,
+    "sevenDayYield": 0.04181,
+    "thirtyDayYield": 0.04242,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-20T02:03:04.180Z"
+  },
+  {
+    "asOfDate": "2025-09-20",
+    "price": 1,
+    "sevenDayYield": 0.04181,
+    "thirtyDayYield": 0.04242,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-09-21",
+    "price": 1,
+    "sevenDayYield": 0.04181,
+    "thirtyDayYield": 0.04242,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-09-22",
+    "price": 1,
+    "sevenDayYield": 0.04152,
+    "thirtyDayYield": 0.04236,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-23T03:24:22.836Z"
+  },
+  {
+    "asOfDate": "2025-09-23",
+    "price": 1,
+    "sevenDayYield": 0.04124,
+    "thirtyDayYield": 0.0423,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-24T02:15:04.252Z"
+  },
+  {
+    "asOfDate": "2025-09-24",
+    "price": 1,
+    "sevenDayYield": 0.041,
+    "thirtyDayYield": 0.04224,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-25T02:54:07.261Z"
+  },
+  {
+    "asOfDate": "2025-09-25",
+    "price": 1,
+    "sevenDayYield": 0.0409,
+    "thirtyDayYield": 0.04218,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-26T03:30:52.976Z"
+  },
+  {
+    "asOfDate": "2025-09-26",
+    "price": 1,
+    "sevenDayYield": 0.04085,
+    "thirtyDayYield": 0.04201,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-30T01:24:59.144Z"
+  },
+  {
+    "asOfDate": "2025-09-27",
+    "price": 1,
+    "sevenDayYield": 0.04085,
+    "thirtyDayYield": 0.04201,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-09-28",
+    "price": 1,
+    "sevenDayYield": 0.04085,
+    "thirtyDayYield": 0.04201,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-09-29",
+    "price": 1,
+    "sevenDayYield": 0.0408,
+    "thirtyDayYield": 0.04194,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-09-30T23:59:29.316Z"
+  },
+  {
+    "asOfDate": "2025-09-30",
+    "price": 1,
+    "sevenDayYield": 0.04085,
+    "thirtyDayYield": 0.04189,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-01T06:08:03.796Z"
+  },
+  {
+    "asOfDate": "2025-10-01",
+    "price": 1,
+    "sevenDayYield": 0.04085,
+    "thirtyDayYield": 0.04189,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-10-02",
+    "price": 1.0007,
+    "sevenDayYield": 0.0409,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-06T19:51:38.359Z"
+  },
+  {
+    "asOfDate": "2025-10-03",
+    "price": 1.0007,
+    "sevenDayYield": 0.0409,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-06T19:51:38.359Z"
+  },
+  {
+    "asOfDate": "2025-10-04",
+    "price": 1.0007,
+    "sevenDayYield": 0.0409,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-10-05",
+    "price": 1.0007,
+    "sevenDayYield": 0.0409,
+    "source": "gapFiller (EDGAR MFP-3)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-10-06",
+    "price": 1,
+    "sevenDayYield": 0.04093,
+    "thirtyDayYield": 0.04156,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-07T06:12:24.027Z"
+  },
+  {
+    "asOfDate": "2025-10-07",
+    "price": 1,
+    "sevenDayYield": 0.04086,
+    "thirtyDayYield": 0.04149,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-09T01:20:36.330Z"
+  },
+  {
+    "asOfDate": "2025-10-08",
+    "price": 1,
+    "sevenDayYield": 0.04082,
+    "thirtyDayYield": 0.04142,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-09T05:27:32.251Z"
+  },
+  {
+    "asOfDate": "2025-10-09",
+    "price": 1,
+    "sevenDayYield": 0.04079,
+    "thirtyDayYield": 0.04136,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-10T06:07:34.407Z"
+  },
+  {
+    "asOfDate": "2025-10-10",
+    "price": 1,
+    "sevenDayYield": 0.04069,
+    "thirtyDayYield": 0.0411,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-15T00:04:48.956Z"
+  },
+  {
+    "asOfDate": "2025-10-11",
+    "price": 1,
+    "sevenDayYield": 0.04069,
+    "thirtyDayYield": 0.0411,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-10-12",
+    "price": 1,
+    "sevenDayYield": 0.04069,
+    "thirtyDayYield": 0.0411,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-10-13",
+    "price": 1.0006,
+    "sevenDayYield": 0.0407,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-06T19:51:38.359Z"
+  },
+  {
+    "asOfDate": "2025-10-14",
+    "price": 1,
+    "sevenDayYield": 0.04071,
+    "thirtyDayYield": 0.04104,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-15T12:27:15.512Z"
+  },
+  {
+    "asOfDate": "2025-10-15",
+    "price": 1,
+    "sevenDayYield": 0.04077,
+    "thirtyDayYield": 0.04098,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-17T01:22:40.370Z"
+  },
+  {
+    "asOfDate": "2025-10-16",
+    "price": 1,
+    "sevenDayYield": 0.04087,
+    "thirtyDayYield": 0.04094,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-18T00:35:00.540Z"
+  },
+  {
+    "asOfDate": "2025-10-17",
+    "price": 1,
+    "sevenDayYield": 0.04108,
+    "thirtyDayYield": 0.04089,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-21T00:00:25.397Z"
+  },
+  {
+    "asOfDate": "2025-10-18",
+    "price": 1,
+    "sevenDayYield": 0.04108,
+    "thirtyDayYield": 0.04089,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-10-19",
+    "price": 1,
+    "sevenDayYield": 0.04108,
+    "thirtyDayYield": 0.04089,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-10-20",
+    "price": 1,
+    "sevenDayYield": 0.04112,
+    "thirtyDayYield": 0.04089,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-22T00:36:01.336Z"
+  },
+  {
+    "asOfDate": "2025-10-21",
+    "price": 1,
+    "sevenDayYield": 0.04115,
+    "thirtyDayYield": 0.04089,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-22T04:42:09.411Z"
+  },
+  {
+    "asOfDate": "2025-10-22",
+    "price": 1,
+    "sevenDayYield": 0.04116,
+    "thirtyDayYield": 0.0409,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-23T05:18:10.158Z"
+  },
+  {
+    "asOfDate": "2025-10-23",
+    "price": 1,
+    "sevenDayYield": 0.04114,
+    "thirtyDayYield": 0.04091,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-24T05:57:34.354Z"
+  },
+  {
+    "asOfDate": "2025-10-24",
+    "price": 1,
+    "sevenDayYield": 0.04117,
+    "thirtyDayYield": 0.04095,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-28T00:40:01.014Z"
+  },
+  {
+    "asOfDate": "2025-10-25",
+    "price": 1,
+    "sevenDayYield": 0.04117,
+    "thirtyDayYield": 0.04095,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-10-26",
+    "price": 1,
+    "sevenDayYield": 0.04117,
+    "thirtyDayYield": 0.04095,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-10-27",
+    "price": 1,
+    "sevenDayYield": 0.04122,
+    "thirtyDayYield": 0.04097,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-28T04:45:34.304Z"
+  },
+  {
+    "asOfDate": "2025-10-28",
+    "price": 1,
+    "sevenDayYield": 0.04127,
+    "thirtyDayYield": 0.04099,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-29T05:23:03.581Z"
+  },
+  {
+    "asOfDate": "2025-10-29",
+    "price": 1,
+    "sevenDayYield": 0.04133,
+    "thirtyDayYield": 0.04102,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-31T00:34:30.154Z"
+  },
+  {
+    "asOfDate": "2025-10-30",
+    "price": 1,
+    "sevenDayYield": 0.04124,
+    "thirtyDayYield": 0.041,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-10-31T04:41:30.898Z"
+  },
+  {
+    "asOfDate": "2025-10-31",
+    "price": 1,
+    "sevenDayYield": 0.04086,
+    "thirtyDayYield": 0.04095,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-04T02:05:38.362Z"
+  },
+  {
+    "asOfDate": "2025-11-01",
+    "price": 1,
+    "sevenDayYield": 0.04086,
+    "thirtyDayYield": 0.04095,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-11-02",
+    "price": 1,
+    "sevenDayYield": 0.04086,
+    "thirtyDayYield": 0.04095,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-11-03",
+    "price": 1,
+    "sevenDayYield": 0.0407,
+    "thirtyDayYield": 0.04092,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-04T06:10:42.632Z"
+  },
+  {
+    "asOfDate": "2025-11-04",
+    "price": 1,
+    "sevenDayYield": 0.04048,
+    "thirtyDayYield": 0.04089,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-05T06:47:24.004Z"
+  },
+  {
+    "asOfDate": "2025-11-05",
+    "price": 1,
+    "sevenDayYield": 0.04016,
+    "thirtyDayYield": 0.04084,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-07T02:02:31.110Z"
+  },
+  {
+    "asOfDate": "2025-11-06",
+    "price": 1,
+    "sevenDayYield": 0.03996,
+    "thirtyDayYield": 0.04079,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-07T08:11:55.355Z"
+  },
+  {
+    "asOfDate": "2025-11-07",
+    "price": 1,
+    "sevenDayYield": 0.03942,
+    "thirtyDayYield": 0.04064,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-11T02:11:04.294Z"
+  },
+  {
+    "asOfDate": "2025-11-08",
+    "price": 1,
+    "sevenDayYield": 0.03942,
+    "thirtyDayYield": 0.04064,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-11-09",
+    "price": 1,
+    "sevenDayYield": 0.03942,
+    "thirtyDayYield": 0.04064,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-11-10",
+    "price": 1,
+    "sevenDayYield": 0.03917,
+    "thirtyDayYield": 0.04053,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-12T06:59:37.583Z"
+  },
+  {
+    "asOfDate": "2025-11-11",
+    "price": 1.0006,
+    "sevenDayYield": 0.0392,
+    "source": "EDGAR MFP-3",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-05T18:03:25.630Z"
+  },
+  {
+    "asOfDate": "2025-11-12",
+    "price": 1,
+    "sevenDayYield": 0.03917,
+    "thirtyDayYield": 0.04049,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-14T00:49:24.624Z"
+  },
+  {
+    "asOfDate": "2025-11-13",
+    "price": 1,
+    "sevenDayYield": 0.03919,
+    "thirtyDayYield": 0.04044,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-14T06:59:27.825Z"
+  },
+  {
+    "asOfDate": "2025-11-14",
+    "price": 1,
+    "sevenDayYield": 0.0393,
+    "thirtyDayYield": 0.04025,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-18T00:51:49.409Z"
+  },
+  {
+    "asOfDate": "2025-11-15",
+    "price": 1,
+    "sevenDayYield": 0.0393,
+    "thirtyDayYield": 0.04025,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-11-16",
+    "price": 1,
+    "sevenDayYield": 0.0393,
+    "thirtyDayYield": 0.04025,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-11-17",
+    "price": 1,
+    "sevenDayYield": 0.03932,
+    "thirtyDayYield": 0.04019,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-18T07:01:28.117Z"
+  },
+  {
+    "asOfDate": "2025-11-18",
+    "price": 1,
+    "sevenDayYield": 0.03933,
+    "thirtyDayYield": 0.04013,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-19T05:39:58.806Z"
+  },
+  {
+    "asOfDate": "2025-11-19",
+    "price": 1,
+    "sevenDayYield": 0.03931,
+    "thirtyDayYield": 0.04007,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-20T05:50:44.858Z"
+  },
+  {
+    "asOfDate": "2025-11-20",
+    "price": 1,
+    "sevenDayYield": 0.03925,
+    "thirtyDayYield": 0.04,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-21T06:27:38.039Z"
+  },
+  {
+    "asOfDate": "2025-11-21",
+    "price": 1,
+    "sevenDayYield": 0.03912,
+    "thirtyDayYield": 0.03978,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-25T00:18:22.153Z"
+  },
+  {
+    "asOfDate": "2025-11-22",
+    "price": 1,
+    "sevenDayYield": 0.03912,
+    "thirtyDayYield": 0.03978,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-11-23",
+    "price": 1,
+    "sevenDayYield": 0.03912,
+    "thirtyDayYield": 0.03978,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-11-24",
+    "price": 1,
+    "sevenDayYield": 0.03909,
+    "thirtyDayYield": 0.03971,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-25T06:26:17.326Z"
+  },
+  {
+    "asOfDate": "2025-11-25",
+    "price": 1,
+    "sevenDayYield": 0.0391,
+    "thirtyDayYield": 0.03964,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-26T05:01:41.594Z"
+  },
+  {
+    "asOfDate": "2025-11-26",
+    "price": 1,
+    "sevenDayYield": 0.03924,
+    "thirtyDayYield": 0.03952,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-11-29T00:55:08.909Z"
+  },
+  {
+    "asOfDate": "2025-11-27",
+    "price": 1,
+    "sevenDayYield": 0.03924,
+    "thirtyDayYield": 0.03952,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-11-28",
+    "price": 1,
+    "sevenDayYield": 0.03957,
+    "thirtyDayYield": 0.03942,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-02T01:38:40.815Z"
+  },
+  {
+    "asOfDate": "2025-11-29",
+    "price": 1,
+    "sevenDayYield": 0.03957,
+    "thirtyDayYield": 0.03942,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-11-30",
+    "price": 1,
+    "sevenDayYield": 0.03957,
+    "thirtyDayYield": 0.03942,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-12-01",
+    "price": 1,
+    "sevenDayYield": 0.03967,
+    "thirtyDayYield": 0.0394,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-02T05:44:25.668Z"
+  },
+  {
+    "asOfDate": "2025-12-02",
+    "price": 1,
+    "sevenDayYield": 0.03972,
+    "thirtyDayYield": 0.03938,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-03T06:21:31.118Z"
+  },
+  {
+    "asOfDate": "2025-12-03",
+    "price": 1,
+    "sevenDayYield": 0.03968,
+    "thirtyDayYield": 0.03935,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-04T06:58:31.941Z"
+  },
+  {
+    "asOfDate": "2025-12-04",
+    "price": 1,
+    "sevenDayYield": 0.03959,
+    "thirtyDayYield": 0.03932,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-05T05:36:13.094Z"
+  },
+  {
+    "asOfDate": "2025-12-05",
+    "price": 1,
+    "sevenDayYield": 0.03925,
+    "thirtyDayYield": 0.03929,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-09T01:19:57.913Z"
+  },
+  {
+    "asOfDate": "2025-12-06",
+    "price": 1,
+    "sevenDayYield": 0.03925,
+    "thirtyDayYield": 0.03929,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-12-07",
+    "price": 1,
+    "sevenDayYield": 0.03925,
+    "thirtyDayYield": 0.03929,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-12-08",
+    "price": 1,
+    "sevenDayYield": 0.03912,
+    "thirtyDayYield": 0.03929,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-10T02:29:44.288Z"
+  },
+  {
+    "asOfDate": "2025-12-09",
+    "price": 1,
+    "sevenDayYield": 0.03903,
+    "thirtyDayYield": 0.03929,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-11T01:05:04.374Z"
+  },
+  {
+    "asOfDate": "2025-12-10",
+    "price": 1,
+    "sevenDayYield": 0.03897,
+    "thirtyDayYield": 0.03927,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-12T01:47:25.371Z"
+  },
+  {
+    "asOfDate": "2025-12-11",
+    "price": 1,
+    "sevenDayYield": 0.03882,
+    "thirtyDayYield": 0.03923,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-12T12:09:50.229Z"
+  },
+  {
+    "asOfDate": "2025-12-12",
+    "price": 1,
+    "sevenDayYield": 0.03807,
+    "thirtyDayYield": 0.03903,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-16T00:34:06.439Z"
+  },
+  {
+    "asOfDate": "2025-12-13",
+    "price": 1,
+    "sevenDayYield": 0.03807,
+    "thirtyDayYield": 0.03903,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-12-14",
+    "price": 1,
+    "sevenDayYield": 0.03807,
+    "thirtyDayYield": 0.03903,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-12-15",
+    "price": 1,
+    "sevenDayYield": 0.03783,
+    "thirtyDayYield": 0.03896,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-16T06:43:35.150Z"
+  },
+  {
+    "asOfDate": "2025-12-16",
+    "price": 1,
+    "sevenDayYield": 0.03759,
+    "thirtyDayYield": 0.03889,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-18T01:56:32.603Z"
+  },
+  {
+    "asOfDate": "2025-12-17",
+    "price": 1,
+    "sevenDayYield": 0.03736,
+    "thirtyDayYield": 0.03882,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-19T02:43:08.571Z"
+  },
+  {
+    "asOfDate": "2025-12-18",
+    "price": 1,
+    "sevenDayYield": 0.03723,
+    "thirtyDayYield": 0.03874,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-20T01:23:37.561Z"
+  },
+  {
+    "asOfDate": "2025-12-19",
+    "price": 1,
+    "sevenDayYield": 0.03713,
+    "thirtyDayYield": 0.03854,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-20T05:01:58.056Z"
+  },
+  {
+    "asOfDate": "2025-12-20",
+    "price": 1,
+    "sevenDayYield": 0.03713,
+    "thirtyDayYield": 0.03854,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-12-21",
+    "price": 1,
+    "sevenDayYield": 0.03713,
+    "thirtyDayYield": 0.03854,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-12-22",
+    "price": 1,
+    "sevenDayYield": 0.03708,
+    "thirtyDayYield": 0.03847,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-23T09:19:00.850Z"
+  },
+  {
+    "asOfDate": "2025-12-23",
+    "price": 1,
+    "sevenDayYield": 0.03706,
+    "thirtyDayYield": 0.03841,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-24T05:54:50.171Z"
+  },
+  {
+    "asOfDate": "2025-12-24",
+    "price": 1,
+    "sevenDayYield": 0.03704,
+    "thirtyDayYield": 0.03826,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-26T23:46:49.618Z"
+  },
+  {
+    "asOfDate": "2025-12-25",
+    "price": 1,
+    "sevenDayYield": 0.03704,
+    "thirtyDayYield": 0.03826,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-12-26",
+    "price": 1,
+    "sevenDayYield": 0.03716,
+    "thirtyDayYield": 0.03803,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-30T01:22:23.918Z"
+  },
+  {
+    "asOfDate": "2025-12-27",
+    "price": 1,
+    "sevenDayYield": 0.03716,
+    "thirtyDayYield": 0.03803,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-12-28",
+    "price": 1,
+    "sevenDayYield": 0.03716,
+    "thirtyDayYield": 0.03803,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2025-12-29",
+    "price": 1,
+    "sevenDayYield": 0.03724,
+    "thirtyDayYield": 0.03795,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-30T05:29:28.508Z"
+  },
+  {
+    "asOfDate": "2025-12-30",
+    "price": 1,
+    "sevenDayYield": 0.03729,
+    "thirtyDayYield": 0.03787,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2025-12-31T06:06:58.096Z"
+  },
+  {
+    "asOfDate": "2025-12-31",
+    "price": 1,
+    "sevenDayYield": 0.03747,
+    "thirtyDayYield": 0.03774,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-03T01:59:56.315Z"
+  },
+  {
+    "asOfDate": "2026-01-01",
+    "price": 1,
+    "sevenDayYield": 0.03747,
+    "thirtyDayYield": 0.03774,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-01-02",
+    "price": 1,
+    "sevenDayYield": 0.03752,
+    "thirtyDayYield": 0.03757,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-06T01:27:20.411Z"
+  },
+  {
+    "asOfDate": "2026-01-03",
+    "price": 1,
+    "sevenDayYield": 0.03752,
+    "thirtyDayYield": 0.03757,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-01-04",
+    "price": 1,
+    "sevenDayYield": 0.03752,
+    "thirtyDayYield": 0.03757,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-01-05",
+    "price": 1,
+    "sevenDayYield": 0.03749,
+    "thirtyDayYield": 0.03752,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-07T02:07:59.556Z"
+  },
+  {
+    "asOfDate": "2026-01-06",
+    "price": 1,
+    "sevenDayYield": 0.03743,
+    "thirtyDayYield": 0.03745,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-08T00:48:12.152Z"
+  },
+  {
+    "asOfDate": "2026-01-07",
+    "price": 1,
+    "sevenDayYield": 0.03731,
+    "thirtyDayYield": 0.03738,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-08T06:56:27.011Z"
+  },
+  {
+    "asOfDate": "2026-01-08",
+    "price": 1,
+    "sevenDayYield": 0.03719,
+    "thirtyDayYield": 0.03731,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-10T02:11:30.738Z"
+  },
+  {
+    "asOfDate": "2026-01-09",
+    "price": 1,
+    "sevenDayYield": 0.0369,
+    "thirtyDayYield": 0.03718,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-13T00:28:45.815Z"
+  },
+  {
+    "asOfDate": "2026-01-10",
+    "price": 1,
+    "sevenDayYield": 0.0369,
+    "thirtyDayYield": 0.03718,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-01-11",
+    "price": 1,
+    "sevenDayYield": 0.0369,
+    "thirtyDayYield": 0.03718,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-01-12",
+    "price": 1,
+    "sevenDayYield": 0.03682,
+    "thirtyDayYield": 0.03717,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-13T06:36:39.787Z"
+  },
+  {
+    "asOfDate": "2026-01-13",
+    "price": 1,
+    "sevenDayYield": 0.03678,
+    "thirtyDayYield": 0.03715,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-14T05:12:34.447Z"
+  },
+  {
+    "asOfDate": "2026-01-14",
+    "price": 1,
+    "sevenDayYield": 0.03676,
+    "thirtyDayYield": 0.03713,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-15T05:44:01.993Z"
+  },
+  {
+    "asOfDate": "2026-01-15",
+    "price": 1,
+    "sevenDayYield": 0.03675,
+    "thirtyDayYield": 0.03711,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-16T06:31:11.775Z"
+  },
+  {
+    "asOfDate": "2026-01-16",
+    "price": 1,
+    "sevenDayYield": 0.03679,
+    "thirtyDayYield": 0.03708,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-21T01:28:24.595Z"
+  },
+  {
+    "asOfDate": "2026-01-17",
+    "price": 1,
+    "sevenDayYield": 0.03679,
+    "thirtyDayYield": 0.03708,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-01-18",
+    "price": 1,
+    "sevenDayYield": 0.03679,
+    "thirtyDayYield": 0.03708,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-01-19",
+    "price": 1,
+    "sevenDayYield": 0.03679,
+    "thirtyDayYield": 0.03708,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-01-20",
+    "price": 1,
+    "sevenDayYield": 0.03678,
+    "thirtyDayYield": 0.03707,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-21T05:36:39.897Z"
+  },
+  {
+    "asOfDate": "2026-01-21",
+    "price": 1,
+    "sevenDayYield": 0.03678,
+    "thirtyDayYield": 0.03706,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-22T06:27:10.981Z"
+  },
+  {
+    "asOfDate": "2026-01-22",
+    "price": 1,
+    "sevenDayYield": 0.03677,
+    "thirtyDayYield": 0.03704,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-23T21:47:16.318Z"
+  },
+  {
+    "asOfDate": "2026-01-23",
+    "price": 1,
+    "sevenDayYield": 0.03671,
+    "thirtyDayYield": 0.037,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-27T01:56:33.546Z"
+  },
+  {
+    "asOfDate": "2026-01-24",
+    "price": 1,
+    "sevenDayYield": 0.03671,
+    "thirtyDayYield": 0.037,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-01-25",
+    "price": 1,
+    "sevenDayYield": 0.03671,
+    "thirtyDayYield": 0.037,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-01-26",
+    "price": 1,
+    "sevenDayYield": 0.03671,
+    "thirtyDayYield": 0.03698,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-27T06:04:26.840Z"
+  },
+  {
+    "asOfDate": "2026-01-27",
+    "price": 1,
+    "sevenDayYield": 0.03671,
+    "thirtyDayYield": 0.03696,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-28T06:54:32.404Z"
+  },
+  {
+    "asOfDate": "2026-01-28",
+    "price": 1,
+    "sevenDayYield": 0.03671,
+    "thirtyDayYield": 0.03694,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-29T05:41:09.562Z"
+  },
+  {
+    "asOfDate": "2026-01-29",
+    "price": 1,
+    "sevenDayYield": 0.03672,
+    "thirtyDayYield": 0.03691,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-01-30T06:34:53.310Z"
+  },
+  {
+    "asOfDate": "2026-01-30",
+    "price": 1,
+    "sevenDayYield": 0.03678,
+    "thirtyDayYield": 0.03683,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-03T01:10:59.001Z"
+  },
+  {
+    "asOfDate": "2026-01-31",
+    "price": 1,
+    "sevenDayYield": 0.03678,
+    "thirtyDayYield": 0.03683,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-02-01",
+    "price": 1,
+    "sevenDayYield": 0.03678,
+    "thirtyDayYield": 0.03683,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-02-02",
+    "price": 1,
+    "sevenDayYield": 0.03678,
+    "thirtyDayYield": 0.03681,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-04T02:02:08.837Z"
+  },
+  {
+    "asOfDate": "2026-02-03",
+    "price": 1,
+    "sevenDayYield": 0.03678,
+    "thirtyDayYield": 0.03679,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-04T06:13:37.583Z"
+  },
+  {
+    "asOfDate": "2026-02-04",
+    "price": 1,
+    "sevenDayYield": 0.03679,
+    "thirtyDayYield": 0.03677,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-06T01:48:57.984Z"
+  },
+  {
+    "asOfDate": "2026-02-05",
+    "price": 1,
+    "sevenDayYield": 0.03677,
+    "thirtyDayYield": 0.03676,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-06T06:00:18.398Z"
+  },
+  {
+    "asOfDate": "2026-02-06",
+    "price": 1,
+    "sevenDayYield": 0.03668,
+    "thirtyDayYield": 0.03674,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-07T07:00:46.342Z"
+  },
+  {
+    "asOfDate": "2026-02-07",
+    "price": 1,
+    "sevenDayYield": 0.03668,
+    "thirtyDayYield": 0.03674,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-02-08",
+    "price": 1,
+    "sevenDayYield": 0.03668,
+    "thirtyDayYield": 0.03674,
+    "source": "gapFiller (BlackRock)",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T15:58:30.260Z"
+  },
+  {
+    "asOfDate": "2026-02-09",
+    "price": 1,
+    "sevenDayYield": 0.03666,
+    "thirtyDayYield": 0.03673,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-10T05:53:55.589Z"
+  },
+  {
+    "asOfDate": "2026-02-10",
+    "price": 1,
+    "sevenDayYield": 0.03661,
+    "thirtyDayYield": 0.03673,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-11T12:48:26.654Z"
+  },
+  {
+    "asOfDate": "2026-02-11",
+    "price": 1,
+    "sevenDayYield": 0.03658,
+    "thirtyDayYield": 0.03672,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-12T05:31:41.792Z"
+  },
+  {
+    "asOfDate": "2026-02-12",
+    "price": 1,
+    "sevenDayYield": 0.03656,
+    "thirtyDayYield": 0.03671,
+    "source": "BlackRock",
+    "ticker": "TPCXX",
+    "timestamp": "2026-02-13T01:52:31.715Z"
+  }
+]
