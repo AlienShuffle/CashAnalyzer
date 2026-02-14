@@ -5,4 +5,5 @@ cat ./VanguardETF-funds.txt |
         --accountClass Funds \
         --collectionScript ./collectionScript.sh \
         --processScript ../bin/echo.js \
+        --runWeekends \
         --pubDelay 18 --runDelay 4 -f "$@"

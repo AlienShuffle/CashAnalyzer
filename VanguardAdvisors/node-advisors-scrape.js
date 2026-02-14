@@ -20,7 +20,8 @@ const browser = await browserPromise;
 // this is the main function
 const rawTickers = readFileSync(0, 'utf8');
 const tickers = rawTickers.split('\n').filter(line => line.trim().length > 0);
-let results = [];
+ if (debug) console.error(`Scraping: '${tickers.join(", ")}'`);
+ let results = [];
 for (const ticker of tickers) {
   console.error(`Processing fund: ${ticker}`);
   // set fund information
@@ -181,7 +182,7 @@ for (const ticker of tickers) {
   await sleep(2000);
   await page.close();
   // do only a few due to rate limiting concerns...
-  if (results.length > 5) break;
+  if (results.length > 6) break;
 }
 
 if (debug) console.error("Script complete.");

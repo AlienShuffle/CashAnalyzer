@@ -64,6 +64,10 @@ while [ -n "$1" ]; do
         #echo "runDelayHours=$runDelayHours"
         shift
         ;;
+    "--runWeekends")
+        runWeekends="true"
+        #echo "runWeekends=$runWeekends"
+        ;;
     "--sourceName")
         sourceName="$2"
         #echo "sourceName=$sourceName"
@@ -102,7 +106,7 @@ if [ -n "$injectProcessedJson" ] && [ -s "$injectProcessedJson" ]; then
     echo "Using $injectProcessedJson instead of querying online source."
     jsonRateNew="$injectProcessedJson"
 else
-    source ../bin/skipWeekends.sh
+    [ ! -z "$runWeekends" ] || source ../bin/skipWeekends.sh
     pubDelayFile="$jsonRateFlare"
     runDelayFile="$jsonRateNew"
     source ../bin/testDelays.sh
@@ -179,8 +183,8 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
 
         # sort/filter/gap fill the combined history and current date's rates using only this tool's data.
         if [ -f "$jsonHistoryUnique" ]; then
-             #echo "$sourceName $ticker unique file exists, sorting it in."
-             jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateTicker" "$jsonHistoryUnique" >"$jsonHistoryTemp"
+            #echo "$sourceName $ticker unique file exists, sorting it in."
+            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateTicker" "$jsonHistoryUnique" >"$jsonHistoryTemp"
         else
             cat "$jsonRateTicker" >"$jsonHistoryTemp"
         fi
@@ -227,7 +231,7 @@ if [ ! -s "$jsonRateFlare" ]; then
 fi
 if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
-     [ "$quiet" = "true" ] ||echo "published updated cloudflare $sourceName-rates.json file."
+    [ "$quiet" = "true" ] || echo "published updated cloudflare $sourceName-rates.json file."
     (
         echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield'
         jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield] | @csv' "$jsonRateFlare"
