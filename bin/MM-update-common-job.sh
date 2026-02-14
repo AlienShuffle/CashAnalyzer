@@ -129,6 +129,10 @@ else
         else
             $collectionScript >"$tmpCollect"
         fi
+        if [ ! -s "$tmpCollect" ]; then
+        echo "Empty collection File $tmpCollect."
+        exit 1
+    fi
         #echo "running node $processScript"
         cat "$tmpCollect" | node $processScript "$nodeArg" | jq . >"$jsonRateNew"
         rm -f "$tmpCollect"
