@@ -8,7 +8,7 @@ import {
     join
 } from "node:path";
 
-const debug = true;
+const debug = false;
 
 const browserPromise = puppeteer.launch({
     headless: true,

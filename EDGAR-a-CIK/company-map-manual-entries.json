@@ -140,6 +140,16 @@
         "class": "C000007929"
     },
     {
+        "ticker": "DGLXX",
+        "entity_name": "BLACKROCK LIQUIDITY FUNDS",
+        "series_name": "TREASURY TRUST FUND",
+        "class_name": "DLT Shares",
+        "cik": 97098,
+        "cikTen": "0000097098",
+        "series": "S000001478",
+        "class": "C000262010"
+    },
+    {
         "ticker": "EDUXX",
         "entity_name": "BlackRock Liquidity Funds",
         "series_name": "BlackRock Liquid Federal Trust Fund",
