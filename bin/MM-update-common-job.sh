@@ -106,7 +106,7 @@ if [ -n "$injectProcessedJson" ] && [ -s "$injectProcessedJson" ]; then
     echo "Using $injectProcessedJson instead of querying online source."
     jsonRateNew="$injectProcessedJson"
 else
-    [ ! -z "$runWeekends" ] || source ../bin/skipWeekends.sh
+    source ../bin/skipWeekends.sh
     pubDelayFile="$jsonRateFlare"
     runDelayFile="$jsonRateNew"
     source ../bin/testDelays.sh

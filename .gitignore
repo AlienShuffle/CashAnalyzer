@@ -275,6 +275,6 @@ lwlots/good.json
 lwlots/owner-list.csv
 SGOV/*-distro.json
 */curl.*.json
-VanguardAdvisors/downloads/*/*.csv
+*/downloads/*/*.csv
 lwlots/history/*
 VanguardAdvisors/dated-list.txt

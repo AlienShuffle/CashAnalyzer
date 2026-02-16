@@ -6,7 +6,7 @@
 # - Let it run into morning on Saturday to catch late updates.
 # - delay until after noon on Mondays.
 #
-if [ -z "$forceRun" ]; then
+if [ -z "$forceRun" ] && [ -z "$runWeekends" ]; then
     dayOfWeek=$(date +'%a') # Sun, Mon, Tue, Wed, Thu, Fri, Sat
     hourOfDay=$(date +'%H') # 0..23
     case "$dayOfWeek" in

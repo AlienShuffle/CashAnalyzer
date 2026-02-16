@@ -1,0 +1,16 @@
+{
+  "name": "alpha-architect-boxx",
+  "version": "0.0.1",
+  "description": "Scrape daily Yields for Alpha Architect BOXX ETF.",
+  "keywords": [
+    "Puppeteer",
+    "Alpha Architectx",
+    "BOXX"
+  ],
+  "author": "AlienShuffle",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "puppeteer": "^24.10.1"
+  }
+}
