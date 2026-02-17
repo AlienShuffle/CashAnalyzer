@@ -9,10 +9,10 @@ cat ./VanguardETF-funds.txt |
     while read -r ticker; do
         [ ! -z "$ticker" ] || continue
         [ -d "./downloads/$ticker" ] || mkdir -p "./downloads/$ticker"
-        # only process if not downloaded in last 24 hours - -mmin -480 finds files modified in last 8 hours.
-        recent=$(find "./downloads/$ticker" -type f -name "*.csv" -mmin -480 -print | wc -l)
+        # only process if not downloaded in last 12 hours - -mmin -720 finds files modified in last 12 hours.
+        recent=$(find "./downloads/$ticker" -type f -name "*.csv" -mmin -720 -print | wc -l)
         if [ $recent -gt 0 ]; then
-            #echo "$ticker, $recent files downloaded < 8 hours ago, skipping." 1>&2
+            #echo "$ticker, $recent files downloaded < 12 hours ago, skipping." 1>&2
             continue
         fi
         if [ -f "./history/$ticker/rate-new.json" ]; then

@@ -182,7 +182,7 @@ for (const ticker of tickers) {
   await sleep(2000);
   await page.close();
   // do only a few due to rate limiting concerns...
-  if (results.length > 6) break;
+  if (results.length > 5) break;
 }
 
 if (debug) console.error("Script complete.");
