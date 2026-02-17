@@ -49,7 +49,7 @@ for (let key in json) {
     const twelveMonTrlYield = (safeObjectRef(fund.twelveMonTrlYield)) ? safeObjectRef(fund.twelveMonTrlYield.r) : null;
     if (twelveMonTrlYield) rowData.twelveMonTrlYield = (twelveMonTrlYield / 100).toFixed(5) * 1;
     rowData.source = 'BlackRock'
-        if (safeObjectRef(fund.fundName)) rowData.fundName = safeObjectRef(fund.fundName);
+        if (safeObjectRef(fund.accountType)) rowData.accountType = safeObjectRef(fund.accountType);
     rowData.blackRockId = key * 1;
     rowData.baseUrl = `https://blackrock.com/us/individual/products/${key}/`;
     rowData.distroUrl = `${rowData.baseUrl}fund/1515394931018.ajax?fileType=xls&dataType=fund`;

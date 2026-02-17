@@ -3,19 +3,15 @@
 
 [ -d "history/BOXX" ] || mkdir -p "history/BOXX"
 
+# update the yield and nav.
 ../bin/MM-update-common-job.sh \
     --accountClass Funds \
     --processScript ./node-BOXX-yield-update.js \
     --pubDelay 18 --runDelay 4 "$@"
 
+# update distribution links.
 ../bin/ETF-distro-update-common-job.sh --ticker "BOXX" "$@"
-exit 0
 
+# update facts files.
 cat history/BOXX-rate-new.json |
-    jq -r '.[] | [.ticker,.baseUrl] | @csv' |
-    while IFS= read -r fundReference; do
-        ticker=$(echo "$fundReference" | cut -d, -f1 | tr -d '"')
-        echo "Processing BOXX facts"
-        echo "$fundReference" |
-            ../bin/ETF-facts-update-common-job.sh --nodeArg "BOXX" "$@"
-    done
+    ../bin/ETF-facts-update-common-job.sh --nodeArg "BOXX" "$@"
