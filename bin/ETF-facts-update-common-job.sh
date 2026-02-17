@@ -252,8 +252,8 @@ if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonFactsAllFlare"; then
     cat tmp-all-flare.json >"$jsonFactsAllFlare"
     echo "published updated cloudflare $jsonFactsAllFlare file."
     (
-        echo 'asOfDate,ticker,accountType,thirtyDayYield,nav,aum,twelveMonTrlYield,yieldToMaturity,distributionYield,weightedAverageCoupon,durationYears,maturityYears,expenseRatio'
-        jq -r '.[] | [.asOfDate,.ticker,.accountType,.thirtyDayYield,.nav,.aum,.twelveMonTrlYield,.yieldToMaturity,.distributionYield,.weightedAverageCoupon,.durationYears,.maturityYears,.expenseRatio] | @csv' "$jsonFactsAllFlare"
+        echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,nav,aum,twelveMonTrlYield,yieldToMaturity,distributionYield,weightedAverageCoupon,durationYears,maturityYears,expenseRatio,accountType,source'
+        jq -r '.[] | [.asOfDate,.ticker,.oneDayYield,.sevenDayYield,.thirtyDayYield,.nav,.aum,.twelveMonTrlYield,.yieldToMaturity,.distributionYield,.weightedAverageCoupon,.durationYears,.maturityYears,.expenseRatio,.accountType,.source] | @csv' "$jsonFactsAllFlare"
     ) >"$csvFactsAllFlare"
     echo "published updated cloudflare $csvFactsAllFlare file."
 fi
