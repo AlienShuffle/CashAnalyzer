@@ -1,9 +1,10 @@
 ../bin/MM-update-common-job.sh \
   --accountClass Funds \
-  --processScript ./node-USFR-yield-update.js \
-  --pubDelay 20 --runDelay 2 "$@"
+  --pubDelay 18 --runDelay 4 "$@"
 
 ../bin/ETF-distro-update-common-job.sh --ticker "USFR" "$@"
 
 # need to implement facts page.....
 
+cat history/USFR-rate-new.json |
+    ../bin/ETF-facts-update-common-job.sh --nodeArg "USFR" "$@"

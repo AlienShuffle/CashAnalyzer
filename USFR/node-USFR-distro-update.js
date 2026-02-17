@@ -1,5 +1,5 @@
 // create a puppeteer instance.
-const puppeteer = require('puppeteer');
+import puppeteer from "puppeteer";
 
 // initiate a browser instance with all the necessary tweaks for performance, etc.
 let browserPromise = puppeteer.launch({

@@ -87,10 +87,7 @@ source ../meta.$(hostname).sh
 if [ -z "$sourceName" ]; then
     sourceName=$(basename $(pwd))
 fi
-# if a script file is not specified, try a default name.
-if [ -z "$processScript" ]; then
-    processScript="./node-$sourceName-update.js"
-fi
+
 # create data source file paths.
 [ -d history ] || mkdir history
 jsonRateNew="history/$sourceName-rate-new.json"
@@ -113,9 +110,16 @@ else
     #
     # run the scipts to prepare the data.
     #
-    if [ ! -s "$processScript" ]; then
-        echo "Missing $processScript file."
-        exit 1
+    # if a script file is not specified, try a default name.
+    if [ -z "$processScript" ]; then
+        processScript="./node-$sourceName-update.js"
+        if [ ! -s "$processScript" ]; then
+            processScript="./node-$sourceName-yield-update.js"
+        fi
+        if [ ! -s "$processScript" ]; then
+            echo "Missing $processScript file."
+            exit 1
+        fi
     fi
     if [ "$collectionScript" ]; then
         if [ ! -x "$collectionScript" ]; then
@@ -130,9 +134,9 @@ else
             $collectionScript >"$tmpCollect"
         fi
         if [ ! -s "$tmpCollect" ]; then
-        echo "Empty collection File $tmpCollect."
-        exit 1
-    fi
+            echo "Empty collection File $tmpCollect."
+            exit 1
+        fi
         #echo "running node $processScript"
         cat "$tmpCollect" | node $processScript "$nodeArg" | jq . >"$jsonRateNew"
         rm -f "$tmpCollect"
