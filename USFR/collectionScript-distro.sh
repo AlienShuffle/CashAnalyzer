@@ -1,0 +1,1 @@
+node ./node-USFR-distro-update.js | jq .

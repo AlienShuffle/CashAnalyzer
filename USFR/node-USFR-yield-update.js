@@ -92,7 +92,6 @@ function run() {
                 {
                     "ticker": "USFR",
                     "asOfDate": (asOfDate) ? asOfDate : '',
-
                     "nav": (navValue) ? navValue.toFixed(5) * 1 : '',
                     "thirtyDayYield": (thirtyDayYield) ? thirtyDayYield.toFixed(5) * 1 : '',
                     "durationYears": (durationYears) ? durationYears.toFixed(1) * 1 : '',
