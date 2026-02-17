@@ -67,7 +67,7 @@ function run() {
 
             // parse out 30 Day SEC Yield (table entry is of the form '$50.139')
             // document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(11)")
-            let secYield = await page.evaluate(() => {
+            let thirtyDayYield = await page.evaluate(() => {
                 const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(11)");
                 const row = item.innerText.split('\t');
                 if (row.length == 2) {
@@ -78,26 +78,29 @@ function run() {
 
             // parse out Effective Duration instead of WAM (table entry is of the form '0.02' years, we multiply by 365)
             // document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)")
-            let effectiveDuration = await page.evaluate(() => {
+            let durationYears = await page.evaluate(() => {
                 const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)");
                 if (item) {
                     const row = item.innerText;
-                    return row.replace(/%/, '') * 365;
+                    return row.replace(/%/, '') * 1;
                 } else {
                     return '';
                 }
             });
             // format return JSON message.
-            let facts = {
-                timestamp: new Date(),
-                ticker: 'USFR',
-                asOfDate: (asOfDate) ? asOfDate : '',
-                nav: (navValue) ? navValue.toFixed(5) * 1 : '',
-                secYield: (secYield) ? secYield.toFixed(5) * 1 : '',
-                effectiveDuration: (effectiveDuration) ? effectiveDuration.toFixed(1) * 1 : '',
-                expenseRatio: (er) ? er.toFixed(5) * 1 : '',
-                
-            };
+            let facts = [
+                {
+                    "ticker": "USFR",
+                    "asOfDate": (asOfDate) ? asOfDate : '',
+
+                    "nav": (navValue) ? navValue.toFixed(5) * 1 : '',
+                    "thirtyDayYield": (thirtyDayYield) ? thirtyDayYield.toFixed(5) * 1 : '',
+                    "durationYears": (durationYears) ? durationYears.toFixed(1) * 1 : '',
+                    "expenseRatio": (er) ? er.toFixed(5) * 1 : '',
+                    "source": "Wisdomtree yields",
+                    "timestamp": new Date()
+                }
+            ];
             browser.close();
             return resolve(JSON.stringify(facts));
         } catch (e) {

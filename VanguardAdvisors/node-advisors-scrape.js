@@ -12,7 +12,7 @@ import {
 const debug = false;
 
 const browserPromise = puppeteer.launch({
-  headless: false,
+  headless: true,
   defaultViewport: null
 });
 const browser = await browserPromise;

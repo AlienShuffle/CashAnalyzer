@@ -18,7 +18,7 @@ source ../bin/testDelays.sh
 # this script was used in fintools version 98 and later. This is intended to stick around long-term.
 #
 #echo "Starting node retrieval app."
-node ./node-USFR-distro-json-v98.js | jq . >"$jsonNew"
+node ./node-USFR-distro-update.js | jq . >"$jsonNew"
 if [ ! $? ]; then
   echo "USFR distro retrieval failed, exiting."
   exit 1

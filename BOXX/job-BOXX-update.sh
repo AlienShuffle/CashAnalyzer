@@ -6,7 +6,7 @@
 ../bin/MM-update-common-job.sh \
     --accountClass Funds \
     --processScript ./node-BOXX-yield-update.js \
-    --pubDelay 18 --runDelay 4 -f "$@"
+    --pubDelay 18 --runDelay 4 "$@"
 
 ../bin/ETF-distro-update-common-job.sh --ticker "BOXX" "$@"
 exit 0
