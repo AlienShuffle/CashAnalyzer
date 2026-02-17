@@ -6,6 +6,7 @@
     "Puppeteer",
     "Ally Bank"
   ],
+  "type": "module",
   "author": "AlienShuffle",
   "license": "MIT",
   "dependencies": {

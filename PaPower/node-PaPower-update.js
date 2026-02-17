@@ -1,5 +1,5 @@
-const du = require('../lib/dateUtils.js');
-const puppeteer = require("puppeteer");
+import { duGetISOString } from "../lib/dateUtils.mjs";
+import puppeteer from "puppeteer";
 
 // shared global browser instance.
 let browserPromise = puppeteer.launch({
@@ -32,7 +32,7 @@ function run() {
 
         // browse to the marketable securities page
         await page.goto(url);
-        inputHandle = await page.$("#shop-for-rates");
+        const inputHandle = await page.$("#shop-for-rates");
 
         //await page.$("#filter-form > div.offers-wrap > div.ptc.show-980-more > div.card.dist-card > div > div.container.first > div:nth-child(2) > span.highlight.large")
        
@@ -40,7 +40,7 @@ function run() {
         let suppliers = await page.$$('div[class="card supplier-card"]');
         //console.log('suppliers # ' + suppliers.length);
 
-        const dateString = du.getISOString(new Date);
+        const dateString = duGetISOString(new Date);
         let data = [];
         for (let row = 0; row < suppliers.length; row++) {
             const rowData = {

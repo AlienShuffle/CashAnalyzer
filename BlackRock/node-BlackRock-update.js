@@ -1,6 +1,5 @@
-const du = require('../lib/dateUtils.js');
-// Work on POSIX and Windows
-const fs = require("fs");
+import { duGetISOString } from "../lib/dateUtils.mjs";
+import { readFileSync } from "fs";
 
 function safeObjectRef(obj) {
     if (typeof obj === "undefined") return "";
@@ -8,7 +7,7 @@ function safeObjectRef(obj) {
 }
 
 // read in from stdin, the BlackRock json file.
-const stdinBuffer = fs.readFileSync(0, 'utf-8');
+const stdinBuffer = readFileSync(0, 'utf-8');
 const json = JSON.parse(stdinBuffer);
 //console.log(`json.length = ${json.length}`);
 
@@ -29,7 +28,7 @@ for (let key in json) {
         const month = Math.trunc((dateInt % 10000) / 100);
         const day = Math.trunc(dateInt % 100);
         //console.error(`${ticker}: dateInt = ${dateInt} -> year = ${year}, month = ${month}, day = ${day}`);
-        rowData.asOfDate = du.getISOString(new Date(year, month - 1, day));
+        rowData.asOfDate = duGetISOString(new Date(year, month - 1, day));
         rowData.price = 1;
         rowData.sevenDayYield = (sevenDayYield / 100).toFixed(5) * 1;
         const thirtyDayYield = safeObjectRef(fund.oneMonthSecYield.r);

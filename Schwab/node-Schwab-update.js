@@ -1,5 +1,4 @@
-const puppeteer = require("puppeteer");
-const du = require('../lib/dateUtils.js');
+import puppeteer from "puppeteer";
 
 // shared global browser instance.
 let browserPromise = puppeteer.launch({
@@ -40,7 +39,7 @@ function run() {
         let data = [];
         for (let row = 1; row < rows.length; row++) {
             // get an array of all the columns for the current row.
-            cols = await rows[row].$$('td');
+            const cols = await rows[row].$$('td');
             //console.error('cols = ' + cols.length);
             let rowData = {};
             for (let col = 0; col < cols.length; col++) {

@@ -1,0 +1,22 @@
+[
+    {
+        "comment": "this is the target list of facts tags.",
+        "asOfDate": "2026-02-13",
+        "ticker": "BOXX",
+        "aum": 1000000,
+        "accountType": "iShares 0-5 Year TIPS Bond ETF",
+        "nav": 50.416,
+        "oneDayYield": 0.0387,
+        "sevenDayYield": 0.0387,
+        "thirtyDayYield": 0.0387,
+        "twelveMonTrlYield": 0.04055,
+        "yieldToMaturity": 0.04055,
+        "distributionYield": 0.0387,
+        "weightedAverageCoupon": 0.02,
+        "durationYears": 0.1041,
+        "maturityYears": 1.1041,
+        "expenseRatio": 0.0019,
+        "source": "alphaarchitect.com",
+        "timestamp": "2026-02-15T03:41:40.891Z"
+    }
+]

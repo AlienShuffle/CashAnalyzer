@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+import puppeteer from "puppeteer";
 
 // global browser instance.
 let browserPromise = puppeteer.launch({
