@@ -63,7 +63,7 @@ function run() {
                 }
             }
             rowData.asOfDate = asOfISO;
-            rowData.price = 1;
+            rowData.nav = 1;
             rowData.source = 'schwab.com';
             rowData.timestamp = timestamp;
             if (rowData.sevenDayYield > 0) data.push(rowData);

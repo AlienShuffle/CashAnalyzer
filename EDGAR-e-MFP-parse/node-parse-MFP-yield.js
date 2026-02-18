@@ -78,7 +78,7 @@ function processClassInfo(classInfo) {
                 }
                 resp.push({
                     "asOfDate": sevenDayYields[i].sevenDayNetYieldDate,
-                    "price": nav,
+                    "nav": nav,
                     "sevenDayYield": yieldNum,
                     "source": 'EDGAR MFP-3',
                     "ticker": match.ticker,
@@ -89,7 +89,7 @@ function processClassInfo(classInfo) {
     } else {
         resp.push({
             "asOfDate": reportDate,
-            "price": 1,
+            "nav": 1,
             "sevenDayYield": sevenDayYields.toFixed(5) * 1,
             "source": 'EDGAR MFP-2',
             "ticker": match.ticker,

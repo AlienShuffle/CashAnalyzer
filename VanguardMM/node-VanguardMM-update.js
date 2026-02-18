@@ -26,7 +26,7 @@ for (let i = 0; i < json.length; i++) {
             const row = {
                 "accountType": safeObjectRef(json[i].profile.shortName),
                 "asOfDate": du.getISOString(new Date(safeObjectRef(json[i].yield.asOfDate))),
-                "price": 1,
+                "nav": 1,
                 "sevenDayYield": (safeObjectRef(json[i].yield.yieldPct) / 100).toFixed(5) * 1,
                 "source": 'Vanguard.com MM',
                 "ticker": ticker,

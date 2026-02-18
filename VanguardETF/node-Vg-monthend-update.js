@@ -29,7 +29,7 @@ for (let i = 0; i < json.length; i++) {
     resp.push({
         "accountType": safeObjectRef(json[i].profile.shortName),
         "asOfDate": du.getISOString(new Date(safeObjectRef(json[i].yield.asOfDate))),
-        "price": (safeObjectRef(json[i].dailyPrice.market.price) * 1).toFixed(4) * 1,
+        "nav": (safeObjectRef(json[i].dailyPrice.market.price) * 1).toFixed(4) * 1,
         "thirtyDayYield": (safeObjectRef(json[i].yield.yieldPct) / 100).toFixed(5) * 1,
         "source": 'Vanguard.com ETF',
         "ticker": ticker,

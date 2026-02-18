@@ -29,7 +29,7 @@ for (let key in json) {
         const day = Math.trunc(dateInt % 100);
         //console.error(`${ticker}: dateInt = ${dateInt} -> year = ${year}, month = ${month}, day = ${day}`);
         rowData.asOfDate = duGetISOString(new Date(year, month - 1, day));
-        rowData.price = 1;
+        rowData.nav = 1;
         rowData.sevenDayYield = (sevenDayYield / 100).toFixed(5) * 1;
         const thirtyDayYield = safeObjectRef(fund.oneMonthSecYield.r);
         if (thirtyDayYield) rowData.thirtyDayYield = (thirtyDayYield / 100).toFixed(5) * 1;

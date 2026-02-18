@@ -36,7 +36,7 @@ for (let key in json) {
     const day = Math.trunc(dateInt % 100);
     //console.error(`${ticker}: dateInt = ${dateInt} -> year = ${year}, month = ${month}, day = ${day}`);
     rowData.asOfDate = du.getISOString(new Date(year, month - 1, day));
-    if (safeObjectRef(fund.navAmount) && safeObjectRef(fund.navAmount.r)) rowData.price = safeObjectRef(fund.navAmount.r);
+    if (safeObjectRef(fund.navAmount) && safeObjectRef(fund.navAmount.r)) rowData.nav = safeObjectRef(fund.navAmount.r);
     const sevenDayYield = (safeObjectRef(fund.oneWeekSecYield)) ? safeObjectRef(fund.oneWeekSecYield.r) : null;
     if (sevenDayYield) rowData.sevenDayYield = (sevenDayYield / 100).toFixed(5) * 1;
     const thirtyDayYield = (safeObjectRef(fund.thirtyDaySecYield)) ? safeObjectRef(fund.thirtyDaySecYield.r) : null;
