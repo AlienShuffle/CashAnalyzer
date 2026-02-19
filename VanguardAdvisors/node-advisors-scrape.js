@@ -20,8 +20,8 @@ const browser = await browserPromise;
 // this is the main function
 const rawTickers = readFileSync(0, 'utf8');
 const tickers = rawTickers.split('\n').filter(line => line.trim().length > 0);
- if (debug) console.error(`Scraping: '${tickers.join(", ")}'`);
- let results = [];
+if (debug) console.error(`Scraping: '${tickers.join(", ")}'`);
+let results = [];
 for (const ticker of tickers) {
   console.error(`Processing fund: ${ticker}`);
   // set fund information
@@ -123,7 +123,7 @@ for (const ticker of tickers) {
     { waitUntil: "networkidle2" }
   );
 
-    // download distributions data
+  // download distributions data
   if (!await selectElement('.distribution-table')) break;
   await sleep(2000);
   if (!await selectElement('button[class="button button--black"]', false)) break;
@@ -161,7 +161,7 @@ for (const ticker of tickers) {
   }
   const expenseRatio = (rawExpenseRatio.replace("%", "").trim() / 100).toFixed(4) * 1;
   if (debug) console.error(`rawExpenseRatio= '${rawExpenseRatio}'=${expenseRatio}`);
-  
+
   results.push({
     "ticker": ticker,
     "thirtyDayYield": secYield,
