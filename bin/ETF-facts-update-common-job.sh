@@ -164,11 +164,11 @@ grep ticker "$jsonFactsNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -
         # Factss only for this query from this tool.
         jsonFactsTicker="history/$dirname/facts-new.json"
         # temp merge of this query with this tool's history.
-        jsonHistoryTemp="history/$dirname/history-$sourceName-temp.json"
+        jsonHistoryTemp="history/$dirname/facts-history-$sourceName-temp.json"
         # resulting merged history of this tool's Factss.
-        jsonHistoryUnique="history/$dirname/history-$sourceName-unique.json"
+        jsonHistoryUnique="history/$dirname/facts-history-$sourceName-unique.json"
         # temp merge of this tool's history with the combined history published in cloudflare (for comparison with cloudflare)
-        jsonHistoryFlareTemp="history/$dirname/history-$sourceName-flare.json"
+        jsonHistoryFlareTemp="history/$dirname/facts-history-$sourceName-flare.json"
         # resulting published merge of this tool and all combined source histories.
         jsonHistoryFlare="$cloudFlareHome/$accountClass/$dirname/$dirname-facts-history.json"
         csvHistoryFlare="$cloudFlareHome/$accountClass/$dirname/$dirname-facts-history.csv"
