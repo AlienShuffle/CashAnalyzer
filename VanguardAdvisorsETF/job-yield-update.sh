@@ -5,4 +5,4 @@
     --collectionScript ./collectionScript.sh \
     --processScript ../bin/echo.js \
     --runWeekends \
-    --pubDelay 16 --runDelay 4 -f "$@"
+    --pubDelay 12 --runDelay 4 -f "$@"

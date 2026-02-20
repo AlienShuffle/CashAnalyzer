@@ -277,4 +277,4 @@ SGOV/*-distro.json
 */curl.*.json
 */downloads/*/*.csv
 lwlots/history/*
-VanguardAdvisors/dated-list.txt
+VanguardAdvisorsETF/dated-list.txt
