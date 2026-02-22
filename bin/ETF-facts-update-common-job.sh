@@ -183,7 +183,7 @@ grep ticker "$jsonFactsNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -
             cat "$jsonFactsTicker" >"$jsonHistoryTemp"
         fi
         cat "$jsonHistoryTemp" | node ../lib/node-sortBest.js | jq . >"$jsonHistoryUnique"
-        #rm "$jsonHistoryTemp"
+        rm "$jsonHistoryTemp"
 
         # sort/filter/gapfill this combined history with data from all sources in cloudflare repository.
         if [ ! -s "$jsonHistoryFlare" ]; then

@@ -63,4 +63,4 @@ if [ -s "tt.json" ]; then
 else
     echo "company map was empty!"
 fi
-#rm -f "$tmpFile" tt.json
+rm -f "$tmpFile" tt.json

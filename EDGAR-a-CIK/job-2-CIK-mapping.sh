@@ -51,4 +51,4 @@ tmpFile=co_tickers_mf.json
 ../bin/getEDGAR.sh "https://www.sec.gov/files/company_tickers_mf.json" |
     jq . >"$tmpFile"
 node ./node-CIK-map-update.js "$fundsList" <"$tmpFile" | jq . >"$CIKmap"
-#rm -f "$tmpFile"
+rm -f "$tmpFile"

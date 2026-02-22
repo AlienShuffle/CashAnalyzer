@@ -198,7 +198,6 @@ VanguardMM/tmpCollect.txt
 */tmp-all-flare.json
 */tmpCollect.json
 */*-rate-new.json
-CIK/CIK0000917286.json
 EDGAR-b-submissions/submissions/*
 */MFP-lists/*.json
 EDGAR-d-MFP-lists/MFP-files/*/*.xml
@@ -213,8 +212,6 @@ EDGAR-e-MFP-parse/yields/*/*.json
 EDGAR-e-MFP-parse/old.*
 EDGAR-d-MFP-lists/NCEN-lists/*.json
 */cookie.jar.txt
-*/x.json
-VBIL/bnd.json
 */*-file.json
 EDGAR-b-submissions/submissions-ext/*.json
 EDGAR-b-submissions/submissionExtensionFile.json
@@ -223,14 +220,12 @@ EDGAR-b-submissions/submissionExtensionFile.json
 */history/*-distro-new-unique.json
 */history/history-*.json
 */tmp.json
-mmFunCurr/mmFunCurr-funds.orig-saved
 working/*
 Fido?/old-history/*.json
 */tmp.sort.json
 mmFunCurr/fundMeta.json
 data/*
 EDGAR-b-submissions/submissionsCIKs.txt
-EDGAR-a-CIK/tt.json
 EDGAR-c-meta/finra.cookie.jar.txt
 markit/content-xid.json
 EDGAR-e-MFP-parse/history/latestEDGAR.json
@@ -241,7 +236,6 @@ EDGAR-c-meta/finra.merge.json
 EDGAR-c-meta/finra.tmp.json
 EDGAR-c-meta/raw.jq.json
 EDGAR-c-meta/raw.json
-VanguardPrices/out.json
 EDGAR-c-meta/@finra.etf.json.tmp.json
 EDGAR-c-meta/@finra.mmf.json.tmp.json
 lwlots/excel.csv
@@ -277,5 +271,4 @@ SGOV/*-distro.json
 */curl.*.json
 */downloads/*/*.csv
 lwlots/history/*
-VanguardAdvisorsETF/dated-list.txt
 VanguardAdvisorsETF/dated-list.txt
