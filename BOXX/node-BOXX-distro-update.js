@@ -44,7 +44,6 @@ function parseCsvToMatrix(csvText) {
   // Push last value / row
   row.push(value);
   rows.push(row);
-
   return rows;
 }
 
