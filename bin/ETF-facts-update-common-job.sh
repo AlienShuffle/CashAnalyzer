@@ -89,8 +89,8 @@ fi
 # create data source file paths.
 [ -d history ] || mkdir history
 jsonFactsNew="history/$sourceName-facts-new.json"
-jsonFactsFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-factset.json"
-csvFactsFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-factset.csv"
+jsonFactsFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-facts.json"
+csvFactsFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-facts.csv"
 jsonFactsAllFlare="$cloudFlareHome/$accountClass/all-facts.json"
 csvFactsAllFlare="$cloudFlareHome/$accountClass/all-facts.csv"
 #
@@ -223,17 +223,19 @@ if [ ! -s "$jsonFactsFlare" ]; then
     dir=$(dirname "$jsonFactsFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
+csvHeader='asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,nav,aum,twelveMonTrlYield,yieldToMaturity,distributionYield,weightedAverageCoupon,durationYears,maturityYears,expenseRatio,accountType,source'
+csvElements='.[] | [.asOfDate,.ticker,.oneDayYield,.sevenDayYield,.thirtyDayYield,.nav,.aum,.twelveMonTrlYield,.yieldToMaturity,.distributionYield,.weightedAverageCoupon,.durationYears,.maturityYears,.expenseRatio,.accountType,.source] | @csv'
 if ../bin/jsonDifferent.sh "$jsonFactsNew" "$jsonFactsFlare"; then
     cat "$jsonFactsNew" >"$jsonFactsFlare"
     echo "published updated cloudflare $sourceName-facts.json file."
     (
-        echo 'asOfDate,ticker,thirtyDayYield,duration,maturity,er'
-        jq -r '.[] | [.asOfDate, .ticker, .nav, .thirtyDayYield,.duration, .maturity, .er] | @csv' "$jsonFactsFlare"
+       echo "$csvHeader"
+        jq -r "$csvElements" "$jsonFactsFlare"
     ) >"$csvFactsFlare"
     echo "published updated cloudflare $sourceName-facts.csv file."
 fi
 #
-# Merge current tool's current Factss into the All tools Facts file (keeping only best, most recent reported values)
+# Merge current tool's current Facts into the All tools Facts file (keeping only best, most recent reported values)
 #
 if [ -s "$jsonFactsAllFlare" ]; then
     jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonFactsNew" "$jsonFactsAllFlare" |
@@ -252,8 +254,8 @@ if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonFactsAllFlare"; then
     cat tmp-all-flare.json >"$jsonFactsAllFlare"
     echo "published updated cloudflare $jsonFactsAllFlare file."
     (
-        echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,nav,aum,twelveMonTrlYield,yieldToMaturity,distributionYield,weightedAverageCoupon,durationYears,maturityYears,expenseRatio,accountType,source'
-        jq -r '.[] | [.asOfDate,.ticker,.oneDayYield,.sevenDayYield,.thirtyDayYield,.nav,.aum,.twelveMonTrlYield,.yieldToMaturity,.distributionYield,.weightedAverageCoupon,.durationYears,.maturityYears,.expenseRatio,.accountType,.source] | @csv' "$jsonFactsAllFlare"
+        echo "$csvHeader"
+        jq -r "$csvElements" "$jsonFactsAllFlare"
     ) >"$csvFactsAllFlare"
     echo "published updated cloudflare $csvFactsAllFlare file."
 fi
