@@ -14,6 +14,7 @@ for (let i = 0; i < json.length; i++) {
     const item = json[i];
     if (!item.ticker) continue;
     let row = { "ticker": item.ticker };
+    if (safeObjectRef(item.asOfDate)) row.asOfDate = item.asOfDate;
     if (safeObjectRef(item.accountType)) row.accountType = item.accountType;
     if (safeObjectRef(item.nav)) row.nav = item.nav;
     if (safeObjectRef(item.aum)) row.aum = item.aum;
@@ -27,7 +28,6 @@ for (let i = 0; i < json.length; i++) {
     if (safeObjectRef(item.durationYears)) row.durationYears = item.durationYears;
     if (safeObjectRef(item.maturityYears)) row.maturityYears = item.maturityYears;
     if (safeObjectRef(item.expenseRatio)) row.expenseRatio = item.expenseRatio;
-    if (safeObjectRef(item.asOfDate)) row.asOfDate = item.asOfDate;
     if (safeObjectRef(item.source)) row.source = item.source;
     row.timestamp = new Date();
     resp.push(row);

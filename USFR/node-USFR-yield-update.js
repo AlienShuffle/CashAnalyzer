@@ -28,7 +28,7 @@ function run() {
             // make sure the page has rendered at least to the ER section.
             const erElement = await page.waitForSelector('#fund-overview > div > div:nth-child(1) > table > tbody > tr.expense-ratio');
             // parse out the Expense Ratio.
-            let er = await page.evaluate(() => {
+            const er = await page.evaluate(() => {
                 const item = document.querySelector('#fund-overview > div > div:nth-child(1) > table > tbody > tr.expense-ratio');
                 const row = item.innerText.split('\t');
                 if (row.length == 2) {
@@ -40,7 +40,7 @@ function run() {
 
             // parse out As of Date (table entry is of the form 'As of 09/11/2024')
             // document.querySelector("#fund-overview > div > div:nth-child(1) > table > thead > tr > th:nth-child(2) > div > span")
-            let asOfDate = await page.evaluate(() => {
+            const asOfDate = await page.evaluate(() => {
                 const item = document.querySelector('#fund-overview > div > div:nth-child(1) > table > thead > tr > th:nth-child(2) > div > span');
                 if (item) {
                     const row = item.innerText;
@@ -53,9 +53,20 @@ function run() {
                 }
             });
 
+            // #details-left-panel-wrapper > h1
+            const accountType = await page.evaluate(() => {
+                const item = document.querySelector('#details-left-panel-wrapper > h1');
+                if (item) {
+                    const row = item.innerText.trim();
+                    return row;
+                } else {
+                    return '';
+                }
+            });
+
             // parse out NAV (table entry is of the form '$50.139')
             // document.querySelector("#fund-nav > div > div:nth-child(1) > table > tbody > tr.strong > td:nth-child(2) > span")
-            let navValue = await page.evaluate(() => {
+            const nav = await page.evaluate(() => {
                 const item = document.querySelector('#fund-nav > div > div:nth-child(1) > table > tbody > tr.strong > td:nth-child(2) > span');
                 if (item) {
                     const row = item.innerText;
@@ -65,42 +76,100 @@ function run() {
                 }
             });
 
-            // parse out 30 Day SEC Yield (table entry is of the form '$50.139')
-            // document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(11)")
-            let thirtyDayYield = await page.evaluate(() => {
-                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(11)");
-                const row = item.innerText.split('\t');
-                if (row.length == 2) {
-                    return row[1].replace(/%/, '') / 100;
-                }
-                return '';
-            });
-
-            // parse out Effective Duration instead of WAM (table entry is of the form '0.02' years, we multiply by 365)
-            // document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)")
-            let durationYears = await page.evaluate(() => {
-                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)");
+            // #fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(2)
+            // #fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(2)
+            const aum = await page.evaluate(() => {
+                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(2)");
                 if (item) {
                     const row = item.innerText;
-                    return row.replace(/%/, '') * 1;
+                    return row.replace(/\$/, '').replace(/,/g, '') * 1000;
                 } else {
                     return '';
                 }
             });
+
+            // parse out 30 Day SEC Yield (table entry is of the form '$50.139')
+            const thirtyDayYield = await page.evaluate(() => {
+                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(11) > td:nth-child(2)");
+                const row = item.innerText;
+                if (row) {
+                    return row.replace(/%/, '') / 100;
+                }
+                return '';
+            });
+
+            // #fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(9) > td:nth-child(2)
+            const yieldToMaturity = await page.evaluate(() => {
+                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(9) > td:nth-child(2)");
+                const row = item.innerText;
+                if (row) {
+                    return row.replace(/%/, '') / 100;
+                }
+                return '';
+            });
+
+            // #fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(10) > td:nth-child(2)
+            const distributionYield = await page.evaluate(() => {
+                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(10) > td:nth-child(2)");
+                const row = item.innerText;
+                if (row) {
+                    return row.replace(/%/, '') / 100;
+                }
+                return '';
+            });
+
+            // document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(5) > td:nth-child(2)")
+            const weightedAverageCoupon = await page.evaluate(() => {
+                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(5) > td:nth-child(2)");
+                const row = item.innerText;
+                if (row) {
+                    return row.replace(/%/, '') / 100;
+                }
+                return '';
+            });
+
+            // document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)")
+            const durationYears = await page.evaluate(() => {
+                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)");
+                if (item) {
+                    const row = item.innerText;
+                    return row * 1;
+                } else {
+                    return '';
+                }
+            });
+
+            // #fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(6) > td:nth-child(2)
+            const maturityYears = await page.evaluate(() => {
+                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(6) > td:nth-child(2)");
+                if (item) {
+                    const row = item.innerText;
+                    return row * 1;
+                } else {
+                    return '';
+                }
+            });
+            browser.close();
+
             // format return JSON message.
             let facts = [
                 {
                     "ticker": "USFR",
-                    "asOfDate": (asOfDate) ? asOfDate : '',
-                    "nav": (navValue) ? navValue.toFixed(5) * 1 : '',
-                    "thirtyDayYield": (thirtyDayYield) ? thirtyDayYield.toFixed(5) * 1 : '',
-                    "durationYears": (durationYears) ? durationYears.toFixed(1) * 1 : '',
-                    "expenseRatio": (er) ? er.toFixed(5) * 1 : '',
                     "source": "Wisdomtree yields",
                     "timestamp": new Date()
                 }
             ];
-            browser.close();
+            if (accountType) facts[0].accountType = accountType;
+            if (asOfDate) facts[0].asOfDate = asOfDate;
+            if (nav) facts[0].nav = nav.toFixed(5) * 1;
+            if (aum) facts[0].aum = aum;
+            if (thirtyDayYield) facts[0].thirtyDayYield = thirtyDayYield.toFixed(4) * 1;
+            if (yieldToMaturity) facts[0].yieldToMaturity = yieldToMaturity.toFixed(4) * 1;
+            if (distributionYield) facts[0].distributionYield = distributionYield.toFixed(4) * 1;
+            if (weightedAverageCoupon) facts[0].weightedAverageCoupon = weightedAverageCoupon.toFixed(4) * 1;
+            if (durationYears > 0) facts[0].durationYears = durationYears.toFixed(2) * 1;
+            if (maturityYears > 0) facts[0].maturityYears = maturityYears.toFixed(2) * 1;
+            if (er) facts[0].expenseRatio = er.toFixed(5) * 1;
             return resolve(JSON.stringify(facts));
         } catch (e) {
             if (!(typeof browser === 'undefined')) browser.close();

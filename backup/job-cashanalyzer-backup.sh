@@ -173,7 +173,7 @@ create_backup() {
 clean_old_backups() {
     if [ "$RETENTION_DAYS" -gt 0 ]; then
         log "INFO" "Cleaning backups older than $RETENTION_DAYS days"
-        find "$BACKUP_DIR" -name "*.tar.*" -mtime +$RETENTION_DAYS -delete
+        find "$BACKUP_DIR" -name '*_backup_'$(hostname)'.*' -mtime +$RETENTION_DAYS -delete
 
         if [ $? -eq 0 ]; then
             log "INFO" "Old backups cleaned successfully"
