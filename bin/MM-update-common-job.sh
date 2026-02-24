@@ -133,20 +133,31 @@ else
         else
             $collectionScript >"$tmpCollect"
         fi
+        statuses=("${PIPESTATUS[@]}")
+        if [ "${statuses[0]}" -ne 0 ]; then
+            echo "$sourceName rate retrieval failed, exiting."
+            exit 1
+        fi
         if [ ! -s "$tmpCollect" ]; then
             echo "Empty collection File $tmpCollect."
             exit 1
         fi
         #echo "running node $processScript"
         cat "$tmpCollect" | node $processScript "$nodeArg" | jq . >"$jsonRateNew"
+        statuses=("${PIPESTATUS[@]}")
         rm -f "$tmpCollect"
+        if [ "${statuses[1]}" -ne 0 ]; then
+            echo "$sourceName rate retrieval failed, exiting."
+            exit 1
+        fi
     else
         #echo "node $processScript $nodeArg | jq . >$jsonRateNew"; exit 1
         node $processScript "$nodeArg" | jq . >"$jsonRateNew"
-    fi
-    if [ ! $? ]; then
-        echo "$sourceName rate retrieval failed, exiting."
-        exit 1
+        statuses=("${PIPESTATUS[@]}")
+        if [ "${statuses[0]}" -ne 0 ]; then
+            echo "$sourceName rate retrieval failed, exiting."
+            exit 1
+        fi
     fi
     if [ ! -s "$jsonRateNew" ]; then
         echo "Empty $sourceName rate file."
@@ -169,6 +180,8 @@ rm -f tmp.sort.json
 # get list of rates that were updated.
 # Then loop through this list of names, extract them from the rate sheet and merge it into the history sheet.
 #
+csvHeader='asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
+csvElements='.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield,.source] | @csv'
 grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e 's/"$//' | sort -u |
     while IFS= read -r ticker; do
         dirname="$(echo "$ticker" | sed -e 's/ /-/g')"
@@ -219,8 +232,8 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
             cat "$jsonHistoryFlareTemp" >"$jsonHistoryFlare"
             [ "$quiet" = "true" ] || echo "published updated $sourceName $ticker cloudFlare yields file."
             (
-                echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
-                jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield,.source] | @csv' "$jsonHistoryFlare"
+                echo "$csvHeader"
+                jq -r "$csvElements" "$jsonHistoryFlare"
             ) >"$csvHistoryFlare"
             [ "$quiet" = "true" ] || echo "published updated cloudflare csv file."
         fi
@@ -241,8 +254,8 @@ if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     [ "$quiet" = "true" ] || echo "published updated cloudflare $sourceName-rates.json file."
     (
-        echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield'
-        jq -r '.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield] | @csv' "$jsonRateFlare"
+        echo "$csvHeader"
+        jq -r "$csvElements" "$jsonRateFlare"
     ) >"$csvRateFlare"
     [ "$quiet" = "true" ] || echo "published updated cloudflare $sourceName-rates.csv file."
 fi
@@ -266,8 +279,8 @@ if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
     cat tmp-all-flare.json >"$jsonRateAllFlare"
     [ "$quiet" = "true" ] || echo "published updated cloudflare $(basename $jsonRateAllFlare) file."
     (
-        echo 'asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
-        jq -r '.[] | [.asOfDate,.ticker,.oneDayYield,.sevenDayYield,.thirtyDayYield,.source] | @csv' "$jsonRateAllFlare"
+        echo "$csvHeader"
+        jq -r "$csvElements" "$jsonRateAllFlare"
     ) >"$csvRateAllFlare"
     [ "$quiet" = "true" ] || echo "published updated cloudflare $(basename $csvRateAllFlare) file."
 fi

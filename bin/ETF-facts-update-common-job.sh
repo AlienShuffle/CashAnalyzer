@@ -124,16 +124,30 @@ else
         else
             $collectionScript >"$tmpCollect"
         fi
+        statuses=("${PIPESTATUS[@]}")
+        if [ "${statuses[0]}" -ne 0 ]; then
+            echo "$sourceName rate retrieval failed, exiting."
+            exit 1
+        fi
+        if [ ! -s "$tmpCollect" ]; then
+            echo "Empty collection File $tmpCollect."
+            exit 1
+        fi
         #echo "running node $processScript"
         cat "$tmpCollect" | node $processScript "$nodeArg" | jq . >"$jsonFactsNew"
         rm -f "$tmpCollect"
+        if [ "${statuses[1]}" -ne 0 ]; then
+            echo "$sourceName Facts retrieval failed, exiting."
+            exit 1
+        fi
     else
         #echo "node $processScript $nodeArg | jq . >$jsonFactsNew"; exit 1
         node $processScript "$nodeArg" | jq . >"$jsonFactsNew"
-    fi
-    if [ ! $? ]; then
-        echo "$sourceName Facts retrieval failed, exiting."
-        exit 1
+        statuses=("${PIPESTATUS[@]}")
+        if [ "${statuses[0]}" -ne 0 ]; then
+            echo "$sourceName Facts retrieval failed, exiting."
+            exit 1
+        fi
     fi
     if [ ! -s "$jsonFactsNew" ]; then
         echo "Empty $sourceName Facts file."
