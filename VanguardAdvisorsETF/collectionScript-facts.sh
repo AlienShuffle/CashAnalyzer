@@ -11,7 +11,7 @@ cat ./VanguardETF-funds.txt |
         [ ! -z "$ticker" ] || continue
         [ -d "./downloads/$ticker" ] || mkdir -p "./downloads/$ticker"
         # only process if not downloaded in last 12 hours - -mmin -720 finds files modified in last 12 hours.
-        recent=$(find "./downloads/$ticker" -type f -name "*.csv" -mmin -60 -print | wc -l)
+        recent=$(find "./downloads/$ticker" -type f -name "*.csv" -mmin -720 -print | wc -l)
         if [ $recent -gt 0 ]; then
             #echo "$ticker, $recent files downloaded < 12 hours ago, skipping." 1>&2
             continue
