@@ -1,61 +1,207 @@
-const du = require('../lib/dateUtils.js');
-// Work on POSIX and Windows
-const fs = require("fs");
-import dynamicSort from '../lib/dynamicSort.mjs';
-import { parse } from 'node-html-parser';
-import { readFileSync } from 'fs';
-import process from 'node:process';
-function safeObjectRef(obj) {
-    if (typeof obj === "undefined") return "";
-    return obj;
+import puppeteer from "puppeteer";
+import {
+    readdirSync,
+    renameSync,
+    statSync
+} from "fs";
+import {
+    join
+} from "node:path";
+
+const debug = true;
+
+// need to parse the ticker and URL upon stdin.
+if (process.argv.length < 3) {
+    console.error("Usage: node node-BlackRock-facts-update.js '<ticker>,<url>'");
+    process.exit(1);
+}
+const args = process.argv[2].split(",");
+const ticker = args[0];
+const url = args[1];
+
+const browserPromise = puppeteer.launch({
+    //headless: true,
+    args: ['--window-size=1920,1080'],  // big screen layout for CSV export.
+    defaultViewport: null
+});
+const browser = await browserPromise;
+
+// this is the main function
+
+const downloadPath = `./downloads/${ticker}`;
+const page = await browser.newPage();
+
+async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// read HTML from file given as stdin, this is facts page on Blackrock.com.
-const htmlString = readFileSync(0, 'utf8');
-const root = parse(htmlString);
-const childCnt = root.children.length;
-console.error(`childNodes.length = ${childCnt}`);
-
-
-// create a lookup array of all the funds I want to track from the mmFun input list
-// the list is a file of tickers, per line.
-// The moneymarket.fun report has over 800 funds, I want to track a much smaller list.
-const fundListBuffer = fs.readFileSync(process.argv[2], 'utf8');
-const fundList = fundListBuffer.split('\n');
-let funds = [];
-for (let i = 0; i < fundList.length; i++) if (fundList[i].length > 0) funds[fundList[i]] = true;
-
-const timestamp = new Date();
-let resp = [];
-// go through each ticker report provided, not structured as an array, instead a set of keys in a single object.
-for (let key in json) {
-    const fund = json[key];
-    const ticker = fund.localExchangeTicker;
-    if (!ticker) continue;
-    if (!funds[ticker]) continue;
-
-    let rowData = {};
-    const dateInt = fund.navAmountAsOf.r;
-    const year = Math.trunc(dateInt / 10000);
-    const month = Math.trunc((dateInt % 10000) / 100);
-    const day = Math.trunc(dateInt % 100);
-    //console.error(`${ticker}: dateInt = ${dateInt} -> year = ${year}, month = ${month}, day = ${day}`);
-    rowData.asOfDate = du.getISOString(new Date(year, month - 1, day));
-    if (safeObjectRef(fund.navAmount) && safeObjectRef(fund.navAmount.r)) rowData.nav = safeObjectRef(fund.navAmount.r);
-    const sevenDayYield = (safeObjectRef(fund.oneWeekSecYield)) ? safeObjectRef(fund.oneWeekSecYield.r) : null;
-    if (sevenDayYield) rowData.sevenDayYield = (sevenDayYield / 100).toFixed(5) * 1;
-    const thirtyDayYield = (safeObjectRef(fund.thirtyDaySecYield)) ? safeObjectRef(fund.thirtyDaySecYield.r) : null;
-    if (thirtyDayYield) rowData.thirtyDayYield = (thirtyDayYield / 100).toFixed(5) * 1;
-    const twelveMonTrlYield = (safeObjectRef(fund.twelveMonTrlYield)) ? safeObjectRef(fund.twelveMonTrlYield.r) : null;
-    if (twelveMonTrlYield) rowData.twelveMonTrlYield = (twelveMonTrlYield / 100).toFixed(5) * 1;
-    rowData.source = 'BlackRock'
-        if (safeObjectRef(fund.accountType)) rowData.accountType = safeObjectRef(fund.accountType);
-    rowData.blackRockId = key * 1;
-    rowData.baseUrl = `https://blackrock.com/us/individual/products/${key}/`;
-    rowData.distroUrl = `${rowData.baseUrl}fund/1515394931018.ajax?fileType=xls&dataType=fund`;
-    rowData.ticker = ticker;
-    rowData.timestamp = timestamp;
-    resp.push(rowData);
+// Helper: wait until no .crdownload files remain
+async function waitForDownloadComplete(dir) {
+    // make sure download starts
+    await sleep(800);
+    // return once the .crdownload file is removed (completed).
+    return new Promise(resolve => {
+        const interval = setInterval(() => {
+            const files = readdirSync(dir);
+            const downloading = files.some(f => f.endsWith(".crdownload"));
+            if (!downloading) {
+                clearInterval(interval);
+                resolve();
+            }
+        }, 500);
+    });
 }
 
-console.log(JSON.stringify(resp));
+// Helper: rename the most recently downloaded file
+async function renameLatestFile(downloadDir, newName) {
+    const files = readdirSync(downloadDir)
+        .filter(f => !f.endsWith(".crdownload"))
+        .sort((a, b) => statSync(join(downloadDir, b)).mtimeMs -
+            statSync(join(downloadDir, a)).mtimeMs);
+
+    if (files.length === 0) return null;
+
+    const oldPath = join(downloadDir, files[0]);
+    const newPath = join(downloadDir, newName);
+    renameSync(oldPath, newPath);
+    if (debug) console.error("Renamed file:", newPath);
+    return newPath;
+}
+
+async function downloadFile(selector, downloadPath, csvFileName) {
+    const button = await selectElement(selector);
+
+    if (!button) {
+        console.error(`Button '${selector}' not found.`);
+        return false;
+    }
+
+    await page._client().send("Page.setDownloadBehavior", {
+        behavior: "allow",
+        downloadPath: downloadPath
+    });
+
+    if (debug) console.error("Clicking CSV button...");
+    await button.click();
+
+    if (debug) console.error("Waiting for CSV download...");
+    await waitForDownloadComplete(downloadPath);
+    await renameLatestFile(downloadPath, csvFileName);
+
+    return true;
+}
+
+async function selectElement(selector) {
+    if (debug) console.error(`Selecting element '${selector}'`);
+    await page.waitForSelector(selector, { visible: true });
+    const handle = await page.$(selector);
+    if (handle) {
+        await handle.evaluate(el => el.scrollIntoView());
+        return handle;
+    }
+    return null;
+}
+
+async function getElementText(selector) {
+    if (debug) console.error(`Selecting element '${selector}'`);
+    const found = await page.evaluate((selector) => {
+        const el = document.querySelector(selector);
+        if (el) {
+            el.scrollIntoView();
+            el.focus();
+            return el.innerText;
+        } else {
+            return null;
+        }
+    }, selector);
+    if (debug) console.error(`Exiting getElementText(${selector}) = '''${found}'''`);
+    return found;
+}
+
+if (debug) console.error(`Opening ${ticker} page...`);
+await page.goto(
+    url,
+    { waitUntil: "networkidle2" }
+);
+
+//document.querySelector("#in-page-section-id-portfolio")
+// class = .
+// id = #
+
+// Now get thirty day Option Expiration yield and as of date
+// #table_1 > tbody > tr.odd.detail-show > td.numdata.float.column-average-yield-to-option-expiration
+/*
+const rawExprYield = await getElementText('td.numdata.float.column-average-yield-to-option-expiration');
+if (!rawExprYield) {
+    console.error(`No Yield to Option Expiration found for BOXX.`);
+    process.exit()
+}
+const exprYield = (rawExprYield.replace("%", "").trim() / 100).toFixed(4) * 1;
+if (debug) console.error(`rawYield= '${rawExprYield}'=${exprYield}`);
+
+// #table_1 > tbody > tr > td.column-as-of-date
+const rawYieldAsOfDate = await getElementText('td.column-as-of-date');
+if (!rawYieldAsOfDate) {
+    console.error(`No asOfDate found for BOXX`);
+    process.exit()
+}
+const yieldAsOfDate = new Date(rawYieldAsOfDate).toISOString().split("T")[0];
+if (debug) console.error(`rawYieldAsOfDate='${rawYieldAsOfDate}'='${yieldAsOfDate}'`);
+*/
+
+// #fundheaderTabs > div > div:nth-child(2) > div > ul > li > span.header-nav-data
+const rawExpenseRatio = await getElementText('#fundheaderTabs > div > div:nth-child(2) > div > ul > li > span.header-nav-data');
+if (!rawExpenseRatio) {
+    console.error(`No rawExpenseRatio found for ticker '${ticker}'`);
+    process.exit()
+}
+const expenseRatio = (rawExpenseRatio.replace("Expense Ratio:", "").replace("%", "").trim() / 100).toFixed(4) * 1;
+if (debug) console.error(`rawExpenseRatio= '${rawExpenseRatio}'=${expenseRatio}`);
+
+process.exit(1);
+
+// #table_1 > tbody > tr.odd.detail-show > td.expand.numdata.integer.column-average-days-to-option-expiration
+const rawDurationDays = await getElementText('td.expand.numdata.integer.column-average-days-to-option-expiration');
+if (!rawDurationDays) {
+    console.error(`No rawDurationDays found for ticker '${ticker}'`);
+    process.exit()
+}
+const durationDays = parseInt(rawDurationDays.replace(/ Days$/, ""));
+const durationYears = (durationDays / 365).toFixed(4) * 1;
+if (debug) console.error(`rawDurationDays= '${rawDurationDays}'=${durationDays}`);
+
+const results = [];
+results.push({
+    "ticker": ticker,
+    "thirtyDayYield": exprYield,
+    "asOfDate": yieldAsOfDate,
+    "expenseRatio": expenseRatio,
+    "durationYears": durationYears,
+    "source": "alphaarchitect.com",
+    "timestamp": new Date()
+});
+console.log(JSON.stringify(results));
+
+// Now get distribution data by clicking the download button and parsing the resulting CSV file.
+// this will be processed in a later script.
+//
+// #fund-distributions > h1
+if (!await selectElement('#fund-distributions')) process.exit();
+await sleep(1000);
+
+// find the export button and expose the CSV download button.
+// #table_18_wrapper > div.dt-buttons > button.dt-button.buttons-collection.DTTT_button.DTTT_button_export
+const exportButton = await selectElement('#table_18_wrapper > div.dt-buttons > button.dt-button.buttons-collection.DTTT_button.DTTT_button_export > span:nth-child(1)');
+if (!exportButton) {
+    console.error(`No export button found for BOXX.`);
+    process.exit();
+}
+exportButton.click();
+await sleep(1000);
+
+// click the CSV download button in the dropdown menu that appears after clicking the export button. this will download the file.
+// #table_18_wrapper > div.dt-buttons > div.dt-button-collection.dtb-b3.wdt-skin-aqua > div > button.dt-button.buttons-csv.buttons-html5
+if (!await downloadFile("#table_18_wrapper > div.dt-buttons > div.dt-button-collection.dtb-b3.wdt-skin-aqua > div > button.dt-button.buttons-csv.buttons-html5", downloadPath, `${ticker}-distributions.csv`)) process.exit();
+
+if (debug) console.error("Script complete.");
+browser.close();

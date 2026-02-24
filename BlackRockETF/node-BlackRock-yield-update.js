@@ -1,6 +1,6 @@
-const du = require('../lib/dateUtils.js');
+import { duGetISOString } from "../lib/dateUtils.mjs";
 // Work on POSIX and Windows
-const fs = require("fs");
+import { readFileSync } from "fs";
 
 function safeObjectRef(obj) {
     if (typeof obj === "undefined") return "";
@@ -8,11 +8,11 @@ function safeObjectRef(obj) {
 }
 
 // read in from stdin, the BlackRock json file.
-const stdinBuffer = fs.readFileSync(0, 'utf-8');
+const stdinBuffer = readFileSync(0, 'utf-8');
 const json = JSON.parse(stdinBuffer);
 
 // parse the fund list file, which is a simple text file with one ticker per line, and create a set of tickers to filter the json data by.
-const fundListBuffer = fs.readFileSync(process.argv[2], 'utf8');
+const fundListBuffer = readFileSync(process.argv[2], 'utf8');
 const fundList = fundListBuffer.split('\n');
 let funds = [];
 for (let i = 0; i < fundList.length; i++) if (fundList[i].length > 0) funds[fundList[i]] = true;
@@ -32,7 +32,7 @@ for (let key in json) {
     const month = Math.trunc((dateInt % 10000) / 100);
     const day = Math.trunc(dateInt % 100);
     //console.error(`${ticker}: dateInt = ${dateInt} -> year = ${year}, month = ${month}, day = ${day}`);
-    rowData.asOfDate = du.getISOString(new Date(year, month - 1, day));
+    rowData.asOfDate = duGetISOString(new Date(year, month - 1, day));
     if (safeObjectRef(fund.navAmount) && safeObjectRef(fund.navAmount.r)) rowData.nav = safeObjectRef(fund.navAmount.r);
     const sevenDayYield = (safeObjectRef(fund.oneWeekSecYield)) ? safeObjectRef(fund.oneWeekSecYield.r) : null;
     if (sevenDayYield) rowData.sevenDayYield = (sevenDayYield / 100).toFixed(5) * 1;

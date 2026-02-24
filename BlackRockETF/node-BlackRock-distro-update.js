@@ -1,14 +1,13 @@
 // Work on POSIX and Windows
-const fs = require("fs");
-const process = require("process");
-require('../lib/dynamicSort.js')();
-const du = require('../lib/dateUtils.js');
-const { time } = require("console");
+import { readFileSync } from "fs";
+//const process = require("process");
+import dynamicSort from '../lib/dynamicSort.mjs';
+import { duGetISOString } from "../lib/dateUtils.mjs";
 
 const ticker = (process.argv[2] && process.argv[2].length > 1) ? process.argv[2] : '';
-if (ticker == '') throw 'missing argv[2]=ticker!';
+if (ticker == '') throw 'missing argv[2] ticker!';
 
-const contentText = fs.readFileSync(0, 'utf-8');
+const contentText = readFileSync(0, 'utf-8');
 const start = contentText.indexOf('<ss:Worksheet ss:Name="Distributions">');
 let goodStuff = contentText.substring(start);
 const closingString = '</ss:Worksheet>';
@@ -40,13 +39,13 @@ while (dataRemaining) {
 
         switch (col) {
             case 1:
-                rowData.recordDate = du.getISOString(new Date(cell));
+                rowData.recordDate = duGetISOString(new Date(cell));
                 break;
             case 2:
-                rowData.exDividendDate = du.getISOString(new Date(cell));
+                rowData.exDividendDate = duGetISOString(new Date(cell));
                 break;
             case 3:
-                rowData.payableDate = du.getISOString(new Date(cell));
+                rowData.payableDate = duGetISOString(new Date(cell));
                 break;
             case 4:
                 rowData.totalDistribution = cell * 1;

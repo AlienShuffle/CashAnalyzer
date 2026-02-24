@@ -17,10 +17,9 @@ cat history/BlackRockETF-rate-new.json |
     done
 exit 1
 cat history/BlackRockETF-rate-new.json |
-    jq -r '.[] | [.ticker,.baseUrl] | @csv' |
+    jq -r '.[] | [.ticker,.baseUrl] | @csv' | tr -d '"' |
     while IFS= read -r fundReference; do
-        ticker=$(echo "$fundReference" | cut -d, -f1 | tr -d '"')
+        ticker=$(echo "$fundReference" | cut -d, -f1)
         echo "Processing $ticker facts"
-        echo "$fundReference" |
-            ../bin/ETF-facts-update-common-job.sh --nodeArg "$ticker" "$@"
+        ../bin/ETF-facts-update-common-job.sh --nodeArg "$fundReference" "$@"
     done
