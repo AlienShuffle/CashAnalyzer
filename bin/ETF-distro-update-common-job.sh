@@ -3,6 +3,11 @@ pubDelayHours=18
 runDelayHours=4
 while [ -n "$1" ]; do
   case $1 in
+  "--collectionArg")
+    collectionArg="$2"
+    #echo "collectionArg=$collectionArg"
+    shift
+    ;;
   "-f")
     forceRun=true
     dashF='-f'

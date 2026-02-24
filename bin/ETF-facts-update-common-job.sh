@@ -135,6 +135,7 @@ else
         fi
         #echo "running node $processScript"
         cat "$tmpCollect" | node $processScript "$nodeArg" | jq . >"$jsonFactsNew"
+        statuses=("${PIPESTATUS[@]}")
         rm -f "$tmpCollect"
         if [ "${statuses[1]}" -ne 0 ]; then
             echo "$sourceName Facts retrieval failed, exiting."
