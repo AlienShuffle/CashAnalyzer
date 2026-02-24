@@ -23,7 +23,7 @@ const tickers = rawTickers.split('\n').filter(line => line.trim().length > 0);
 if (debug) console.error(`Scraping: '${tickers.join(", ")}'`);
 let results = [];
 for (const ticker of tickers) {
-  console.error(`Processing fund: ${ticker}`);
+  console.error(`Scraping fund: ${ticker}`);
   // set fund information
   const downloadPath = `./downloads/${ticker}`;
   const url = `https://advisors.vanguard.com/investments/products/${ticker}`;
@@ -178,7 +178,7 @@ for (const ticker of tickers) {
   if (!await selectElement('#weighted-exposures-tab-issuer-type')) break;
   await sleep(2000);
   if (!await downloadFile("Export issuer type data", downloadPath, `${ticker}-issuer-type.csv`)) break;
-  if (true) console.error("Completed processing for ticker:", ticker);
+  if (debug) console.error("Completed processing for ticker:", ticker);
   await sleep(2000);
   await page.close();
   // do only a few due to rate limiting concerns...

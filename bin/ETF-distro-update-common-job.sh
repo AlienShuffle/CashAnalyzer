@@ -103,9 +103,9 @@ dir=$(dirname "$jsonFlare")
 [ -d "$dir" ] || mkdir -p "$dir"
 if ../bin/jsonDifferent.sh "$jsonUnique" "$jsonFlare"; then
   cat "$jsonUnique" >"$jsonFlare"
-  echo "published updated cloudFlare $ticker distro history file."
   (
     echo 'recordDate,exDividendDate,payableDate,totalDistribution,ordinaryIncome,stcg,ltcg,returnOfCapital'
     jq -r '.[] | [.recordDate,.exDividendDate,.payableDate,.totalDistribution,.ordinaryIncome,.stcg,.ltcg,.returnOfCapital] | @csv' "$jsonUnique"
   ) >"$csvFlare"
+   [ "$quiet" = "true" ] || echo "published updated cloudFlare $ticker distro history file."
 fi

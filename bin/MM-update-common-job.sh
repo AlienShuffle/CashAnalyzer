@@ -185,7 +185,7 @@ csvElements='.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDay
 grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e 's/"$//' | sort -u |
     while IFS= read -r ticker; do
         dirname="$(echo "$ticker" | sed -e 's/ /-/g')"
-        [ "$quiet" = "true" ] || echo "Processing $ticker yields"
+        [ "$quiet" = "true" ] || echo "Processing rates: $ticker yields"
         [ -d "history/$dirname" ] || mkdir -p "history/$dirname"
         # rates only for this query from this tool.
         jsonRateTicker="history/$dirname/rate-new.json"
@@ -252,12 +252,11 @@ if [ ! -s "$jsonRateFlare" ]; then
 fi
 if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
-    [ "$quiet" = "true" ] || echo "published updated cloudflare $sourceName-rates.json file."
     (
         echo "$csvHeader"
         jq -r "$csvElements" "$jsonRateFlare"
     ) >"$csvRateFlare"
-    [ "$quiet" = "true" ] || echo "published updated cloudflare $sourceName-rates.csv file."
+    [ "$quiet" = "true" ] || echo "published updated cloudflare $sourceName-rates files."
 fi
 #
 # Merge current tool's current rates into the All tools rate file (keeping only best, most recent reported values)
@@ -277,11 +276,10 @@ fi
 # if the new merged file is different, then publish it.
 if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
     cat tmp-all-flare.json >"$jsonRateAllFlare"
-    [ "$quiet" = "true" ] || echo "published updated cloudflare $(basename $jsonRateAllFlare) file."
     (
         echo "$csvHeader"
         jq -r "$csvElements" "$jsonRateAllFlare"
     ) >"$csvRateAllFlare"
-    [ "$quiet" = "true" ] || echo "published updated cloudflare $(basename $csvRateAllFlare) file."
+    [ "$quiet" = "true" ] || echo "published updated cloudflare all-rates files."
 fi
 rm -f tmp-all-flare.json

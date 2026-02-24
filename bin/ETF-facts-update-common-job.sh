@@ -177,7 +177,7 @@ csvElements='.[] | [.asOfDate,.ticker,.oneDayYield,.sevenDayYield,.thirtyDayYiel
 grep ticker "$jsonFactsNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e 's/"$//' | sort -u |
     while IFS= read -r ticker; do
         dirname="$(echo "$ticker" | sed -e 's/ /-/g')"
-        [ "$quiet" = "true" ] || echo "Processing $ticker"
+        [ "$quiet" = "true" ] || echo "Processing facts: $ticker"
         [ -d "history/$dirname" ] || mkdir -p "history/$dirname"
         # Factss only for this query from this tool.
         jsonFactsTicker="history/$dirname/facts-new.json"
@@ -221,12 +221,11 @@ grep ticker "$jsonFactsNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -
         #
         if ../bin/jsonDifferent.sh "$jsonHistoryFlareTemp" "$jsonHistoryFlare"; then
             cat "$jsonHistoryFlareTemp" >"$jsonHistoryFlare"
-            echo "published updated $sourceName $ticker cloudFlare history file."
             (
                 echo "$csvHeader"
                 jq -r "$csvElements" "$jsonHistoryFlare"
             ) >"$csvHistoryFlare"
-            echo "published updated cloudflare csv file."
+            [ "$quiet" = "true" ] || echo "published updated $sourceName $ticker cloudFlare facts-history files."
         fi
     done
 #
@@ -243,12 +242,11 @@ if [ ! -s "$jsonFactsFlare" ]; then
 fi
 if ../bin/jsonDifferent.sh "$jsonFactsNew" "$jsonFactsFlare"; then
     cat "$jsonFactsNew" >"$jsonFactsFlare"
-    echo "published updated cloudflare $sourceName-facts.json file."
     (
         echo "$csvHeader"
         jq -r "$csvElements" "$jsonFactsFlare"
     ) >"$csvFactsFlare"
-    echo "published updated cloudflare $sourceName-facts.csv file."
+    [ "$quiet" = "true" ] || echo "published updated cloudflare $sourceName-facts files."
 fi
 #
 # Merge current tool's current Facts into the All tools Facts file (keeping only best, most recent reported values)
@@ -268,11 +266,10 @@ fi
 # if the new merged file is different, then publish it.
 if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonFactsAllFlare"; then
     cat tmp-all-flare.json >"$jsonFactsAllFlare"
-    echo "published updated cloudflare $jsonFactsAllFlare file."
     (
         echo "$csvHeader"
         jq -r "$csvElements" "$jsonFactsAllFlare"
     ) >"$csvFactsAllFlare"
-    echo "published updated cloudflare $csvFactsAllFlare file."
+    [ "$quiet" = "true" ] || echo "published updated cloudflare all-facts files."
 fi
 rm -f tmp-all-flare.json
