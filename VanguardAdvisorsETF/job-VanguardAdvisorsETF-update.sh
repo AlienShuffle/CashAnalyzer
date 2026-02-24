@@ -3,7 +3,7 @@
 ../bin/ETF-facts-update-common-job.sh \
     --collectionScript ./collectionScript-facts.sh \
     --processScript ../lib/node-echo.js \
-    "$@"
+    --pubDelay 16 --runDelay 4 "$@"
 
 factsFile="history/VanguardAdvisorsETF-facts-new.json"
 if [ -f "$factsFile" ]; then
@@ -18,8 +18,8 @@ if [ -f "$factsFile" ]; then
         jq -r '.[] | [.ticker] | @csv' | tr -d '"' |
         while IFS= read -r ticker; do
             distroFile="downloads/$ticker/$ticker-distributions.csv"
-            [ -f "$distroFile" ] || continue    
+            [ -f "$distroFile" ] || continue
             echo "Processing $ticker distributions"
-            echo $ticker | ../bin/ETF-distro-update-common-job.sh --ticker "$ticker" "$@"
+            echo $ticker | ../bin/ETF-distro-update-common-job.sh --ticker "$ticker" --pubDelay 16 --runDelay 4 "$@"
         done
 fi
