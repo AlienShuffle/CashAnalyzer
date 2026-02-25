@@ -1,207 +1,172 @@
 import puppeteer from "puppeteer";
-import {
-    readdirSync,
-    renameSync,
-    statSync
-} from "fs";
-import {
-    join
-} from "node:path";
+import readFileSync from "fs";
 
-const debug = true;
+//function safeObjectRef(obj) { return (typeof obj === 'undefined') ? '' : obj; }
 
-// need to parse the ticker and URL upon stdin.
-if (process.argv.length < 3) {
-    console.error("Usage: node node-BlackRock-facts-update.js '<ticker>,<url>'");
-    process.exit(1);
-}
-const args = process.argv[2].split(",");
-const ticker = args[0];
-const url = args[1];
+const debug = false;
 
 const browserPromise = puppeteer.launch({
-    //headless: true,
-    args: ['--window-size=1920,1080'],  // big screen layout for CSV export.
+    //headless: false,    // true for production, false for debugging to see the browser.
     defaultViewport: null
 });
 const browser = await browserPromise;
 
 // this is the main function
+// get a list of tickers with site URL (ticker,url) from stdin, scrape each one, and output facts as JSON to stdout
+const rawFunds = readFileSync(0, 'utf8');
+const funds = rawFunds.split('\n').filter(line => line.trim().length > 0);
+if (debug) console.error(`Scraping: '${funds.join(", ")}'`);
 
-const downloadPath = `./downloads/${ticker}`;
-const page = await browser.newPage();
+let results = [];
+for (const fund of funds) {
 
-async function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+    // set fund information
+    const fundInfo = fund.split(",");
+    if (fundInfo.length < 2) {
+        console.error(`Invalid fund info: '${fund}'`);
+        continue;
+    }
+    const ticker = fundInfo[0];
+    const url = fundInfo[1];
 
-// Helper: wait until no .crdownload files remain
-async function waitForDownloadComplete(dir) {
-    // make sure download starts
-    await sleep(800);
-    // return once the .crdownload file is removed (completed).
-    return new Promise(resolve => {
-        const interval = setInterval(() => {
-            const files = readdirSync(dir);
-            const downloading = files.some(f => f.endsWith(".crdownload"));
-            if (!downloading) {
-                clearInterval(interval);
-                resolve();
+    console.error(`Scraping fund: ${ticker}`);
+    const page = await browser.newPage();
+
+    let rowData = {
+        "ticker": ticker,
+        "source": "BlackRock",
+        "timestamp": new Date()
+    };
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function selectElement(selector, click = false) {
+        if (debug) console.error(`Selecting element '${selector}'`);
+        const found = await page.evaluate((selector, click) => {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.scrollIntoView();
+                el.focus();
+                if (click) el.click();
+                return el.innerText;
+            } else {
+                return null;
             }
-        }, 500);
-    });
-}
-
-// Helper: rename the most recently downloaded file
-async function renameLatestFile(downloadDir, newName) {
-    const files = readdirSync(downloadDir)
-        .filter(f => !f.endsWith(".crdownload"))
-        .sort((a, b) => statSync(join(downloadDir, b)).mtimeMs -
-            statSync(join(downloadDir, a)).mtimeMs);
-
-    if (files.length === 0) return null;
-
-    const oldPath = join(downloadDir, files[0]);
-    const newPath = join(downloadDir, newName);
-    renameSync(oldPath, newPath);
-    if (debug) console.error("Renamed file:", newPath);
-    return newPath;
-}
-
-async function downloadFile(selector, downloadPath, csvFileName) {
-    const button = await selectElement(selector);
-
-    if (!button) {
-        console.error(`Button '${selector}' not found.`);
-        return false;
+        }, selector, click);
+        if (debug) console.error(`Exiting selectElement() = ''''${found}''''`);
+        return found;
     }
 
-    await page._client().send("Page.setDownloadBehavior", {
-        behavior: "allow",
-        downloadPath: downloadPath
-    });
+    //if (debug) console.error("Opening BlackRock iShares ETF page...");
+    await page.goto(
+        url,
+        { waitUntil: "networkidle2" }
+    );
 
-    if (debug) console.error("Clicking CSV button...");
-    await button.click();
-
-    if (debug) console.error("Waiting for CSV download...");
-    await waitForDownloadComplete(downloadPath);
-    await renameLatestFile(downloadPath, csvFileName);
-
-    return true;
-}
-
-async function selectElement(selector) {
-    if (debug) console.error(`Selecting element '${selector}'`);
-    await page.waitForSelector(selector, { visible: true });
-    const handle = await page.$(selector);
-    if (handle) {
-        await handle.evaluate(el => el.scrollIntoView());
-        return handle;
+    // now get thirty day yield and as of date
+    const rawSecYield = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-thirtyDaySecYield > div.data');
+    if (!rawSecYield) {
+        console.error(`No thirtyDayYield found for ticker '${ticker}'`);
+        break; // minimum requriement is to get the yield, if not found, skip the rest of processing for this ticker since it's likely the page structure has changed and other data points may also be missing or incorrect.
     }
-    return null;
+    const secYield = (rawSecYield.replace("%", "").trim() / 100).toFixed(4) * 1;
+    if (debug) console.error(`rawSecYield= '${rawSecYield}'=${secYield}`);
+    const rawSecYieldAsOfDate = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-thirtyDaySecYield > div.caption > div');
+    if (!rawSecYieldAsOfDate) {
+        console.error(`No asOfDate found for ticker '${ticker}'`);
+        break;
+    } else {
+        const secYieldAsOfDate = new Date(rawSecYieldAsOfDate.replace("as of ", "")).toISOString().split("T")[0];
+        if (debug) console.error(`rawSecYieldAsOfDate='${rawSecYieldAsOfDate}'='${secYieldAsOfDate}'`);
+        rowData.thirtyDayYield = secYield.toFixed(4) * 1;
+        rowData.asOfDate = secYieldAsOfDate;
+    }
+
+    // Fund Name
+    const rawFundName = await selectElement('#fundHeader > header.main-header > div.col-4.column.grid > div.column.main-header-holder.col-three-quarter-width > h1 > span');
+    if (!rawFundName) {
+        console.error(`No rawFundName found for ticker '${ticker}'`);
+    } else {
+        const fundName = rawFundName.trim();
+        if (debug) console.error(`rawFundName= '${rawFundName}'=${fundName}`);
+        if (fundName) rowData.fundName = fundName;
+    }
+
+    // Expense Ratio
+    const rawExpenseRatio = await selectElement('#feeTable > div > div > table > tbody > tr.fee-code-expr > td.data');
+    if (!rawExpenseRatio) {
+        console.error(`No rawExpenseRatio found for ticker '${ticker}'`);
+    } else {
+        const expenseRatio = (rawExpenseRatio.replace("%", "").trim() / 100).toFixed(4) * 1;
+        if (debug) console.error(`rawExpenseRatio= '${rawExpenseRatio}'=${expenseRatio}`);
+        if (expenseRatio) rowData.expenseRatio = expenseRatio.toFixed(6) * 1;
+    }
+
+    // Assets Under Management (AUM)
+    const rawAum = await selectElement('#keyFundFacts > div > div.float-left.in-left > div.product-data-item.col-totalNetAssetsFundLevel > div.data');
+    if (!rawAum) {
+        console.error(`No rawAum found for ticker '${ticker}'`);
+    } else {
+        const multiplier = rawAum.toLowerCase().includes("b") ? 1e9 : rawAum.toLowerCase().includes("m") ? 1e6 : 1;
+        const aum = rawAum.replace(/[^0-9\.]/g, "").trim() * 1;
+        if (debug) console.error(`rawAum= '${rawAum}'=${aum}`);
+        if (aum) rowData.aum = (aum * multiplier).toFixed(0) * 1;
+    }
+
+    // Weighted Average Coupon
+    const rawWeightedAverageCoupon = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-weightedAvgCouponFi > div.data');
+    if (!rawWeightedAverageCoupon) {
+        console.error(`No rawWeightedAverageCoupon found for ticker '${ticker}'`);
+    } else {
+        const weightedAverageCoupon = (rawWeightedAverageCoupon.replace("%", "").trim() / 100).toFixed(4) * 1;
+        if (debug) console.error(`rawWeightedAverageCoupon= '${rawWeightedAverageCoupon}'=${weightedAverageCoupon}`);
+        if (weightedAverageCoupon) rowData.weightedAverageCoupon = weightedAverageCoupon.toFixed(4) * 1;
+    }
+
+    // Duration Years
+    const rawDurationYears = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-modelOad > div.data');
+    if (!rawDurationYears) {
+        console.error(`No rawDurationYears found for ticker '${ticker}'`);
+    } else {
+        const durationYears = rawDurationYears.replace("yrs", "").trim() * 1;
+        if (debug) console.error(`rawDurationYears= '${rawDurationYears}'=${durationYears}`);
+        if (durationYears) rowData.durationYears = durationYears.toFixed(1) * 1;
+    }
+
+    // Yield to Maturity
+    const rawYieldToMaturity = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-yieldToWorst > div.data');
+    if (!rawYieldToMaturity) {
+        console.error(`No rawYieldToMaturity found for ticker '${ticker}'`);
+    } else {
+        const yieldToMaturity = (rawYieldToMaturity.replace("%", "").trim() / 100).toFixed(4) * 1;
+        if (debug) console.error(`rawYieldToMaturity= '${rawYieldToMaturity}'=${yieldToMaturity}`);
+        if (yieldToMaturity) rowData.yieldToMaturity = yieldToMaturity.toFixed(4) * 1;
+    }
+
+    // yield to Worst?
+    // distribution yield?
+
+    // Weighted Average Maturity
+    const rawWeightedAverageMaturity = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-weightedAvgLife > div.data');
+    if (!rawWeightedAverageMaturity) {
+        console.error(`No rawWeightedAverageMaturity found for ticker '${ticker}'`);
+    } else {
+        const maturityYears = rawWeightedAverageMaturity.replace("yrs", "").trim() * 1;
+        if (debug) console.error(`rawWeightedAverageMaturity= '${rawWeightedAverageMaturity}'=${maturityYears}`);
+        if (maturityYears) rowData.maturityYears = maturityYears.toFixed(1) * 1;
+    }
+
+    // we have all the facts we need, push to results array.
+    results.push(rowData);
+
+    if (debug) console.error("Completed processing for ticker:", ticker);
+    await sleep(2000);
+    await page.close();
+    // do only a few due to rate limiting concerns...
+    if (results.length > 10) break;
 }
-
-async function getElementText(selector) {
-    if (debug) console.error(`Selecting element '${selector}'`);
-    const found = await page.evaluate((selector) => {
-        const el = document.querySelector(selector);
-        if (el) {
-            el.scrollIntoView();
-            el.focus();
-            return el.innerText;
-        } else {
-            return null;
-        }
-    }, selector);
-    if (debug) console.error(`Exiting getElementText(${selector}) = '''${found}'''`);
-    return found;
-}
-
-if (debug) console.error(`Opening ${ticker} page...`);
-await page.goto(
-    url,
-    { waitUntil: "networkidle2" }
-);
-
-//document.querySelector("#in-page-section-id-portfolio")
-// class = .
-// id = #
-
-// Now get thirty day Option Expiration yield and as of date
-// #table_1 > tbody > tr.odd.detail-show > td.numdata.float.column-average-yield-to-option-expiration
-/*
-const rawExprYield = await getElementText('td.numdata.float.column-average-yield-to-option-expiration');
-if (!rawExprYield) {
-    console.error(`No Yield to Option Expiration found for BOXX.`);
-    process.exit()
-}
-const exprYield = (rawExprYield.replace("%", "").trim() / 100).toFixed(4) * 1;
-if (debug) console.error(`rawYield= '${rawExprYield}'=${exprYield}`);
-
-// #table_1 > tbody > tr > td.column-as-of-date
-const rawYieldAsOfDate = await getElementText('td.column-as-of-date');
-if (!rawYieldAsOfDate) {
-    console.error(`No asOfDate found for BOXX`);
-    process.exit()
-}
-const yieldAsOfDate = new Date(rawYieldAsOfDate).toISOString().split("T")[0];
-if (debug) console.error(`rawYieldAsOfDate='${rawYieldAsOfDate}'='${yieldAsOfDate}'`);
-*/
-
-// #fundheaderTabs > div > div:nth-child(2) > div > ul > li > span.header-nav-data
-const rawExpenseRatio = await getElementText('#fundheaderTabs > div > div:nth-child(2) > div > ul > li > span.header-nav-data');
-if (!rawExpenseRatio) {
-    console.error(`No rawExpenseRatio found for ticker '${ticker}'`);
-    process.exit()
-}
-const expenseRatio = (rawExpenseRatio.replace("Expense Ratio:", "").replace("%", "").trim() / 100).toFixed(4) * 1;
-if (debug) console.error(`rawExpenseRatio= '${rawExpenseRatio}'=${expenseRatio}`);
-
-process.exit(1);
-
-// #table_1 > tbody > tr.odd.detail-show > td.expand.numdata.integer.column-average-days-to-option-expiration
-const rawDurationDays = await getElementText('td.expand.numdata.integer.column-average-days-to-option-expiration');
-if (!rawDurationDays) {
-    console.error(`No rawDurationDays found for ticker '${ticker}'`);
-    process.exit()
-}
-const durationDays = parseInt(rawDurationDays.replace(/ Days$/, ""));
-const durationYears = (durationDays / 365).toFixed(4) * 1;
-if (debug) console.error(`rawDurationDays= '${rawDurationDays}'=${durationDays}`);
-
-const results = [];
-results.push({
-    "ticker": ticker,
-    "thirtyDayYield": exprYield,
-    "asOfDate": yieldAsOfDate,
-    "expenseRatio": expenseRatio,
-    "durationYears": durationYears,
-    "source": "alphaarchitect.com",
-    "timestamp": new Date()
-});
-console.log(JSON.stringify(results));
-
-// Now get distribution data by clicking the download button and parsing the resulting CSV file.
-// this will be processed in a later script.
-//
-// #fund-distributions > h1
-if (!await selectElement('#fund-distributions')) process.exit();
-await sleep(1000);
-
-// find the export button and expose the CSV download button.
-// #table_18_wrapper > div.dt-buttons > button.dt-button.buttons-collection.DTTT_button.DTTT_button_export
-const exportButton = await selectElement('#table_18_wrapper > div.dt-buttons > button.dt-button.buttons-collection.DTTT_button.DTTT_button_export > span:nth-child(1)');
-if (!exportButton) {
-    console.error(`No export button found for BOXX.`);
-    process.exit();
-}
-exportButton.click();
-await sleep(1000);
-
-// click the CSV download button in the dropdown menu that appears after clicking the export button. this will download the file.
-// #table_18_wrapper > div.dt-buttons > div.dt-button-collection.dtb-b3.wdt-skin-aqua > div > button.dt-button.buttons-csv.buttons-html5
-if (!await downloadFile("#table_18_wrapper > div.dt-buttons > div.dt-button-collection.dtb-b3.wdt-skin-aqua > div > button.dt-button.buttons-csv.buttons-html5", downloadPath, `${ticker}-distributions.csv`)) process.exit();
-
 if (debug) console.error("Script complete.");
+console.log(JSON.stringify(results));
 browser.close();

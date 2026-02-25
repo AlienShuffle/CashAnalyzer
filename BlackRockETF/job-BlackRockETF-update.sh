@@ -1,9 +1,9 @@
 #!/usr/bin/bash
 # do a yield update and collect the latest links for ETFs distributions.
+#--processScript ./node-BlackRockETF-yield-update.js
 ../bin/MM-update-common-job.sh \
     --accountClass Funds \
     --collectionScript ./collectionScript-yields.sh \
-    --processScript ./node-BlackRock-yield-update.js \
     --nodeArg "BlackRock-ETFs.csv" \
     --pubDelay 18 --runDelay 4 -f "$@"
 
@@ -15,11 +15,7 @@ cat history/BlackRockETF-rate-new.json |
         echo "$fundReference" |
             ../bin/ETF-distro-update-common-job.sh --ticker "$ticker" "$@"
     done
-exit 1
+
 cat history/BlackRockETF-rate-new.json |
     jq -r '.[] | [.ticker,.baseUrl] | @csv' | tr -d '"' |
-    while IFS= read -r fundReference; do
-        ticker=$(echo "$fundReference" | cut -d, -f1)
-        echo "Processing $ticker facts"
-        ../bin/ETF-facts-update-common-job.sh --nodeArg "$fundReference" "$@"
-    done
+    ../bin/ETF-facts-update-common-job.sh "$@"

@@ -9,7 +9,7 @@ import {
   join
 } from "node:path";
 
-function safeObjectRef(obj) { return (typeof obj === 'undefined') ? '' : obj; }
+//function safeObjectRef(obj) { return (typeof obj === 'undefined') ? '' : obj; }
 
 const debug = false;
 
@@ -261,5 +261,3 @@ for (const ticker of tickers) {
 if (debug) console.error("Script complete.");
 console.log(JSON.stringify(results));
 browser.close();
-
-// grep '^[a-zA-Z]' VTEC-distributions.csv
