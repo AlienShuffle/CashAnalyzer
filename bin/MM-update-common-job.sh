@@ -230,13 +230,11 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
         #
         if ../bin/jsonDifferent.sh "$jsonHistoryFlareTemp" "$jsonHistoryFlare"; then
             cat "$jsonHistoryFlareTemp" >"$jsonHistoryFlare"
-            [ "$quiet" = "true" ] || echo "published updated $sourceName $ticker cloudFlare yields file."
             (
                 echo "$csvHeader"
                 jq -r "$csvElements" "$jsonHistoryFlare"
             ) >"$csvHistoryFlare"
-            [ "$quiet" = "true" ] || echo "published updated cloudflare csv file."
-        fi
+            [ "$quiet" = "true" ] || echo "published updated $sourceName $ticker cloudFlare yield files."
     done
 #
 # process the cloudFlare rate file for this tool.

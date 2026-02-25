@@ -183,7 +183,7 @@ if [ -z "$dateNew" ]; then
     echo "New $sourceName rate file does not include dates."
     exit 1
 fi
-echo dateNew = $dateNew
+#echo dateNew = $dateNew
 #
 # publish cloudFlare Rate files
 #
