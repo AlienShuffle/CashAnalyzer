@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer";
-import readFileSync from "fs";
+import { readFileSync } from "fs";
 
 //function safeObjectRef(obj) { return (typeof obj === 'undefined') ? '' : obj; }
 
@@ -135,18 +135,27 @@ for (const fund of funds) {
         if (durationYears) rowData.durationYears = durationYears.toFixed(1) * 1;
     }
 
-    // Yield to Maturity
-    const rawYieldToMaturity = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-yieldToWorst > div.data');
-    if (!rawYieldToMaturity) {
-        console.error(`No rawYieldToMaturity found for ticker '${ticker}'`);
+    // Yield to Maturity (actually yield to worst)
+    const rawYieldToWorst = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-yieldToWorst > div.data');
+    if (!rawYieldToWorst) {
+        console.error(`No rawYieldToWorst found for ticker '${ticker}'`);
     } else {
-        const yieldToMaturity = (rawYieldToMaturity.replace("%", "").trim() / 100).toFixed(4) * 1;
-        if (debug) console.error(`rawYieldToMaturity= '${rawYieldToMaturity}'=${yieldToMaturity}`);
-        if (yieldToMaturity) rowData.yieldToMaturity = yieldToMaturity.toFixed(4) * 1;
+        const yieldToWorst = (rawYieldToWorst.replace("%", "").trim() / 100).toFixed(4) * 1;
+        if (debug) console.error(`rawYieldToWorst= '${rawYieldToWorst}'=${yieldToWorst}`);
+        if (yieldToWorst) rowData.yieldToWorst = yieldToWorst.toFixed(4) * 1;
     }
 
-    // yield to Worst?
-    // distribution yield?
+    // distribution yield not provided on BlackRock site, so skipping.
+
+    // 12m trailing yield.
+    const rawTrailing12mYield = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-twelveMonTrlYld > div.data');
+    if (!rawTrailing12mYield) {
+        console.error(`No rawTrailing12mYield found for ticker '${ticker}'`);
+    } else {
+        const trailing12mYield = (rawTrailing12mYield.replace("%", "").trim() / 100).toFixed(4) * 1;
+        if (debug) console.error(`rawTrailing12mYield= '${rawTrailing12mYield}'=${trailing12mYield}`);
+        if (trailing12mYield) rowData.twelveMonTrlYield = trailing12mYield.toFixed(4) * 1;
+    }
 
     // Weighted Average Maturity
     const rawWeightedAverageMaturity = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-weightedAvgLife > div.data');

@@ -17,5 +17,5 @@ cat history/BlackRockETF-rate-new.json |
     done
 
 cat history/BlackRockETF-rate-new.json |
-    jq -r '.[] | [.ticker,.baseUrl] | @csv' | tr -d '"' |
+    jq -r '.[] | [.ticker,.baseUrl] | @csv' | tr -d '"' | tee tickerAndUrls.csv |
     ../bin/ETF-facts-update-common-job.sh "$@"

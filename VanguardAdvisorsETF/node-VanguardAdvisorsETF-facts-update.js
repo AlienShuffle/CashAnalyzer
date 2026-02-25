@@ -165,6 +165,16 @@ for (const ticker of tickers) {
     rowData.asOfDate = secYieldAsOfDate;
   }
 
+  // fund name: #main-content > div.page.small-nav-push > article > section.hero.pdp-hero.container.slim-hero-a.slim-hero-b.slim-hero-c > div > div.col.sm-16.lg-8.pdp-hero__header > div.pdp-hero__header-text > h1 > span
+  const rawFundName = await selectElement('span[data-rpa-tag-id="dashboard-longName"]', false);
+  if (!rawFundName) {
+    console.error(`No rawFundName found for ticker '${ticker}'`);
+  } else {
+    const fundName = rawFundName.trim();
+    if (debug) console.error(`rawFundName= '${rawFundName}'=${fundName}`);
+    if (fundName) rowData.accountType = fundName;
+  }
+
   // Expense Ratio
   const rawExpenseRatio = await selectElement('span[data-rpa-tag-id="dashboard-expenseRatio"]', false);
   if (!rawExpenseRatio) {
