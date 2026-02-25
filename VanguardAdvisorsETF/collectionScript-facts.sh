@@ -24,5 +24,4 @@ cat ./VanguardETF-funds.txt |
     done |
     sort | tee dated-list.txt |
     # just get the 10 tickers with the oldest download times, and skip the date
-    cut -d, -f2- | head |
-    node ./node-advisors-scrape.js | jq .
+    cut -d, -f2- | head

@@ -77,6 +77,7 @@ else
     exit 1
   fi
 fi
+echo "Processing $ticker distributions"
 #echo "running $collectionScript"
 if [ -n "$collectionArg" ]; then
   $collectionScript "$collectionArg" >"$jsonNew"
