@@ -235,6 +235,7 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
                 jq -r "$csvElements" "$jsonHistoryFlare"
             ) >"$csvHistoryFlare"
             [ "$quiet" = "true" ] || echo "published updated $sourceName $ticker cloudFlare yield files."
+        fi
     done
 #
 # process the cloudFlare rate file for this tool.
