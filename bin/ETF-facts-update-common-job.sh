@@ -171,8 +171,8 @@ rm -f tmp.sort.json
 # get list of Factss that were updated.
 # Then loop through this list of names, extract them from the Facts sheet and merge it into the history sheet.
 #
-csvHeader='asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,nav,aum,twelveMonTrlYield,yieldToMaturity,distributionYield,weightedAverageCoupon,durationYears,maturityYears,expenseRatio,accountType,source'
-csvElements='.[] | [.asOfDate,.ticker,.oneDayYield,.sevenDayYield,.thirtyDayYield,.nav,.aum,.twelveMonTrlYield,.yieldToMaturity,.distributionYield,.weightedAverageCoupon,.durationYears,.maturityYears,.expenseRatio,.accountType,.source] | @csv'
+csvHeader='asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,nav,aum,twelveMonTrlYield,yieldToWorst,yieldToMaturity,distributionYield,weightedAverageCoupon,durationYears,maturityYears,expenseRatio,accountType,source'
+csvElements='.[] | [.asOfDate,.ticker,.oneDayYield,.sevenDayYield,.thirtyDayYield,.nav,.aum,.twelveMonTrlYield,.yieldToWorst,.yieldToMaturity,.distributionYield,.weightedAverageCoupon,.durationYears,.maturityYears,.expenseRatio,.accountType,.source] | @csv'
 
 grep ticker "$jsonFactsNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e 's/"$//' | sort -u |
     while IFS= read -r ticker; do
