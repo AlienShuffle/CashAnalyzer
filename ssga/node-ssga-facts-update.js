@@ -4,7 +4,7 @@ import dynamicSort from '../lib/dynamicSort.mjs';
 //import { duGetISOString } from "../lib/dateUtils.mjs";
 function safeObjectRef(obj) { return (typeof obj === 'undefined') ? '' : obj; }
 
-const debug = true;
+const debug = false;
 
 if (process.argv.length != 3) throw 'missing argv[2] tickerlist.csv';
 const tickerList = readFileSync(process.argv[2], 'utf-8').split("\n");
@@ -36,7 +36,7 @@ for (const fund of datas) {
 }
 
 const browserPromise = puppeteer.launch({
-    headless: false,    // true for production, false for debugging to see the browser.
+    headless: true,    // true for production, false for debugging to see the browser.
     defaultViewport: null
 });
 const browser = await browserPromise;
@@ -184,16 +184,6 @@ for (const fund of urls) {
         const distributionYield = (rawDistributionYield.replace("%", "").trim() / 100).toFixed(4) * 1;
         if (debug) console.error(`rawTrailing12mYield='${rawDistributionYield}'=${distributionYield}`);
         if (distributionYield) rowData.distributionYield = distributionYield.toFixed(4) * 1;
-    }
-
-    // Weighted Average Maturity
-    const rawWeightedAverageMaturity = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-weightedAvgLife > div.data');
-    if (!rawWeightedAverageMaturity) {
-        console.error(`No rawWeightedAverageMaturity found for ticker '${ticker}'`);
-    } else {
-        const maturityYears = rawWeightedAverageMaturity.replace("yrs", "").trim() * 1;
-        if (debug) console.error(`rawWeightedAverageMaturity= '${rawWeightedAverageMaturity}'=${maturityYears}`);
-        if (maturityYears) rowData.maturityYears = maturityYears.toFixed(1) * 1;
     }
 
     // we have all the facts we need, push to results array.

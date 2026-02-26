@@ -132,7 +132,7 @@ for (const fund of funds) {
     } else {
         const durationYears = rawDurationYears.replace("yrs", "").trim() * 1;
         if (debug) console.error(`rawDurationYears= '${rawDurationYears}'=${durationYears}`);
-        if (durationYears) rowData.durationYears = durationYears.toFixed(1) * 1;
+        if (durationYears) rowData.durationYears = durationYears.toFixed(2) * 1;
     }
 
     // Yield to Maturity (actually yield to worst)
@@ -157,14 +157,14 @@ for (const fund of funds) {
         if (trailing12mYield) rowData.twelveMonTrlYield = trailing12mYield.toFixed(4) * 1;
     }
 
-    // Weighted Average Maturity
-    const rawWeightedAverageMaturity = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-weightedAvgLife > div.data');
-    if (!rawWeightedAverageMaturity) {
+    // Weighted Average Maturity (maturityYears)
+    const rawMaturityYears = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-weightedAvgLife > div.data');
+    if (!rawMaturityYears) {
         console.error(`No rawWeightedAverageMaturity found for ticker '${ticker}'`);
     } else {
-        const maturityYears = rawWeightedAverageMaturity.replace("yrs", "").trim() * 1;
-        if (debug) console.error(`rawWeightedAverageMaturity= '${rawWeightedAverageMaturity}'=${maturityYears}`);
-        if (maturityYears) rowData.maturityYears = maturityYears.toFixed(1) * 1;
+        const maturityYears = rawMaturityYears.replace("yrs", "").trim() * 1;
+        if (debug) console.error(`rawWeightedAverageMaturity= '${rawMaturityYears}'=${maturityYears}`);
+        if (maturityYears) rowData.maturityYears = maturityYears.toFixed(2) * 1;
     }
 
     // we have all the facts we need, push to results array.

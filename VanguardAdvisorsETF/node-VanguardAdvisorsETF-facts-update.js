@@ -219,7 +219,7 @@ for (const ticker of tickers) {
     if (durationLineNum >= 0) {
       const durationLine = lines[durationLineNum].split("\t");
       const durationYears = durationLine[durationLine.length - 1].replace("(years)", "").trim() * 1;
-      if (durationYears) rowData.durationYears = durationYears.toFixed(1) * 1;
+      if (durationYears) rowData.durationYears = durationYears.toFixed(2) * 1;
     }
 
     const ytmLineNum = lines.findIndex(l => l.toLowerCase().includes("yield to maturity"));
@@ -240,7 +240,7 @@ for (const ticker of tickers) {
     if (maturityLineNum >= 0) {
       const maturityLine = lines[maturityLineNum].split("\t");
       const maturityYears = maturityLine[maturityLine.length - 1].replace("(years)", "").trim() * 1;
-      if (maturityYears) rowData.maturityYears = maturityYears.toFixed(1) * 1;
+      if (maturityYears) rowData.maturityYears = maturityYears.toFixed(2) * 1;
     }
 
     const wacLineNum = lines.findIndex(l => l.toLowerCase().includes("average coupon"));
