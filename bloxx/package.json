@@ -1,0 +1,17 @@
+{
+  "name": "bondbloxx",
+  "version": "0.0.1",
+  "description": "Scrape daily Yields for Bond Bloxx ETFs.",
+  "keywords": [
+    "Puppeteer",
+    "Bond Bloxx",
+    "ETF"
+  ],
+  "author": "AlienShuffle",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "node-html-parser": "^7.0.2",
+    "puppeteer": "^24.10.1"
+  }
+}
