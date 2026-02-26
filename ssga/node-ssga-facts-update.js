@@ -34,7 +34,6 @@ for (const fund of datas) {
     if (safeObjectRef(fund.ter[1])) rowData.expenseRatio = fund.ter[1];
     urls.push(rowData);
 }
-//console.log(JSON.stringify(urls.sort(dynamicSort('ticker'))));
 
 const browserPromise = puppeteer.launch({
     headless: false,    // true for production, false for debugging to see the browser.
@@ -66,14 +65,14 @@ for (const fund of urls) {
     if (safeObjectRef(fund.nav)) rowData.nav = fund.nav;
     if (safeObjectRef(fund.aum)) rowData.aum = fund.aum;
     if (safeObjectRef(fund.asOfDate)) rowData.asOfDate = fund.asOfDate;
-    if (safeObjectRef(fund.expenseRatio)) rowData.expenseRatio = fund.expenseRatio;
+    if (safeObjectRef(fund.expenseRatio)) rowData.expenseRatio = (fund.expenseRatio / 100).toFixed(6) * 1;
 
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     async function selectElement(selector, click = false) {
-        if (debug) console.error(`Selecting element '${selector}'`);
+        //if (debug) console.error(`Selecting element '${selector}'`);
         const found = await page.evaluate((selector, click) => {
             const el = document.querySelector(selector);
             if (el) {
@@ -85,7 +84,7 @@ for (const fund of urls) {
                 return null;
             }
         }, selector, click);
-        if (debug) console.error(`Exiting selectElement() = ''''${found}''''`);
+        if (debug) console.error(`\n\nExiting selectElement() = ''''${found}''''`);
         return found;
     }
 
@@ -96,14 +95,15 @@ for (const fund of urls) {
     );
 
     // now get thirty day yield and as of date
-    const rawSecYield = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-thirtyDaySecYield > div.data');
+    // #overview > div > div:nth-child(11) > section > div > table > tbody > tr:nth-child(1) > td.data
+    const rawSecYield = await selectElement('#overview > div > div:nth-child(11) > section > div > table > tbody > tr:nth-child(1) > td.data');
     if (!rawSecYield) {
         console.error(`No thirtyDayYield found for ticker '${ticker}'`);
         break; // minimum requriement is to get the yield, if not found, skip the rest of processing for this ticker since it's likely the page structure has changed and other data points may also be missing or incorrect.
     }
     const secYield = (rawSecYield.replace("%", "").trim() / 100).toFixed(4) * 1;
     if (debug) console.error(`rawSecYield= '${rawSecYield}'=${secYield}`);
-    const rawSecYieldAsOfDate = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-thirtyDaySecYield > div.caption > div');
+    const rawSecYieldAsOfDate = await selectElement('#overview > div > div:nth-child(11) > section > h2 > span');
     if (!rawSecYieldAsOfDate) {
         console.error(`No asOfDate found for ticker '${ticker}'`);
         break;
@@ -115,38 +115,17 @@ for (const fund of urls) {
     }
 
     // Fund Name
-    const rawFundName = await selectElement('#fundHeader > header.main-header > div.col-4.column.grid > div.column.main-header-holder.col-three-quarter-width > h1 > span');
+    const rawFundName = await selectElement('span.fund-header__name');
     if (!rawFundName) {
         console.error(`No rawFundName found for ticker '${ticker}'`);
     } else {
         const fundName = rawFundName.trim();
-        if (debug) console.error(`rawFundName= '${rawFundName}'=${fundName}`);
+        if (debug) console.error(`rawFundName='${rawFundName}'=${fundName}`);
         if (fundName) rowData.fundName = fundName;
     }
 
-    // Expense Ratio
-    const rawExpenseRatio = await selectElement('#feeTable > div > div > table > tbody > tr.fee-code-expr > td.data');
-    if (!rawExpenseRatio) {
-        console.error(`No rawExpenseRatio found for ticker '${ticker}'`);
-    } else {
-        const expenseRatio = (rawExpenseRatio.replace("%", "").trim() / 100).toFixed(4) * 1;
-        if (debug) console.error(`rawExpenseRatio= '${rawExpenseRatio}'=${expenseRatio}`);
-        if (expenseRatio) rowData.expenseRatio = expenseRatio.toFixed(6) * 1;
-    }
-
-    // Assets Under Management (AUM)
-    const rawAum = await selectElement('#keyFundFacts > div > div.float-left.in-left > div.product-data-item.col-totalNetAssetsFundLevel > div.data');
-    if (!rawAum) {
-        console.error(`No rawAum found for ticker '${ticker}'`);
-    } else {
-        const multiplier = rawAum.toLowerCase().includes("b") ? 1e9 : rawAum.toLowerCase().includes("m") ? 1e6 : 1;
-        const aum = rawAum.replace(/[^0-9\.]/g, "").trim() * 1;
-        if (debug) console.error(`rawAum= '${rawAum}'=${aum}`);
-        if (aum) rowData.aum = (aum * multiplier).toFixed(0) * 1;
-    }
-
     // Weighted Average Coupon
-    const rawWeightedAverageCoupon = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-weightedAvgCouponFi > div.data');
+    const rawWeightedAverageCoupon = await selectElement('#overview > div > div:nth-child(9) > section > div > table > tbody > tr:nth-child(2) > td.data');
     if (!rawWeightedAverageCoupon) {
         console.error(`No rawWeightedAverageCoupon found for ticker '${ticker}'`);
     } else {
@@ -156,35 +135,55 @@ for (const fund of urls) {
     }
 
     // Duration Years
-    const rawDurationYears = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-modelOad > div.data');
+    const rawDurationYears = await selectElement('#overview > div > div:nth-child(9) > section > div > table > tbody > tr:nth-child(6) > td.data');
     if (!rawDurationYears) {
         console.error(`No rawDurationYears found for ticker '${ticker}'`);
     } else {
-        const durationYears = rawDurationYears.replace("yrs", "").trim() * 1;
-        if (debug) console.error(`rawDurationYears= '${rawDurationYears}'=${durationYears}`);
-        if (durationYears) rowData.durationYears = durationYears.toFixed(1) * 1;
+        const durationYears = rawDurationYears.replace("yrs", "").replace("years", "").trim() * 1;
+        if (debug) console.error(`rawDurationYears='${rawDurationYears}'=${durationYears}`);
+        if (durationYears) rowData.durationYears = durationYears.toFixed(2) * 1;
     }
 
-    // Yield to Maturity (actually yield to worst)
-    const rawYieldToWorst = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-yieldToWorst > div.data');
+    // Maturity Years
+    const rawMaturityYears = await selectElement('#overview > div > div:nth-child(8) > section > div > table > tbody > tr:nth-child(3) > td.data');
+    if (!rawMaturityYears) {
+        console.error(`No rawMaturityYears found for ticker '${ticker}'`);
+    } else {
+        const maturityYears = rawMaturityYears.replace("yrs", "").replace("years", "").trim() * 1;
+        if (debug) console.error(`rawMaturityYears= ${rawMaturityYears}'=${maturityYears}`);
+        if (maturityYears) rowData.maturityYears = maturityYears.toFixed(2) * 1;
+    }
+
+    // Yield to Worst (actually yield to worst)
+    const rawYieldToWorst = await selectElement('#overview > div > div:nth-child(9) > section > div > table > tbody > tr:nth-child(5) > td.data');
     if (!rawYieldToWorst) {
         console.error(`No rawYieldToWorst found for ticker '${ticker}'`);
     } else {
         const yieldToWorst = (rawYieldToWorst.replace("%", "").trim() / 100).toFixed(4) * 1;
-        if (debug) console.error(`rawYieldToWorst= '${rawYieldToWorst}'=${yieldToWorst}`);
+        if (debug) console.error(`rawYieldToWorst='${rawYieldToWorst}'=${yieldToWorst}`);
         if (yieldToWorst) rowData.yieldToWorst = yieldToWorst.toFixed(4) * 1;
     }
 
-    // distribution yield not provided on BlackRock site, so skipping.
+    // Yield to Maturity
+    const rawYieldToMaturity = await selectElement('#overview > div > div:nth-child(9) > section > div > table > tbody > tr:nth-child(5) > td.data');
+    if (!rawYieldToMaturity) {
+        console.error(`No rawYieldToMaturity found for ticker '${ticker}'`);
+    } else {
+        const yieldToMaturity = (rawYieldToMaturity.replace("%", "").trim() / 100).toFixed(4) * 1;
+        if (debug) console.error(`rawYieldToMAturity='${rawYieldToMaturity}'=${yieldToMaturity}`);
+        if (yieldToMaturity) rowData.yieldToMaturity = yieldToMaturity.toFixed(4) * 1;
+    }
 
-    // 12m trailing yield.
-    const rawTrailing12mYield = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-twelveMonTrlYld > div.data');
-    if (!rawTrailing12mYield) {
+    // 12m trailing yield. not provided on State Street site, so skipping.
+
+    // distribution yield  
+    const rawDistributionYield = await selectElement('#overview > div > div:nth-child(11) > section > div > table > tbody > tr:nth-child(3) > td.data');
+    if (!rawDistributionYield) {
         console.error(`No rawTrailing12mYield found for ticker '${ticker}'`);
     } else {
-        const trailing12mYield = (rawTrailing12mYield.replace("%", "").trim() / 100).toFixed(4) * 1;
-        if (debug) console.error(`rawTrailing12mYield= '${rawTrailing12mYield}'=${trailing12mYield}`);
-        if (trailing12mYield) rowData.twelveMonTrlYield = trailing12mYield.toFixed(4) * 1;
+        const distributionYield = (rawDistributionYield.replace("%", "").trim() / 100).toFixed(4) * 1;
+        if (debug) console.error(`rawTrailing12mYield='${rawDistributionYield}'=${distributionYield}`);
+        if (distributionYield) rowData.distributionYield = distributionYield.toFixed(4) * 1;
     }
 
     // Weighted Average Maturity
