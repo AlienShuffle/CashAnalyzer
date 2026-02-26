@@ -7,6 +7,7 @@
 [ -f history/BOXX-facts-new.json ] && \
 cat history/BOXX-facts-new.json | ../bin/MM-update-common-job.sh \
     --accountClass Funds \
+    --processScript ../lib/node-filter-yield-attrs.js \
     --pubDelay 18 --runDelay 4 "$@"
 
 ../bin/ETF-distro-update-common-job.sh --ticker "BOXX" "$@"
