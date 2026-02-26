@@ -118,23 +118,25 @@ else
             exit 1
         fi
         tmpCollect="tmpCollect.json"
-        #echo "running $collectionScript"
+
         if [ -n "$collectionArg" ]; then
+            #echo "running: $collectionScript $collectionArg > $tmpCollect"
             $collectionScript "$collectionArg" >"$tmpCollect"
         else
+            #echo "running: $collectionScript > $tmpCollect"
             $collectionScript >"$tmpCollect"
         fi
         statuses=("${PIPESTATUS[@]}")
         if [ "${statuses[0]}" -ne 0 ]; then
-            echo "$sourceName rate retrieval failed, exiting."
+            echo "$sourceName collectionScript failed, exiting."
             exit 1
         fi
         if [ ! -s "$tmpCollect" ]; then
             echo "Empty collection File $tmpCollect."
             exit 1
         fi
-        #echo "running node $processScript"
-        cat "$tmpCollect" | node $processScript "$nodeArg" | jq . >"$jsonFactsNew"
+        #echo "running: < $tmpCollect | node $processScript $nodeArg"
+        <"$tmpCollect" node $processScript "$nodeArg" | jq . >"$jsonFactsNew"
         statuses=("${PIPESTATUS[@]}")
         rm -f "$tmpCollect"
         if [ "${statuses[1]}" -ne 0 ]; then
@@ -142,11 +144,11 @@ else
             exit 1
         fi
     else
-        #echo "node $processScript $nodeArg | jq . >$jsonFactsNew"; exit 1
+        #echo "running: node $processScript $nodeArg | jq . >$jsonFactsNew"
         node $processScript "$nodeArg" | jq . >"$jsonFactsNew"
         statuses=("${PIPESTATUS[@]}")
         if [ "${statuses[0]}" -ne 0 ]; then
-            echo "$sourceName Facts retrieval failed, exiting."
+            echo "$sourceName Facts processScript failed, exiting."
             exit 1
         fi
     fi
@@ -163,7 +165,6 @@ fi
 # sort/normalize the file now.
 jq 'sort_by(.asOfDate)' "$jsonFactsNew" >tmp.sort.json
 cat tmp.sort.json >"$jsonFactsNew"
-#cat $jsonFactsNew
 rm -f tmp.sort.json
 #
 # Process the daily history results in Facts and merge with history.

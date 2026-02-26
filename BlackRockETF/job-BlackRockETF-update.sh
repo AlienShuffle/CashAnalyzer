@@ -11,7 +11,6 @@ cat history/BlackRockETF-rate-new.json |
     jq -r '.[] | [.ticker,.distroUrl] | @csv' |
     while IFS= read -r fundReference; do
         ticker=$(echo "$fundReference" | cut -d, -f1 | tr -d '"')
-        echo "Processing $ticker distributions"
         echo "$fundReference" |
             ../bin/ETF-distro-update-common-job.sh --ticker "$ticker" "$@"
     done
