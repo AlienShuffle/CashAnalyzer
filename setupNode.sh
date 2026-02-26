@@ -36,6 +36,9 @@ for package in $(ls */package.json); do
         if grep fast-xml-parser package.json; then
             grep fast-xml-parser package-lock.json >/dev/null || npm install fast-xml-parser
         fi
+        if grep node-html-parser package.json; then
+            grep node-html-parser package-lock.json >/dev/null || npm install node-html-parser
+        fi
         npm outdated || npm update
         echo
     )
