@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 # do a yield update and collect the latest links for ETFs distributions.
-#--processScript ./node-BlackRockETF-yield-update.js
 ../bin/MM-update-common-job.sh \
     --accountClass Funds \
     --collectionScript ./collectionScript-yields.sh \

@@ -1,6 +1,9 @@
 import { parse } from 'node-html-parser';
 import { readFileSync } from 'fs';
 
+if (process.argv.length != 3) throw 'missing argv[2] tickerlist.csv';
+const tickerList = readFileSync(process.argv[2], 'utf-8').split("\n");
+
 // read HTML from stdin - expects BondBloxx ticker table HTML
 const htmlString = readFileSync(0, 'utf8');
 const root = parse(htmlString);
@@ -37,6 +40,9 @@ for (const row of rows) {
     const tickerLink = tickerCell.querySelector('a');
     const ticker = tickerLink ? tickerLink.text.trim() : tickerCell.text.trim();
     const url = tickerLink ? tickerLink.getAttribute('href') : null;
+
+    // Skip funds we are not interested in.
+    if (!tickerList.includes(ticker)) continue;
 
     // Extract fund name
     const fundName = cells[1].text.trim();
