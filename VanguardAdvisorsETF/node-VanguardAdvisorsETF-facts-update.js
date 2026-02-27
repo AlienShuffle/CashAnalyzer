@@ -247,7 +247,7 @@ for (const ticker of tickers) {
     if (wacLineNum >= 0) {
       const wacLine = lines[wacLineNum].split("\t");
       const weightedAverageCoupon = wacLine[wacLine.length - 1].replace("%", "").trim() / 100;
-      if (weightedAverageCoupon) rowData.weightedAverageCoupon = weightedAverageCoupon;
+      if (weightedAverageCoupon) rowData.weightedAverageCoupon = weightedAverageCoupon.toFixed(5)*1;
     }
   }
 

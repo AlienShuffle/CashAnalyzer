@@ -108,7 +108,7 @@ for (const fund of urls) {
     } else {
         const fundName = rawFundName.trim();
         if (debug) console.error(`rawFundName='${rawFundName}'=${fundName}`);
-        if (fundName) rowData.fundName = fundName;
+        if (fundName) rowData.accountType = fundName;
     }
 
     // Weighted Average Coupon
