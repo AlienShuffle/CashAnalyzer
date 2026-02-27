@@ -12,8 +12,8 @@ if [ -f $linksFile ]; then
             echo "$fundReference" |
                 ../bin/ETF-distro-update-common-job.sh --ticker "$ticker" "$@"
         done
-else
-    echo $linksFile: missing!
+#else
+#    echo $linksFile: missing!
 fi
 
 factsFile="history/bloxx-facts-new.json"

@@ -19,7 +19,7 @@ let urls = [];
 for (const fund of datas) {
     const ticker = fund.fundTicker;
     if (!tickerList.includes(ticker)) continue;
-    console.error(`Parsing fund info: '${ticker}'`);
+    if (debug) console.error(`Parsing fund info: '${ticker}'`);
     let rowData = {
         ticker: ticker,
         url: `https://www.ssga.com/${fund.fundUri}`,
