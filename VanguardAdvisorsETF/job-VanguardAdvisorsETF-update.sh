@@ -5,7 +5,10 @@
     --collectionScript ./collectionScript-facts.sh \
     -f "$@"
 
+# dated-list.txt created by the collection script above, just use to decide if we found anything
+# then delete. It was used in the flow above, but is transient.
 tickerCnt=$(wc -l <dated-list.txt)
+rm -f dated-list.txt
 [ $tickerCnt -gt 0 ] || exit 0
 
 factsFile="history/VanguardAdvisorsETF-facts-new.json"

@@ -22,6 +22,6 @@ cat ./VanguardETF-funds.txt |
             echo "01-01-2020 02:00:00,$ticker"
         fi
     done |
-    sort | # tee dated-list.txt |
+    sort | tee dated-list.txt |
     # just get the 10 tickers with the oldest download times, and skip the date
     cut -d, -f2- | head
