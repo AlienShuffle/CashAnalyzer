@@ -4,14 +4,19 @@
 #
 # If you need to update NVM, do the following:
 #
-echo "steps to update NVM (update the version number as appropriate)"
-echo "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash"
-echo "steps to get current long-term support (--lts) Node Version"
+echo "Manual steps required to update NVM"
+echo "check the nvm Github: https://github.com/nvm-sh/nvm"
+echo "update this script to latest version #"
+[ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh"
+if ! command -v nvm >/dev/null; then
+    echo getting latest known nvm version.
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+fi
+[ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh"
 echo "##### Get latest Node version"
 echo nvm version
-echo nvm install --lts
-[ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh" 
 nvm version
+echo nvm install --lts
 nvm install --lts
 echo
 echo "##### jq"
@@ -31,7 +36,7 @@ for package in $(ls */package.json); do
         cd $dir
         echo "##### $dir"
         if grep puppeteer package.json; then
-             grep puppeteer package-lock.json >/dev/null || npm install puppeteer
+            grep puppeteer package-lock.json >/dev/null || npm install puppeteer
         fi
         if grep fast-xml-parser package.json; then
             grep fast-xml-parser package-lock.json >/dev/null || npm install fast-xml-parser
