@@ -5,7 +5,7 @@
 # on the read side. More effort on the update side due to separate files to process.
 #
 # process the command argument list.
-pubDelayHours=16
+pubDelayHours=8
 runDelayHours=4
 accountClass=Funds
 while [ -n "$1" ]; do
@@ -25,7 +25,11 @@ while [ -n "$1" ]; do
         #echo "collectionArg=$collectionArg"
         shift
         ;;
-    "-f")
+    "-d" | "--debug")
+        debug="true"
+        #echo "debug=true"
+        ;;
+        "-f")
         forceRun=true
         #echo "forceRun=$forceRun"
         ;;
@@ -138,7 +142,7 @@ else
         #echo "running: < $tmpCollect | node $processScript $nodeArg"
         <"$tmpCollect" node $processScript "$nodeArg" | jq . >"$jsonFactsNew"
         statuses=("${PIPESTATUS[@]}")
-        rm -f "$tmpCollect"
+        [ "$debug" = "true" ] || rm -f "$tmpCollect"
         if [ "${statuses[1]}" -ne 0 ]; then
             echo "$sourceName Facts retrieval failed, exiting."
             exit 1
@@ -165,7 +169,7 @@ fi
 # sort/normalize the file now.
 jq 'sort_by(.asOfDate)' "$jsonFactsNew" >tmp.sort.json
 cat tmp.sort.json >"$jsonFactsNew"
-rm -f tmp.sort.json
+ [ "$debug" = "true" ] || rm -f tmp.sort.json
 #
 # Process the daily history results in Facts and merge with history.
 #
@@ -177,7 +181,7 @@ csvElements='.[] | [.asOfDate,.ticker,.oneDayYield,.sevenDayYield,.thirtyDayYiel
 
 grep ticker "$jsonFactsNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e 's/"$//' | sort -u |
     while IFS= read -r ticker; do
-        dirname="$(echo "$ticker" | sed -e 's/ /-/g')"
+        dirname=$(echo "$ticker" | sed -e 's/ /-/g')
         [ "$quiet" = "true" ] || echo "Processing facts: $ticker"
         [ -d "history/$dirname" ] || mkdir -p "history/$dirname"
         # Factss only for this query from this tool.
@@ -202,7 +206,7 @@ grep ticker "$jsonFactsNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -
             cat "$jsonFactsTicker" >"$jsonHistoryTemp"
         fi
         cat "$jsonHistoryTemp" | node ../lib/node-sortBest.js | jq . >"$jsonHistoryUnique"
-        rm "$jsonHistoryTemp"
+        [ "$debug" = "true" ] || rm -f "$jsonHistoryTemp"
 
         # sort/filter/gapfill this combined history with data from all sources in cloudflare repository.
         if [ ! -s "$jsonHistoryFlare" ]; then
@@ -273,4 +277,4 @@ if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonFactsAllFlare"; then
     ) >"$csvFactsAllFlare"
     [ "$quiet" = "true" ] || echo "published updated cloudflare all-facts files."
 fi
-rm -f tmp-all-flare.json
+ [ "$debug" = "true" ] || rm -f tmp-all-flare.json

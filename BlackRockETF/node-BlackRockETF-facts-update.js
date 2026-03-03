@@ -94,6 +94,16 @@ for (const fund of funds) {
         if (fundName) rowData.fundName = fundName;
     }
 
+    // Nav
+    const rawNav = await selectElement('#fundheaderTabs > div > div:nth-child(1) > div > ul > li.navAmount > span.header-nav-data');
+    if (!rawNav) {
+        console.error(`No rawNav found for ticker '${ticker}'`);
+    } else {
+        const nav = rawNav.replace('$', '').trim() * 1;
+        if (debug) console.error(`rawNav= '${rawNav}'=${nav}`);
+        if (nav) rowData.nav = nav.toFixed(2) * 1;
+    }
+
     // Expense Ratio
     const rawExpenseRatio = await selectElement('#feeTable > div > div > table > tbody > tr.fee-code-expr > td.data');
     if (!rawExpenseRatio) {
@@ -116,7 +126,8 @@ for (const fund of funds) {
     }
 
     // Weighted Average Coupon
-    const rawWeightedAverageCoupon = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-weightedAvgCouponFi > div.data');
+    let rawWeightedAverageCoupon = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-weightedAvgCouponFi > div.data');
+    if (!rawWeightedAverageCoupon) rawWeightedAverageCoupon = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-weightedAvgCouponFi > div.data');
     if (!rawWeightedAverageCoupon) {
         console.error(`No rawWeightedAverageCoupon found for ticker '${ticker}'`);
     } else {
@@ -126,17 +137,20 @@ for (const fund of funds) {
     }
 
     // Duration Years
-    const rawDurationYears = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-modelOad > div.data');
+    // #fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-modelOad > div.data
+    let rawDurationYears = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-modelOad > div.data');
+    if (!rawDurationYears) rawDurationYears = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-modelOad > div.data');
     if (!rawDurationYears) {
         console.error(`No rawDurationYears found for ticker '${ticker}'`);
     } else {
-        const durationYears = rawDurationYears.replace("yrs", "").trim() * 1;
+        const durationYears = rawDurationYears.replace('years', '').replace('yrs', '').trim() * 1;
         if (debug) console.error(`rawDurationYears= '${rawDurationYears}'=${durationYears}`);
         if (durationYears) rowData.durationYears = durationYears.toFixed(2) * 1;
     }
 
     // Yield to Maturity (actually yield to worst)
-    const rawYieldToWorst = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-yieldToWorst > div.data');
+    let rawYieldToWorst = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-yieldToWorst > div.data');
+    if (!rawYieldToWorst) rawYieldToWorst = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-weightedAvgYieldToMaturity > div.data');
     if (!rawYieldToWorst) {
         console.error(`No rawYieldToWorst found for ticker '${ticker}'`);
     } else {
@@ -158,12 +172,13 @@ for (const fund of funds) {
     }
 
     // Weighted Average Maturity (maturityYears)
-    const rawMaturityYears = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-weightedAvgLife > div.data');
+    let rawMaturityYears = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-weightedAvgLife > div.data');
+    if (!rawMaturityYears) rawMaturityYears = await selectElement('#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-weightedAvgLife > div.data');
     if (!rawMaturityYears) {
-        console.error(`No rawWeightedAverageMaturity found for ticker '${ticker}'`);
+        console.error(`No rawMaturityYears found for ticker '${ticker}'`);
     } else {
-        const maturityYears = rawMaturityYears.replace("yrs", "").trim() * 1;
-        if (debug) console.error(`rawWeightedAverageMaturity= '${rawMaturityYears}'=${maturityYears}`);
+        const maturityYears = rawMaturityYears.replace('years', '').replace('yrs', '').trim() * 1;
+        if (debug) console.error(`rawMaturityYears= '${rawMaturityYears}'=${maturityYears}`);
         if (maturityYears) rowData.maturityYears = maturityYears.toFixed(2) * 1;
     }
 

@@ -165,7 +165,17 @@ for (const ticker of tickers) {
     rowData.asOfDate = secYieldAsOfDate;
   }
 
-  // fund name: #main-content > div.page.small-nav-push > article > section.hero.pdp-hero.container.slim-hero-a.slim-hero-b.slim-hero-c > div > div.col.sm-16.lg-8.pdp-hero__header > div.pdp-hero__header-text > h1 > span
+  // NAV
+  const rawNAV = await selectElement('span[data-rpa-tag-id="pd-cp-nav-price"]', false);
+  if (!rawNAV) {
+    console.error(`No rawNAV found for ticker '${ticker}'`);
+  } else {
+    const nav = rawNAV.replace('$', '').trim() * 1;
+    if (debug) console.error(`rawNAV= '${rawNAV}'=${nav}`);
+    if (nav) rowData.nav = nav.toFixed(2) * 1;
+  }
+  
+  // fund name
   const rawFundName = await selectElement('span[data-rpa-tag-id="dashboard-longName"]', false);
   if (!rawFundName) {
     console.error(`No rawFundName found for ticker '${ticker}'`);
@@ -247,7 +257,7 @@ for (const ticker of tickers) {
     if (wacLineNum >= 0) {
       const wacLine = lines[wacLineNum].split("\t");
       const weightedAverageCoupon = wacLine[wacLine.length - 1].replace("%", "").trim() / 100;
-      if (weightedAverageCoupon) rowData.weightedAverageCoupon = weightedAverageCoupon.toFixed(5)*1;
+      if (weightedAverageCoupon) rowData.weightedAverageCoupon = weightedAverageCoupon.toFixed(5) * 1;
     }
   }
 
