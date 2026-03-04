@@ -174,7 +174,7 @@ for (const ticker of tickers) {
     if (debug) console.error(`rawNAV= '${rawNAV}'=${nav}`);
     if (nav) rowData.nav = nav.toFixed(2) * 1;
   }
-  
+
   // fund name
   const rawFundName = await selectElement('span[data-rpa-tag-id="dashboard-longName"]', false);
   if (!rawFundName) {
@@ -230,6 +230,8 @@ for (const ticker of tickers) {
       const durationLine = lines[durationLineNum].split("\t");
       const durationYears = durationLine[durationLine.length - 1].replace("(years)", "").trim() * 1;
       if (durationYears) rowData.durationYears = durationYears.toFixed(2) * 1;
+    } else {
+      console.error(`No duration line found in rawFundamentals for ticker '${ticker}'`);
     }
 
     const ytmLineNum = lines.findIndex(l => l.toLowerCase().includes("yield to maturity"));
@@ -237,6 +239,8 @@ for (const ticker of tickers) {
       const ytmLine = lines[ytmLineNum].split("\t");
       const yieldToMaturity = ytmLine[ytmLine.length - 1].replace("%", "").trim() / 100;
       if (yieldToMaturity) rowData.yieldToMaturity = yieldToMaturity.toFixed(4) * 1;
+    } else {
+      console.error(`No yield to maturity line found in rawFundamentals for ticker '${ticker}'`);
     }
 
     const ytwLineNum = lines.findIndex(l => l.toLowerCase().includes("yield to worst"));
@@ -244,6 +248,8 @@ for (const ticker of tickers) {
       const ytwLine = lines[ytwLineNum].split("\t");
       const yieldToWorst = ytwLine[ytwLine.length - 1].replace("%", "").trim() / 100;
       if (yieldToWorst) rowData.yieldToWorst = yieldToWorst.toFixed(4) * 1;
+    } else {
+      console.error(`No yield to worst line found in rawFundamentals for ticker '${ticker}'`);
     }
 
     const maturityLineNum = lines.findIndex(l => l.toLowerCase().includes("effective maturity"));
@@ -251,6 +257,8 @@ for (const ticker of tickers) {
       const maturityLine = lines[maturityLineNum].split("\t");
       const maturityYears = maturityLine[maturityLine.length - 1].replace("(years)", "").trim() * 1;
       if (maturityYears) rowData.maturityYears = maturityYears.toFixed(2) * 1;
+    } else {
+      console.error(`No effective maturity line found in rawFundamentals for ticker '${ticker}'`);
     }
 
     const wacLineNum = lines.findIndex(l => l.toLowerCase().includes("average coupon"));
@@ -258,6 +266,8 @@ for (const ticker of tickers) {
       const wacLine = lines[wacLineNum].split("\t");
       const weightedAverageCoupon = wacLine[wacLine.length - 1].replace("%", "").trim() / 100;
       if (weightedAverageCoupon) rowData.weightedAverageCoupon = weightedAverageCoupon.toFixed(5) * 1;
+    } else {
+      console.error(`No average coupon line found in rawFundamentals for ticker '${ticker}'`);
     }
   }
 
