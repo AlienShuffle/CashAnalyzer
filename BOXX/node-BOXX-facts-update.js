@@ -8,7 +8,7 @@ import {
     join
 } from "node:path";
 
-const debug = false;
+const debug = true;
 
 const browserPromise = puppeteer.launch({
     headless: true,
@@ -143,16 +143,34 @@ if (debug) console.error(`rawYieldAsOfDate='${rawYieldAsOfDate}'='${yieldAsOfDat
 const rawExpenseRatio = await getElementText('td.expand.numdata.float.column-total_exp');
 if (!rawExpenseRatio) {
     console.error(`No rawExpenseRatio found for ticker '${ticker}'`);
-    process.exit()
+    //process.exit()
 }
 const expenseRatio = (rawExpenseRatio.replace("%", "").trim() / 100).toFixed(4) * 1;
 if (debug) console.error(`rawExpenseRatio= '${rawExpenseRatio}'=${expenseRatio}`);
+
+// aum - #table_206_row_0 > td.numdata.float.column-aum-mm
+const rawAum = await getElementText('td.numdata.float.column-aum-mm');
+if (!rawAum) {
+    console.error(`No rawAum found for ticker '${ticker}'`);
+    //process.exit()
+}
+const aum = parseFloat(rawAum.replace('$', '').replace(',', '').trim()) * 1e6;
+if (debug) console.error(`rawAum='${rawAum}'=${aum}`); 
+
+// nav - #table_174_row_0 > td
+const rawNav = await getElementText('td.expand.numdata.float.column-nav');
+if (!rawNav) {
+    console.error(`No rawNav found for ticker '${ticker}'`);
+    //process.exit()
+}
+const nav = parseFloat(rawNav.replace("$", "").trim()).toFixed(2) * 1;
+if (debug) console.error(`rawNav='${rawNav}'=${nav}`);
 
 // #table_1 > tbody > tr.odd.detail-show > td.expand.numdata.integer.column-average-days-to-option-expiration
 const rawDurationDays = await getElementText('td.expand.numdata.integer.column-average-days-to-option-expiration');
 if (!rawDurationDays) {
     console.error(`No rawDurationDays found for ticker '${ticker}'`);
-    process.exit()
+    //process.exit();
 }
 const durationDays = parseInt(rawDurationDays.replace(/ Days$/, ""));
 const durationYears = (durationDays / 365).toFixed(4) * 1;
@@ -160,13 +178,16 @@ if (debug) console.error(`rawDurationDays= '${rawDurationDays}'=${durationDays}`
 
 const results = [];
 results.push({
-    "ticker": ticker,
-    "thirtyDayYield": exprYield,
-    "asOfDate": yieldAsOfDate,
-    "expenseRatio": expenseRatio,
-    "durationYears": durationYears,
-    "source": "alphaarchitect.com",
-    "timestamp": new Date()
+    ticker: ticker,
+    accountType: 'Alpha Architect 1-3 Month Box ETF',
+    thirtyDayYield: exprYield,
+    asOfDate: yieldAsOfDate,
+    nav: nav,
+    aum: aum,
+    expenseRatio: expenseRatio,
+    durationYears: durationYears,
+    source: "alphaarchitect.com",
+    timestamp: new Date()
 });
 console.log(JSON.stringify(results));
 
