@@ -37,13 +37,12 @@ while [ -n "$1" ]; do
     shift
 done
 
-if [ ! -d "$cloudFlareHome/.git" ]; then
+source ../meta.common.sh
+
+if [ ! -d "$cloudFlareHome/../.git" ]; then
     echo "$0: we are running on a non-git cloudflare tree, skipping sync process."
     exit 1
 fi
-# look for a -f to force run, overriding the time delays.
-
-source ../meta.common.sh
 
 echo "cd $dir"
 cd "$dir"
