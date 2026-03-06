@@ -38,14 +38,14 @@ while [ -n "$1" ]; do
 done
 
 source ../meta.common.sh
-
-if [ ! -d "$cloudFlareHome/../.git" ]; then
+repoDir=$(dirname $cloudFlareHome)
+if [ ! -d "$repoDir/.git" ]; then
     echo "$0: we are running on a non-git cloudflare tree, skipping sync process."
     exit 1
 fi
 
-echo "cd $dir"
-cd "$dir"
+echo "cd $repoDir"
+cd "$repoDir"
 echo "git pull"
 git pull
 echo "cd $cloudFlareHome"
