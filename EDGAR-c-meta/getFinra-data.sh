@@ -76,14 +76,17 @@ if [ ! -s "$tmpFile" ]; then
     echo "Empty $tmpFile file."
     exit 1
 fi
-node ../lib/node-mergeFinra.js "$tmpFile" <"$finraFile" | jq . >finra.merge.json
-#wc finra.merge.json
-#echo stopping for testing
-#exit 0
-if ../bin/jsonDifferent.sh finra.merge.json "$finraFile"; then
-    cat finra.merge.json >"$finraFile"
-    echo $finraFile updated.
+if [ ! -s "$finraFile" ]; then
+    #echo "Empty $finraFile file, skipping merge process."
+    cat "$tmpFile" >"$finraFile"
+    echo $finraFile created.
 else
-    echo no change
+    node ../lib/node-mergeFinra.js "$tmpFile" <"$finraFile" | jq . >finra.merge.json
+    if ../bin/jsonDifferent.sh finra.merge.json "$finraFile"; then
+        cat finra.merge.json >"$finraFile"
+        echo $finraFile updated.
+    else
+        echo no change.
+    fi
 fi
 rm -f $tmpFile finra.merge.json raw.jq.json raw.json
