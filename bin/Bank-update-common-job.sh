@@ -68,7 +68,7 @@ while [ -n "$1" ]; do
     shift
 done
 # computer-specific configurations.
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 # if a sourceName is not specified, use the current directory name.
 if [ -z "$sourceName" ]; then
     sourceName=$(basename $(pwd))

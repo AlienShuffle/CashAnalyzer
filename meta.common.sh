@@ -27,3 +27,5 @@ MFPFilesDir="../EDGAR-d-MFP-lists/MFP-files"
 
 MFPReportsDir="../EDGAR-e-MFP-parse/reports"
 [ -d "$MFPReportsDir" ] || mkdir -p "$MFPReportsDir"
+
+cloudFlareHome="$HOME/cloudflare/public"

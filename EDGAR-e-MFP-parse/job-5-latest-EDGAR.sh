@@ -26,7 +26,7 @@ while [ -n "$1" ]; do
     shift
 done
 # computer-specific configurations.
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 
 jsonNew="history/latestEDGAR.json"
 jsonFlare="$cloudFlareHome/EDGAR/latestEDGAR.json"

@@ -48,7 +48,7 @@ if [ -z "$ticker" ]; then
   echo "missing ETF name. --ticker argument is required."
   exit 1
 fi
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 
 jsonNew="history/$ticker/$ticker-distro-new.json"
 jsonFlare="$cloudFlareHome/Funds/$ticker/$ticker-distros.json"

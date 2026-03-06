@@ -40,7 +40,7 @@ if [ -z "$searchFile" ]; then
 fi
 
 # computer-specific configurations.
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 
 pubDelayFile=""
 runDelayFile="$finraFile"

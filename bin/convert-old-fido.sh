@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 [ -d old-history ] || mkdir -p old-history
 for i in $(cut -f1 -d, $(basename $PWD)-funds.csv); do
     if [ -d "$publishHome/MM/$i" ]; then

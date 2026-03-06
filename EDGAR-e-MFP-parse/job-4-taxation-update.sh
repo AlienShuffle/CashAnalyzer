@@ -36,7 +36,7 @@ while [ -n "$1" ]; do
     shift
 done
 # computer-specific configurations.
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 
 if [ ! -s "$fundsMetaFile" ]; then
     echo "$fundsMetaFile does not exist, exiting..."

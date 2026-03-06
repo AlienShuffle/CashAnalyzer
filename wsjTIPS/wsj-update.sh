@@ -44,7 +44,7 @@ if [ -z "$sourceName" ]; then
     echo "$0: -b sourceName missing, need to specify a valid bond type."
     exit 1
 fi
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 
 # current rate files
 injectRatesJson="inject-rates.json"

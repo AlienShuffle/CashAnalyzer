@@ -40,7 +40,7 @@ if [ -z "$ticker" ]; then
   exit 1
 fi
 
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 source ../bin/skipWeekends.sh
 
 jsonNew="history/$ticker-distro-new.json"

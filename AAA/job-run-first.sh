@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 dir=$(dirname $cloudFlareHome)
 echo "cd $dir"
 cd "$dir"

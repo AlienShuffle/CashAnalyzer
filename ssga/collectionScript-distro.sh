@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 IFS= read -r ticker
 [ -z "$ticker" ] && exit 1
 curl -sSL "https://www.ssga.com/bin/v1/ssmp/fund/dividend-distribution?ticker=$ticker&country=us&language=en&role=intermediary&product=etfs" |

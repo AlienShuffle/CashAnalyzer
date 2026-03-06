@@ -39,7 +39,7 @@ while [ -n "$1" ]; do
     shift
 done
 # computer-specific configurations.
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 pubDelayFile=""
 runDelayFile="$CIKmap"
 source ../bin/testDelays.sh

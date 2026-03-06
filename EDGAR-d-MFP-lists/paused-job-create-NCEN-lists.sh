@@ -36,7 +36,7 @@ while [ -n "$1" ]; do
     shift
 done
 # computer-specific configurations.
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 
 # create data source file paths (move to meta.common.sh once this is fully implemented.)
 NCENlistsDir="../EDGAR-d-MFP-lists/NCEN-lists"

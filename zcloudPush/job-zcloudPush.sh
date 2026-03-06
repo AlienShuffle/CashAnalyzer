@@ -46,7 +46,7 @@ if [ ! -d "$HOME/CashAnalyzer/$bankName" ]; then
 fi
 # look for a -f to force run, overriding the time delays.
 
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 
 echo "cd $dir"
 cd "$dir"

@@ -1,5 +1,5 @@
 # computer-specific configurations.
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 
 grep accessionNumber "$MFPListsDir"/*.json | cut -d: -f3 | sed -e 's/\"//g' | sed -e s/,//g | sort -u > accessionList.txt
 echo "##### looking at $MFPFilesDir"

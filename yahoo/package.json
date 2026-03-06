@@ -1,0 +1,15 @@
+{
+  "name": "yahoo-finance-scraper",
+  "version": "0.0.1",
+  "description": "Scrape daily prices and distributions from yahoo finance.",
+  "keywords": [
+    "yahoo finance",
+    "scraper"
+  ],
+  "author": "AlienShuffle",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "yahoo-finance2": ""
+  }
+}

@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 #
 # computer-specific configurations.
-source ../meta.$(hostname).sh
+source ../meta.common.sh
 
 while [ -n "$1" ]; do
     ticker=$1
