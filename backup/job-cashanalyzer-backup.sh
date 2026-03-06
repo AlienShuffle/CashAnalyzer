@@ -15,15 +15,15 @@
 # CONFIGURATION
 # =====================================================================
 # Default configuration (can be overridden by config file)
-BACKUP_DIR="/home/gebelea/cdocs/backups"                               # Where backups are stored
-DIRECTORIES_TO_BACKUP=("/home/gebelea/CashAnalyzer")                   # Directories to backup
+BACKUP_DIR="/home/gebelea/cdocs/backups"                                       # Where backups are stored
+DIRECTORIES_TO_BACKUP=("/home/gebelea/CashAnalyzer")                           # Directories to backup
 EXCLUDE_PATTERNS=("*.log" "*.tmp" "*.swp" "/home/*/Downloads" "/home/*/Trash") # Patterns to exclude
-RETENTION_DAYS=10                                                      # How many days to keep backups
-BACKUP_INTERVAL=1440                                                   # How often to backup in minutes (1440 = 24 hours).
-LOG_FILE="/home/gebelea/log/CA_backup.log"                             # Log file location
-DATE_FORMAT="%Y-%m-%d_%H-%M-%S"                                        # Format for date in backup name
-COMPRESSION_TYPE="gzip"                                                # Options: gzip, bzip2, xz
-REQUIRED_SPACE_GB=10                                                   # Required free space in GB
+RETENTION_DAYS=10                                                              # How many days to keep backups
+BACKUP_INTERVAL=1440                                                           # How often to backup in minutes (1440 = 24 hours).
+LOG_FILE="/home/gebelea/log/CA_backup.log"                                     # Log file location
+DATE_FORMAT="%Y-%m-%d_%H-%M-%S"                                                # Format for date in backup name
+COMPRESSION_TYPE="gzip"                                                        # Options: gzip, bzip2, xz
+REQUIRED_SPACE_GB=10                                                           # Required free space in GB
 
 # =====================================================================
 # FUNCTIONS
@@ -52,6 +52,7 @@ log() {
     esac
 
     # Append to log file
+    [ -d "$(dirname "$LOG_FILE")" ] || mkdir -p "$(dirname "$LOG_FILE")"
     if [ -w "$(dirname "$LOG_FILE")" ]; then
         echo "[$timestamp] [${level}] $message" >>"$LOG_FILE"
     else
