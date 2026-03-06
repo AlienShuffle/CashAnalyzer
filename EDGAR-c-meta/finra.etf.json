@@ -1,0 +1,31 @@
+{
+    "keyword": null,
+    "filters": {
+        "productType": [
+            "Exchange-Traded Fund/Exchange-Traded Note"
+        ],
+        "msCategory": [
+            "Money Market - Taxable",
+            "Money Market-Taxable",
+            "Money Market-Tax-Free"
+        ]
+    },
+    "paging": {
+        "page": 0,
+        "limit": 150
+    },
+    "selectedFilters": {
+        "productType": {
+            "0": "Exchange-Traded Fund/Exchange-Traded Note"
+        },
+        "msCategory": {
+            "83": "Money Market - Taxable",
+            "84": "Money Market-Taxable",
+            "85": "Money Market-Tax-Free"
+        }
+    },
+    "visibleFilters": {
+        "msCategory": true,
+        "productType": true
+    }
+}
