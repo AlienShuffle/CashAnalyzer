@@ -21,8 +21,8 @@ nvm install --lts
 #echo
 #echo "##### jq"
 #echo "Make sure jq and tree is installed"
-#echo sudo apt install jq tree
-#sudo apt install jq tree
+#echo sudo apt install -qq -y jq tree
+sudo apt install -qq -yjq tree
 echo npm outdated -g || npm update -g
 npm outdated -g || npm update -g
 #
