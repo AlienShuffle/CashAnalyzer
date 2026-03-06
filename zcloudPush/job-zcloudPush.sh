@@ -36,12 +36,9 @@ while [ -n "$1" ]; do
     esac
     shift
 done
-if [ -z "$bankName" ]; then
-    echo "$0: -b bankName missing, need to specify a valid bank."
-    exit 1
-fi
-if [ ! -d "$HOME/CashAnalyzer/$bankName" ]; then
-    echo "$0: $bankName is not a valid bank name."
+
+if [ ! -d "$cloudFlareHome/.git" ]; then
+    echo "$0: we are running on a non-git cloudflare tree, skipping sync process."
     exit 1
 fi
 # look for a -f to force run, overriding the time delays.
