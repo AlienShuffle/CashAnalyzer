@@ -29,7 +29,7 @@ while [ -n "$1" ]; do
         debug="true"
         #echo "debug=true"
         ;;
-        "-f")
+    "-f")
         forceRun=true
         #echo "forceRun=$forceRun"
         ;;
@@ -67,13 +67,17 @@ while [ -n "$1" ]; do
         #echo "runDelayHours=$runDelayHours"
         shift
         ;;
+    "--runWeekends")
+        runWeekends="true"
+        #echo "runWeekends=$runWeekends"
+        ;;
     "--sourceName")
         sourceName="$2"
         #echo "sourceName=$sourceName"
         shift
         ;;
     *)
-        echo "Parameter $1 ignored"
+        echo "$(basename $0): Parameter $1 ignored"
         shift
         ;;
     esac
@@ -140,7 +144,7 @@ else
             exit 1
         fi
         #echo "running: < $tmpCollect | node $processScript $nodeArg"
-        <"$tmpCollect" node $processScript "$nodeArg" | jq . >"$jsonFactsNew"
+        node <"$tmpCollect" $processScript "$nodeArg" | jq . >"$jsonFactsNew"
         statuses=("${PIPESTATUS[@]}")
         [ "$debug" = "true" ] || rm -f "$tmpCollect"
         if [ "${statuses[1]}" -ne 0 ]; then
@@ -169,7 +173,7 @@ fi
 # sort/normalize the file now.
 jq 'sort_by(.asOfDate)' "$jsonFactsNew" >tmp.sort.json
 cat tmp.sort.json >"$jsonFactsNew"
- [ "$debug" = "true" ] || rm -f tmp.sort.json
+[ "$debug" = "true" ] || rm -f tmp.sort.json
 #
 # Process the daily history results in Facts and merge with history.
 #
@@ -277,4 +281,4 @@ if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonFactsAllFlare"; then
     ) >"$csvFactsAllFlare"
     [ "$quiet" = "true" ] || echo "published updated cloudflare all-facts files."
 fi
- [ "$debug" = "true" ] || rm -f tmp-all-flare.json
+[ "$debug" = "true" ] || rm -f tmp-all-flare.json

@@ -19,7 +19,7 @@ while [ -n "$1" ]; do
         shift
         ;;
     *)
-        echo "Parameter $1 ignored"
+        echo "$(basename $0): Parameter $1 ignored"
         shift
         ;;
     esac

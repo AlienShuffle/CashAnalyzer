@@ -32,13 +32,17 @@ while [ -n "$1" ]; do
     #echo "runDelayHours=$runDelayHours"
     shift
     ;;
+  "--runWeekends")
+    runWeekends="true"
+    #echo "runWeekends=$runWeekends"
+    ;;
   "--ticker")
     ticker="$2"
     #echo "ticker=$ticker"
     shift
     ;;
   *)
-    echo "Parameter $1 ignored"
+    echo "$(basename $0): Parameter $1 ignored"
     shift
     ;;
   esac
@@ -108,5 +112,5 @@ if ../bin/jsonDifferent.sh "$jsonUnique" "$jsonFlare"; then
     echo 'recordDate,exDividendDate,payableDate,totalDistribution,ordinaryIncome,stcg,ltcg,returnOfCapital'
     jq -r '.[] | [.recordDate,.exDividendDate,.payableDate,.totalDistribution,.ordinaryIncome,.stcg,.ltcg,.returnOfCapital] | @csv' "$jsonUnique"
   ) >"$csvFlare"
-   [ "$quiet" = "true" ] || echo "published updated cloudFlare $ticker distro history file."
+  [ "$quiet" = "true" ] || echo "published updated cloudFlare $ticker distro history file."
 fi

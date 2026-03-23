@@ -52,9 +52,17 @@ while [ -n "$1" ]; do
         #echo "runDelayHours=$runDelayHours"
         shift
         ;;
+    "--runWeekends")
+        runWeekends="true"
+        #echo "runWeekends=$runWeekends"
+        ;;
     "--sourceName")
         sourceName="$2"
         #echo "sourceName=$sourceName"
+        shift
+        ;;
+    *)
+        echo "$(basename $0): Parameter $1 ignored"
         shift
         ;;
     esac
