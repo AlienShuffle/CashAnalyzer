@@ -189,18 +189,17 @@ results.push({
     source: "alphaarchitect.com",
     timestamp: new Date()
 });
+if (debug) console.error(JSON.stringify(results));
 console.log(JSON.stringify(results));
 
 // Now get distribution data by clicking the download button and parsing the resulting CSV file.
 // this will be processed in a later script.
 //
 // #fund-distributions > h1
-if (!await selectElement('#fund-distributions')) process.exit();
+if (!await selectElement('#table_16_wrapper')) process.exit();
 await sleep(1000);
 
-// find the export button and expose the CSV download button.
-// #table_18_wrapper > div.dt-buttons > button.dt-button.buttons-collection.DTTT_button.DTTT_button_export
-const exportButton = await selectElement('#table_18_wrapper > div.dt-buttons > button.dt-button.buttons-collection.DTTT_button.DTTT_button_export > span:nth-child(1)');
+const exportButton = await selectElement('#table_16_wrapper > div.dt-buttons > button.dt-button.buttons-collection.DTTT_button.DTTT_button_export');
 if (!exportButton) {
     console.error(`No export button found for BOXX.`);
     process.exit();
@@ -209,8 +208,8 @@ exportButton.click();
 await sleep(1000);
 
 // click the CSV download button in the dropdown menu that appears after clicking the export button. this will download the file.
-// #table_18_wrapper > div.dt-buttons > div.dt-button-collection.dtb-b3.wdt-skin-aqua > div > button.dt-button.buttons-csv.buttons-html5
-if (!await downloadFile("#table_18_wrapper > div.dt-buttons > div.dt-button-collection.dtb-b3.wdt-skin-aqua > div > button.dt-button.buttons-csv.buttons-html5", downloadPath, `${ticker}-distributions.csv`)) process.exit();
+// #table_16_wrapper > div.dt-buttons > div.dt-button-collection.dtb-b3.wdt-skin-aqua > div > button.dt-button.buttons-csv.buttons-html5
+if (!await downloadFile("#table_16_wrapper > div.dt-buttons > div.dt-button-collection.dtb-b3.wdt-skin-aqua > div > button.dt-button.buttons-csv.buttons-html5", downloadPath, `${ticker}-distributions.csv`)) process.exit();
 
 if (debug) console.error("Script complete.");
 browser.close();
