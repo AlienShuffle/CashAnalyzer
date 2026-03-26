@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-node ./node-fetch-cnbc-yields.js | jq .
+node ../cnbc/node-fetch-cnbc-yields.js | jq .

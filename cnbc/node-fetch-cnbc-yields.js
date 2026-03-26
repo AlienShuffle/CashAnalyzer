@@ -29,7 +29,11 @@ for (let i = 0; i < tickers.length; i++) {
     const url = buildUrl(ticker, "1Y");
     const response = await fetch(url);
     const json = await response.json();
-    const priceBars = json.data.chartData.priceBars;
+    const priceBars = json.data?.chartData?.priceBars;
+    if (!priceBars || priceBars.length == 0) {
+        console.error(`No price bars found for ticker ${ticker}`);
+        continue;
+    }
     const dateList = priceBars.map(bar => bar.tradeTime);
     const yields = priceBars.map(bar => bar.close);
     const timestamp = new Date;
