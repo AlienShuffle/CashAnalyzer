@@ -9,7 +9,7 @@ listTmpFile=$exportPrefix.tmp.json
     count=1
     firstpid=true
     echo "["
-    cat lot-list.csv | # grep 625 |
+    cat lot-list.csv | # grep 0625 |
         while IFS= read -r row; do
             pid=$(echo $row | cut -d',' -f2)
             [ "$pid" = "pid" ] && continue # skip header

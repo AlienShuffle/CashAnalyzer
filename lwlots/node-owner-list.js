@@ -6,6 +6,16 @@ import { readFileSync } from 'fs';
 let ownersList = [];
 let oid = 50001;
 
+// Hash to store owner name -> oid mapping
+const ownerHashMap = new Map();
+
+function getOrCreateOid(ownerName) {
+    if (!ownerHashMap.has(ownerName)) {
+        ownerHashMap.set(ownerName, oid++);
+    }
+    return ownerHashMap.get(ownerName);
+}
+
 function addOwnerToList(owner, lot, type) {
     for (let i = 0; i < ownersList.length; i++) {
         if (ownersList[i].owner === owner) {
@@ -30,7 +40,7 @@ function addOwnerToList(owner, lot, type) {
     }
     ownersList.push({
         owner: owner,
-        oid: oid++,
+        oid: getOrCreateOid(owner),
         lots: [{
             lot: lot,
             type: [type],
@@ -70,8 +80,6 @@ for (let i = 0; i < ownersList.length; i++) {
     ownersList[i].emptyLotCnt = 0;
     ownersList[i].homeLotCnt = 0;
     ownersList[i].previousLotCnt = 0;
-    //ownersList[i].delinquentCnt = 0;
-    //ownersList[i].previousDelinquencyCnt = 0;
     ownersList[i].relatedLots = [];
     ownersList[i].previousLots = [];
     for (let j = 0; j < ownersList[i].lots.length; j++) {
@@ -89,9 +97,7 @@ for (let i = 0; i < ownersList.length; i++) {
             //console.error(`propertyType for lot ${ownersList[i].lots[j].lot} is ${propertyUseCode}`);
             if (isEmptyLot(propertyUseCode)) ownersList[i].emptyLotCnt++;
             if (isHomeLot(propertyUseCode)) ownersList[i].homeLotCnt++;
-            //console.error(`${lotDetail.lot}: ${lotDetail.delinquent} ${lotDetail.previousDelinquency} `)
-            //if (lotDetail.delinquent) ownersList[i].delinquentCnt++;
-            //if (lotDetail.previousDelinquency) ownersList[i].previousDelinquencyCnt++
+           
         }
     }
     ownersList[i].relatedLots = ownersList[i].relatedLots.sort();

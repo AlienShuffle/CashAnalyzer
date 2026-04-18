@@ -2,6 +2,8 @@ import { parse } from 'node-html-parser';
 import { readFileSync } from 'fs';
 import process from 'node:process';
 
+const debug = false;
+
 // read HTML from file given as 1st argument, this is a parcel detail report from the county GIS site.
 const htmlString = readFileSync(process.argv[2], 'utf8');
 const root = parse(htmlString);
@@ -11,11 +13,21 @@ if (!contentElementArray) {
     console.error("Error: Could not find td elements in HTML.");
     process.exit(1);
 }
+if (debug) console.error(`Found content element with ${contentElementArray.length} child nodes.`);
 
-//console.error(`Found content element with ${contentElementArray.length} child nodes.`);
+// find current taxes due from payment input element, if it exists. 
+// This is only present if there is a current delinquency, so we need to check for it before trying to access the value.
 const inputElementArray = root.querySelectorAll('input');
-//console.error(`Found ${inputElementArray.length} input element child nodes.`);
+if (debug) console.error(`Found ${inputElementArray.length} input element child nodes.`);
 const currentDeliquency = inputElementArray.length > 0;
+
+let currentTaxesDue = 0;
+if (currentDeliquency) {
+    if (debug) console.error(`\titem 0 name is: ${inputElementArray[0].getAttribute('name')}`);
+    if (debug) console.error(`\titem 0 value is: ${inputElementArray[0].getAttribute('value')}`);
+    currentTaxesDue = inputElementArray[0].getAttribute('value');
+    if (debug) console.error(`\tcurrent taxes due: ${currentTaxesDue}`);
+}
 
 let result = {
     lot: process.argv[3].split('-')[2].split('.')[0] * 1,
@@ -41,11 +53,11 @@ for (let i = 0; i < contentElementArray.length; i++) {
         result.location = nextElement.text.trim();
     }
     if (element.text.includes("ASSESSED VALUE:")) {
-        //console.error(`${i}: Found ASSESSED VALUE element: ${element.text.trim()}::${nextElement.text.trim()}:`);
+        if (debug) console.error(`${i}: Found ASSESSED VALUE element: ${element.text.trim()}::${nextElement.text.trim()}:`);
         result.assessment = nextElement.text.trim().replace(/[\$,]/g, '') * 1;
     }
     if (element.text.includes("No Delinquent Taxes on file.")) {
-        console.error(`\tNo Delinquent Taxes on file.`);
+        if (debug) console.error(`\tNo Delinquent Taxes on file.`);
         result.delinquent = false;
         result.previousDelinquency = false;
         break;
@@ -54,27 +66,27 @@ for (let i = 0; i < contentElementArray.length; i++) {
         console.error(`\tDelinquent Taxes Due`);
         result.status = {
             lastDeliquentYear: contentElementArray[i + 2].text.trim() * 1,
-            taxesDue: contentElementArray[i + 3].text.trim().replace(/[\$,]/g, '') * 1,
+            taxesDue: currentTaxesDue * 1,
         };
         if (currentDeliquency) {
             result.delinquent = true;
             result.previousDelinquency = false;
-            break;
         } else {
             result.delinquent = false;
             result.previousDelinquency = true;
         }
         result.status.historicalDelinquency = 0;
+        if (debug) console.error(`${i}: Starting to check for Total or delinquency records: ${contentElementArray[i].text.trim()}`);
         for (let j = i + 2; j < contentElementArray.length; j += 5) {
+            if (debug) console.error(`${j}: Checking for Total or delinquency record: ${contentElementArray[j].text.trim()}`);
             if (contentElementArray[j].text.trim() == "Total") {
-                //console.error(`${j}: Found Total`);
-                result.status.taxesDue = contentElementArray[j + 2].text.trim().replace(/[\$,]/g, '') * 1;
+                if (debug) console.error(`${j}: Found Total`);
                 result.status.saleType = contentElementArray[j - 3].text.trim()
                 result.status.firstDeliquentYear = contentElementArray[j - 5].text.trim() * 1;
                 break;
             }
             const amount = (contentElementArray[j + 1].text.trim().replace(/[\$,]/g, '') * 1).toFixed(2) * 1;
-            //console.error(`${j}: amount: ${amount} Year: ${contentElementArray[j].text.trim()}`);
+            if (debug) console.error(`${j}: amount: ${amount} Year: ${contentElementArray[j].text.trim()}`);
             result.status.historicalDelinquency = (result.status.historicalDelinquency + amount).toFixed(2) * 1;
         }
         break;

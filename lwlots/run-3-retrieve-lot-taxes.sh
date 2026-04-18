@@ -4,11 +4,11 @@
 #
 
 # good test cases
-# 0008 - currently delinquent
-# 0057 - CS
+# 0008 - currently delinquent 2025 only, balance 909.96
+# 0057 - CS (18-25) balance 0
 # 0625 - current taxes
-# 0791 - RS
-# 0743 - delinquent
+# 0791 - RS (90-25) balance 0
+# 0743 - delinquent (2024-2025) balance 6843.34
 
 exportPrefix=lot-taxes
 curlTmpFile=$exportPrefix.html
@@ -17,7 +17,7 @@ listTmpFile=$exportPrefix.tmp.json
     count=1
     firstparcel=true
     echo "["
-    cat lot-list.csv |  #grep 0057 |
+    cat lot-list.csv | #grep 0008 |
         while IFS= read -r row; do
             parcel=$(echo $row | cut -d',' -f3 | tr -d '"')
             [ "$parcel" = "parcel" ] && continue # skip header
@@ -36,9 +36,9 @@ listTmpFile=$exportPrefix.tmp.json
         done
     echo "]"
 ) >$listTmpFile
-cat $listTmpFile | jq -s 'flatten | unique_by(.lot) | sort_by(.lot)' >lot-taxes.json
+cat $listTmpFile | jq -s 'flatten | unique_by(.lot) | sort_by(.lot)' >$exportPrefix.json
 cat $exportPrefix.json | (
-    echo "lot,parcel,location,owners,address,assessment,delinquent,firstDeliquentYear,lastDeliquentYear,taxesDue,saleType"
-    jq -r '.[] | [.lot,.parcel,.location,.owners,.address,.assessment,.delinquent,.firstDeliquentYear,.lastDeliquentYear,.taxesDue,.saleType] | @csv'
+    echo "lot,parcel,location,owners,address,assessment,delinquent,taxesDue,previousDelinquency,firstDeliquentYear,lastDeliquentYear,historicalDelinquency,saleType"
+    jq -r '.[] | [.lot,.parcel,.location,.owners,.address,.assessment,.delinquent,.status.taxesDue,.previousDelinquency,.status.firstDeliquentYear,.status.lastDeliquentYear,.status.historicalDelinquency,.status.saleType] | @csv'
 ) >$exportPrefix.csv
 rm -f $listTmpFile $curlTmpFile

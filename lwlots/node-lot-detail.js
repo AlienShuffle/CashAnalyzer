@@ -59,7 +59,7 @@ if (ownersRootElement.children.length > 3) {
 }
 
 // latest valuations table retrieval
-const valuationRootElement = root.querySelector('#MainContent_grdHistoryValuesAsmt');
+const valuationRootElement = root.querySelector('#MainContent_grdCurrentValueAsmt');
 const valuationSectionElement = valuationRootElement.children[2];
 const valuationYearString = valuationSectionElement.children[0].text;
 const valuationImproveString = valuationSectionElement.children[1].text;

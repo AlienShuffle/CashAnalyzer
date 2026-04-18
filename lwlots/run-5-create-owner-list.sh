@@ -9,7 +9,7 @@ cat lot-normalized.json |
 #echo flatten now....
 cat "$listTmpFile" | jq -s 'flatten | unique_by(.owner) | sort_by(.owner)' >$exportPrefix.json
 cat $exportPrefix.json | (
-    echo ".owner,.generalOwner,.emptyLotCnt,.homeLotCnt,.previousLotCnt,.delinquentCnt,.previousDelinquencyCnt,relatedLots,previousLots"
-    jq -r '.[] | [.owner,.generalOwner,.emptyLotCnt,.homeLotCnt,.previousLotCnt,.delinquentCnt,.previousDelinquencyCnt,(.relatedLots|join(";")),(.previousLots|join(";"))] | @csv'
+    echo "owner,generalOwner,emptyLotCnt,homeLotCnt,previousLotCnt,relatedLots,previousLots"
+    jq -r '.[] | [.owner,.generalOwner,.emptyLotCnt,.homeLotCnt,.previousLotCnt,(.relatedLots|join(";")),(.previousLots|join(";"))] | @csv'
 ) >"$exportPrefix".csv
 rm -f "$listTmpFile"

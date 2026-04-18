@@ -6,6 +6,16 @@ let addrList = [];
 
 let aid = 70001;
 
+// Hash to store address -> aid mapping
+const addressHashMap = new Map();
+
+function getOrCreateAid(address) {
+    if (!addressHashMap.has(address)) {
+        addressHashMap.set(address, aid++);
+    }
+    return addressHashMap.get(address);
+}
+
 function addAddressToList(address, lot) {
     for (let i = 0; i < addrList.length; i++) {
         if (addrList[i].address === address) {
@@ -23,7 +33,7 @@ function addAddressToList(address, lot) {
     }
     addrList.push({
         address: address,
-        aid: aid++,
+        aid: getOrCreateAid(address),
         lots: [{
             lot: lot,
             type: ['Address']
