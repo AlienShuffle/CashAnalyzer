@@ -4,14 +4,22 @@ import { readFileSync } from 'fs';
 
 // [{ owner, lots:[{type, lot}, ...] }, ...]
 let ownersList = [];
-let oid = 50001;
 
 // Hash to store owner name -> oid mapping
 const ownerHashMap = new Map();
 
+function hashCode(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return Math.abs(hash);
+}
+
 function getOrCreateOid(ownerName) {
     if (!ownerHashMap.has(ownerName)) {
-        ownerHashMap.set(ownerName, oid++);
+        ownerHashMap.set(ownerName, hashCode(ownerName));
     }
     return ownerHashMap.get(ownerName);
 }

@@ -4,14 +4,21 @@ import { readFileSync } from 'fs';
 // [{ address, lots:[lot, ...] }, ...]
 let addrList = [];
 
-let aid = 70001;
-
 // Hash to store address -> aid mapping
 const addressHashMap = new Map();
 
+function hashCode(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return Math.abs(hash);
+}
+
 function getOrCreateAid(address) {
     if (!addressHashMap.has(address)) {
-        addressHashMap.set(address, aid++);
+        addressHashMap.set(address, hashCode(address));
     }
     return addressHashMap.get(address);
 }
