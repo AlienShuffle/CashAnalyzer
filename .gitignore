@@ -273,3 +273,5 @@ lwlots/history/*
 VanguardAdvisorsETF/dated-list.txt
 BlackRockETF/tickerAndUrls.csv
 bloxx/links.json
+lwlots/report-previous.txt
+lwlots/report-latest.txt

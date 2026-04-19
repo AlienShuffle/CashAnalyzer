@@ -7,7 +7,9 @@ if [ -z "$files" ]; then
     echo "No report files to archive."
     exit 0
 fi
-date=$(date +%Y-%m-%d)
+date=$(date +%Y-%m-%d-%H%M)
 target="history/$date"
 mkdir -p "$target"
 eval mv $files "$target/"
+mv report-latest.txt report-previous.txt
+echo $date > report-latest.txt

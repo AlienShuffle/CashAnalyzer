@@ -7,6 +7,9 @@ import process from 'node:process';
 const htmlString = readFileSync(process.argv[2], 'utf8');
 const root = parse(htmlString);
 
+const fawnLots = new Set(readFileSync('meta/lots-fawn.txt', 'utf8').trim().split('\n').map(line => parseInt(line.trim(), 10)));
+const wynonahLots = new Set(readFileSync('meta/lots-wynonah.txt', 'utf8').trim().split('\n').map(line => parseInt(line.trim(), 10)));
+
 const parcelStringRaw = root.querySelector('#MainContent_lblMblu').text
     .replace(/^.*Mblu:/, '')
     .replace(/[\s\n\r]/g, '')
@@ -66,6 +69,9 @@ const valuationImproveString = valuationSectionElement.children[1].text;
 const valuationLandString = valuationSectionElement.children[2].text;
 const valuationTotalString = valuationSectionElement.children[3].text;
 
+const yearBuilt = root.querySelector('#MainContent_ctl02_lblYearBuilt').text.trim();
+const livingAreaString = root.querySelector('#MainContent_ctl02_lblBldArea').text.trim();
+
 const result = {
     lot: lotString * 1,
     pid: pidString * 1,
@@ -76,6 +82,9 @@ const result = {
     assessment: propertyAssessment.replace(/[\$,]/g, '') * 1,
     address: addressString,
     acres: acresString * 1,
+    lake: fawnLots.has(lotString * 1) ? 'F' : wynonahLots.has(lotString * 1) ? 'W' : null,
+    yearBuilt: (yearBuilt * 1) || null,
+    livingArea: (livingAreaString.replace(/[\s,]/g, '') * 1) || null,
     generalOwner: generalOwnerString,
     salePrice: salePriceString.replace(/[\$,]/g, '') * 1,
     saleDate: duGetISOString(saleDateString),
