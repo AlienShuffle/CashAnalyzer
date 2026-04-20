@@ -2,31 +2,14 @@ import { isEmptyLot, isHomeLot } from './node-common-code.js';
 import dynamicSort from '../lib/dynamicSort.mjs';
 import { readFileSync } from 'fs';
 
-
 // read HTML from file given as stdin, this is a lot-detail.json.
 if (process.argv.length != 6) {
     console.error('Usage: node node-full-report.js lot-detail.json lot-taxes.json addr-list.json owner-list.json');
     process.exit(1);
 }
-const lotDetailBuffer = readFileSync(process.argv[2], 'utf8');
-const lotDetailJson = JSON.parse(lotDetailBuffer);
-const taxesBuffer = readFileSync(process.argv[3], 'utf8');
-const taxesJson = JSON.parse(taxesBuffer);
-const addrBuffer = readFileSync(process.argv[4], 'utf8');
-const addrJson = JSON.parse(addrBuffer);
-// [{ owner, lots:[{type, lot}, ...] }, ...]
-const ownerBuffer = readFileSync(process.argv[5], 'utf8');
-const ownerJson = JSON.parse(ownerBuffer);
 
-function getLotDetail(lot) {
-    for (let i = 0; i < lotDetailJson.length; i++) {
-        const lotDetail = lotDetailJson[i];
-        if (lotDetail.lot === lot) {
-            return lotDetail;
-        }
-    }
-    return null;
-}
+const taxesBuffer = readFileSync(process.argv[2], 'utf8');
+const taxesJson = JSON.parse(taxesBuffer);
 function getTaxStatusForLot(lot) {
     for (let i = 0; i < taxesJson.length; i++) {
         const taxEntry = taxesJson[i];
@@ -37,6 +20,37 @@ function getTaxStatusForLot(lot) {
     return null;
 }
 
+const lotDetailBuffer = readFileSync(process.argv[3], 'utf8');
+const lotDetailJson = JSON.parse(lotDetailBuffer);
+function getLotDetail(lot) {
+    for (let i = 0; i < lotDetailJson.length; i++) {
+        const lotDetail = lotDetailJson[i];
+        if (lotDetail.lot === lot) {
+            return lotDetail;
+        }
+    }
+    return null;
+}
+
+const ownerBuffer = readFileSync(process.argv[4], 'utf8');
+const ownerJson = JSON.parse(ownerBuffer);
+function getOwnerObj(owner) {
+    for (let i = 0; i < ownerJson.length; i++) {
+        const ownerObj = ownerJson[i];
+        if (ownerObj.owner === owner) {
+            return ownerObj;
+        }
+    }
+    return;
+}
+function getIdForOwner(owner) {
+    const ownerObj = getOwnerObj(owner);
+    if (!ownerObj) return;
+    return ownerObj.oid;
+}
+
+const addrBuffer = readFileSync(process.argv[5], 'utf8');
+const addrJson = JSON.parse(addrBuffer);
 function getIdForAddress(address) {
     for (let i = 0; i < addrJson.length; i++) {
         const addrObj = addrJson[i];
@@ -54,20 +68,6 @@ function getLotListForAddress(address) {
         }
     }
     return;
-}
-function getOwnerObj(owner) {
-    for (let i = 0; i < ownerJson.length; i++) {
-        const ownerObj = ownerJson[i];
-        if (ownerObj.owner === owner) {
-            return ownerObj;
-        }
-    }
-    return;
-}
-function getIdForOwner(owner) {
-    const ownerObj = getOwnerObj(owner);
-    if (!ownerObj) return;
-    return ownerObj.oid;
 }
 
 function getLotListForOwner(owner) {
@@ -168,7 +168,7 @@ for (let i = 0; i < lotDetailJson.length; i++) {
     if (result[i].acres && result[i].acres > 0) {
         result[i].valuationLandPerAcre = Math.round(result[i].valuationLand / result[i].acres);
     }
-    
+
     // insert address link id
     result[i].aid = getIdForAddress(result[i].address);
     //console.error(`Processed aid=${result[i].aid}, lot=${result[i].lot}`);

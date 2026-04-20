@@ -8,8 +8,5 @@ cat 4-lot-normalized.json |
     node ./node-5-owner-list.js >"$listTmpFile"
 #echo flatten now....
 cat "$listTmpFile" | jq -s 'flatten | unique_by(.owner) | sort_by(.owner)' >$exportPrefix.json
-cat $exportPrefix.json | (
-    echo "owner,generalOwner,emptyLotCnt,homeLotCnt,previousLotCnt,relatedLots,previousLots"
-    jq -r '.[] | [.owner,.generalOwner,.emptyLotCnt,.homeLotCnt,.previousLotCnt,(.relatedLots|join(";")),(.previousLots|join(";"))] | @csv'
-) >"$exportPrefix".csv
+cat $exportPrefix.json | ./csv-5-owner-list.sh >"$exportPrefix".csv
 rm -f "$listTmpFile"
