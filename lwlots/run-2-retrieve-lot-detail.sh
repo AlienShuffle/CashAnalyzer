@@ -2,14 +2,14 @@
 #
 # Pull all the lots using a list of streets as the driver to collect them. uses parcel prefixes to filter out non LWPOA lots.
 #
-exportPrefix=lot-detail
+exportPrefix=2-lot-detail
 curlTmpFile=$exportPrefix.html
 listTmpFile=$exportPrefix.tmp.json
 (
     count=1
     firstpid=true
     echo "["
-    cat lot-list.csv | # grep 0625 |
+    cat 1-lot-list.csv | # grep 0625 |
         while IFS= read -r row; do
             pid=$(echo $row | cut -d',' -f2)
             [ "$pid" = "pid" ] && continue # skip header

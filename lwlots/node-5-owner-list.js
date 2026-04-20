@@ -105,9 +105,10 @@ for (let i = 0; i < ownersList.length; i++) {
             //console.error(`propertyType for lot ${ownersList[i].lots[j].lot} is ${propertyUseCode}`);
             if (isEmptyLot(propertyUseCode)) ownersList[i].emptyLotCnt++;
             if (isHomeLot(propertyUseCode)) ownersList[i].homeLotCnt++;
-           
+
         }
     }
+    ownersList[i].currentOwner = (ownersList[i].generalOwner || ownersList[i].relatedLots.length > 0) ? 'Y' : null;
     ownersList[i].relatedLots = ownersList[i].relatedLots.sort();
     ownersList[i].previousLots = ownersList[i].previousLots.sort();
 }

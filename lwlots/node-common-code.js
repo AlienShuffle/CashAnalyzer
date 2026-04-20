@@ -15,6 +15,7 @@ export function isHomeLot(propertyUseCode) {
 
 export function normalizeName(name) {
     return name.trim().toUpperCase()
+        .replace(/  /g, ' ')
         .replace(/, LLC/g, ' LLC')
         .replace(/,LLC/g, ' LLC')
         .replace(/LLC,$/, 'LLC')
@@ -22,6 +23,7 @@ export function normalizeName(name) {
         .replace(/,INC/g, ' INC')
         .replace(/INC\.$/, 'INC')
         .replace(/INC,/, 'INC')
+         .replace(/\.$/, '')
         .replace(/^LAKE WYNONAH PROP OWNRS ASN IN$/, 'LWPOA')
         .replace(/^LAKE WYNONAH PROP OWNERS ASSN$/, 'LWPOA')
         .replace(/^LAKE WYNONAH PROP OWNERS ASSO$/, 'LWPOA')
@@ -45,5 +47,6 @@ export function normalizeName(name) {
         .replace(/HOUSING AND URBAN$/, 'HUD')
         .replace(/AND SONS/g, '& SONS')
         .replace(/ AND /g, ' & ')
-        .replace(/J M A C/g, 'JMAC');
+        .replace(/J M A C/g, 'JMAC')
+        .replace(/  /g, ' ');
 }

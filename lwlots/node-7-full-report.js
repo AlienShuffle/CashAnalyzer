@@ -161,6 +161,14 @@ for (let i = 0; i < lotDetailJson.length; i++) {
     result[i].gisLink = `https://gis.vgsi.com/SchuylkillCountyPA/Parcel.aspx?pid=${result[i].pid}`;
     result[i].taxLink = `https://eliterevenue.rba.com/taxes/schuylkill/trirsp2pp.asp?parcel=${result[i].parcel}+++++++++++&currentlist=0&`;
 
+    // insert valuatio per sqft and per acre
+    if (result[i].livingArea && result[i].livingArea > 0) {
+        result[i].valuationImprovePerSqft = Math.round(result[i].valuationImprove / result[i].livingArea);
+    }
+    if (result[i].acres && result[i].acres > 0) {
+        result[i].valuationLandPerAcre = Math.round(result[i].valuationLand / result[i].acres);
+    }
+    
     // insert address link id
     result[i].aid = getIdForAddress(result[i].address);
     //console.error(`Processed aid=${result[i].aid}, lot=${result[i].lot}`);

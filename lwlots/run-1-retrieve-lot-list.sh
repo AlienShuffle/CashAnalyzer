@@ -2,10 +2,10 @@
 #
 # Pull all the lots using a list of streets as the driver to collect them. uses parcel prefixes to filter out non LWPOA lots.
 #
-exportPrefix=lot-list
+exportPrefix=1-lot-list
 curlTmpFile=$exportPrefix.html
 listTmpFile=$exportPrefix.tmp.json
-(
+{
     count=0
     firstRow=true
     echo "["
@@ -18,14 +18,19 @@ listTmpFile=$exportPrefix.tmp.json
             #echo $url 1>&2
             curl -ksSL "$url" >"$curlTmpFile"
             [ $? -ne 0 ] && echo "Error retrieving $url" 1>&2 && exit 1
+            if [ ! -s "$curlTmpFile" ] || ! grep -q '[^[:space:]]' "$curlTmpFile"; then
+                echo "Error: Empty or invalid response from $url" 1>&2
+                exit 1
+            fi
             # note, the return speed of the site is causing an issue with stdin.
             node ./node-$exportPrefix.js meta/parcel-prefixes.txt $curlTmpFile
+            [ $? -ne 0 ] && echo "Error processing $url" 1>&2 && exit 1
             firstRow=false
             count=$(($count + 1))
             [ $count -ge 500 ] && break
         done
     echo "]"
-) >"$listTmpFile"
+} >"$listTmpFile"
 cat "$listTmpFile" | jq -s 'flatten | unique_by(.lot) | sort_by(.lot)' >$exportPrefix.json
 cat $exportPrefix.json | (
     echo "lot,pid,parcel,location"

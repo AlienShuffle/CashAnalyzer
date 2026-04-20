@@ -10,14 +10,14 @@
 # 0791 - RS (90-25) balance 0
 # 0743 - delinquent (2024-2025) balance 6843.34
 
-exportPrefix=lot-taxes
+exportPrefix=3-lot-taxes
 curlTmpFile=$exportPrefix.html
 listTmpFile=$exportPrefix.tmp.json
 (
     count=1
     firstparcel=true
     echo "["
-    cat lot-list.csv | #grep 0008 |
+    cat 1-lot-list.csv | #grep 0008 |
         while IFS= read -r row; do
             parcel=$(echo $row | cut -d',' -f3 | tr -d '"')
             [ "$parcel" = "parcel" ] && continue # skip header

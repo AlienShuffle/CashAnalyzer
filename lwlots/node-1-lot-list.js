@@ -22,7 +22,12 @@ function isValidParcel(parcelString) {
 const htmlString = readFileSync(process.argv[3], 'utf8');
 const root = parse(htmlString);
 const lotListElement = root.querySelector('#list');
-const childCnt = lotListElement.children.length;
+const childCnt = lotListElement?.children?.length ?? null;
+if (!childCnt) {
+    console.error(`Error: No lots found in the HTML.`);
+    process.exit(1);
+}
+//console.error(`Found ${childCnt} lots in the HTML.`);
 //console.error(`childNodes.length = ${childCnt}`);
 
 const oldDate = new Date('2000-01-01T00:00:00Z');

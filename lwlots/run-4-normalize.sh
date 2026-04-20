@@ -4,8 +4,8 @@
 #
 # First, we rectify the names.
 
-exportPrefix=lot-normalized
-cat lot-detail.json | node ./node-normalize-names.js | jq . >$exportPrefix.json
+exportPrefix=4-lot-normalized
+cat 2-lot-detail.json | node ./node-4-normalize-names.js | jq . >$exportPrefix.json
 cat $exportPrefix.json | (
     echo "lot,pid,parcel,location,generalOwner,address,lake,acres,yearBuilt,livingArea,valuationImprove,valuationLand,valuationTotal,valuationYear,saleDate"
     jq -r '.[] | [.lot,.pid,.parcel,.location,.generalOwner,.address,.lake,.acres,.yearBuilt,.livingArea,.valuationImprove,.valuationLand,.valuationTotal,.valuationYear,.saleDate] | @csv'
