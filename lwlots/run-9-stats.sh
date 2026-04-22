@@ -5,5 +5,6 @@
 exportPrefix=9-stats
 listTmpFile=$exportPrefix.tmp.json
 cat 8-filtered-report.json |
-    node ./node-9-stats.js 
+    node ./node-9-stats.js |
+    tee "$exportPrefix.csv"
 rm -f "$listTmpFile"

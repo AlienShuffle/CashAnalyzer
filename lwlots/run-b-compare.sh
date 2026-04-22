@@ -1,24 +1,25 @@
 #!/usr/bin/bash
-
-[ -f report-previous.txt ] || {
+[ -f history/report-previous.txt ] || {
     echo "report-previous.txt report file not found. Wait a day and run report generation script."
     exit 1
 }
-[ -f report-latest.txt ] || {
+[ -f history/report-latest.txt ] || {
     echo "report-latest.txt report file not found. Please run the report generation script first."
     exit 1
 }
 
-previousReportDir="history/$(cat report-previous.txt)"
-latestReportDir="history/$(cat report-latest.txt)"
+echo comparing reports from history/$(cat history/report-previous.txt) and history/$(cat history/report-latest.txt)
 
-[ -f "$previousReportDir/lot-list.csv" ] || {
-    echo "Report file not found. Please run the report generation script first."
+previousReportDir="history/$(cat history/report-previous.txt)"
+latestReportDir="history/$(cat history/report-latest.txt)"
+
+[ -f "$previousReportDir/1-lot-list.csv" ] || {
+    echo "$previousReportDir/1-lot-list.csv: file not found. Please run the report generation script first."
     exit 1
 }
-[ -f "$latestReportDir/lot-list.csv" ] || {
-    echo "Report file not found. Please run the report generation script first."
+[ -f "$latestReportDir/1-lot-list.csv" ] || {
+    echo "$latestReportDir/1-lot-list.csv: file not found. Please run the report generation script first."
     exit 1
 }
 
-./compare-runs.sh $(cat report-previous.txt) $(cat report-latest.txt)
+./compare-runs.sh history/$(cat history/report-previous.txt) history/$(cat history/report-latest.txt)

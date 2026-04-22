@@ -1,32 +1,31 @@
 #!/usr/bin/bash
 
-previousReportDir="history/$1"
-latestReportDir="history/$2"
+previousReportDir="$1"
+latestReportDir="$2"
 
-[ -f "$previousReportDir/lot-list.csv" ] || {
-    echo "Report file not found. Please run the report generation script first."
+[ -f "$previousReportDir/1-lot-list.csv" ] || {
+    echo "$previousReportDir/1-lot-list.csv: Report file not found. Please run the report generation script first."
     exit 1
 }
-[ -f "$latestReportDir/lot-list.csv" ] || {
-    echo "Report file not found. Please run the report generation script first."
+[ -f "$latestReportDir/1-lot-list.csv" ] || {
+    echo "$latestReportDir/1-lot-list.csv: Report file not found. Please run the report generation script first."
     exit 1
 }
 
-for i in $latestReportDir/*.csv; do
-    csvBaseName=$(basename "$i")
-    echo -n "$csvBaseName: "
+for i in $(basename -a $latestReportDir/*.json $latestReportDir/*.csv | cut -d'.' -f1 | sort -u); do
+    csvBaseName="$i.csv"
+
     if [ -f "$previousReportDir/$csvBaseName" ]; then
-        diff "$previousReportDir/$csvBaseName" "$i"
+        echo -n "$csvBaseName: "
+        diff "$previousReportDir/$csvBaseName" "$latestReportDir/$csvBaseName"
         if [ $? -eq 0 ]; then
             echo "identical"
         else
             echo "different"
         fi
-    else
-        echo "File $previousReportDir/$csvBaseName not found. Skipping diff."
     fi
 
-    jsonBaseName="${csvBaseName%.csv}.json"
+    jsonBaseName="$i.json"
     if [ -f "$latestReportDir/$jsonBaseName" ] && [ -f "$previousReportDir/$jsonBaseName" ]; then
         echo -n "$jsonBaseName: "
         # jsonDifferent.sh returns 1 for identical, 0 for different (opposite of Unix convention).
@@ -36,7 +35,5 @@ for i in $latestReportDir/*.csv; do
         else
             echo -e "identical"
         fi
-    else
-        echo "JSON file $jsonBaseName not found in one of the reports. Skipping JSON comparison."
     fi
 done

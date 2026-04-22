@@ -3,14 +3,14 @@
 // these are property use codes for lots.
 // shared between node-owner-list.js and node-full-report.js
 export function isEmptyLot(propertyUseCode) {
-    return propertyUseCode === 100;
+    return propertyUseCode === 100 ||
+        propertyUseCode === 109
 }
 
 export function isHomeLot(propertyUseCode) {
     return propertyUseCode === 101 ||
         propertyUseCode === 108 ||
-        propertyUseCode === 109 ||
-        propertyUseCode === 121;
+        propertyUseCode === 121
 }
 
 export function normalizeName(name) {
@@ -23,8 +23,8 @@ export function normalizeName(name) {
         .replace(/,INC/g, ' INC')
         .replace(/INC\.$/, 'INC')
         .replace(/INC,/, 'INC')
-         .replace(/\.$/, '')
-         .replace(/^PLUM CREEK MUNICIPAL AUTHY$/, 'PCMA')
+        .replace(/\.$/, '')
+        .replace(/^PLUM CREEK MUNICIPAL AUTHY$/, 'PCMA')
         .replace(/^LAKE WYNONAH PROP OWNRS ASN IN$/, 'LWPOA')
         .replace(/^LAKE WYNONAH PROP OWNERS ASSN$/, 'LWPOA')
         .replace(/^LAKE WYNONAH PROP OWNERS ASSO$/, 'LWPOA')
@@ -34,7 +34,7 @@ export function normalizeName(name) {
         .replace(/^LAKE WYNONAH P O ASSOC$/, 'LWPOA')
         .replace(/^LAKE WYNONAH UTIL INC$/, 'LAKE WYNONAH UTILITIES INC')
         .replace(/^LAKE WYNONAH UTILITIS INC$/, 'LAKE WYNONAH UTILITIES INC')
-       .replace(/ N A$/, ' NA')
+        .replace(/ N A$/, ' NA')
         .replace(/^THE BANK OF/, 'BANK OF')
         .replace(/NAT'L /, 'NATL ')
         .replace(/SECRETARY /, 'SEC ')
