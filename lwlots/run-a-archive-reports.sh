@@ -10,6 +10,6 @@ fi
 date=$(date +%Y-%m-%d-%H%M)
 target="history/$date"
 mkdir -p "$target"
-eval mv $files "$target/"
+eval cp $files "$target/"
 mv report-latest.txt report-previous.txt
 echo $date > report-latest.txt
