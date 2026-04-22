@@ -1,0 +1,10 @@
+SaleType,Date,minPrice,Parcel,Owner,Bidder,winPrice
+Upset,2025-09-25,1875.36,28-17-0772.000,"Garcia, Antonio","Michael & Jennifer Harvey",1875.36
+Upset,2025-09-25,1875.36,28-17-0774.000,"Garcia, Antonio","Romeo Venture Capital, LLC",6500.00
+Upset,2025-09-25,1805.16,28-21-1424.000,"Mohan, Panta","Michael & Jennifer Harvey",1805.16
+Upset,2025-09-25,1805.16,34-23-0386.000,"STOLTZFUS, A & MARTIN, W","JMAC Realty, LLC",5500.00
+Judicial,2025-04-15,6873.00,34-22-0287.000,"Spring Meadow Homes, Inc.","No bid"
+Judicial,2025-04-15,1412.00,34-23-0283.000,"Staniszewski, Jill","#57",2500.00
+Judicial,2025-04-15,7268.00,34-26-1119.000,"Spring Meadow Homes, Inc.","#41",7268.00
+Judicial,2025-04-15,1500.00,34-28-2522.000,"Staniszewski, Jill","#57",1500.00
+Repository,2026-03-18,1729.00,34-23-0385.000,"Beres Amy","GIS noted as sold to JMAC on 2025-08-20",500
