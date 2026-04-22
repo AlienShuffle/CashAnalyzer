@@ -24,6 +24,7 @@ export function normalizeName(name) {
         .replace(/INC\.$/, 'INC')
         .replace(/INC,/, 'INC')
          .replace(/\.$/, '')
+         .replace(/^PLUM CREEK MUNICIPAL AUTHY$/, 'PCMA')
         .replace(/^LAKE WYNONAH PROP OWNRS ASN IN$/, 'LWPOA')
         .replace(/^LAKE WYNONAH PROP OWNERS ASSN$/, 'LWPOA')
         .replace(/^LAKE WYNONAH PROP OWNERS ASSO$/, 'LWPOA')

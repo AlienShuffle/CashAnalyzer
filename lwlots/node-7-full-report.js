@@ -174,6 +174,10 @@ for (let i = 0; i < lotDetailJson.length; i++) {
     //console.error(`Processed aid=${result[i].aid}, lot=${result[i].lot}`);
     // insert general owner link id
     result[i].oid = getIdForOwner(result[i].generalOwner);
+
+    // inset test if address for lot is a resident of LW.
+    result[i].isResident = (result[i].address.includes('AUBURN, PA')) ? 'Y' : null;
+
     // insert owner link ids
     result[i].ownersOid = [];
     for (let j = 0; j < result[i].owners.length; j++) {

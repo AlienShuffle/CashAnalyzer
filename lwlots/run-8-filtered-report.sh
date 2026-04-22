@@ -2,9 +2,10 @@
 #
 # Pull all the lots using a list of streets as the driver to collect them. uses parcel prefixes to filter out non LWPOA lots.
 #
-exportPrefix=6-addr-list
+exportPrefix=8-filtered-report
 listTmpFile=$exportPrefix.tmp.json
-cat 4-lot-normalized.json |
-    node ./node-6-addr-list.js >"$listTmpFile"
-cat "$listTmpFile" | jq -s 'flatten | unique_by(.address) | sort_by(.address)' >$exportPrefix.json
+cat 7-full-report.json |
+    node ./node-8-filter-report.js |
+    jq . >"$exportPrefix.json"
+cat $exportPrefix.json | ./csv-7-full-report.sh >"$exportPrefix".csv
 rm -f "$listTmpFile"
