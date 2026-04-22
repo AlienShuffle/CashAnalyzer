@@ -54,6 +54,14 @@ const json = JSON.parse(inputBuffer);
 
 for (let i = 0; i < json.length; i++) {
     const lot = json[i];
+    // some addresses are too generic to retain, so we skip them
+    if (lot.address === 'Unknown' ||
+        lot.address === 'N/A' ||
+        lot.address === "LAKE WYNONAH\nAUBURN, PA 17922" ||
+        lot.address === 'None'
+    ) {
+        continue;
+    }
     addAddressToList(lot.address, lot.lot, lot.generalOwner);
 }
 console.log(JSON.stringify(addrList.sort(dynamicSort('address'))));
