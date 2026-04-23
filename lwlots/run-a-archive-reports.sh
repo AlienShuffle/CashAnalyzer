@@ -11,5 +11,5 @@ date=$(date +%Y-%m-%d-%H%M)
 target="history/$date"
 mkdir -p "$target"
 eval cp $files "$target/"
-mv history/report-latest.txt history/report-previous.txt
+[ -f history/report-latest.txt ] && mv history/report-latest.txt history/report-previous.txt
 echo $date > history/report-latest.txt
