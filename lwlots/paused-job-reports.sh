@@ -14,4 +14,4 @@ cd $HOME/CashAnalyzer/lwlots
     #./run-a-archive-reports.sh
     #./run-b-compare.sh
 } |
-    tee -a log/cash-analyzer-jobs.log
+    tee -a $HOME/CashAnalyzer/log/cash-analyzer-jobs.log

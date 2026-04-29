@@ -1,3 +1,22 @@
-Lot,Name,Case,Defendent,Plaintiff,Date Filed,Status
-762,Gower,Current,John Smith,Emily Johnson,2026-01-15
-J
+Case,Status,Date Filed,Lot,Defendant,Plaintiff, Judgement Amount ,Last Action
+J-5990-2025,Open,12/18/2025,762,Gower,LWPOA," $12,279.05 ",Active
+J-2260-2025,Open,6/11/2025,1,Selsavage,LWPOA," $3,277.26 ",Writ of Execution
+J-1023-2025,Closed,3/17/2025,462,Davis,LWPOA," $2,493.28 ",Satisfied
+J-3432-2024,Closed,8/26/2024,79,"Reppert, Bradley",LWPOA,,Satisfied
+J-2614-2024,Open,6/27/2024,776,Brosemer,LWPOA,,Writ of Revival
+J-1295-1985,Closed,6/25/2024,,Prokop,LWPOA,,Satisfied
+J-2477-2024,Open,6/20/2024,1922,Piccarreta,LWPOA," $1,962.60 ",Writ of Execution
+J-2332-2024,Open,6/6/2024,981,Gavalis-Yob,LWPOA," $10,076.50 ",Judgement
+J-3780-2023,Closed,10/19/2023,55,Webber,LWPOA," $3,973.69 ",Satisfied
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,2553,2553,"Weiss, Claude E",LWPOA," $28,925.82 ",Sheriff Sale

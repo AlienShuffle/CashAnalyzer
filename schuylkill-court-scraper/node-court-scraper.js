@@ -361,7 +361,9 @@ async function runQueryVariant(browser, variant, startDate, endDate) {
 
   // Fill participant / name field
   const nameCtlH = await findControlByLabel(page, "Participant Name");
+  console.log("nameCtlH", !!nameCtlH);
   const nameCtlH2 = await findControlByLabel(page, "Name");
+  console.log("nameCtlH2", !!nameCtlH2);
   const typed = await safeType(page, nameCtlH, variant) || await safeType(page, nameCtlH2, variant);
 
   if (!typed) {
@@ -423,8 +425,8 @@ async function runQueryVariant(browser, variant, startDate, endDate) {
   const endISO = toISODateOnly(now);   // yyyy-mm-dd
 
   const browser = await puppeteer.launch({
-    headless: HEADLESS,
-    slowMo: SLOW_MO,
+    //headless: HEADLESS,
+    //slowMo: SLOW_MO,
     defaultViewport: { width: 1280, height: 900 },
     args: [
       "--no-sandbox",
