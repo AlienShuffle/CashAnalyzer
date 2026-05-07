@@ -1,0 +1,16 @@
+{
+  "name": "yieldFinder",
+  "version": "0.0.1",
+  "description": "retrieve bank yields quotes from yieldFinder.app",
+  "keywords": [
+    "Puppeteer",
+    "Banks",
+    "Yields"
+  ],
+  "author": "AlienShuffle",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "puppeteer": "^24.10.1"
+  }
+}
