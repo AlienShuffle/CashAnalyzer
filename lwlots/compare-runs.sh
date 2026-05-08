@@ -32,6 +32,16 @@ for i in $(basename -a $latestReportDir/*.json $latestReportDir/*.csv | cut -d'.
         ../bin/jsonDifferent.sh "$previousReportDir/$jsonBaseName" "$latestReportDir/$jsonBaseName"
         if [ $? -eq 0 ]; then
             echo -e "different"
+            switch $jsonBaseName in
+                "3-lot-taxes.json")
+                    jd \
+                      <(jq 'map(del(.timestamp)) | map({ ((.lot | tostring) + " (" + .owners + ")"): . }) | add' "$previousReportDir/$jsonBaseName") \
+                      <(jq 'map(del(.timestamp)) | map({ ((.lot | tostring) + " (" + .owners + ")"): . }) | add' "$latestReportDir/$jsonBaseName")
+                    ;;
+                *)
+                    echo "No specific diff command for $jsonBaseName. Please check the files manually."
+                    ;;
+            esac
         else
             echo -e "identical"
         fi
