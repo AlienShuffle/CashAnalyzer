@@ -6,7 +6,7 @@ if [ ! -f history/report-latest.txt ]; then
 fi
 latestReportDir="history/$(cat history/report-latest.txt)"
 
-[ "$1" == "--ignoreTaxes" ] && {
+[ "$1" = "--ignoreTaxes" ] && {
     ignoreTaxes="--ignoreTaxes"
     shift
 }
@@ -24,14 +24,27 @@ if [ ! -d "$previousReportDir" ]; then
     exit 1
 fi
 
-echo "comparing reports from $previousReportDir and $latestReportDir"
+[ -f "$latestReportDir/1-lot-list.csv" ] || {
+    echo "$latestReportDir/1-lot-list.csv: file not found. Please run the report generation script first."
+    exit 1
+}
+
+if [ -f history/report-baseline.txt ]; then
+    baselineReportDir="history/$(cat history/report-baseline.txt)"
+    if [ -d "$baselineReportDir" ]; then
+        echo "Comparing baseline ($baselineReportDir) and $latestReportDir reports"
+        if [ ! -f "$baselineReportDir/1-lot-list.csv" ]; then
+            echo "$baselineReportDir/1-lot-list.csv: file not found. Please check the baseline report directory."
+        else
+            ./compare-runs.sh $ignoreTaxes $baselineReportDir $latestReportDir >"$latestReportDir/b-compare-$(basename $baselineReportDir).txt"
+        fi
+    fi
+fi
+
+echo "Comparing $previousReportDir and $latestReportDir reports"
 
 [ -f "$previousReportDir/1-lot-list.csv" ] || {
     echo "$previousReportDir/1-lot-list.csv: file not found. Please run the report generation script first."
-    exit 1
-}
-[ -f "$latestReportDir/1-lot-list.csv" ] || {
-    echo "$latestReportDir/1-lot-list.csv: file not found. Please run the report generation script first."
     exit 1
 }
 
