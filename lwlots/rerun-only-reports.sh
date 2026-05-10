@@ -11,7 +11,7 @@ cd $HOME/CashAnalyzer/lwlots
     ./run-7-full-report.sh
     ./run-8-filtered-report.sh
     ./run-9-stats.sh
-    #./run-a-archive-reports.sh
-    #./run-b-compare.sh
+    ./run-a-archive-reports.sh
+    ./run-b-compare.sh
 } |
     tee -a $HOME/CashAnalyzer/log/cash-analyzer-jobs.log
