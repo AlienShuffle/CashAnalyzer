@@ -43,6 +43,7 @@ done
 source ../meta.common.sh
 pubDelayFile="b-compare.txt"
 runDelayFile="1-lot-list.json"
+pubDelayWaitFullDays="true"
 source ../bin/testDelays.sh
 
 for script in $(ls ./run-?-*.sh); do
