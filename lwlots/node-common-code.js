@@ -39,7 +39,8 @@ export function normalizeName(name) {
         .replace(/NAT'L /, 'NATL ')
         .replace(/SECRETARY /, 'SEC ')
         .replace(/SEC\. /g, 'SEC ')
-        .replace(/SECRETARY FO /g, 'SEC OF')
+        .replace(/SECRETARY FO /g, 'SEC OF ')
+        .replace(/SEC FO /g, 'SEC OF ')
         .replace(/HOUSING AND$/, 'HUD')
         .replace(/HOUSING &$/, 'HUD')
         .replace(/HOUSING & URBAN DEVL$/, 'HUD')
@@ -49,5 +50,6 @@ export function normalizeName(name) {
         .replace(/AND SONS/g, '& SONS')
         .replace(/ AND /g, ' & ')
         .replace(/J M A C/g, 'JMAC')
-        .replace(/  /g, ' ');
+        .replace(/  /g, ' ')
+        .replace(/ $/,'');
 }
