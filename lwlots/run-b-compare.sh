@@ -48,5 +48,11 @@ echo "Comparing $previousReportDir and $latestReportDir reports"
     exit 1
 }
 
-./compare-runs.sh $ignoreTaxes $previousReportDir $latestReportDir >b-compare.txt
-cp b-compare.txt "$latestReportDir/b-compare-$(basename $previousReportDir).txt"
+if [ -n "$ignoreTaxes" ]; then
+    echo "Ignoring taxes in comparison."
+    ./compare-runs.sh $ignoreTaxes $previousReportDir $latestReportDir >b-compare-no-taxes.txt
+    cp b-compare-no-taxes.txt "$latestReportDir/b-compare-no-taxes-$(basename $previousReportDir).txt"
+else
+    ./compare-runs.sh $previousReportDir $latestReportDir >b-compare.txt
+    cp b-compare.txt "$latestReportDir/b-compare-$(basename $previousReportDir).txt"
+fi
