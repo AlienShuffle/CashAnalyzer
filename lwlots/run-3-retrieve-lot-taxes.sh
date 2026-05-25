@@ -17,23 +17,22 @@ listTmpFile=$exportPrefix.tmp.json
     count=1
     firstparcel=true
     echo "["
-    cat 1-lot-list.csv | #grep 0008 |
-        while IFS= read -r row; do
-            parcel=$(echo $row | cut -d',' -f3 | tr -d '"')
-            [ "$parcel" = "parcel" ] && continue # skip header
-            location=$(echo $row | cut -d',' -f4 | tr -d '"')
-            [ "$firstparcel" = "false" ] && echo ","
-            echo $count $parcel $location 1>&2
-            url="https://eliterevenue.rba.com/taxes/schuylkill/trirsp2pp.asp?parcel=$parcel+++++++++++&currentlist=0&"
-            #echo $url 1>&2
-            curl -ksSL "$url" >"$curlTmpFile"
-            [ $? -ne 0 ] && echo "Error retrieving $url" 1>&2 && exit 1
-            # note, the return speed of the site is causing an issue with stdin.
-            node ./node-$exportPrefix.js "$curlTmpFile" "$parcel"
-            firstparcel=false
-            count=$(($count + 1))
-            [ $count -ge 3100 ] && break
-        done
+    while IFS= read -r row; do
+        parcel=$(echo $row | cut -d',' -f3 | tr -d '"')
+        [ "$parcel" = "parcel" ] && continue # skip header
+        location=$(echo $row | cut -d',' -f4 | tr -d '"')
+        [ "$firstparcel" = "false" ] && echo ","
+        echo $count $parcel $location 1>&2
+        url="https://eliterevenue.rba.com/taxes/schuylkill/trirsp2pp.asp?parcel=$parcel+++++++++++&currentlist=0&"
+        #echo $url 1>&2
+        curl -ksSL "$url" >"$curlTmpFile"
+        [ $? -ne 0 ] && echo "Error retrieving $url" 1>&2 && exit 1
+        # note, the return speed of the site is causing an issue with stdin.
+        node ./node-$exportPrefix.js "$curlTmpFile" "$parcel"
+        firstparcel=false
+        count=$(($count + 1))
+        [ $count -ge 3100 ] && break
+    done < 1-lot-list.csv
     echo "]"
 ) >$listTmpFile
 cat $listTmpFile | jq -s 'flatten | unique_by(.lot) | sort_by(.lot)' >$exportPrefix.json
