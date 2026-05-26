@@ -65,7 +65,7 @@ for (let i = 0; i < childCnt; i++) {
         parcel: parcelString,
         lot: lotString * 1,
         pid: pidString * 1,
-        timetamp: timestamp,
+        timestamp: timestamp,
     })
 }
 

@@ -23,6 +23,9 @@ fi
     exit 1
 }
 
+echo "Comparing $previousReportDir and $latestReportDir reports"
+echo '-----'
+
 for i in $(basename -a $latestReportDir/*.json $latestReportDir/*.csv | cut -d'.' -f1 | sort -u); do
     csvBaseName="$i.csv"
 
@@ -46,8 +49,8 @@ for i in $(basename -a $latestReportDir/*.json $latestReportDir/*.csv | cut -d'.
             case "$jsonBaseName" in
             "1-lot-list.json")
                 jd \
-                    <(jq 'map(del(.timestamp)) | map({ ((.lot | tostring) + " (" + .location + ")"): . }) | add' "$previousReportDir/$jsonBaseName") \
-                    <(jq 'map(del(.timestamp)) | map({ ((.lot | tostring) + " (" + .location + ")"): . }) | add' "$latestReportDir/$jsonBaseName")
+                    <(jq 'map(del(.timestamp) | del(.timetamp)) | map({ ((.lot | tostring) + " (" + .location + ")"): . }) | add' "$previousReportDir/$jsonBaseName") \
+                    <(jq 'map(del(.timestamp) | del(.timetamp)) | map({ ((.lot | tostring) + " (" + .location + ")"): . }) | add' "$latestReportDir/$jsonBaseName")
                 ;;
             "3-lot-taxes.json")
                 if [ "$ignoreTaxes" = true ]; then
