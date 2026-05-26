@@ -30,7 +30,7 @@ if (!childCnt) {
 //console.error(`Found ${childCnt} lots in the HTML.`);
 //console.error(`childNodes.length = ${childCnt}`);
 
-const oldDate = new Date('2000-01-01T00:00:00Z');
+const timestamp = new Date();
 
 const result = [];
 for (let i = 0; i < childCnt; i++) {
@@ -38,7 +38,7 @@ for (let i = 0; i < childCnt; i++) {
     const row = lotListElement.children[i];
     const linkElement = row.children[0];
 
-    const locationString = linkElement.text;
+    const locationString = linkElement.text.trim();
 
     const parcelStringRaw = row.textContent
         .replace(/^.*Mblu:/, '')
@@ -65,7 +65,7 @@ for (let i = 0; i < childCnt; i++) {
         parcel: parcelString,
         lot: lotString * 1,
         pid: pidString * 1,
-        timetamp: oldDate,
+        timetamp: timestamp,
     })
 }
 
