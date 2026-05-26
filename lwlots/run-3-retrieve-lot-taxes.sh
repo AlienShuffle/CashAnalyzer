@@ -26,6 +26,7 @@ listTmpFile=$exportPrefix.tmp.json
         url="https://eliterevenue.rba.com/taxes/schuylkill/trirsp2pp.asp?parcel=$parcel+++++++++++&currentlist=0&"
         #echo $url 1>&2
         curl -ksSL "$url" >"$curlTmpFile"
+        sleep 0.5
         [ $? -ne 0 ] && echo "Error retrieving $url" 1>&2 && exit 1
         # note, the return speed of the site is causing an issue with stdin.
         node ./node-$exportPrefix.js "$curlTmpFile" "$parcel"
