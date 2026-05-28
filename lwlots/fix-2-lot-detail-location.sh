@@ -1,0 +1,1 @@
+./fix-2-lot-detail-location.py history
