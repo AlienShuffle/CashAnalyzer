@@ -7,7 +7,5 @@ workDir="${1:-.}"
 ./run-7-full-report.sh $workDir
 ./run-8-filtered-report.sh $workDir
 ./run-9-stats.sh $workDir
-#./run-a-archive-reports.sh
-# the compares dont work yet with $workDir set as workDir is the "new" file,but only argument to compare is the "old" file
-#./run-b-compare.sh $workDir
-#./run-b-compare.sh --ignoreTaxes $workDir
+./run-b-compare.sh $workDir
+./run-b-compare.sh --ignoreTaxes $workDir

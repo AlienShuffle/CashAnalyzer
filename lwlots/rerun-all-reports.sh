@@ -7,7 +7,7 @@ fi
 # loop through all the history directories and run the reports for each one using previous directory as the "old" file for comparison
 previousDir=""
 for dir in $historyDirs; do
-    echo "Running reports for $dir"
+    #echo "Running reports for $dir"
     ./run-4-normalize.sh "$dir"
     ./run-5-create-owner-list.sh "$dir"
     ./run-6-create-addr-list.sh "$dir"
@@ -15,7 +15,6 @@ for dir in $historyDirs; do
     ./run-8-filtered-report.sh "$dir"
     ./run-9-stats.sh "$dir"
     if [ -n "$previousDir" ]; then
-        echo "Comparing $previousDir" to "$dir"
         ./run-b-compare.sh --ignoreTaxes "$previousDir" "$dir"
         ./run-b-compare.sh "$previousDir" "$dir"
     fi

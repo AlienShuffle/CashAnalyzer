@@ -89,13 +89,12 @@ fi
 if [ -f history/report-baseline.txt ]; then
     baselineReportDir="history/$(cat history/report-baseline.txt)"
     if [ -d "$baselineReportDir" ]; then
-        echo "Comparing baseline ($baselineReportDir) and $latestReportDir reports"
+        echo "Comparing $ignoreTaxes baseline ($baselineReportDir) and $latestReportDir reports"
         if [ ! -f "$baselineReportDir/1-lot-list.csv" ]; then
             echo "$baselineReportDir/1-lot-list.csv: file not found. Please check the baseline report directory."
         else
             # choose consistent output name depending on ignoreTaxes flag
             if [ -n "$ignoreTaxes" ]; then
-                echo "Ignoring taxes in comparison."
                 out="$latestReportDir/b-compare-no-taxes-$(basename "$baselineReportDir").txt"
             else
                 out="$latestReportDir/b-compare-$(basename "$baselineReportDir").txt"
@@ -105,7 +104,7 @@ if [ -f history/report-baseline.txt ]; then
     fi
 fi
 
-echo "Comparing $previousReportDir and $latestReportDir reports"
+echo "Comparing $ignoreTaxes $previousReportDir and $latestReportDir reports"
 
 [ -f "$previousReportDir/1-lot-list.csv" ] || {
     echo "$previousReportDir/1-lot-list.csv: file not found. Please run the report generation script first."
@@ -113,7 +112,6 @@ echo "Comparing $previousReportDir and $latestReportDir reports"
 }
 
 if [ -n "$ignoreTaxes" ]; then
-    echo "Ignoring taxes in comparison."
     ./compare-runs.sh $ignoreTaxes "$previousReportDir" "$latestReportDir" >b-compare-no-taxes.txt
     mv b-compare-no-taxes.txt "$latestReportDir/b-compare-no-taxes-$(basename "$previousReportDir").txt"
 else
