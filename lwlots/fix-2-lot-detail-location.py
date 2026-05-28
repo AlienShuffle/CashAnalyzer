@@ -57,32 +57,52 @@ def trim_csv_location(path: Path) -> int:
     return trimmed
 
 
+TARGET_FILENAMES = (
+    '2-lot-detail.json',
+    '2-lot-detail.csv',
+    '4-lot-normalized.json',
+    '4-lot-normalized.csv',
+    '7-full-report.json',
+    '7-full-report.csv',
+    '8-filtered-report.json',
+    '8-filtered-report.csv'
+)
+
+
 def collect_target_files(path: Path) -> list[Path]:
     if path.is_file():
         return [path]
 
     if path.is_dir():
         found = []
-        # Support top-level folder and history directories that contain 2-lot-detail files.
-        for candidate in [path, *path.iterdir()]:
-            if not candidate.exists():
-                continue
-            if candidate.is_dir():
-                for name in ('2-lot-detail.json', '2-lot-detail.csv'):
-                    file_path = candidate / name
-                    if file_path.exists():
-                        found.append(file_path)
-            else:
-                if candidate.name in ('2-lot-detail.json', '2-lot-detail.csv'):
-                    found.append(candidate)
-        return sorted(found)
+        directories = [path]
+
+        # If the directory is history or under history, also include the parent directory where the top-level reports live.
+        if path.name == 'history' and path.parent.exists():
+            directories.append(path.parent)
+        elif path.parent.name == 'history' and path.parent.parent.exists():
+            directories.append(path.parent.parent)
+
+        for directory in directories:
+            for candidate in [directory, *directory.iterdir()]:
+                if not candidate.exists():
+                    continue
+                if candidate.is_dir():
+                    for name in TARGET_FILENAMES:
+                        file_path = candidate / name
+                        if file_path.exists():
+                            found.append(file_path)
+                else:
+                    if candidate.name in TARGET_FILENAMES:
+                        found.append(candidate)
+        return sorted(set(found))
 
     raise ValueError(f"Unsupported path: {path}")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description='Trim leading/trailing spaces from the location field in JSON and CSV lot-detail files.'
+        description='Trim leading/trailing spaces from the location field in matching JSON and CSV report files.'
     )
     parser.add_argument('paths', nargs='+', help='Input files or directories to process')
     args = parser.parse_args()
@@ -96,7 +116,7 @@ def main() -> int:
         target_files.extend(collect_target_files(path))
 
     if not target_files:
-        raise ValueError('No matching 2-lot-detail files found to process.')
+        raise ValueError('No matching report files found to process.')
 
     for path in target_files:
         if path.suffix.lower() == '.json':
