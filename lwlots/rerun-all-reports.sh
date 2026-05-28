@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-historyDirs=$(ls -d history/*/ 2>/dev/null | sort -r)
+historyDirs=$(ls -d history/*/ 2>/dev/null | sort )
 if [ -z "$historyDirs" ]; then
     echo "No history directories found. Please run the report generation script first."
     exit 1
@@ -15,7 +15,7 @@ for dir in $historyDirs; do
     ./run-8-filtered-report.sh "$dir"
     ./run-9-stats.sh "$dir"
     if [ -n "$previousDir" ]; then
-        echo "Comparing $dir to $previousDir"
+        echo "Comparing $previousDir" to "$dir"
         ./run-b-compare.sh --ignoreTaxes "$previousDir" "$dir"
         ./run-b-compare.sh "$previousDir" "$dir"
     fi
