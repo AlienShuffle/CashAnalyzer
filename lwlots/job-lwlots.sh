@@ -41,7 +41,7 @@ while [ -n "$1" ]; do
     shift
 done
 source ../meta.common.sh
-pubDelayFile="b-compare.txt"
+pubDelayFile="3-lot-taxes.json"
 runDelayFile="1-lot-list.json"
 pubDelayWaitFullDays="true"
 source ../bin/testDelays.sh

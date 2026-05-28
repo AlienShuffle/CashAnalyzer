@@ -13,5 +13,6 @@ cd $HOME/CashAnalyzer/lwlots
     ./run-9-stats.sh
     ./run-a-archive-reports.sh
     ./run-b-compare.sh
+    ./run-b-compare.sh --ignoreTaxes
 } |
     tee -a $HOME/CashAnalyzer/log/cash-analyzer-jobs.log

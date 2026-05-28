@@ -15,6 +15,7 @@ export function isHomeLot(propertyUseCode) {
 
 export function normalizeName(name) {
     return name.trim().toUpperCase()
+        .replace(/ $/,'')
         .replace(/  /g, ' ')
         .replace(/, LLC/g, ' LLC')
         .replace(/,LLC/g, ' LLC')

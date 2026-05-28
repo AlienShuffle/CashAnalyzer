@@ -20,9 +20,9 @@ const parcelStringSplit = parcelStringRaw.split('-');
 const lotString = parcelStringSplit[2];
 const pidString = root.querySelector('#MainContent_lblPid').text;
 const parcelString = parcelStringSplit[0] + '-' + parcelStringSplit[1] + '-' + parcelStringSplit[2] + '.' + parcelStringSplit[3];
-const locationString = root.querySelector('#MainContent_lblLocation').text;
+const locationString = root.querySelector('#MainContent_lblLocation').text.trim();
 
-const generalOwnerString = root.querySelector('#MainContent_lblGenOwner').text;
+const generalOwnerString = root.querySelector('#MainContent_lblGenOwner').text.trim();
 
 const propertyTypeString = root.querySelector('#MainContent_lblPbn').text;
 const propertyUseCode = root.querySelector('#MainContent_lblUseCode2').text * 1;
@@ -80,7 +80,7 @@ const result = {
     propertyType: propertyTypeString,
     propertyUseCode: propertyUseCode,
     assessment: propertyAssessment.replace(/[\$,]/g, '') * 1,
-    address: addressString,
+    address: addressString.trim(),
     acres: acresString * 1,
     lake: fawnLots.has(lotString * 1) ? 'F' : wynonahLots.has(lotString * 1) ? 'W' : null,
     yearBuilt: (yearBuilt * 1) || null,
