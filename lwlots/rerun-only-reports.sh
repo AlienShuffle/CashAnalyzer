@@ -1,18 +1,13 @@
 #!/usr/bin/bash
-cd $HOME/CashAnalyzer/lwlots
-[ -d $HOME/CashAnalyzer/log ] || mkdir -p $HOME/CashAnalyzer/log
-{
-    #./run-1-retrieve-lot-list.sh
-    #./run-2-retrieve-lot-details.sh
-    #./run-3-retrieve-lot-taxes.sh
-    ./run-4-normalize.sh
-    ./run-5-create-owner-list.sh
-    ./run-6-create-addr-list.sh
-    ./run-7-full-report.sh
-    ./run-8-filtered-report.sh
-    ./run-9-stats.sh
-    ./run-a-archive-reports.sh
-    ./run-b-compare.sh
-    ./run-b-compare.sh --ignoreTaxes
-} |
-    tee -a $HOME/CashAnalyzer/log/cash-analyzer-jobs.log
+
+workDir="${1:-.}"
+./run-4-normalize.sh $workDir
+./run-5-create-owner-list.sh $workDir
+./run-6-create-addr-list.sh $workDir
+./run-7-full-report.sh $workDir
+./run-8-filtered-report.sh $workDir
+./run-9-stats.sh $workDir
+#./run-a-archive-reports.sh
+# the compares dont work yet with $workDir set as workDir is the "new" file,but only argument to compare is the "old" file
+#./run-b-compare.sh $workDir
+#./run-b-compare.sh --ignoreTaxes $workDir
