@@ -10,7 +10,23 @@ const htmlString = readFileSync(0, 'utf8');
 const root = parse(htmlString);
 
 // Extract the first table (ticker-table)
-const divsTable = root.querySelector('#performance > div.first_sec > div > div > div.right_sec > div.dividends-band > table');
+let divsTable = root.querySelector('#performance > div.first_sec > div > div > div.right_sec > div.dividends-band > table');
+
+// If not found, try alternative selectors for the dividend table
+if (!divsTable) {
+    // Try a broader search for tables that might be dividend tables
+    const allTables = root.querySelectorAll('table');
+    for (const table of allTables) {
+        const headerCells = table.querySelectorAll('thead th, tbody tr:first-child td');
+        const headerText = Array.from(headerCells).map(h => h.innerText.toLowerCase()).join(' ');
+        // Look for headers that suggest this is a dividend/distribution table
+        if (headerText.includes('ex-dividend') || headerText.includes('dividend') || headerText.includes('distribution')) {
+            divsTable = table;
+            break;
+        }
+    }
+}
+
 if (!divsTable) {
     console.error('Error: Could not find dividend table');
     process.exit(1);
