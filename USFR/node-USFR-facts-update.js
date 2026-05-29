@@ -24,131 +24,88 @@ function run() {
                     request.abort();
                 }
             });
-            await page.goto("https://www.wisdomtree.com/investments/etfs/fixed-income/usfr");
-            // make sure the page has rendered at least to the ER section.
-            const erElement = await page.waitForSelector('#fund-overview > div > div:nth-child(1) > table > tbody > tr.expense-ratio');
+            await page.goto("https://www.wisdomtree.com/us/products/fixed-income/usfr");
+            // wait for the page to render the Fund Overview grid
+            await page.waitForSelector('[role="grid"]');
+            
+            // Helper function to extract text from grid rows
+            const getGridValue = async (labelText) => {
+                return await page.evaluate((label) => {
+                    // Find the rowheader that contains the label text
+                    const rowheaders = Array.from(document.querySelectorAll('[role="rowheader"]'));
+                    const labelElement = rowheaders.find(el => el.innerText.includes(label));
+                    if (labelElement) {
+                        // The next rowheader in the same row contains the value
+                        const row = labelElement.closest('[role="row"]');
+                        if (row) {
+                            const rowheaders = row.querySelectorAll('[role="rowheader"]');
+                            return rowheaders[rowheaders.length - 1].innerText;
+                        }
+                    }
+                    return '';
+                }, labelText);
+            };
+
             // parse out the Expense Ratio.
-            const er = await page.evaluate(() => {
-                const item = document.querySelector('#fund-overview > div > div:nth-child(1) > table > tbody > tr.expense-ratio');
-                const row = item.innerText.split('\t');
-                if (row.length == 2) {
-                    return row[1].replace(/%/, '') / 100;
-                } else {
-                    return 'unknown';
-                }
-            });
+            const erText = await getGridValue('Expense Ratio');
+            const er = erText ? parseFloat(erText.replace(/%/, '')) / 100 : 'unknown';
 
-            // parse out As of Date (table entry is of the form 'As of 09/11/2024')
-            // document.querySelector("#fund-overview > div > div:nth-child(1) > table > thead > tr > th:nth-child(2) > div > span")
+            // parse out As of Date (find from any table header that says "As of")
             const asOfDate = await page.evaluate(() => {
-                const item = document.querySelector('#fund-overview > div > div:nth-child(1) > table > thead > tr > th:nth-child(2) > div > span');
-                if (item) {
-                    const row = item.innerText;
-                    const ds = row.replace(/As of /, '');
-                    // need to fix dates from MM/DD/YYY to YYYY-MM-DD to allow sorting.
-                    const dateString = ds.substring(6, 10) + '-' + ds.substring(0, 2) + '-' + ds.substring(3, 5);
+                const headers = Array.from(document.querySelectorAll('[role="columnheader"]'));
+                const dateHeader = headers.find(h => h.innerText.includes('As of'));
+                if (dateHeader) {
+                    const ds = dateHeader.innerText.replace(/As of /, '');
+                    // need to fix dates from M/D/YYYY or MM/DD/YYYY to YYYY-MM-DD to allow sorting.
+                    const parts = ds.split('/');
+                    const dateString = parts[2] + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0');
                     return dateString;
-                } else {
-                    return '';
                 }
+                return '';
             });
 
-            // #details-left-panel-wrapper > h1
+            // Get the account type from the main heading
             const accountType = await page.evaluate(() => {
-                const item = document.querySelector('#details-left-panel-wrapper > h1');
-                if (item) {
-                    const row = item.innerText.trim();
-                    return row;
-                } else {
-                    return '';
-                }
-            });
-
-            // parse out NAV (table entry is of the form '$50.139')
-            // document.querySelector("#fund-nav > div > div:nth-child(1) > table > tbody > tr.strong > td:nth-child(2) > span")
-            const nav = await page.evaluate(() => {
-                const item = document.querySelector('#fund-nav > div > div:nth-child(1) > table > tbody > tr.strong > td:nth-child(2) > span');
-                if (item) {
-                    const row = item.innerText;
-                    return row.replace(/\$/, '') * 1;
-                } else {
-                    return '';
-                }
-            });
-
-            // #fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(2)
-            // #fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(2)
-            const aum = await page.evaluate(() => {
-                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(2)");
-                if (item) {
-                    const row = item.innerText;
-                    return row.replace(/\$/, '').replace(/,/g, '') * 1000;
-                } else {
-                    return '';
-                }
-            });
-
-            // parse out 30 Day SEC Yield (table entry is of the form '$50.139')
-            const thirtyDayYield = await page.evaluate(() => {
-                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(11) > td:nth-child(2)");
-                const row = item.innerText;
-                if (row) {
-                    return row.replace(/%/, '') / 100;
+                const heading = document.querySelector('h1');
+                if (heading) {
+                    const text = heading.innerText.trim();
+                    // Extract just the fund name after the ticker
+                    return text.replace(/^[A-Z]+\s/, '');
                 }
                 return '';
             });
 
-            // #fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(9) > td:nth-child(2)
-            const yieldToMaturity = await page.evaluate(() => {
-                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(9) > td:nth-child(2)");
-                const row = item.innerText;
-                if (row) {
-                    return row.replace(/%/, '') / 100;
-                }
-                return '';
-            });
+            // parse out NAV from the "Net Asset Value" grid
+            const navText = await getGridValue('NAV');
+            const nav = navText ? parseFloat(navText.replace(/\$/, '').replace(/,/g, '')) : '';
 
-            // #fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(10) > td:nth-child(2)
-            const distributionYield = await page.evaluate(() => {
-                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(10) > td:nth-child(2)");
-                const row = item.innerText;
-                if (row) {
-                    return row.replace(/%/, '') / 100;
-                }
-                return '';
-            });
+            // parse out Total Assets (in thousands, so multiply by 1000)
+            const aumText = await getGridValue('Total Assets');
+            const aum = aumText ? parseFloat(aumText.replace(/\$/, '').replace(/,/g, '')) * 1000 : '';
 
-            // document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(5) > td:nth-child(2)")
-            const weightedAverageCoupon = await page.evaluate(() => {
-                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(5) > td:nth-child(2)");
-                const row = item.innerText;
-                if (row) {
-                    return row.replace(/%/, '') / 100;
-                }
-                return '';
-            });
+            // parse out 30 Day SEC Yield
+            const thirtyDayYieldText = await getGridValue('SEC 30-day Yield');
+            const thirtyDayYield = thirtyDayYieldText ? parseFloat(thirtyDayYieldText.replace(/%/, '')) / 100 : '';
 
-            // document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)")
-            const durationYears = await page.evaluate(() => {
-                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(7) > td:nth-child(2)");
-                if (item) {
-                    const row = item.innerText;
-                    return row * 1;
-                } else {
-                    return '';
-                }
-            });
+            // parse out Average Yield to Maturity (was "Yield to Maturity")
+            const yieldToMaturityText = await getGridValue('Average Yield to Maturity');
+            const yieldToMaturity = yieldToMaturityText ? parseFloat(yieldToMaturityText.replace(/%/, '')) / 100 : '';
 
-            // #fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(6) > td:nth-child(2)
-            const maturityYears = await page.evaluate(() => {
-                const item = document.querySelector("#fund-overview > div > div:nth-child(1) > table > tbody > tr:nth-child(6) > td:nth-child(2)");
-                if (item) {
-                    const row = item.innerText;
-                    return row * 1;
-                } else {
-                    return '';
-                }
-            });
+            // parse out Distribution Yield
+            const distributionYieldText = await getGridValue('Distribution Yield');
+            const distributionYield = distributionYieldText ? parseFloat(distributionYieldText.replace(/%/, '')) / 100 : '';
+
+            // parse out Weighted Average Coupon
+            const weightedAverageCouponText = await getGridValue('Weighted Average Coupon');
+            const weightedAverageCoupon = weightedAverageCouponText ? parseFloat(weightedAverageCouponText.replace(/%/, '')) / 100 : '';
+
+            // parse out Effective Duration (was "duration years")
+            const durationYearsText = await getGridValue('Effective Duration');
+            const durationYears = durationYearsText ? parseFloat(durationYearsText) : '';
+
+            // parse out Average Years to Maturity (was "maturity years")
+            const maturityYearsText = await getGridValue('Average Years to Maturity');
+            const maturityYears = maturityYearsText ? parseFloat(maturityYearsText) : '';
             browser.close();
 
             // format return JSON message.

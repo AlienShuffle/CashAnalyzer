@@ -24,31 +24,60 @@ function run() {
                     request.abort();
                 }
             });
-            await page.goto("https://www.wisdomtree.com/investments/global/etf-details/modals/distribuition-history?id={D6F20DDF-9393-431C-85D4-1DB46E5F2798}");
-            await page.waitForSelector('tr');
+            await page.goto("https://www.wisdomtree.com/us/products/fixed-income/usfr");
+            // wait for the distributions table to load
+            await page.waitForSelector('table[aria-label="Recent Distributions Table"]');
             let distros = await page.evaluate(() => {
                 let results = [];
-                let items = document.querySelectorAll('tr');
+                const table = document.querySelector('table[aria-label="Recent Distributions Table"]');
+                const rows = table.querySelectorAll('tbody tr');
                 const timestamp = String(new Date());
-                items.forEach((item) => {
-                    // finds the table, and parses it, assumed order for the resulting arrays from webpage.
-                    // remove $ from amounts, split each entry by the tab separator.
-                    const row = item.innerText.replace(/\$/g, '').split('\t');
-
-                    if (row.length && row[0] != "Ex-Dividend Date") {
-                        // need to fix dates from MM/DD/YYY to YYYY-MM-DD
-                        function swapDate(ds) { return ds.substring(6, 10) + '-' + ds.substring(0, 2) + '-' + ds.substring(3, 5); }
+                
+                rows.forEach((row) => {
+                    const cells = row.querySelectorAll('td, th');
+                    if (cells.length >= 8) {
+                        const exDivDate = cells[0].innerText.trim();
+                        const recordDate = cells[1].innerText.trim();
+                        const payableDate = cells[2].innerText.trim();
+                        const ordinaryIncome = cells[3].innerText.trim();
+                        const stcg = cells[4].innerText.trim();
+                        const ltcg = cells[5].innerText.trim();
+                        const returnOfCapital = cells[6].innerText.trim();
+                        const totalDistribution = cells[7].innerText.trim();
+                        
+                        // Helper function to convert M/D/YYYY or MM/DD/YYYY to YYYY-MM-DD
+                        function swapDate(ds) {
+                            const parts = ds.split('/');
+                            return parts[2] + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0');
+                        }
+                        
                         let rowData = {
                             timestamp: timestamp,
-                            exDividendDate: (row[0]) ? swapDate(row[0]) : '',
-                            recordDate: (row[1]) ? swapDate(row[1]) : '',
-                            payableDate: (row[2]) ? swapDate(row[2]) : '',
+                            exDividendDate: exDivDate ? swapDate(exDivDate) : '',
+                            recordDate: recordDate ? swapDate(recordDate) : '',
+                            payableDate: payableDate ? swapDate(payableDate) : '',
                         };
-                        if ((row[3] * 1) > 0) rowData.ordinaryIncome = row[3] * 1;
-                        if ((row[4] * 1) > 0) rowData.stcg = row[4] * 1;
-                        if ((row[5] * 1) > 0) rowData.ltcg = row[5] * 1;
-                        if ((row[6] * 1) > 0) rowData.returnOfCapital = row[6] * 1;
-                        if ((row[7] * 1) > 0) rowData.totalDistribution = row[7] * 1;
+                        
+                        const parseAmount = (str) => {
+                            const num = parseFloat(str.replace(/\$|,/g, ''));
+                            return num > 0 ? num : undefined;
+                        };
+                        
+                        const oi = parseAmount(ordinaryIncome);
+                        if (oi !== undefined) rowData.ordinaryIncome = oi;
+                        
+                        const stcgVal = parseAmount(stcg);
+                        if (stcgVal !== undefined) rowData.stcg = stcgVal;
+                        
+                        const ltcgVal = parseAmount(ltcg);
+                        if (ltcgVal !== undefined) rowData.ltcg = ltcgVal;
+                        
+                        const rocVal = parseAmount(returnOfCapital);
+                        if (rocVal !== undefined) rowData.returnOfCapital = rocVal;
+                        
+                        const totalVal = parseAmount(totalDistribution);
+                        if (totalVal !== undefined) rowData.totalDistribution = totalVal;
+                        
                         results.push(rowData);
                     }
                 });
