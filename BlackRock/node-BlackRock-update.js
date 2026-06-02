@@ -19,7 +19,14 @@ for (let key in json) {
     const fund = json[key];
     const ticker = fund.localExchangeTicker;
     if (!ticker) continue;
-
+    
+    switch (ticker) {
+        case 'BASOX':
+        case 'BBSOX':
+        case 'BISOX': // ignore this fund, it is being removed from the universe.
+            continue;
+    }
+    
     const sevenDayYield = safeObjectRef(fund.oneWeekSecYield.r);
     if (sevenDayYield) {
         let rowData = {};
