@@ -3,8 +3,8 @@
 # Pull the driver JSON file from the BlackRock website with detailed MM fund info.
 #
 
-for i in BASOX BBSOX BISOX; do
-    echo "Deleting $i from BlackRock universe."
+for i in PVOXX; do
+    echo "Deleting $i from MM Optimizer universe."
     rm -ir ./BlackRock/history/$i
     rm -i ./EDGAR-e-MFP-parse/tickers/$i.json
     rm -i ./EDGAR-e-MFP-parse/tax/$i-taxation.json
