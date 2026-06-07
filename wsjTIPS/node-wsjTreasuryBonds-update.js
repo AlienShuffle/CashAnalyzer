@@ -3,10 +3,41 @@ import { duGetISOString } from "../lib/dateUtils.mjs";
 
 import puppeteer from "puppeteer";
 
+const maxRetries = 3;
+const retryDelayMs = 5000;
+
+function log(message) {
+    console.error(new Date().toISOString() + ' - ' + message);
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function retryAsync(fn, actionName, retries = maxRetries) {
+    let attempt = 1;
+    while (true) {
+        try {
+            log(`${actionName} (attempt ${attempt})`);
+            return await fn();
+        } catch (err) {
+            log(`${actionName} failed on attempt ${attempt}: ${err.message}`);
+            if (attempt >= retries) {
+                log(`${actionName} failed after ${attempt} attempts`);
+                throw err;
+            }
+            attempt++;
+            log(`Waiting ${retryDelayMs}ms before retrying ${actionName}`);
+            await sleep(retryDelayMs);
+        }
+    }
+}
+
 // shared global browser instance.
 let browserPromise = puppeteer.launch({
     defaultViewport: null,
-    headless: false,  // comment out to make this run headless for production.
+    // run headless by default; set HEADLESS=false to override for debugging
+    headless: process.env.HEADLESS === 'false' ? false : true,
     ignoreDefaultArgs: ['--disable-extensions'],
     //args: ['--window-size=1920,1080']
     args: ['--window-size=800,600', '--no-sandbox']
@@ -14,16 +45,28 @@ let browserPromise = puppeteer.launch({
 
 function run() {
     return new Promise(async (resolve, reject) => {
+        log('Starting wsjTreasuryBonds update');
         const browser = await browserPromise;
         const page = await browser.newPage();
+        // give navigation more time on slow networks / browsers
+        await page.setDefaultNavigationTimeout(60000);
 
-        // browse to the marketable securities page
-
-        await page.goto("https://www.wsj.com/market-data/bonds/treasuries");
+        const url = "https://www.wsj.com/market-data/bonds/treasuries";
+        try {
+            await retryAsync(() => page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 }), `navigate to ${url}`);
+        } catch (err) {
+            await browser.close();
+            return reject(err);
+        }
+        log('Page loaded successfully');
 
         let inputHandle;
-        inputHandle = await page.$("span.WSJBase--card__timestamp--3F2HxyAE");
-        // actual timestamp.
+        try {
+            inputHandle = await retryAsync(() => page.waitForSelector("span.WSJBase--card__timestamp--3F2HxyAE", { timeout: 60000 }), 'timestamp selector');
+        } catch (err) {
+            await browser.close();
+            return reject(err);
+        }
         const timestampString = await page.evaluate(input => input.innerHTML, inputHandle);
         //console.log("timestamp = " + timestampString);
         const timestamp = new Date(timestampString);
@@ -31,16 +74,19 @@ function run() {
         // retrieve the table and process it.
         //#root > div > div > div > div:nth-child(2) > div > div > div.WSJBase--card__header--2HEEgORG.WSJTheme--card__header--3OnZXE_M > div > span
 
-        inputHandle = await page.$("#root > div > div > div > div:nth-child(2) > div > div > div.WSJTables--tableWrapper---SfLdzv7.WSJBase--card--2XHo-8Ej > table");
-        // find the table with the price quotes.
-        inputHandle = await page.$("table.WSJTables--table--1QzSOCfq");
+        try {
+            inputHandle = await retryAsync(() => page.waitForSelector("table.WSJTables--table--1QzSOCfq", { timeout: 60000 }), 'data table selector');
+        } catch (err) {
+            await browser.close();
+            return reject(err);
+        }
         // get the html string for this table and log it.
         //const tableValue = await page.evaluate(input => input.innerHTML, inputHandle);
         //console.log(tableValue);
 
         // how many quotes were published?
         let rows = await inputHandle.$$('tr');
-        //console.log('rows = ' + rows.length);
+        log(`Found ${rows.length} table rows`);
 
         // create the headers list for JSON tags.
         let headers = [];
@@ -91,7 +137,7 @@ function run() {
             }
         }
         //console.log('data Rows = ' + data.length);
-        browser.close();
+        await browser.close();
         return resolve(JSON.stringify(data));
     });
 }
