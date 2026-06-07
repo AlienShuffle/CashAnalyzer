@@ -19,6 +19,10 @@ if [ -z "$PUPPETEER_EXECUTABLE_PATH" ]; then
         fi
     done
 fi
+if [ -z "$PUPPETEER_EXECUTABLE_PATH" ]; then
+    echo "No system browser found for Puppeteer. bailing out."
+    exit 1
+fi
 
 # directories that need puppeteer or xml-parser use:
 for package in $(ls */package.json); do
