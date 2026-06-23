@@ -10,6 +10,11 @@ const response = await fetch(`https://fred.stlouisfed.org/graph/fredgraph.csv?id
 const csvText = await response.text();
 const monthsText = csvText.split("\n"); 0
 
+if (monthsText.length <= 100) {
+    console.error("Error: Not enough data points retrieved. probaby intermittent issue.");
+    process.exit(1);
+}
+
 // seed with the missing month due to 2025 Govt shutdown, then loop through the rest of the months and build the response for each month.
 let months = [{
     month: "2025-10-01",
