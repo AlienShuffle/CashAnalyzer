@@ -271,3 +271,5 @@ lwlots/__pycache__/fix-2-lot-detail-location.cpython-312.pyc
 REFCPI/REFCPI-new.csv
 CPIAUCNS/CPIAUCNS-new.csv
 CPIAUCSL/CPIAUCSL-new.csv
+**/venv/
+crsp/crsp_market_indexes_*.csv
