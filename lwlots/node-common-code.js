@@ -15,7 +15,7 @@ export function isHomeLot(propertyUseCode) {
 
 export function normalizeName(name) {
     return name.trim().toUpperCase()
-        .replace(/ $/,'')
+        .replace(/ $/, '')
         .replace(/  /g, ' ')
         .replace(/, LLC/g, ' LLC')
         .replace(/,LLC/g, ' LLC')
@@ -25,6 +25,12 @@ export function normalizeName(name) {
         .replace(/INC\.$/, 'INC')
         .replace(/INC,/, 'INC')
         .replace(/\.$/, '')
+        .replace(/^LANDS EDGE ENT$/, 'LANDS EDGE ENTERPRISES INC')
+        .replace(/^LANDS EDGE ENT INC$/, 'LANDS EDGE ENTERPRISES INC')
+        .replace(/^LANDS EDGE ENTER$/, 'LANDS EDGE ENTERPRISES INC')
+        .replace(/^LANDS EDGE ENTER INC$/, 'LANDS EDGE ENTERPRISES INC')
+        .replace(/^LANDS EDGE ENTERPRISES$/, 'LANDS EDGE ENTERPRISES INC')
+        .replace(/^LANDS EDGW ENTER INC$/, 'LANDS EDGE ENTERPRISES INC')
         .replace(/^PLUM CREEK MUNICIPAL AUTHY$/, 'PCMA')
         .replace(/^LAKE WYNONAH PROP OWNRS ASN IN$/, 'LWPOA')
         .replace(/^LAKE WYNONAH PROP OWNERS ASSN$/, 'LWPOA')
@@ -52,5 +58,5 @@ export function normalizeName(name) {
         .replace(/ AND /g, ' & ')
         .replace(/J M A C/g, 'JMAC')
         .replace(/  /g, ' ')
-        .replace(/ $/,'');
+        .replace(/ $/, '');
 }
