@@ -1,6 +1,8 @@
-import { normalizeName } from './node-common-code.js';
+import {
+    normalizeAddress,
+    normalizeName
+} from './node-common-code.js';
 import { readFileSync } from 'fs';
-
 
 // read HTML from file given as stdin, this is a lot-detail.json.
 const lotDetailBuffer = readFileSync(0, 'utf8');
@@ -11,6 +13,7 @@ let result = [];
 for (let i = 0; i < lotDetailJson.length; i++) {
     result[i] = lotDetailJson[i];
     result[i].generalOwner = normalizeName(result[i].generalOwner);
+    result[i].address = normalizeAddress(result[i].address);
     for (let j = 0; j < result[i].owners.length; j++) {
         result[i].owners[j] = normalizeName(result[i].owners[j]);
     }

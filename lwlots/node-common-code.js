@@ -13,6 +13,18 @@ export function isHomeLot(propertyUseCode) {
         propertyUseCode === 121
 }
 
+export function normalizeAddress(address) {
+    return address.trim().toUpperCase()
+        .replace(/ $/, '')
+        .replace(/  /g, ' ')
+        .replace(/\n+/g, '\n')
+        .replace(/BLACK HAWK/, 'BLACKHAWK')
+        .replace(/ COVE/, ' CV')
+        .replace(/ DRIVE/, ' DR')
+        .replace(/ ROAD/, ' RD')
+        .replace(/ STREET/, ' ST')
+}
+
 export function normalizeName(name) {
     return name.trim().toUpperCase()
         .replace(/ $/, '')
@@ -59,4 +71,8 @@ export function normalizeName(name) {
         .replace(/J M A C/g, 'JMAC')
         .replace(/  /g, ' ')
         .replace(/ $/, '');
+}
+
+export function sortByIntegerValue(a, b) {
+    return parseInt(a, 10) - parseInt(b, 10);
 }

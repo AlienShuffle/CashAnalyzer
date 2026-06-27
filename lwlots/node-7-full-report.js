@@ -1,4 +1,4 @@
-import { isEmptyLot, isHomeLot } from './node-common-code.js';
+import { isEmptyLot, isHomeLot, sortByIntegerValue } from './node-common-code.js';
 import dynamicSort from '../lib/dynamicSort.mjs';
 import { readFileSync } from 'fs';
 
@@ -97,7 +97,7 @@ for (let i = 0; i < lotDetailJson.length; i++) {
             // don't insert self
             if (lotObj.lot === thisLot)
                 continue;
-            // only insert Deed and General lots, not previos owner lots.
+            // only insert Deed and General lots, not previous owner lots.
             if (!lotObj.type.includes('Deed') &&
                 !lotObj.type.includes('Address') &&
                 !lotObj.type.includes('General'))
@@ -133,7 +133,7 @@ for (let i = 0; i < lotDetailJson.length; i++) {
 
     // if we found related lots, insert in result object.
     if (relatedLots.length > 0) {
-        result[i].relatedLots = relatedLots.sort();
+        result[i].relatedLots = relatedLots.sort(sortByIntegerValue);
         result[i].relatedEmptyLotCnt = relatedEmptyLotCnt;
         result[i].relatedHomeLotCnt = relatedHomeLotCnt;
     } else {
