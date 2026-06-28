@@ -176,7 +176,7 @@ for (let i = 0; i < lotDetailJson.length; i++) {
     result[i].oid = getIdForOwner(result[i].generalOwner);
 
     // inset test if address for lot is a resident of LW.
-    result[i].isResident = (result[i].address.includes('AUBURN, PA')) ? 'Y' : null;
+    result[i].isResident = (result[i].address.includes('AUBURN PA')) ? 'Y' : null;
 
     // insert owner link ids
     result[i].ownersOid = [];

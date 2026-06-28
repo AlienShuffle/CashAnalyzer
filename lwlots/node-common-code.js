@@ -49,6 +49,10 @@ export function normalizeName(name) {
         .replace(/^LANDS EDGE ENTER INC$/, 'LANDS EDGE ENTERPRISES INC')
         .replace(/^LANDS EDGE ENTERPRISES$/, 'LANDS EDGE ENTERPRISES INC')
         .replace(/^LANDS EDGW ENTER INC$/, 'LANDS EDGE ENTERPRISES INC')
+        .replace(/^LAKE WYNONAH MUNI AUTH$/, 'PCMA')
+        .replace(/^LAKE WYNONAH MUNICIPAL AUTHY$/, 'PCMA')
+        .replace(/^LAKE WYNONAH UTILITIES INC$/, 'PCMA')
+        .replace(/^LKAE WYNONAH MUNICIPAL AUTHY$/, 'PCMA') // deliberate misspelling in the data
         .replace(/^PLUM CREEK MUNICIPAL AUTHY$/, 'PCMA')
         .replace(/^LAKE WYNONAH PROP OWNRS ASN IN$/, 'LWPOA')
         .replace(/^LAKE WYNONAH PROP OWNERS ASSN$/, 'LWPOA')

@@ -1,5 +1,15 @@
 #!/usr/bin/bash
-historyDirs=$(ls -d history/*/ 2>/dev/null | sort )
+
+# update main directory reports if the 3-lot-taxes.csv file exists
+if [ -f "3-lot-taxes.csv" ]; then
+    ./run-4-normalize.sh
+    ./run-5-create-owner-list.sh
+    ./run-6-create-addr-list.sh
+    ./run-7-full-report.sh
+    ./run-8-filtered-report.sh
+    ./run-9-stats.sh
+fi
+historyDirs=$(ls -d history/*/ 2>/dev/null | sort)
 if [ -z "$historyDirs" ]; then
     echo "No history directories found. Please run the report generation script first."
     exit 1
