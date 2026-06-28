@@ -12,8 +12,9 @@ const lotDetailJson = JSON.parse(lotDetailBuffer);
 let result = [];
 for (let i = 0; i < lotDetailJson.length; i++) {
     result[i] = lotDetailJson[i];
-    result[i].generalOwner = normalizeName(result[i].generalOwner);
+    result[i].location = normalizeAddress(result[i].location);
     result[i].address = normalizeAddress(result[i].address);
+    result[i].generalOwner = normalizeName(result[i].generalOwner);
     for (let j = 0; j < result[i].owners.length; j++) {
         result[i].owners[j] = normalizeName(result[i].owners[j]);
     }
