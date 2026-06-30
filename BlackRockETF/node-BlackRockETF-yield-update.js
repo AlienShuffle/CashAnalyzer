@@ -44,7 +44,7 @@ for (let key in json) {
         if (safeObjectRef(fund.accountType)) rowData.accountType = safeObjectRef(fund.accountType);
     rowData.blackRockId = key * 1;
     rowData.baseUrl = `https://blackrock.com/us/individual/products/${key}/`;
-    rowData.distroUrl = `${rowData.baseUrl}fund/1515394931018.ajax?fileType=xls&dataType=fund`;
+    rowData.distroUrl = `https://www.blackrock.com/varnish-api/blk-one01-product-data/product-data/api/v1/get-fund-document?appType=PRODUCT_PAGE&appSubType=ONE&targetSite=one&locale=en_US&portfolioId=${key}&component=fundDownload&userType=individual`;
     rowData.ticker = ticker;
     rowData.timestamp = timestamp;
     resp.push(rowData);
