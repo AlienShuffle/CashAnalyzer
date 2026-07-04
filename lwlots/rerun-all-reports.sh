@@ -18,6 +18,7 @@ fi
 previousDir=""
 for dir in $historyDirs; do
     #echo "Running reports for $dir"
+    rm -f $dir/b-compare-*.txt
     ./run-4-normalize.sh "$dir"
     ./run-5-create-owner-list.sh "$dir"
     ./run-6-create-addr-list.sh "$dir"
