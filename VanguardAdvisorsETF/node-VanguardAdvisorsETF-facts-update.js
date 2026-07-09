@@ -3,7 +3,9 @@ import {
   readFileSync,
   readdirSync,
   renameSync,
-  statSync
+  statSync,
+  mkdirSync,
+  existsSync
 } from "fs";
 import {
   join
@@ -54,6 +56,18 @@ for (const ticker of tickers) {
     return exportButtonHandle.asElement();
   }
 
+  async function clickButtonByText(matchText) {
+    if (debug) console.error(`Clicking button: '${matchText}'`);
+    return await page.evaluate((matchText) => {
+      const button = Array.from(document.querySelectorAll("button"))
+        .find(btn => btn.textContent.trim() === matchText);
+      if (!button) return false;
+      button.scrollIntoView();
+      button.click();
+      return true;
+    }, matchText);
+  }
+
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -62,6 +76,7 @@ for (const ticker of tickers) {
   async function waitForDownloadComplete(dir) {
     // make sure download starts
     await sleep(800);
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
     // return once the .crdownload file is removed (completed).
     return new Promise(resolve => {
       const interval = setInterval(() => {
@@ -97,6 +112,7 @@ for (const ticker of tickers) {
       console.error(`Button with text '${buttonText}' not found.`);
       return false;
     }
+    mkdirSync(downloadPath, { recursive: true });
     await page._client().send("Page.setDownloadBehavior", {
       behavior: "allow",
       downloadPath: downloadPath
@@ -118,25 +134,26 @@ for (const ticker of tickers) {
         el.scrollIntoView();
         el.focus();
         if (click) el.click();
-        return el.innerText;
-      } else {
-        return null;
+        return (el.textContent || "").trim();
       }
+      return null;
     }, selector, click);
-    //if (debug) console.error(`Exiting selectElement(${selector},${click}) = ''''${found}''''`);
+    if (debug) console.error(`selectElement result for '${selector}': '${found}'`);
     return found;
   }
 
   //if (debug) console.error("Opening Vanguard page...");
   await page.goto(
     url,
-    { waitUntil: "networkidle2" }
+    { waitUntil: "networkidle0" }
   );
+  await page.waitForSelector('span[data-rpa-tag-id="hero-ff-secYield-pct"]', { timeout: 60000 });
+  await page.waitForSelector('.distributions', { timeout: 60000 });
 
   // download distributions data
-  if (!await selectElement('.distribution-table')) break;
+  if (!await selectElement('.distributions', false)) break;
   await sleep(2000);
-  if (!await selectElement('button[class="button button--black"]', false)) break;
+  if (!await selectElement('#price-distribution-nav-item', false)) break;
   await sleep(2000);
   if (!await downloadFile("Export distribution data", downloadPath, `${ticker}-distributions.csv`)) break;
 
@@ -166,7 +183,10 @@ for (const ticker of tickers) {
   }
 
   // NAV
-  const rawNAV = await selectElement('span[data-rpa-tag-id="pd-cp-nav-price"]', false);
+  let rawNAV = await selectElement('div[data-rpa-tag-id="pd-cp-nav-price"]', false);
+  if (!rawNAV) {
+    rawNAV = await selectElement('span[data-rpa-tag-id="pd-cp-nav-price"]', false);
+  }
   if (!rawNAV) {
     console.error(`No rawNAV found for ticker '${ticker}'`);
   } else {
@@ -176,7 +196,7 @@ for (const ticker of tickers) {
   }
 
   // fund name
-  const rawFundName = await selectElement('span[data-rpa-tag-id="dashboard-longName"]', false);
+  const rawFundName = await selectElement('[data-rpa-tag-id="dashboard-longName"]', false);
   if (!rawFundName) {
     console.error(`No rawFundName found for ticker '${ticker}'`);
   } else {
@@ -196,7 +216,13 @@ for (const ticker of tickers) {
   }
 
   // Assets Under Management (AUM)
-  const rawAum = await selectElement('span[data-rpa-tag-id="overview-ff-net-assets"]', false);
+  let rawAum = await selectElement('div[data-rpa-tag-id="overview-ff-net-assets"]', false);
+  if (!rawAum) {
+    rawAum = await selectElement('span[data-rpa-tag-id="overview-ff-net-assets"]', false);
+  }
+  if (!rawAum) {
+    rawAum = await selectElement('div[data-rpa-tag-id="overview-ff-total-net-assets"]', false);
+  }
   if (!rawAum) {
     console.error(`No rawAum found for ticker '${ticker}'`);
   } else {
@@ -274,11 +300,9 @@ for (const ticker of tickers) {
   // we have all the facts we need, push to results array.
   results.push(rowData);
 
-  if (!await selectElement('#in-page-section-id-portfolio')) break;
+  if (!await selectElement('a#portfolio-nav-item', false)) break;
   await sleep(2000);
-  if (!await selectElement('.weighted-exposures')) break;
-  await sleep(2000);
-  if (!await selectElement('#weighted-exposures-tab-issuer-type')) break;
+  if (!await clickButtonByText('Issuer type')) break;
   await sleep(2000);
   if (!await downloadFile("Export issuer type data", downloadPath, `${ticker}-issuer-type.csv`)) break;
   if (debug) console.error("Completed processing for ticker:", ticker);
