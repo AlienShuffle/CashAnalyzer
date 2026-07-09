@@ -61,21 +61,47 @@ for (const ticker of tickers) {
   }
 
   async function clickElementByText(matchText, tags = ["button", "a"]) {
-    if (debug) console.error(`Clicking element: '${matchText}'`);
-    return await page.evaluate((matchText, tags) => {
+    if (debug) console.error(`Clicking element: '${matchText}' using tags [${tags.join(', ')}]`);
+    const result = await page.evaluate((matchText, tags) => {
+      const normalizedTarget = matchText.replace(/\s+/g, " ").trim().toLowerCase();
       const selector = tags.join(",");
       const el = Array.from(document.querySelectorAll(selector))
-        .find(node => node.textContent.trim() === matchText);
+        .find(node => (node.textContent || "").replace(/\s+/g, " ").trim().toLowerCase() === normalizedTarget);
       if (!el) return false;
       el.scrollIntoView();
       el.click();
       return true;
     }, matchText, tags);
+    if (debug) console.error(`clickElementByText('${matchText}') returned ${result}`);
+    return result;
   }
 
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
+
+  const fixedIncomeTabTexts = [
+    'Fixed income',
+    'Fixed Income',
+    'Fixed-income',
+    'Fixed Income ›',
+    'Fixed income ›'
+  ];
+
+  const fixedIncomePanelSelectors = [
+    'section.fundamentals-data',
+    '[data-rpa-tag-id="fundamentals-fixed-income-tab-pane-daily"]',
+    '#fundamentals-fixed-income-tab-pane-daily',
+    'div[id^="axs-tabs-"][id$="-panel-0"]',
+    'div[id^="axs-tabs-"][id$="-panel-1"]',
+    'div[class*="axs-tabs"]',
+    'div[id*="axs-tabs"]',
+    'section[class*="fundamentals"]',
+    'div[class*="fundamentals"]',
+    'div[id*="fundamentals"]',
+    'div[data-rpa-tag-id*="fundamental"]',
+    'div[data-rpa-tag-id*="fixed"]'
+  ];
 
   // Helper: wait until no .crdownload files remain
   async function waitForDownloadComplete(dir) {
@@ -149,10 +175,27 @@ for (const ticker of tickers) {
 
   async function selectFirst(selectors, click = false) {
     for (const selector of selectors) {
+      if (debug) console.error(`Trying selector: ${selector}`);
       const value = await selectElement(selector, click);
-      if (value) return value;
+      if (value) {
+        if (debug) console.error(`Selector matched: ${selector} => '${value}'`);
+        return value;
+      }
     }
+    if (debug) console.error(`No selectors matched: ${selectors.join(', ')}`);
     return null;
+  }
+
+  async function waitForAnySelector(selectors, timeout = 60000) {
+    if (debug) console.error(`Waiting for any selector: ${selectors.join(', ')}`);
+    try {
+      return await Promise.any(selectors.map(selector =>
+        page.waitForSelector(selector, { timeout }).then(() => selector)
+      ));
+    } catch (err) {
+      if (debug) console.error('waitForAnySelector failed', err);
+      return null;
+    }
   }
 
   async function findTextByPatterns(patterns) {
@@ -170,13 +213,28 @@ for (const ticker of tickers) {
     }, patterns);
   }
 
+  function normalizeFundamentalsText(text) {
+    return (text || "")
+      .replace(/\s+/g, " ")
+      .replace(/\b(Yield to maturity|Yield to worst|Average duration|Average effective maturity|Average coupon)\b/gi, "\n$1")
+      .trim();
+  }
+
   //if (debug) console.error("Opening Vanguard page...");
   await page.goto(
     url,
-    { waitUntil: "networkidle0" }
+    { waitUntil: "domcontentloaded", timeout: 60000 }
   );
-  await page.waitForSelector('span[data-rpa-tag-id="hero-ff-secYield-pct"]', { timeout: 60000 });
-  await page.waitForSelector('.distributions', { timeout: 60000 });
+  await sleep(2000);
+  await waitForAnySelector([
+    '.distributions',
+    'span[data-rpa-tag-id="hero-ff-secYield-pct"]',
+    'span[data-rpa-tag-id*="secYield"]',
+    'span[data-rpa-tag-id*="yield"]',
+    'span[data-rpa-tag-id*="asOfDate"]',
+    'div[data-rpa-tag-id*="secYield"]',
+    'div[data-rpa-tag-id*="yield"]'
+  ], 60000);
 
   // download distributions data
   if (!await selectElement('.distributions', false)) break;
@@ -192,19 +250,29 @@ for (const ticker of tickers) {
   // id = #
 
   // now get thirty day yield and as of date
-  const rawSecYield = await selectElement('span[data-rpa-tag-id="hero-ff-secYield-pct"]', false);
+  const rawSecYield = await selectFirst([
+    'span[data-rpa-tag-id="hero-ff-secYield-pct"]',
+    'span[data-rpa-tag-id*="secYield"]',
+    'span[data-rpa-tag-id*="yield"]',
+    'div[data-rpa-tag-id*="secYield"]',
+    'div[data-rpa-tag-id*="yield"]'
+  ], false);
   if (!rawSecYield) {
     console.error(`No thirtyDayYield found for ticker '${ticker}'`);
-    break; // minimum requriement is to get the yield, if not found, skip the rest of processing for this ticker since it's likely the page structure has changed and other data points may also be missing or incorrect.
+    break; // minimum requirement is to get the yield, if not found, skip the rest of processing for this ticker since it's likely the page structure has changed and other data points may also be missing or incorrect.
   }
   const secYield = (rawSecYield.replace("%", "").trim() / 100).toFixed(4) * 1;
   if (debug) console.error(`rawSecYield= '${rawSecYield}'=${secYield}`);
-  const rawSecYieldAsOfDate = await selectElement('span[data-rpa-tag-id="hero-ff-secYield-asOfDate"]', false);
+  const rawSecYieldAsOfDate = await selectFirst([
+    'span[data-rpa-tag-id="hero-ff-secYield-asOfDate"]',
+    'span[data-rpa-tag-id*="asOfDate"]',
+    'div[data-rpa-tag-id*="asOfDate"]'
+  ], false);
   if (!rawSecYieldAsOfDate) {
     console.error(`No asOfDate found for ticker '${ticker}'`);
     break;
   } else {
-    const secYieldAsOfDate = new Date(rawSecYieldAsOfDate.replace("as of ", "")).toISOString().split("T")[0];
+    const secYieldAsOfDate = new Date(rawSecYieldAsOfDate.replace(/as of /i, "")).toISOString().split("T")[0];
     if (debug) console.error(`rawSecYieldAsOfDate='${rawSecYieldAsOfDate}'='${secYieldAsOfDate}'`);
     rowData.thirtyDayYield = secYield.toFixed(4) * 1;
     rowData.asOfDate = secYieldAsOfDate;
@@ -284,25 +352,18 @@ for (const ticker of tickers) {
     if (distributionYield) rowData.distributionYield = distributionYield.toFixed(4) * 1;
   }
 
-  // fundamental fixed income tab -> duration, yield to maturity, efffective maturity, weighted average coupon.
-  //#fundamentals-fixed-income-tab-pane-daily 
-  await clickElementByText('Fixed income', ['button', 'a']);
+  // fundamental fixed income tab -> duration, yield to maturity, effective maturity, weighted average coupon.
+  //#fundamentals-fixed-income-tab-pane-daily
+  for (const tabText of fixedIncomeTabTexts) {
+    if (debug) console.error(`Attempting fixed income tab click with text: '${tabText}'`);
+    if (await clickElementByText(tabText, ['button', 'a', 'span', 'div'])) {
+      if (debug) console.error(`Clicked fixed income tab text: '${tabText}'`);
+      break;
+    }
+  }
   await sleep(1500);
-  let rawFundamentals = await selectFirst([
-    '#fundamentals-fixed-income-tab-pane-daily',
-    '[data-rpa-tag-id="fundamentals-fixed-income-tab-pane-daily"]',
-    '#axs-tabs-76-panel-1',
-    '#axs-tabs-76-panel-0',
-    'section.weighted-exposure',
-    'section[class*="weighted-exposure"]',
-    'section[class*="fixed-income"]',
-    'div.weighted-exposure',
-    'div[class*="weighted-exposure"]',
-    'div[class*="fixed-income"]',
-    'div[id*="fundamentals"]',
-    'div[data-rpa-tag-id*="fundamental"]',
-    'div[data-rpa-tag-id*="fixed"]'
-  ], false);
+  let rawFundamentals = await selectFirst(fixedIncomePanelSelectors, false);
+  if (debug && rawFundamentals) console.error(`Found rawFundamentals with one of fixedIncomePanelSelectors.`);
   if (!rawFundamentals) {
     rawFundamentals = await findTextByPatterns([
       'duration',
@@ -316,50 +377,51 @@ for (const ticker of tickers) {
   if (!rawFundamentals) {
     console.error(`No rawFundamentals found for ticker '${ticker}'`);
   } else {
-    const lines = rawFundamentals.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+    rawFundamentals = normalizeFundamentalsText(rawFundamentals);
+    const lines = rawFundamentals.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
     if (debug) console.error(`rawFundamentals lines: ${lines.join(" | ")}`);
 
-    const durationLineNum = lines.findIndex(l => l.toLowerCase().includes("duration"));
+    const durationLineNum = lines.findIndex(l => l.toLowerCase().includes("average duration"));
     if (durationLineNum >= 0) {
-      const durationLine = lines[durationLineNum].split("\t");
-      const durationYears = durationLine[durationLine.length - 1].replace("(years)", "").trim() * 1;
-      if (durationYears) rowData.durationYears = durationYears.toFixed(2) * 1;
+      const durationLine = lines[durationLineNum].replace(/Average duration/i, "").replace("(years)", "").trim();
+      const durationYears = durationLine.match(/([0-9]*\.?[0-9]+)/);
+      if (durationYears) rowData.durationYears = parseFloat(durationYears[1]).toFixed(2) * 1;
     } else {
       console.error(`No duration line found in rawFundamentals for ticker '${ticker}'`);
     }
 
     const ytmLineNum = lines.findIndex(l => l.toLowerCase().includes("yield to maturity"));
     if (ytmLineNum >= 0) {
-      const ytmLine = lines[ytmLineNum].split("\t");
-      const yieldToMaturity = ytmLine[ytmLine.length - 1].replace("%", "").trim() / 100;
-      if (yieldToMaturity) rowData.yieldToMaturity = yieldToMaturity.toFixed(4) * 1;
+      const ytmLine = lines[ytmLineNum].replace(/Yield to maturity/i, "").trim();
+      const yieldToMaturity = parseFloat(ytmLine.replace("%", "")) / 100;
+      if (!Number.isNaN(yieldToMaturity)) rowData.yieldToMaturity = yieldToMaturity.toFixed(4) * 1;
     } else {
       console.error(`No yield to maturity line found in rawFundamentals for ticker '${ticker}'`);
     }
 
     const ytwLineNum = lines.findIndex(l => l.toLowerCase().includes("yield to worst"));
     if (ytwLineNum >= 0) {
-      const ytwLine = lines[ytwLineNum].split("\t");
-      const yieldToWorst = ytwLine[ytwLine.length - 1].replace("%", "").trim() / 100;
-      if (yieldToWorst) rowData.yieldToWorst = yieldToWorst.toFixed(4) * 1;
+      const ytwLine = lines[ytwLineNum].replace(/Yield to worst/i, "").trim();
+      const yieldToWorst = parseFloat(ytwLine.replace("%", "")) / 100;
+      if (!Number.isNaN(yieldToWorst)) rowData.yieldToWorst = yieldToWorst.toFixed(4) * 1;
     } else {
       console.error(`No yield to worst line found in rawFundamentals for ticker '${ticker}'`);
     }
 
-    const maturityLineNum = lines.findIndex(l => l.toLowerCase().includes("effective maturity"));
+    const maturityLineNum = lines.findIndex(l => l.toLowerCase().includes("average effective maturity"));
     if (maturityLineNum >= 0) {
-      const maturityLine = lines[maturityLineNum].split("\t");
-      const maturityYears = maturityLine[maturityLine.length - 1].replace("(years)", "").trim() * 1;
-      if (maturityYears) rowData.maturityYears = maturityYears.toFixed(2) * 1;
+      const maturityLine = lines[maturityLineNum].replace(/Average effective maturity/i, "").replace("(years)", "").trim();
+      const maturityYears = maturityLine.match(/([0-9]*\.?[0-9]+)/);
+      if (maturityYears) rowData.maturityYears = parseFloat(maturityYears[1]).toFixed(2) * 1;
     } else {
       console.error(`No effective maturity line found in rawFundamentals for ticker '${ticker}'`);
     }
 
     const wacLineNum = lines.findIndex(l => l.toLowerCase().includes("average coupon"));
     if (wacLineNum >= 0) {
-      const wacLine = lines[wacLineNum].split("\t");
-      const weightedAverageCoupon = wacLine[wacLine.length - 1].replace("%", "").trim() / 100;
-      if (weightedAverageCoupon) rowData.weightedAverageCoupon = weightedAverageCoupon.toFixed(5) * 1;
+      const wacLine = lines[wacLineNum].replace(/Average coupon/i, "").trim();
+      const weightedAverageCoupon = parseFloat(wacLine.replace("%", "")) / 100;
+      if (!Number.isNaN(weightedAverageCoupon)) rowData.weightedAverageCoupon = weightedAverageCoupon.toFixed(5) * 1;
     } else {
       console.error(`No average coupon line found in rawFundamentals for ticker '${ticker}'`);
     }
