@@ -57,15 +57,20 @@ for (const ticker of tickers) {
   }
 
   async function clickButtonByText(matchText) {
-    if (debug) console.error(`Clicking button: '${matchText}'`);
-    return await page.evaluate((matchText) => {
-      const button = Array.from(document.querySelectorAll("button"))
-        .find(btn => btn.textContent.trim() === matchText);
-      if (!button) return false;
-      button.scrollIntoView();
-      button.click();
+    return await clickElementByText(matchText, ["button"]);
+  }
+
+  async function clickElementByText(matchText, tags = ["button", "a"]) {
+    if (debug) console.error(`Clicking element: '${matchText}'`);
+    return await page.evaluate((matchText, tags) => {
+      const selector = tags.join(",");
+      const el = Array.from(document.querySelectorAll(selector))
+        .find(node => node.textContent.trim() === matchText);
+      if (!el) return false;
+      el.scrollIntoView();
+      el.click();
       return true;
-    }, matchText);
+    }, matchText, tags);
   }
 
   function sleep(ms) {
@@ -140,6 +145,29 @@ for (const ticker of tickers) {
     }, selector, click);
     if (debug) console.error(`selectElement result for '${selector}': '${found}'`);
     return found;
+  }
+
+  async function selectFirst(selectors, click = false) {
+    for (const selector of selectors) {
+      const value = await selectElement(selector, click);
+      if (value) return value;
+    }
+    return null;
+  }
+
+  async function findTextByPatterns(patterns) {
+    return await page.evaluate((patterns) => {
+      const normalize = text => (text || "").replace(/\s+/g, " ").trim().toLowerCase();
+      const nodes = Array.from(document.querySelectorAll('body *'));
+      for (const node of nodes) {
+        const text = normalize(node.textContent);
+        if (!text) continue;
+        if (patterns.some(pattern => text.includes(pattern.toLowerCase()))) {
+          return (node.textContent || "").replace(/\s+/g, " ").trim();
+        }
+      }
+      return null;
+    }, patterns);
   }
 
   //if (debug) console.error("Opening Vanguard page...");
@@ -233,18 +261,58 @@ for (const ticker of tickers) {
   }
 
   // #distributionYield
-  const rawDistributionYield = await selectElement('div[id="distributionYield"]', false);
+  let rawDistributionYield = await selectFirst([
+    'div[id="distributionYield"]',
+    'div[data-rpa-tag-id="overview-ff-distribution-yield"]',
+    'div[data-rpa-tag-id="overview-ff-distributionYield"]',
+    'div[data-rpa-tag-id*="distribution"]',
+    'span[data-rpa-tag-id*="distribution"]'
+  ], false);
+  if (!rawDistributionYield) {
+    rawDistributionYield = await findTextByPatterns([
+      'distribution yield',
+      'distribution by credit quality',
+      'distribution by effective maturity',
+      'distribution by issuer type'
+    ]);
+  }
   if (!rawDistributionYield) {
     console.error(`No rawDistributionYield found for ticker '${ticker}'`);
   } else {
-    const distributionYield = (rawDistributionYield.replace("DISTRIBUTION YIELD", "").replace(/as of.*$/, "").replace("%", "").trim() / 100).toFixed(4) * 1;
+    const distributionYield = (rawDistributionYield.replace(/DISTRIBUTION YIELD/i, "").replace(/as of.*$/i, "").replace("%", "").trim() / 100).toFixed(4) * 1;
     if (debug) console.error(`rawDistributionYield= '${rawDistributionYield}'=${distributionYield}`);
     if (distributionYield) rowData.distributionYield = distributionYield.toFixed(4) * 1;
   }
 
   // fundamental fixed income tab -> duration, yield to maturity, efffective maturity, weighted average coupon.
   //#fundamentals-fixed-income-tab-pane-daily 
-  const rawFundamentals = await selectElement('#fundamentals-fixed-income-tab-pane-daily', false);
+  await clickElementByText('Fixed income', ['button', 'a']);
+  await sleep(1500);
+  let rawFundamentals = await selectFirst([
+    '#fundamentals-fixed-income-tab-pane-daily',
+    '[data-rpa-tag-id="fundamentals-fixed-income-tab-pane-daily"]',
+    '#axs-tabs-76-panel-1',
+    '#axs-tabs-76-panel-0',
+    'section.weighted-exposure',
+    'section[class*="weighted-exposure"]',
+    'section[class*="fixed-income"]',
+    'div.weighted-exposure',
+    'div[class*="weighted-exposure"]',
+    'div[class*="fixed-income"]',
+    'div[id*="fundamentals"]',
+    'div[data-rpa-tag-id*="fundamental"]',
+    'div[data-rpa-tag-id*="fixed"]'
+  ], false);
+  if (!rawFundamentals) {
+    rawFundamentals = await findTextByPatterns([
+      'duration',
+      'yield to maturity',
+      'yield to worst',
+      'effective maturity',
+      'average coupon',
+      'coupon interest'
+    ]);
+  }
   if (!rawFundamentals) {
     console.error(`No rawFundamentals found for ticker '${ticker}'`);
   } else {
