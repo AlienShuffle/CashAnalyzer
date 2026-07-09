@@ -1,5 +1,6 @@
 import puppeteer from "puppeteer";
 import { readFileSync } from "fs";
+import { extractFundFactsFromText } from "./lib/blackrockFactsParser.mjs";
 
 //function safeObjectRef(obj) { return (typeof obj === 'undefined') ? '' : obj; }
 
@@ -247,17 +248,35 @@ for (const fund of funds) {
     }
 
     //if (debug) console.error("Opening BlackRock iShares ETF page...");
+    const pageUrl = new URL(url);
+    pageUrl.hostname = 'www.blackrock.com';
+    if (!/\/overview(?:\/|\?|$)/i.test(pageUrl.pathname)) {
+        pageUrl.pathname = `${pageUrl.pathname.replace(/\/$/, '')}/overview`;
+    }
+    pageUrl.search = 'cash=1';
+
+    await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
     await page.goto(
-        url,
-        { waitUntil: "networkidle2" }
+        pageUrl.toString(),
+        { waitUntil: "networkidle2", timeout: 120000 }
     );
 
     await sleep(5000);
+
+    const pageText = await page.evaluate(() => {
+        const bodyText = document.body?.innerText || document.body?.textContent || '';
+        return bodyText.replace(/\s+/g, ' ').trim();
+    });
+    const pageTitle = await page.title();
+    const textFacts = extractFundFactsFromText(pageText, { ticker, pageTitle });
 
     // Fund Name
     let rawFundName = await selectElement('#fundHeader > header.main-header > div.col-4.column.grid > div.column.main-header-holder.col-three-quarter-width > h1 > span');
     if (!rawFundName) {
         rawFundName = await selectElement('h1');
+    }
+    if (!rawFundName && textFacts.fundName) {
+        rawFundName = textFacts.fundName;
     }
     if (!rawFundName) {
         console.error(`No rawFundName found for ticker '${ticker}'`);
@@ -282,6 +301,12 @@ for (const fund of funds) {
             '#fundheaderTabs > div > div:nth-child(1) > div > ul > li.navAmount > span.header-nav-data'
         ]);
     }
+    if (textFacts.nav !== undefined) {
+        rawNav = String(textFacts.nav);
+    }
+    if (!rawNav) {
+        rawNav = null;
+    }
     if (!rawNav) {
         console.error(`No rawNav found for ticker '${ticker}'`);
     } else {
@@ -304,11 +329,12 @@ for (const fund of funds) {
     const rawExpenseRatio = await selectDataPointValue(/Expense\s*Ratio/i, [
         '#feeTable > div > div > table > tbody > tr.fee-code-expr > td.data'
     ]);
-    if (!rawExpenseRatio) {
+    const expenseRatioValue = textFacts.expenseRatio !== undefined ? String(textFacts.expenseRatio) : rawExpenseRatio;
+    if (!expenseRatioValue) {
         console.error(`No rawExpenseRatio found for ticker '${ticker}'`);
     } else {
-        const expenseRatio = parsePercent(rawExpenseRatio);
-        if (debug) console.error(`rawExpenseRatio= '${rawExpenseRatio}'=${expenseRatio}`);
+        const expenseRatio = parsePercent(expenseRatioValue);
+        if (debug) console.error(`rawExpenseRatio= '${expenseRatioValue}'=${expenseRatio}`);
         if (expenseRatio !== null) rowData.expenseRatio = expenseRatio.toFixed(6) * 1;
     }
 
@@ -318,6 +344,9 @@ for (const fund of funds) {
     ]);
     if (!rawAum) {
         rawAum = await selectPageText(/fund\s*\$[0-9,\.]+/i);
+    }
+    if (!rawAum && textFacts.aum !== undefined) {
+        rawAum = String(textFacts.aum);
     }
     if (!rawAum) {
         console.error(`No rawAum found for ticker '${ticker}'`);
@@ -333,11 +362,12 @@ for (const fund of funds) {
         '#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-weightedAvgCouponFi > div.data',
         '#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-weightedAvgCouponFi > div.data'
     ]);
-    if (!rawWeightedAverageCoupon) {
+    const weightedAverageCouponValue = textFacts.weightedAverageCoupon !== undefined ? String(textFacts.weightedAverageCoupon) : rawWeightedAverageCoupon;
+    if (!weightedAverageCouponValue) {
         console.error(`No rawWeightedAverageCoupon found for ticker '${ticker}'`);
     } else {
-        const weightedAverageCoupon = parsePercent(rawWeightedAverageCoupon);
-        if (debug) console.error(`rawWeightedAverageCoupon= '${rawWeightedAverageCoupon}'=${weightedAverageCoupon}`);
+        const weightedAverageCoupon = parseNumeric(weightedAverageCouponValue);
+        if (debug) console.error(`rawWeightedAverageCoupon= '${weightedAverageCouponValue}'=${weightedAverageCoupon}`);
         if (weightedAverageCoupon !== null) rowData.weightedAverageCoupon = weightedAverageCoupon.toFixed(4) * 1;
     }
 
@@ -346,11 +376,12 @@ for (const fund of funds) {
         '#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-modelOad > div.data',
         '#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-modelOad > div.data'
     ]);
-    if (!rawDurationYears) {
+    const durationValue = textFacts.durationYears !== undefined ? String(textFacts.durationYears) : rawDurationYears;
+    if (!durationValue) {
         console.error(`No rawDurationYears found for ticker '${ticker}'`);
     } else {
-        const durationYears = parseNumeric(rawDurationYears.replace(/years|yrs/i, '').trim());
-        if (debug) console.error(`rawDurationYears= '${rawDurationYears}'=${durationYears}`);
+        const durationYears = parseNumeric(durationValue.replace(/years|yrs/i, '').trim());
+        if (debug) console.error(`rawDurationYears= '${durationValue}'=${durationYears}`);
         if (durationYears !== null) rowData.durationYears = durationYears.toFixed(2) * 1;
     }
 
@@ -359,11 +390,12 @@ for (const fund of funds) {
         '#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-yieldToWorst > div.data',
         '#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-weightedAvgYieldToMaturity > div.data'
     ]);
-    if (!rawYieldToWorst) {
+    const yieldToWorstValue = textFacts.yieldToWorst !== undefined ? String(textFacts.yieldToWorst) : rawYieldToWorst;
+    if (!yieldToWorstValue) {
         console.error(`No rawYieldToWorst found for ticker '${ticker}'`);
     } else {
-        const yieldToWorst = parsePercent(rawYieldToWorst);
-        if (debug) console.error(`rawYieldToWorst= '${rawYieldToWorst}'=${yieldToWorst}`);
+        const yieldToWorst = parsePercent(yieldToWorstValue);
+        if (debug) console.error(`rawYieldToWorst= '${yieldToWorstValue}'=${yieldToWorst}`);
         if (yieldToWorst !== null) rowData.yieldToWorst = yieldToWorst.toFixed(4) * 1;
     }
 
@@ -373,11 +405,12 @@ for (const fund of funds) {
     const rawTrailing12mYield = await selectDataPointValue(/12m\s*Trailing\s*Yield/i, [
         '#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-twelveMonTrlYld > div.data'
     ]);
-    if (!rawTrailing12mYield) {
+    const trailing12mYieldValue = textFacts.twelveMonTrlYield !== undefined ? String(textFacts.twelveMonTrlYield) : rawTrailing12mYield;
+    if (!trailing12mYieldValue) {
         console.error(`No rawTrailing12mYield found for ticker '${ticker}'`);
     } else {
-        const trailing12mYield = parsePercent(rawTrailing12mYield);
-        if (debug) console.error(`rawTrailing12mYield= '${rawTrailing12mYield}'=${trailing12mYield}`);
+        const trailing12mYield = parsePercent(trailing12mYieldValue);
+        if (debug) console.error(`rawTrailing12mYield= '${trailing12mYieldValue}'=${trailing12mYield}`);
         if (trailing12mYield !== null) rowData.twelveMonTrlYield = trailing12mYield.toFixed(4) * 1;
     }
 
@@ -386,6 +419,9 @@ for (const fund of funds) {
         '#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-right > div.product-data-item.col-weightedAvgLife > div.data',
         '#fundamentalsAndRisk > div.product-data-list.data-points-en_US > div.float-left.in-left > div.product-data-item.col-weightedAvgLife > div.data'
     ]);
+    if (textFacts.maturityYears !== undefined) {
+        rawMaturityYears = String(textFacts.maturityYears);
+    }
     if (!rawMaturityYears) {
         // Fallback: search walrus-rendered cards by attribute names
         rawMaturityYears = await selectDataByAttribute(['weightedAvgLife', 'weightedAvgMaturity', 'termToMaturity', 'avgLife', 'weightedAvgLife-data', 'weightedAvgLife']);
