@@ -1,5 +1,5 @@
 const response = await fetch(
-    "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/tips_cpi_data_summary?fields=cusip,interest_rate,series,security_term,maturity_date,dated_date,ref_cpi_on_dated_date&sort=maturity_date&format=csv"
+    "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/tips_cpi_data_summary?fields=cusip,interest_rate,security_term,series,maturity_date,dated_date,ref_cpi_on_dated_date&sort=maturity_date&format=csv"
 );
 const csvText = await response.text();
 const bondsText = csvText.split("\n"); 0
