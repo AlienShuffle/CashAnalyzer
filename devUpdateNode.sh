@@ -10,7 +10,10 @@ for package in $(ls */package.json); do
         cd $dir
         echo "##### $dir"
         if grep puppeteer package.json; then
-            grep puppeteer package-lock.json >/dev/null || npm install puppeteer
+            grep puppeteer package-lock.json >/dev/null || (
+                npm install-scripts approve puppeteer
+                npm install puppeteer
+            )
         fi
         if grep fast-xml-parser package.json; then
             grep fast-xml-parser package-lock.json >/dev/null || npm install fast-xml-parser
