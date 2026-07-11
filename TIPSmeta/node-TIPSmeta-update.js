@@ -16,5 +16,6 @@ for (let i = 1; i < bondsText.length; i++) {
     if (isNaN(rate) || rate === 0) continue; // skip rows with missing rate values
     row[1] = '"' + (rate / 100).toFixed(5) + '"';
     row[2] = row[2].replace(/-Year/g, '');
+    if (row[2].includes(" 6-Month")) row[2] = '"' + (row[2].replace(" 6-Month", '').replace(/"/g, '') * 1 + .5) + '"';
     console.log(row.join(","));
 }
