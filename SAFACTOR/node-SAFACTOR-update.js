@@ -117,7 +117,15 @@ function calcFactorHistory(years, type) {
             });
         }
     }
+    // now level set the total of all the average factors to 100, by adjusting each factor by the ratio of 100 to the total of all average factors.
+    const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
+    const adjustmentRatio = 100 / totalFactor;
+    for (let i = 0; i < historicalFactors.length; i++) {
+        historicalFactors[i].factor = (historicalFactors[i].factor * adjustmentRatio).toFixed(4) * 1;
+    }
 
+    // calculate the daily delta and factor on the 15th of the month for each month, using the next month's factor as the end factor.
+    // also output the results to the console in CSV format.
     for (let i = 0; i < historicalFactors.length; i++) {
         const r = historicalFactors[i];
         const sfactor = r.factor;
@@ -132,12 +140,12 @@ function calcFactorHistory(years, type) {
         historicalFactors[i].factorYear = new Date().getFullYear();
         historicalFactors[i].startDate = r.calcStart;
         historicalFactors[i].endDate = r.calcEnd;
-        console.log(`${r.type},${r.month},${r.factor},${r.dailyDelta},${r.factor15th},${r.factorYear},${r.startDate},${r.endDate},${r.entriesTested}`);
+        console.log(`${r.type},${r.month},${r.factor15th},${r.factor},${r.dailyDelta},${r.factorYear},${r.startDate},${r.endDate},${r.entriesTested}`);
     }
-    //console.log(JSON.stringify(historicalFactors, null, 2));
+    //console.log(JSON.stringify(historicalFactors, null, 2));  
 }
 
-console.log(`type,month,factor,dailyDelta,factor15th,factorYear,startDate,endDate,entriesTested`);
+console.log(`type,month,factor15th,factor,dailyDelta,factorYear,startDate,endDate,entriesTested`);
 calcFactorHistory(1, "recent");
 calcFactorHistory(2, "2-year");
 calcFactorHistory(5, "5-year");
