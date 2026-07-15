@@ -274,3 +274,4 @@ CPIAUCSL/CPIAUCSL-new.csv
 **/venv/
 crsp/crsp_market_indexes_*.csv
 TIPSmeta/TIPSmeta-new.csv
+SAFACTOR/SAFACTOR-new.csv
