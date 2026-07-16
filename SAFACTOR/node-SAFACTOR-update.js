@@ -69,14 +69,6 @@ for (let i = 0; i < slMonths.length; i++) {
         factor: (100 * nsCPI / slCPI).toFixed(4) * 1,
     });
 }
-// remove last partial year from months.
-for (let i = months.length - 1; i >= 0; i--) {
-    if (months[i].year > lastFullYear) {
-        months.splice(i, 1);
-    } else {
-        break;
-    }
-}
 //console.error(`last full year: ${lastFullYear}`);
 //console.error(`Retrieved ${months.length} months of CPI data, starting with ${months[0].fullDate} and ending with ${months[months.length - 1].fullDate}.`);
 //console.error(JSON.stringify(months, null, 2));
@@ -160,8 +152,20 @@ function calcFactorHistory(years, type) {
 }
 
 console.log(`type,month,factor15th,factor,dailyDelta,factorYear,startDate,endDate,entriesTested`);
+// use most recent data (up to last month!)
+calcFactorHistory(1, "recent");
+// remove all partial year months.
+for (let i = months.length - 1; i >= 0; i--) {
+    if (months[i].year > lastFullYear) {
+        months.splice(i, 1);
+    } else {
+        break;
+    }
+}
+// continue with full years only.
 calcFactorHistory(1, "1-year");
 calcFactorHistory(2, "2-year");
 calcFactorHistory(5, "5-year");
 calcFactorHistory(10, "10-year");
 calcFactorHistory(20, "20-year");
+calcFactorHistory(30, "30-year");
