@@ -47,6 +47,7 @@ function getNSCPI(year, month) {
 // Create a basic factor array that includes factor, and SA and NS CPI values for each month.
 // The factor is the ratio of NS to SA CPI values, multiplied by 100.   
 let months = [];
+let lastFullYear = null;
 for (let i = 0; i < slMonths.length; i++) {
     const year = slMonths[i].year;
     const month = slMonths[i].month;
@@ -55,6 +56,9 @@ for (let i = 0; i < slMonths.length; i++) {
     if (nsCPI === null) {
         console.error(`Error: ${year}-${month}, No matching NS CPI value found.`);
         process.exit(1);
+    }
+    if (year > lastFullYear && month === 12) {
+        lastFullYear = year;
     }
     months.push({
         fullDate: slMonths[i].fullDate,
@@ -65,7 +69,17 @@ for (let i = 0; i < slMonths.length; i++) {
         factor: (100 * nsCPI / slCPI).toFixed(4) * 1,
     });
 }
+// remove last partial year from months.
+for (let i = months.length - 1; i >= 0; i--) {
+    if (months[i].year > lastFullYear) {
+        months.splice(i, 1);
+    } else {
+        break;
+    }
+}
+//console.error(`last full year: ${lastFullYear}`);
 //console.error(`Retrieved ${months.length} months of CPI data, starting with ${months[0].fullDate} and ending with ${months[months.length - 1].fullDate}.`);
+//console.error(JSON.stringify(months, null, 2));
 
 // create an n-year factor history, starting with the most recent month, and including the previous n-1 months.
 // The factor is calculated as the ratio of NS to SA CPI values, multiplied by 100.
@@ -119,7 +133,7 @@ function calcFactorHistory(years, type) {
     }
     // now level set the total of all the average factors to 100, by adjusting each factor by the ratio of 100 to the total of all average factors.
     const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
-    const adjustmentRatio = 100 / totalFactor;
+    const adjustmentRatio = 1200 / totalFactor;
     for (let i = 0; i < historicalFactors.length; i++) {
         historicalFactors[i].factor = (historicalFactors[i].factor * adjustmentRatio).toFixed(4) * 1;
     }
@@ -146,7 +160,7 @@ function calcFactorHistory(years, type) {
 }
 
 console.log(`type,month,factor15th,factor,dailyDelta,factorYear,startDate,endDate,entriesTested`);
-calcFactorHistory(1, "recent");
+calcFactorHistory(1, "1-year");
 calcFactorHistory(2, "2-year");
 calcFactorHistory(5, "5-year");
 calcFactorHistory(10, "10-year");
