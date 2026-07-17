@@ -1,3 +1,5 @@
+import { roundTo } from "../lib/utils.mjs";
+
 const response = await fetch(
     "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/tips_cpi_data_summary?fields=cusip,interest_rate,security_term,series,maturity_date,dated_date,ref_cpi_on_dated_date&sort=maturity_date&format=csv"
 );
@@ -14,8 +16,9 @@ for (let i = 1; i < bondsText.length; i++) {
     if (row.length < 5) continue; // skip rows with missing values
     const rate = row[1].replace(/"/g, '') * 1;
     if (isNaN(rate) || rate === 0) continue; // skip rows with missing rate values
-    row[1] = '"' + (rate / 100).toFixed(5) + '"';
-    row[2] = row[2].replace(/-Year/g, '');
-    if (row[2].includes(" 6-Month")) row[2] = '"' + (row[2].replace(" 6-Month", '').replace(/"/g, '') * 1 + .5) + '"';
+    row[1] = roundTo(rate / 100, 5);
+    row[2] = row[2].replace(/-Year/g, '').replace(/"/g, '');
+    if (row[2].includes(" 6-Month")) row[2] = roundTo(row[2].replace(" 6-Month", '').replace(/"/g, '') * 1 + .5, 1);
+    row[6] = roundTo(row[6].replace(/"/g, '') * 1, 5);
     console.log(row.join(","));
 }

@@ -4,6 +4,10 @@ import {
     duGetDateFromYYYYMMDD,
     duGetISOString
 } from "../lib/dateUtils.mjs";
+import {
+    roundTo,
+    roundToFixed
+} from "../lib/utils.mjs";
 
 // pull in a CPI metric and create a metric array.
 async function getCPIMonths(metric) {
@@ -66,7 +70,7 @@ for (let i = 0; i < slMonths.length; i++) {
         month: month,
         CPINS: nsCPI,
         CPISL: slCPI,
-        factor: (100 * nsCPI / slCPI).toFixed(4) * 1,
+        factor: roundTo((100 * nsCPI / slCPI), 3),
     });
 }
 //console.error(`last full year: ${lastFullYear}`);
@@ -110,7 +114,7 @@ function calcFactorHistory(years, type) {
         // calculate the average factor for each month over the 2-year period, and the daily delta and factor on the 15th of the month.
         if (factorGroups[i] && factorGroups[i].length > 0) {
             // find oldest month history.
-            const avgFactor = (factorGroups[i].reduce((sum, r) => sum + r.factor, 0) / factorGroups[i].length).toFixed(4) * 1;
+            const avgFactor = roundTo((factorGroups[i].reduce((sum, r) => sum + r.factor, 0) / factorGroups[i].length), 4);
             const calcStart = factorGroups[i].reduce((min, r) => r.fullDate < min ? r.fullDate : min, factorGroups[i][0].fullDate);
             const calcEnd = factorGroups[i].reduce((max, r) => r.fullDate > max ? r.fullDate : max, factorGroups[i][0].fullDate);
             historicalFactors.push({
@@ -127,7 +131,7 @@ function calcFactorHistory(years, type) {
     const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
     const adjustmentRatio = 1200 / totalFactor;
     for (let i = 0; i < historicalFactors.length; i++) {
-        historicalFactors[i].factor = (historicalFactors[i].factor * adjustmentRatio).toFixed(4) * 1;
+        historicalFactors[i].factor = roundTo((historicalFactors[i].factor * adjustmentRatio), 3);
     }
 
     // calculate the daily delta and factor on the 15th of the month for each month, using the next month's factor as the end factor.
@@ -138,8 +142,8 @@ function calcFactorHistory(years, type) {
         const nextFactor = historicalFactors[(i + 1) % historicalFactors.length];
         const efactor = nextFactor.factor;
         const dim = new Date(new Date().getFullYear(), r.month, 0).getDate();
-        const dailyDelta = ((efactor - sfactor) / dim).toFixed(4) * 1;
-        const factor15th = (sfactor + dailyDelta * 14).toFixed(4) * 1;
+        const dailyDelta = roundTo(((efactor - sfactor) / dim), 3);
+        const factor15th = roundTo((sfactor + dailyDelta * 14), 3);
         historicalFactors[i].dim = dim;
         historicalFactors[i].dailyDelta = dailyDelta;
         historicalFactors[i].factor15th = factor15th;

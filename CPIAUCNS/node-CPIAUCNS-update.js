@@ -1,3 +1,5 @@
+import { roundToFixed } from "../lib/utils.mjs";
+
 const series = "CPIAUCNS";
 const startDate = "1913-01-01";
 const response = await fetch(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${series}&cosd=${startDate}&coed=9999-12-31`);
@@ -29,5 +31,5 @@ months.sort((a, b) => new Date(a.month) - new Date(b.month)); // sort by month t
 console.log(`date,${series}`);
 for (let i = 0; i < months.length; i++) {
     const r = months[i];
-    console.log(`${r.month},${r.CPI.toFixed(3)}`);
+    console.log(`${r.month},${roundToFixed(r.CPI, 3)}`);
 }

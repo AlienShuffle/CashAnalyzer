@@ -2,6 +2,7 @@ import {
     duDaysBetween,
     duGetDateFromYYYYMMDD
 } from '../lib/dateUtils.mjs';
+import { roundTo, roundToFixed } from "../lib/utils.mjs";
 
 // start in 1996 as that is the year before TIPS were introduced.
 const series = "CPIAUCNS";
@@ -46,7 +47,7 @@ for (let i = 0; i < months.length - 1; i++) {
     nextRefCpiMonth.setMonth(nextRefCpiMonth.getMonth() + 3);
 
     const monthDays = duDaysBetween(refCpiMonth, nextRefCpiMonth);
-    const dailyCPIIncrement = ((nextRefCPI - refCPI) / monthDays).toFixed(6) * 1;
+    const dailyCPIIncrement = roundTo((nextRefCPI - refCPI) / monthDays, 6);
 
     for (let j = 0; j < monthDays; j++) {
         const dailyCPIDate = new Date(refCpiMonth);
@@ -68,5 +69,5 @@ resp.push({
 console.log(`date,REFCPI`);
 for (let i = 0; i < resp.length; i++) {
     const r = resp[i];
-    console.log(`${r.refCPIDate},${r.refCPI.toFixed(6)}`);
+    console.log(`${r.refCPIDate},${roundToFixed(r.refCPI, 5)}`);
 }
