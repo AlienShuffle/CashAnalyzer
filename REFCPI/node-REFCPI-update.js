@@ -69,5 +69,5 @@ resp.push({
 console.log(`date,REFCPI`);
 for (let i = 0; i < resp.length; i++) {
     const r = resp[i];
-    console.log(`${r.refCPIDate},${roundToFixed(r.refCPI, 5)}`);
+    console.log(`${r.refCPIDate},${roundToFixed(r.refCPI, 5, 6)}`);
 }
