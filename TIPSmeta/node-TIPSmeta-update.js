@@ -19,7 +19,7 @@ for (let i = 1; i < bondsText.length; i++) {
     if (row.length < 5) continue; // skip rows with missing values
     const rate = row[1].replace(/"/g, '') * 1;
     if (isNaN(rate) || rate === 0) continue; // skip rows with missing rate values
-    row[1] = roundTo(rate / 100, 5);
+    row[1] = roundToFixed(rate / 100, 5);
     row[2] = row[2].replace(/-Year/g, '').replace(/"/g, '');
     if (row[2].includes(" 6-Month")) row[2] = roundTo(row[2].replace(" 6-Month", '').replace(/"/g, '') * 1 + .5, 1);
     row[6] = roundToFixed(row[6].replace(/"/g, '') * 1, 5, 6);
