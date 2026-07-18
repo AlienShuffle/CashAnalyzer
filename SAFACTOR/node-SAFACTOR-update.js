@@ -128,11 +128,11 @@ function calcFactorHistory(years, type) {
         }
     }
     // now level set the total of all the average factors to 100, by adjusting each factor by the ratio of 100 to the total of all average factors.
-    const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
-    const adjustmentRatio = 1200 / totalFactor;
-    for (let i = 0; i < historicalFactors.length; i++) {
-        historicalFactors[i].factor = roundTo((historicalFactors[i].factor * adjustmentRatio), 3);
-    }
+    //const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
+    //const adjustmentRatio = 1200 / totalFactor;
+    //for (let i = 0; i < historicalFactors.length; i++) {
+    //    historicalFactors[i].factor = roundTo((historicalFactors[i].factor * adjustmentRatio), 3);
+    //}
 
     // calculate the daily delta and factor on the 15th of the month for each month, using the next month's factor as the end factor.
     // also output the results to the console in CSV format.
