@@ -1,4 +1,7 @@
-import { roundToFixed } from "../lib/utils.mjs";
+import {
+    roundTo,
+    roundToFixed
+} from "../lib/utils.mjs";
 
 const series = "CPIAUCSL";
 const startDate = "1913-01-01";
@@ -14,7 +17,7 @@ if (monthsText.length <= 100) {
 // seed with the missing month due to 2025 Govt shutdown, then loop through the rest of the months and build the response for each month.
 let months = [{
     month: "2025-10-01",
-    CPI: 324.6
+    CPI: roundTo(325.604 / (100.038 / 100), 4)         // backed into, Treasury published NSA CPI of 325.604 for October 2025 and Seasonal Factor of 1.00038
 }];
 for (let i = 1; i < monthsText.length; i++) {
     const row = monthsText[i].split(",");
