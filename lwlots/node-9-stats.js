@@ -25,22 +25,23 @@ function calculateValuationStats(lots, constraint, valueExtractor, prefix) {
         }
         valuations.push(valueExtractor(lotReport));
     }
+    valuations.sort((a, b) => a - b);
     const count = valuations.length;
     let total = 0;
     let countForAverage = 0;
-    let min = Number.MAX_VALUE;
-    let max = Number.MIN_VALUE;
+    let min = valuations.length > 0 ? valuations[0] : 0;
+    let max = valuations.length > 0 ? valuations[valuations.length - 1] : 0;
     for (const val of valuations) {
         total += val;
         countForAverage++;
-        if (val < min) min = val;
-        if (val > max) max = val;
     }
     let average = countForAverage > 0 ? Math.round(total / countForAverage) : 0;
+    const median = valuations.length > 0 ? valuations[Math.floor(valuations.length / 2)] : 0;
     console.log(`${prefix.trim()} Count${sep}${count}`);
     console.log(`Average ${prefix} Valuation${sep}${average}`);
     console.log(`Minimum ${prefix} Valuation${sep}${min}`);
     console.log(`Maximum ${prefix} Valuation${sep}${max}`);
+    console.log(`Median ${prefix} Valuation${sep}${median}`);
 }
 
 // Number of lots in the report.
@@ -85,7 +86,7 @@ console.log(`Wynonah Lakefront Lot Count${sep}${wynonahLakeFrontLotCount}`);
 console.log(`---\nLots Per Owner Counts`);
 let totalLotsPerOwner = 0;
 let ownerCount = 0;
-let maximumLotsPerOwner = Number.MIN_VALUE;
+let maximumLotsPerOwner = 0;
 for (let i = 0; i < lotDetailsJson.length; i++) {
     const lotReport = lotDetailsJson[i];
     totalLotsPerOwner += lotReport.relatedEmptyLotCnt + lotReport.relatedHomeLotCnt + 1;
