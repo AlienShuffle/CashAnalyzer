@@ -1,7 +1,7 @@
 {
   "name": "SAFACTOR",
   "version": "0.0.1",
-  "description": "TIPS SA Factor calculator for the Lake Wynonah lake lot assessments and taxes retrievel tool.",
+  "description": "TIPS SA Factor calculator",
   "type": "module",
   "keywords": [
     "TIPS",
