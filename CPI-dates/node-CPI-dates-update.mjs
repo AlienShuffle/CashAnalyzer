@@ -1,4 +1,7 @@
-import { duGetDateFromYYYYMMDD } from '../lib/dateUtils.mjs';
+import {
+    duDateLessThan,
+    duGetDateFromYYYYMMDD
+} from '../lib/dateUtils.mjs';
 
 const response = await fetch(`https://alfred.stlouisfed.org/release/downloaddates?rid=10&ff=txt`);
 const rawText = await response.text();
@@ -24,6 +27,7 @@ if (monthsText.length <= 100) {
     process.exit(1);
 }
 
+const startDate = duGetDateFromYYYYMMDD("1996-01-01");
 let results = [];
 for (let i = 0; i < monthsText.length; i++) {
     const line = monthsText[i].trim();
@@ -32,9 +36,12 @@ for (let i = 0; i < monthsText.length; i++) {
     }
     const rlsDate = duGetDateFromYYYYMMDD(line);
     const rlsDateStr = rlsDate.toISOString().substring(0, 10); // format as YYYY-MM-DD
-    const cpiDate = new Date(rlsDate.getFullYear(), rlsDate.getMonth()-1, 1); // first day of previous month
+    const cpiDate = new Date(rlsDate.getFullYear(), rlsDate.getMonth() - 1, 1); // first day of previous month
+
+    if (duDateLessThan(cpiDate, startDate)) continue; // skip dates before startDate
+
     const cpiDateStr = cpiDate.toISOString().substring(0, 10); // format as YYYY-MM-DD
-    const refcpiDate = new Date(cpiDate.getFullYear(), cpiDate.getMonth()+3, 1); // first day of month before cpiDate
+    const refcpiDate = new Date(cpiDate.getFullYear(), cpiDate.getMonth() + 3, 1); // first day of month before cpiDate
     const refcpiDateStr = refcpiDate.toISOString().substring(0, 10);
     results.push({ rlsDate: rlsDateStr, cpiDate: cpiDateStr, refcpiDate: refcpiDateStr });
 }
