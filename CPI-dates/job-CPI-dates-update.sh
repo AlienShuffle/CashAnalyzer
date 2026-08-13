@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 #
-# This tool now updates the REFCPI data on the cloudflare site.
+# This tool updates the CPI-release dates data on the cloudflare site.
 #
 # process the command argument list.
 # run 24 days after last publish, and only after 9am, 4 hours after if missed.
