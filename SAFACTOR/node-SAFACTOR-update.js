@@ -82,7 +82,7 @@ for (let i = 0; i < slMonths.length; i++) {
 // The daily delta is calculated as the difference between the current month's factor and the next month's factor,
 // divided by the number of days in the month.
 // The factor on the 15th of the month is calculated as the current month's factor plus the daily delta times 14.
-function calcFactorHistory(years, type) {
+function calcFactorHistory(years, type, months) {
     const lastDate = duGetDateFromYYYYMMDD(months[months.length - 1].fullDate);
     const earliestDate = new Date(lastDate.getFullYear() - years, lastDate.getMonth() + 1, 1);
     //console.error(`Earliest date for ${years}-year factor history: ${duGetISOString(earliestDate)}`);
@@ -157,7 +157,7 @@ function calcFactorHistory(years, type) {
 
 console.log(`type,month,factor15th,factor,dailyDelta,factorYear,startDate,endDate,entriesTested`);
 // use most recent data (up to last month!)
-calcFactorHistory(1, "recent");
+calcFactorHistory(1, "recent", months);
 // remove all partial year months.
 for (let i = months.length - 1; i >= 0; i--) {
     if (months[i].year > lastFullYear) {
@@ -167,9 +167,72 @@ for (let i = months.length - 1; i >= 0; i--) {
     }
 }
 // continue with full years only.
-calcFactorHistory(1, "1-year");
-calcFactorHistory(2, "2-year");
-calcFactorHistory(5, "5-year");
-calcFactorHistory(10, "10-year");
-calcFactorHistory(20, "20-year");
-calcFactorHistory(30, "30-year");
+calcFactorHistory(1, "1-year", months);
+calcFactorHistory(2, "2-year", months);
+calcFactorHistory(5, "5-year", months);
+calcFactorHistory(10, "10-year", months);
+calcFactorHistory(20, "20-year", months);
+calcFactorHistory(30, "30-year", months);
+
+
+// remove the highest and lowest factor from each of the 10, 20, and 30 year factor arrays, and recalculate the average factor for each month.
+function removeOutliersAndRecalculate(years, type, months) {
+    let factorGroups = [];
+    for (let i = 0; i < months.length; i++) {
+        const r = months[i];
+        if (!factorGroups[r.month]) {
+            factorGroups[r.month] = [];
+        }
+        factorGroups[r.month].push(r.factor);
+    }
+    let historicalFactors = [];
+    for (let i = 1; i <= 12; i++) {
+        if (factorGroups[i] && factorGroups[i].length > 0) {
+            // remove the highest and lowest factor from the array.
+            const factors = factorGroups[i].sort((a, b) => a - b);
+            factors.shift();
+            factors.pop();
+            const avgFactor = roundTo((factors.reduce((sum, r) => sum + r, 0) / factors.length), 4);
+            // include calcstart and calcend dates for the factors used in the average calculation.
+            const calcStart = months.filter(r => r.month === i).reduce((min, r) => r.fullDate < min ? r.fullDate : min, months.filter(r => r.month === i)[0].fullDate);
+            const calcEnd = months.filter(r => r.month === i).reduce((max, r) => r.fullDate > max ? r.fullDate : max, months.filter(r => r.month === i)[0].fullDate);       
+            historicalFactors.push({
+                type: type,
+                factor: avgFactor,
+                month: i,
+                calcStart: calcStart,
+                calcEnd: calcEnd,
+                entriesTested: factorGroups[i].length,
+            });
+        }
+    }
+    // now level set the total of all the average factors to 100, by adjusting each factor by the ratio of 100 to the total of all average factors.
+    const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
+    const adjustmentRatio = 1200 / totalFactor;
+    for (let i = 0; i < historicalFactors.length; i++) {
+        historicalFactors[i].factor = roundTo((historicalFactors[i].factor * adjustmentRatio), 3);
+    }
+    // calculate the daily delta and factor on the 15th of the month for each month, using the next month's factor as the end factor.
+    for (let i = 0; i < historicalFactors.length; i++) {
+        const r = historicalFactors[i];
+        const sfactor = r.factor;
+        const nextFactor = historicalFactors[(i + 1) % historicalFactors.length];
+        const efactor   = nextFactor.factor;
+        const dim = new Date(new Date().getFullYear(), r.month, 0).getDate();
+        const dailyDelta = roundTo(((efactor - sfactor) / dim), 3);
+        const factor15th = roundTo((sfactor + dailyDelta * 14), 3);
+        historicalFactors[i].dim = dim;
+        historicalFactors[i].dailyDelta = dailyDelta;
+        historicalFactors[i].factor15th = factor15th;
+        historicalFactors[i].factorYear = new Date().getFullYear();
+        console.log(`${r.type},${r.month},${r.factor15th},${r.factor},${r.dailyDelta},${r.factorYear},${r.calcStart},${r.calcEnd},${r.entriesTested}`);
+    }
+}
+let sevenYearFactors = months.filter(r => r.year >= lastFullYear - 6 && r.year <= lastFullYear);
+let tenYearFactors = months.filter(r => r.year >= lastFullYear - 9 && r.year <= lastFullYear);
+let twentyYearFactors = months.filter(r => r.year >= lastFullYear - 19 && r.year <= lastFullYear);
+let thirtyYearFactors = months.filter(r => r.year >= lastFullYear - 29 && r.year <= lastFullYear);  
+removeOutliersAndRecalculate(7, "7-year trimmed", sevenYearFactors);
+removeOutliersAndRecalculate(10, "10-year trimmed", tenYearFactors);
+removeOutliersAndRecalculate(20, "20-year trimmed", twentyYearFactors);
+removeOutliersAndRecalculate(30, "30-year trimmed", thirtyYearFactors);
