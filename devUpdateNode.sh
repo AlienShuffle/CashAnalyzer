@@ -10,7 +10,7 @@ find "$ROOT_DIR" -name package.json -not -path "*/node_modules/*" -not -path "*/
             echo "##### $dir"
 
             # remove node_modules and package-lock.json to ensure a clean install only deliberately.
-            rm -rf node_modules
+            #rm -rf node_modules
             #rm -f package-lock.json
             if grep -q '"puppeteer"' package.json; then
                 npm install puppeteer@25.7.0
