@@ -2,6 +2,7 @@
 #
 # Updates to the NPM/Node Environment This needs to be done in each directory
 #
+rm -rf ~/.cache/puppeteer
 
 # directories that need puppeteer or xml-parser use:
 ROOT_DIR="${1:-.}"

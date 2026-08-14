@@ -1,4 +1,10 @@
 #!/bin/bash
+source ../meta.common.sh
+repoDir=$(dirname $cloudFlareHome)
+if [ ! -d "$repoDir/.git" ]; then
+    echo "$0: we are running on a non-git cloudflare tree, this is a scratch environment, skipping backup process."
+    exit 1
+fi
 
 # =====================================================================
 # Linux System Backup Script
