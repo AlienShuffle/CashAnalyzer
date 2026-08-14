@@ -3,12 +3,13 @@ import puppeteer from "puppeteer";
 
 // initiate a browser instance with all the necessary tweaks for performance, etc.
 let browserPromise = puppeteer.launch({
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
     defaultViewport: null,
     // we have to run interactive, or Wisdomtree.com blocks the request.
     headless: false,  // comment out to make this run headless for production.
     ignoreDefaultArgs: ['--disable-extensions'],
     //args: ['--window-size=1920,1080']  // big screen layout for debugging
-    args: ['--window-size=800,600', '--no-sandbox'] // small screen layout for simplicity & performance.
+    args: ['--window-size=800,600', '--no-sandbox', '--disable-setuid-sandbox'] // small screen layout for simplicity & performance.
 });
 
 function run() {

@@ -2,11 +2,12 @@ import puppeteer from "puppeteer";
 
 // shared global browser instance.
 let browserPromise = puppeteer.launch({
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
     defaultViewport: null,
     headless: false,  // comment out to make this run headless for production.
     ignoreDefaultArgs: ['--disable-extensions'],
     //args: ['--window-size=1920,1080']
-    args: ['--window-size=800,600', '--no-sandbox']
+    args: ['--window-size=800,600', '--no-sandbox', '--disable-setuid-sandbox']
 });
 
 function run() {

@@ -425,12 +425,14 @@ async function runQueryVariant(browser, variant, startDate, endDate) {
   const endISO = toISODateOnly(now);   // yyyy-mm-dd
 
   const browser = await puppeteer.launch({
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
     //headless: HEADLESS,
     //slowMo: SLOW_MO,
     defaultViewport: { width: 1280, height: 900 },
     args: [
       "--no-sandbox",
-      "--disable-setuid-sandbox"
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage"
     ]
   });
 

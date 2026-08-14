@@ -12,7 +12,7 @@
   "type": "module",
   "dependencies": {
     "node-html-parser": "^7.0.2",
-    "puppeteer": "^24.10.1"
+    "puppeteer": "^25.7.0"
   },
   "allowScripts": {
     "puppeteer@24.43.1": true

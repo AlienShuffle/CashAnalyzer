@@ -11,7 +11,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "puppeteer": "^24.10.1"
+    "puppeteer": "^25.7.0"
   },
   "allowScripts": {
     "puppeteer@24.43.1": true

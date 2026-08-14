@@ -11,8 +11,9 @@ import {
 const debug = false;
 
 const browserPromise = puppeteer.launch({
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
     headless: true,
-    args: ['--window-size=1920,1080'],  // big screen layout for CSV export.
+    args: ['--window-size=1920,1080', '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],  // big screen layout for CSV export.
     defaultViewport: null
 });
 const browser = await browserPromise;

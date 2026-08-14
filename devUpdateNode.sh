@@ -1,30 +1,26 @@
 #!/usr/bin/bash
-#
-# Updates to the NPM/Node Environment This needs to be done in each directory
-#
-# directories that need puppeteer or xml-parser use:
-for package in $(ls */package.json); do
-    echo found $package
-    dir=$(dirname $package)
-    (
-        cd $dir
-        echo "##### $dir"
-        if grep puppeteer package.json; then
-            grep puppeteer package-lock.json >/dev/null || (
-                npm install-scripts approve puppeteer
-                npm install puppeteer
-            )
-        fi
-        if grep fast-xml-parser package.json; then
-            grep fast-xml-parser package-lock.json >/dev/null || npm install fast-xml-parser
-        fi
-        if grep node-html-parser package.json; then
-            grep node-html-parser package-lock.json >/dev/null || npm install node-html-parser
-        fi
-        npm outdated || npm update
-        echo
-    )
-done
-echo Make sure all bash files are executable.
-echo 'chmod +x *.sh */*.sh'
-chmod +x *.sh */*.sh
+
+ROOT_DIR="${1:-.}"
+find "$ROOT_DIR" -name package.json -not -path "*/node_modules/*" -not -path "*/.git/*" |
+    while read package; do
+        dir=$(dirname "$package")
+        (
+            cd "$dir" || exit
+
+            echo "##### $dir"
+
+            # remove node_modules and package-lock.json to ensure a clean install only deliberately.
+            rm -rf node_modules
+            #rm -f package-lock.json
+            if grep -q '"puppeteer"' package.json; then
+                npm install puppeteer@25.7.0
+            fi
+            npm install
+            npm update
+
+            if grep -q '"puppeteer"' package.json; then
+                echo "Found puppeteer"
+            fi
+        )
+    done
+chmod +x *.sh */*.sh 2>/dev/null

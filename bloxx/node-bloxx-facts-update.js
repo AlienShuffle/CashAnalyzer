@@ -27,8 +27,10 @@ for (const fund of funds) {
 }
 
 const browserPromise = puppeteer.launch({
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
     headless: true,    // true for production, false for debugging to see the browser.
-    defaultViewport: null
+    defaultViewport: null,
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
 });
 const browser = await browserPromise;
 
