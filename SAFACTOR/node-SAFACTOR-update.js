@@ -50,7 +50,7 @@ function getNSCPI(year, month) {
 
 // Create a basic factor array that includes factor, and SA and NS CPI values for each month.
 // The factor is the ratio of NS to SA CPI values, multiplied by 100.   
-let months = [];
+let allFactors = [];
 let lastFullYear = null;
 for (let i = 0; i < slMonths.length; i++) {
     const year = slMonths[i].year;
@@ -64,7 +64,7 @@ for (let i = 0; i < slMonths.length; i++) {
     if (year > lastFullYear && month === 12) {
         lastFullYear = year;
     }
-    months.push({
+    allFactors.push({
         fullDate: slMonths[i].fullDate,
         year: year,
         month: month,
@@ -152,28 +152,23 @@ function calcFactorHistory(years, type, months) {
         historicalFactors[i].endDate = r.calcEnd;
         console.log(`${r.type},${r.month},${r.factor15th},${r.factor},${r.dailyDelta},${r.factorYear},${r.startDate},${r.endDate},${r.entriesTested}`);
     }
-    //console.log(JSON.stringify(historicalFactors, null, 2));  
+    //console.log(JSON.stringify(historicalFactors, null, 2));
+    return historicalFactors;
 }
 
 console.log(`type,month,factor15th,factor,dailyDelta,factorYear,startDate,endDate,entriesTested`);
 // use most recent data (up to last month!)
-calcFactorHistory(1, "recent", months);
-// remove all partial year months.
-for (let i = months.length - 1; i >= 0; i--) {
-    if (months[i].year > lastFullYear) {
-        months.splice(i, 1);
-    } else {
-        break;
-    }
-}
-// continue with full years only.
-calcFactorHistory(1, "1-year", months);
-calcFactorHistory(2, "2-year", months);
-calcFactorHistory(5, "5-year", months);
-calcFactorHistory(10, "10-year", months);
-calcFactorHistory(20, "20-year", months);
-calcFactorHistory(30, "30-year", months);
+calcFactorHistory(1, "recent", allFactors);
+// remove partial year factors.
+let fullYearFactors = allFactors.filter(r => r.year <= lastFullYear );
 
+// continue with full years only.
+const oneYearFactors = calcFactorHistory(1, "1-year", fullYearFactors);
+const twoYearFactors = calcFactorHistory(2, "2-year", fullYearFactors);
+const fiveYearFactors = calcFactorHistory(5, "5-year", fullYearFactors);
+const tenYearFactors = calcFactorHistory(10, "10-year", fullYearFactors);
+const twentyYearFactors = calcFactorHistory(20, "20-year", fullYearFactors);
+const thirtyYearFactors = calcFactorHistory(30, "30-year", fullYearFactors);
 
 // remove the highest and lowest factor from each of the 10, 20, and 30 year factor arrays, and recalculate the average factor for each month.
 function removeOutliersAndRecalculate(years, type, months) {
@@ -231,12 +226,63 @@ function removeOutliersAndRecalculate(years, type, months) {
         historicalFactors[i].factorYear = new Date().getFullYear();
         console.log(`${r.type},${r.month},${r.factor15th},${r.factor},${r.dailyDelta},${r.factorYear},${r.calcStart},${r.calcEnd},${r.entriesTested}`);
     }
+    return historicalFactors;
 }
-let sevenYearFactors = months.filter(r => r.year >= lastFullYear - 6 && r.year <= lastFullYear);
-let tenYearFactors = months.filter(r => r.year >= lastFullYear - 9 && r.year <= lastFullYear);
-let twentyYearFactors = months.filter(r => r.year >= lastFullYear - 19 && r.year <= lastFullYear);
-let thirtyYearFactors = months.filter(r => r.year >= lastFullYear - 29 && r.year <= lastFullYear);  
-removeOutliersAndRecalculate(7, "7-year trimmed", sevenYearFactors);
-removeOutliersAndRecalculate(10, "10-year trimmed", tenYearFactors);
-removeOutliersAndRecalculate(20, "20-year trimmed", twentyYearFactors);
-removeOutliersAndRecalculate(30, "30-year trimmed", thirtyYearFactors);
+
+function compareFactorSeries(label, seriesA, seriesB) {
+    const monthMapA = new Map(seriesA.map(r => [r.month, r.factor]));
+    const monthMapB = new Map(seriesB.map(r => [r.month, r.factor]));
+    const months = [...new Set([...monthMapA.keys(), ...monthMapB.keys()])].sort((a, b) => a - b)
+        .filter(month => monthMapA.has(month) && monthMapB.has(month));
+
+    if (months.length === 0) {
+        console.error(`${label}: no matching months found.`);
+        return null;
+    }
+
+    const diffs = months.map(month => {
+        const a = monthMapA.get(month);
+        const b = monthMapB.get(month);
+        const diff = a - b;
+        const pct = (diff / b) * 100;
+        return { month, a, b, diff, pct };
+    });
+
+    const meanDiff = diffs.reduce((sum, r) => sum + r.diff, 0) / diffs.length;
+    const variance = diffs.reduce((sum, r) => sum + ((r.diff - meanDiff) ** 2), 0) / diffs.length;
+    const stdDev = Math.sqrt(variance);
+    const meanAbsPct = diffs.reduce((sum, r) => sum + Math.abs(r.pct), 0) / diffs.length;
+
+    const report = {
+        label,
+        monthsCompared: diffs.length,
+        meanDiff,
+        variance,
+        stdDev,
+        meanAbsPct,
+        diffs: diffs.map(r => ({ month: r.month, diff: r.diff, pct: r.pct }))
+    };
+
+    console.error(`${label}: ${JSON.stringify({
+        monthsCompared: report.monthsCompared,
+        meanDiff: roundTo(report.meanDiff, 6),
+        variance: roundTo(report.variance, 6),
+        stdDev: roundTo(report.stdDev, 6),
+        meanAbsPct: roundTo(report.meanAbsPct, 6)
+    }, null, 2)}`);
+    return report;
+}
+
+const sevenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 6 && r.year <= lastFullYear);
+const tenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 9 && r.year <= lastFullYear);
+const twentyYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 19 && r.year <= lastFullYear);
+const thirtyYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 29 && r.year <= lastFullYear);
+const sevenYearTrimmedSeries = removeOutliersAndRecalculate(7, "7-year trimmed", sevenYearSourceFactors);
+const tenYearTrimmedSeries = removeOutliersAndRecalculate(10, "10-year trimmed", tenYearSourceFactors);
+const twentyYearTrimmedSeries = removeOutliersAndRecalculate(20, "20-year trimmed", twentyYearSourceFactors);
+const thirtyYearTrimmedSeries = removeOutliersAndRecalculate(30, "30-year trimmed", thirtyYearSourceFactors);
+compareFactorSeries("1-year vs 5-year", oneYearFactors, fiveYearFactors);
+compareFactorSeries("1-year vs 7-year-trimmed", oneYearFactors, sevenYearTrimmedSeries);
+compareFactorSeries("1-year vs 10-year-trimmed", oneYearFactors, tenYearTrimmedSeries);
+compareFactorSeries("1-year vs 20-year-trimmed", oneYearFactors, twentyYearTrimmedSeries);
+compareFactorSeries("1-year vs 30-year-trimmed", oneYearFactors, thirtyYearTrimmedSeries);
