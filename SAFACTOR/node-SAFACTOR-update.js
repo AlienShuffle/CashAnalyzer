@@ -191,10 +191,12 @@ function removeOutliersAndRecalculate(years, type, months) {
         if (factorGroups[i] && factorGroups[i].length > 0) {
             const adjustedMonthEntries = months.filter(r => ((r.month + 3 - 1) % 12) + 1 === i);
             // remove the highest and lowest factor from the array.
-            const factors = [...factorGroups[i]].sort((a, b) => a - b);
-            factors.shift();
-            factors.pop();
-            const avgFactor = roundTo((factors.reduce((sum, r) => sum + r, 0) / factors.length), 4);
+            const trimmedFactors = [...factorGroups[i]].sort((a, b) => a - b);
+            if (trimmedFactors.length > 2) {
+                trimmedFactors.shift();
+                trimmedFactors.pop();
+            }
+            const avgFactor = roundTo((trimmedFactors.reduce((sum, r) => sum + r, 0) / trimmedFactors.length), 4);
             // include calcstart and calcend dates for the factors used in the average calculation.
             const calcStart = adjustedMonthEntries.reduce((min, r) => r.fullDate < min ? r.fullDate : min, adjustedMonthEntries[0].fullDate);
             const calcEnd = adjustedMonthEntries.reduce((max, r) => r.fullDate > max ? r.fullDate : max, adjustedMonthEntries[0].fullDate);
@@ -204,7 +206,7 @@ function removeOutliersAndRecalculate(years, type, months) {
                 month: i,
                 calcStart: calcStart,
                 calcEnd: calcEnd,
-                entriesTested: factorGroups[i].length,
+                entriesTested: trimmedFactors.length,
             });
         }
     }
