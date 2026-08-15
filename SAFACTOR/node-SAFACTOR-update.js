@@ -180,22 +180,24 @@ function removeOutliersAndRecalculate(years, type, months) {
     let factorGroups = [];
     for (let i = 0; i < months.length; i++) {
         const r = months[i];
-        if (!factorGroups[r.month]) {
-            factorGroups[r.month] = [];
+        const adjustedMonth = ((r.month + 3 - 1) % 12) + 1;
+        if (!factorGroups[adjustedMonth]) {
+            factorGroups[adjustedMonth] = [];
         }
-        factorGroups[r.month].push(r.factor);
+        factorGroups[adjustedMonth].push(r.factor);
     }
     let historicalFactors = [];
     for (let i = 1; i <= 12; i++) {
         if (factorGroups[i] && factorGroups[i].length > 0) {
+            const adjustedMonthEntries = months.filter(r => ((r.month + 3 - 1) % 12) + 1 === i);
             // remove the highest and lowest factor from the array.
-            const factors = factorGroups[i].sort((a, b) => a - b);
+            const factors = [...factorGroups[i]].sort((a, b) => a - b);
             factors.shift();
             factors.pop();
             const avgFactor = roundTo((factors.reduce((sum, r) => sum + r, 0) / factors.length), 4);
             // include calcstart and calcend dates for the factors used in the average calculation.
-            const calcStart = months.filter(r => r.month === i).reduce((min, r) => r.fullDate < min ? r.fullDate : min, months.filter(r => r.month === i)[0].fullDate);
-            const calcEnd = months.filter(r => r.month === i).reduce((max, r) => r.fullDate > max ? r.fullDate : max, months.filter(r => r.month === i)[0].fullDate);       
+            const calcStart = adjustedMonthEntries.reduce((min, r) => r.fullDate < min ? r.fullDate : min, adjustedMonthEntries[0].fullDate);
+            const calcEnd = adjustedMonthEntries.reduce((max, r) => r.fullDate > max ? r.fullDate : max, adjustedMonthEntries[0].fullDate);
             historicalFactors.push({
                 type: type,
                 factor: avgFactor,
