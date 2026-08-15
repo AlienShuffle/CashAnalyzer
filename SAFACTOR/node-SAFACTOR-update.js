@@ -263,16 +263,18 @@ function compareFactorSeries(label, seriesA, seriesB) {
         diffs: diffs.map(r => ({ month: r.month, diff: r.diff, pct: r.pct }))
     };
 
-    console.error(`${label}: ${JSON.stringify({
-        monthsCompared: report.monthsCompared,
-        meanDiff: roundTo(report.meanDiff, 6),
-        variance: roundTo(report.variance, 6),
-        stdDev: roundTo(report.stdDev, 6),
-        meanAbsPct: roundTo(report.meanAbsPct, 6)
-    }, null, 2)}`);
+    console.error([
+        label,
+        report.monthsCompared,
+        roundTo(report.meanDiff, 6),
+        roundTo(report.variance, 6),
+        roundTo(report.stdDev, 6),
+        roundTo(report.meanAbsPct, 6)
+    ].join(","));
     return report;
 }
 
+console.error("label,monthsCompared,meanDiff,variance,stdDev,meanAbsPct");
 const sevenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 6 && r.year <= lastFullYear);
 const tenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 9 && r.year <= lastFullYear);
 const twentyYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 19 && r.year <= lastFullYear);
