@@ -38,6 +38,7 @@ function calculateValuationStats(lots, constraint, valueExtractor, prefix) {
     let average = countForAverage > 0 ? Math.round(total / countForAverage) : 0;
     const median = valuations.length > 0 ? valuations[Math.floor(valuations.length / 2)] : 0;
     console.log(`${prefix.trim()} Count${sep}${count}`);
+    console.log(`Total ${prefix} Valuation${sep}${total}`);
     console.log(`Average ${prefix} Valuation${sep}${average}`);
     console.log(`Minimum ${prefix} Valuation${sep}${min}`);
     console.log(`Maximum ${prefix} Valuation${sep}${max}`);
@@ -176,7 +177,8 @@ console.log(`No Home Lakefront Lot Count${sep}${noHomeLakeFrontLotCount}`);
 const homeWithEmptyLotOwnerCount = lotDetailsJson.filter(lot => lot.yearBuilt && lot.relatedEmptyLotCnt > 0).length;
 console.log(`Home With Empty Lot Owner Count${sep}${homeWithEmptyLotOwnerCount}`);
 
-console.log(`---\nHome Lot Valuation Stats`);
+console.log(`---\nHome Lot Valuation Stats - Using Current Market Values from the County Assessor's Office`);
+
 calculateValuationStats(
     lotDetailsMap,
     lot => lot.valuationTotal > 0,
