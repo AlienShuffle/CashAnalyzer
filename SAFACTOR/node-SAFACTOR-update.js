@@ -229,6 +229,105 @@ function removeOutliersAndRecalculate(years, type, months) {
     return historicalFactors;
 }
 
+function buildFactorDataset(months, trimOutliers) {
+    const factorGroups = [];
+    for (const r of months) {
+        const adjustedMonth = ((r.month + 3 - 1) % 12) + 1;
+        if (!factorGroups[adjustedMonth]) factorGroups[adjustedMonth] = [];
+        factorGroups[adjustedMonth].push(r.factor);
+    }
+
+    const dataset = new Map();
+    for (let month = 1; month <= 12; month++) {
+        if (!factorGroups[month] || factorGroups[month].length === 0) continue;
+        const factors = [...factorGroups[month]].sort((a, b) => a - b);
+        if (trimOutliers && factors.length > 2) {
+            factors.shift();
+            factors.pop();
+        }
+        const average = factors.reduce((sum, factor) => sum + factor, 0) / factors.length;
+        dataset.set(month, roundTo(average, 4));
+    }
+
+    if (trimOutliers) {
+        const adjustmentRatio = 1200 / [...dataset.values()].reduce((sum, factor) => sum + factor, 0);
+        for (const [month, factor] of dataset) {
+            dataset.set(month, roundTo(factor * adjustmentRatio, 3));
+        }
+    }
+    return dataset;
+}
+
+function evaluateDataset(label, years, trimOutliers) {
+    const errors = [];
+    const firstYear = fullYearFactors[0].year;
+    for (let targetYear = firstYear + years; targetYear <= lastFullYear; targetYear++) {
+        const sourceFactors = fullYearFactors.filter(r => r.year >= targetYear - years && r.year < targetYear);
+        const dataset = buildFactorDataset(sourceFactors, trimOutliers);
+        const targetFactors = fullYearFactors.filter(r => r.year === targetYear);
+        const comparisons = [];
+        for (const target of targetFactors) {
+            const adjustedMonth = ((target.month + 3 - 1) % 12) + 1;
+            const predicted = dataset.get(adjustedMonth);
+            if (predicted === undefined) continue;
+            comparisons.push({ target, predicted });
+        }
+        const predictedMean = comparisons.length === 0
+            ? null
+            : comparisons.reduce((sum, row) => sum + row.predicted, 0) / comparisons.length;
+        const targetMean = comparisons.length === 0
+            ? null
+            : comparisons.reduce((sum, row) => sum + row.target.factor, 0) / comparisons.length;
+        for (const { target, predicted } of comparisons) {
+            const error = predicted - target.factor;
+            const normalizedPredicted = predicted / predictedMean;
+            const normalizedTarget = target.factor / targetMean;
+            const shapeError = normalizedPredicted - normalizedTarget;
+            errors.push({
+                year: targetYear,
+                error,
+                absoluteError: Math.abs(error),
+                squaredError: error ** 2,
+                absolutePctError: Math.abs(error / target.factor) * 100,
+                shapeAbsoluteError: Math.abs(shapeError),
+                shapeSquaredError: shapeError ** 2,
+            });
+        }
+    }
+
+    const recentStartYear = lastFullYear - 9;
+    const recentErrors = errors.filter(r => r.year >= recentStartYear);
+    const weightedErrors = errors.map(r => ({
+        ...r,
+        weight: r.year >= recentStartYear ? 2 : 1,
+    }));
+    const average = (rows, selector) => rows.length === 0 ? null
+        : rows.reduce((sum, row) => sum + selector(row), 0) / rows.length;
+    const weightedAverage = selector => weightedErrors.length === 0 ? null
+        : weightedErrors.reduce((sum, row) => sum + row.weight * selector(row), 0)
+            / weightedErrors.reduce((sum, row) => sum + row.weight, 0);
+
+    return {
+        label,
+        years,
+        trimOutliers,
+        monthsCompared: errors.length,
+        overallMae: average(errors, r => r.absoluteError),
+        recent10Mae: average(recentErrors, r => r.absoluteError),
+        weightedMae: weightedAverage(r => r.absoluteError),
+        overallShapeMae: average(errors, r => r.shapeAbsoluteError),
+        weightedShapeMae: weightedAverage(r => r.shapeAbsoluteError),
+        overallRmse: average(errors, r => r.squaredError) === null ? null
+            : Math.sqrt(average(errors, r => r.squaredError)),
+        recent10Rmse: average(recentErrors, r => r.squaredError) === null ? null
+            : Math.sqrt(average(recentErrors, r => r.squaredError)),
+        meanBias: average(errors, r => r.error),
+        weightedMeanAbsPct: weightedAverage(r => r.absolutePctError),
+    };
+}
+
+// older statistical comparison code, kept for reference, but not used in the current analysis.
+/*
 function compareFactorSeries(label, seriesA, seriesB) {
     const monthMapA = new Map(seriesA.map(r => [r.month, r.factor]));
     const monthMapB = new Map(seriesB.map(r => [r.month, r.factor]));
@@ -274,6 +373,7 @@ function compareFactorSeries(label, seriesA, seriesB) {
     return report;
 }
 
+
 console.error("label,monthsCompared,meanDiff,variance,stdDev,meanAbsPct");
 const sevenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 6 && r.year <= lastFullYear);
 const tenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 9 && r.year <= lastFullYear);
@@ -288,3 +388,54 @@ compareFactorSeries("1-year vs 7-year-trimmed", oneYearFactors, sevenYearTrimmed
 compareFactorSeries("1-year vs 10-year-trimmed", oneYearFactors, tenYearTrimmedSeries);
 compareFactorSeries("1-year vs 20-year-trimmed", oneYearFactors, twentyYearTrimmedSeries);
 compareFactorSeries("1-year vs 30-year-trimmed", oneYearFactors, thirtyYearTrimmedSeries);
+compareFactorSeries("5-year vs 7-year-trimmed", fiveYearFactors, sevenYearTrimmedSeries);
+compareFactorSeries("5-year vs 10-year-trimmed", fiveYearFactors, tenYearTrimmedSeries);
+compareFactorSeries("5-year vs 20-year-trimmed", fiveYearFactors, twentyYearTrimmedSeries);
+compareFactorSeries("5-year vs 30-year-trimmed", fiveYearFactors, thirtyYearTrimmedSeries);
+compareFactorSeries("5-year vs 10-year", fiveYearFactors, tenYearFactors);
+compareFactorSeries("5-year vs 20-year", fiveYearFactors, twentyYearFactors);
+compareFactorSeries("5-year vs 30-year", fiveYearFactors, thirtyYearFactors);
+compareFactorSeries("7-year-trimmed vs 10-year-trimmed", sevenYearTrimmedSeries, tenYearTrimmedSeries);
+compareFactorSeries("7-year-trimmed vs 20-year-trimmed", sevenYearTrimmedSeries, twentyYearTrimmedSeries);
+compareFactorSeries("7-year-trimmed vs 30-year-trimmed", sevenYearTrimmedSeries, thirtyYearTrimmedSeries);
+*/
+
+const datasetsToEvaluate = [
+    { label: "1-year", years: 1, trimOutliers: false },
+    { label: "2-year", years: 2, trimOutliers: false },
+    { label: "5-year", years: 5, trimOutliers: false },
+    { label: "7-year-trimmed", years: 7, trimOutliers: true },
+    { label: "10-year", years: 10, trimOutliers: false },
+    { label: "10-year-trimmed", years: 10, trimOutliers: true },
+    { label: "20-year", years: 20, trimOutliers: false },
+    { label: "20-year-trimmed", years: 20, trimOutliers: true },
+    { label: "30-year", years: 30, trimOutliers: false },
+    { label: "30-year-trimmed", years: 30, trimOutliers: true },
+];
+
+console.log("dataset,years,trimOutliers,monthsCompared,overallMae,recent10Mae,weightedMae,overallShapeMae,weightedShapeMae,overallRmse,recent10Rmse,meanBias,weightedMeanAbsPct");
+const datasetAnalysis = datasetsToEvaluate
+    .map(dataset => evaluateDataset(dataset.label, dataset.years, dataset.trimOutliers))
+    .sort((a, b) => (b.weightedShapeMae ?? -Infinity) - (a.weightedShapeMae ?? -Infinity));
+const formatAnalysisValue = value => value === null ? "NA" : roundTo(value, 6);
+const rankedDatasets = datasetAnalysis.filter(result => result.weightedMae !== null);
+for (const result of rankedDatasets) {
+    console.log([
+        result.label,
+        result.years,
+        result.trimOutliers,
+        result.monthsCompared,
+        formatAnalysisValue(result.overallMae),
+        formatAnalysisValue(result.recent10Mae),
+        formatAnalysisValue(result.weightedMae),
+        formatAnalysisValue(result.overallShapeMae),
+        formatAnalysisValue(result.weightedShapeMae),
+        formatAnalysisValue(result.overallRmse),
+        formatAnalysisValue(result.recent10Rmse),
+        formatAnalysisValue(result.meanBias),
+        formatAnalysisValue(result.weightedMeanAbsPct),
+    ].join(","));
+}
+    const bestDataset = rankedDatasets.reduce((best, result) =>
+        result.weightedShapeMae < best.weightedShapeMae ? result : best);
+        console.log(`best weighted shape dataset: ${bestDataset.label}`);
