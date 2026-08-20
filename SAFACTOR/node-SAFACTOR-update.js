@@ -11,7 +11,7 @@ import {
 
 // pull in a CPI metric and create a metric array.
 async function getCPIMonths(metric) {
-    const startDate = new Date(1996, 0, 1);
+    const startDate = new Date(1966, 0, 1);
     const response = await fetch(`https://cashoptimizer.pages.dev/Treasuries/${metric}.csv`);
     const text = await response.text();
     const rows = text.split("\n");
@@ -296,16 +296,45 @@ function evaluateDataset(label, years, trimOutliers) {
     }
 
     const recentStartYear = lastFullYear - 9;
+    const commonPeriodStartYear = lastFullYear - 29;
     const recentErrors = errors.filter(r => r.year >= recentStartYear);
-    const weightedErrors = errors.map(r => ({
-        ...r,
-        weight: r.year >= recentStartYear ? 2 : 1,
-    }));
+    const commonPeriodErrors = errors.filter(r => r.year >= commonPeriodStartYear);
+    const recentForecastOriginStart = lastFullYear - 19;
+    const recentForecastOriginEnd = lastFullYear - 10;
+    const forecastShapeErrors = [];
+    for (let originYear = recentForecastOriginStart; originYear <= recentForecastOriginEnd; originYear++) {
+        const sourceFactors = fullYearFactors.filter(r =>
+            r.year >= originYear - years + 1 && r.year <= originYear);
+        const dataset = buildFactorDataset(sourceFactors, trimOutliers);
+        for (let horizon = 1; horizon <= 10; horizon++) {
+            const targetYear = originYear + horizon;
+            const targetFactors = fullYearFactors.filter(r => r.year === targetYear);
+            const comparisons = targetFactors.map(target => ({
+                target,
+                predicted: dataset.get(((target.month + 3 - 1) % 12) + 1),
+            })).filter(row => row.predicted !== undefined);
+            if (comparisons.length === 0) continue;
+            const predictedMean = comparisons.reduce((sum, row) => sum + row.predicted, 0)
+                / comparisons.length;
+            const targetMean = comparisons.reduce((sum, row) => sum + row.target.factor, 0)
+                / comparisons.length;
+            for (const { target, predicted } of comparisons) {
+                forecastShapeErrors.push(Math.abs(
+                    (predicted / predictedMean) - (target.factor / targetMean)));
+            }
+        }
+    }
     const average = (rows, selector) => rows.length === 0 ? null
         : rows.reduce((sum, row) => sum + selector(row), 0) / rows.length;
-    const weightedAverage = selector => weightedErrors.length === 0 ? null
-        : weightedErrors.reduce((sum, row) => sum + row.weight * selector(row), 0)
-            / weightedErrors.reduce((sum, row) => sum + row.weight, 0);
+    const weightedAverage = (rows, selector) => {
+        if (rows.length === 0) return null;
+        const weightedRows = rows.map(row => ({
+            row,
+            weight: row.year >= recentStartYear ? 2 : 1,
+        }));
+        return weightedRows.reduce((sum, item) => sum + item.weight * selector(item.row), 0)
+            / weightedRows.reduce((sum, item) => sum + item.weight, 0);
+    };
 
     return {
         label,
@@ -314,15 +343,20 @@ function evaluateDataset(label, years, trimOutliers) {
         monthsCompared: errors.length,
         overallMae: average(errors, r => r.absoluteError),
         recent10Mae: average(recentErrors, r => r.absoluteError),
-        weightedMae: weightedAverage(r => r.absoluteError),
+        weightedMae: weightedAverage(errors, r => r.absoluteError),
         overallShapeMae: average(errors, r => r.shapeAbsoluteError),
-        weightedShapeMae: weightedAverage(r => r.shapeAbsoluteError),
+        weightedShapeMae: weightedAverage(errors, r => r.shapeAbsoluteError),
+        commonPeriodMonthsCompared: commonPeriodErrors.length,
+        commonPeriodWeightedShapeMae: weightedAverage(commonPeriodErrors, r => r.shapeAbsoluteError),
+        recent10YearForecastMonthsCompared: forecastShapeErrors.length,
+        recent10YearForecastShapeMae: forecastShapeErrors.length === 0 ? null
+            : forecastShapeErrors.reduce((sum, error) => sum + error, 0) / forecastShapeErrors.length,
         overallRmse: average(errors, r => r.squaredError) === null ? null
             : Math.sqrt(average(errors, r => r.squaredError)),
         recent10Rmse: average(recentErrors, r => r.squaredError) === null ? null
             : Math.sqrt(average(recentErrors, r => r.squaredError)),
         meanBias: average(errors, r => r.error),
-        weightedMeanAbsPct: weightedAverage(r => r.absolutePctError),
+        weightedMeanAbsPct: weightedAverage(errors, r => r.absolutePctError),
     };
 }
 
@@ -413,12 +447,13 @@ const datasetsToEvaluate = [
     { label: "30-year-trimmed", years: 30, trimOutliers: true },
 ];
 
-console.log("dataset,years,trimOutliers,monthsCompared,overallMae,recent10Mae,weightedMae,overallShapeMae,weightedShapeMae,overallRmse,recent10Rmse,meanBias,weightedMeanAbsPct");
+console.log("dataset,years,trimOutliers,monthsCompared,overallMae,recent10Mae,weightedMae,overallShapeMae,weightedShapeMae,commonPeriodMonthsCompared,commonPeriodWeightedShapeMae,recent10YearForecastMonthsCompared,recent10YearForecastShapeMae,overallRmse,recent10Rmse,meanBias,weightedMeanAbsPct");
 const datasetAnalysis = datasetsToEvaluate
     .map(dataset => evaluateDataset(dataset.label, dataset.years, dataset.trimOutliers))
-    .sort((a, b) => (b.weightedShapeMae ?? -Infinity) - (a.weightedShapeMae ?? -Infinity));
+    .sort((a, b) => (b.recent10YearForecastShapeMae ?? -Infinity)
+        - (a.recent10YearForecastShapeMae ?? -Infinity));
 const formatAnalysisValue = value => value === null ? "NA" : roundTo(value, 6);
-const rankedDatasets = datasetAnalysis.filter(result => result.weightedMae !== null);
+const rankedDatasets = datasetAnalysis.filter(result => result.recent10YearForecastShapeMae !== null);
 for (const result of rankedDatasets) {
     console.log([
         result.label,
@@ -430,6 +465,10 @@ for (const result of rankedDatasets) {
         formatAnalysisValue(result.weightedMae),
         formatAnalysisValue(result.overallShapeMae),
         formatAnalysisValue(result.weightedShapeMae),
+        result.commonPeriodMonthsCompared,
+        formatAnalysisValue(result.commonPeriodWeightedShapeMae),
+        result.recent10YearForecastMonthsCompared,
+        formatAnalysisValue(result.recent10YearForecastShapeMae),
         formatAnalysisValue(result.overallRmse),
         formatAnalysisValue(result.recent10Rmse),
         formatAnalysisValue(result.meanBias),
@@ -437,5 +476,5 @@ for (const result of rankedDatasets) {
     ].join(","));
 }
     const bestDataset = rankedDatasets.reduce((best, result) =>
-        result.weightedShapeMae < best.weightedShapeMae ? result : best);
-        console.log(`best weighted shape dataset: ${bestDataset.label}`);
+        result.recent10YearForecastShapeMae < best.recent10YearForecastShapeMae ? result : best);
+        console.log(`best recent 10-year forecast shape dataset,${bestDataset.label}`);
