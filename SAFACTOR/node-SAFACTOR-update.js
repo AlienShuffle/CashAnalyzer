@@ -449,7 +449,7 @@ const datasetsToEvaluate = [
     { label: "30-year-trimmed", years: 30, trimOutliers: true },
 ];
 
-console.log("dataset,years,trimOutliers,monthsCompared,overallMae,recent10Mae,weightedMae,overallShapeMae,weightedShapeMae,commonPeriodMonthsCompared,commonPeriodWeightedShapeMae,recent10YearForecastMonthsCompared,recent10YearForecastShapeMae,overallRmse,recent10Rmse,meanBias,weightedMeanAbsPct");
+console.log(",dataset,years,trimOutliers,monthsCompared,overallMae,recent10Mae,weightedMae,overallShapeMae,weightedShapeMae,commonPeriodMonthsCompared,commonPeriodWeightedShapeMae,recent10YearForecastMonthsCompared,recent10YearForecastShapeMae,overallRmse,recent10Rmse,meanBias,weightedMeanAbsPct");
 const datasetAnalysis = datasetsToEvaluate
     .map(dataset => evaluateDataset(dataset.label, dataset.years, dataset.trimOutliers))
     .sort((a, b) => (b.recent10YearForecastShapeMae ?? -Infinity)
@@ -458,6 +458,7 @@ const formatAnalysisValue = value => value === null ? "NA" : roundTo(value, 6);
 const rankedDatasets = datasetAnalysis.filter(result => result.recent10YearForecastShapeMae !== null);
 for (const result of rankedDatasets) {
     console.log([
+        "",
         result.label,
         result.years,
         result.trimOutliers,
@@ -479,4 +480,4 @@ for (const result of rankedDatasets) {
 }
     const bestDataset = rankedDatasets.reduce((best, result) =>
         result.recent10YearForecastShapeMae < best.recent10YearForecastShapeMae ? result : best);
-        console.log(`best recent 10-year forecast shape dataset,${bestDataset.label}`);
+        console.log(`,best recent 10-year forecast shape dataset,${bestDataset.label}`);
