@@ -228,6 +228,15 @@ function removeOutliersAndRecalculate(years, type, months) {
     }
     return historicalFactors;
 }
+const sevenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 6 && r.year <= lastFullYear);
+const tenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 9 && r.year <= lastFullYear);
+const twentyYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 19 && r.year <= lastFullYear);
+const thirtyYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 29 && r.year <= lastFullYear);
+
+const sevenYearTrimmedSeries = removeOutliersAndRecalculate(7, "7-year trimmed", sevenYearSourceFactors);
+const tenYearTrimmedSeries = removeOutliersAndRecalculate(10, "10-year trimmed", tenYearSourceFactors);
+const twentyYearTrimmedSeries = removeOutliersAndRecalculate(20, "20-year trimmed", twentyYearSourceFactors);
+const thirtyYearTrimmedSeries = removeOutliersAndRecalculate(30, "30-year trimmed", thirtyYearSourceFactors);
 
 function buildFactorDataset(months, trimOutliers) {
     const factorGroups = [];
@@ -409,14 +418,7 @@ function compareFactorSeries(label, seriesA, seriesB) {
 
 
 console.error("label,monthsCompared,meanDiff,variance,stdDev,meanAbsPct");
-const sevenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 6 && r.year <= lastFullYear);
-const tenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 9 && r.year <= lastFullYear);
-const twentyYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 19 && r.year <= lastFullYear);
-const thirtyYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 29 && r.year <= lastFullYear);
-const sevenYearTrimmedSeries = removeOutliersAndRecalculate(7, "7-year trimmed", sevenYearSourceFactors);
-const tenYearTrimmedSeries = removeOutliersAndRecalculate(10, "10-year trimmed", tenYearSourceFactors);
-const twentyYearTrimmedSeries = removeOutliersAndRecalculate(20, "20-year trimmed", twentyYearSourceFactors);
-const thirtyYearTrimmedSeries = removeOutliersAndRecalculate(30, "30-year trimmed", thirtyYearSourceFactors);
+
 compareFactorSeries("1-year vs 5-year", oneYearFactors, fiveYearFactors);
 compareFactorSeries("1-year vs 7-year-trimmed", oneYearFactors, sevenYearTrimmedSeries);
 compareFactorSeries("1-year vs 10-year-trimmed", oneYearFactors, tenYearTrimmedSeries);
