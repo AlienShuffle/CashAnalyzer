@@ -4,8 +4,9 @@
 #
 # process the command argument list.
 # run 24 days after last publish, and only after 9am, 4 hours after if missed.
-pubDelayHours="$(echo "24 * 24" | bc)"
-runDelayHours=4
+#pubDelayHours="$(echo "24 * 24" | bc)"
+pubDelayHours=18
+runDelayHours=2
 nightDelayHour=9
 while [ -n "$1" ]; do
     case $1 in

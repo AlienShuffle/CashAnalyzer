@@ -1,73 +1,133 @@
 import {
     duDaysBetween,
-    duGetDateFromYYYYMMDD
+    duGetDateFromYYYYMMDD,
+    duDateLessThan
 } from '../lib/dateUtils.mjs';
 import { roundTo, roundToFixed } from "../lib/utils.mjs";
 
-// start in 1996 as that is the year before TIPS were introduced.
-const series = "CPIAUCNS";
-const startDate = "1996-01-01";
-const response = await fetch(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${series}&cosd=${startDate}&coed=9999-12-31`);
-const csvText = await response.text();
-const monthsText = csvText.split("\n"); 0
+// pull in a CPI metric and create a metric array.
+/**
+ * 
+ * @param {string} series CPI series to pull from FRED. e.g. CPIAUCSL for seasonally adjusted, CPIAUCNS for not seasonally adjusted.
+ * @param {string} attr json attribute name to use for the CPI value in the returned array. 
+ * @returns 
+ */
+async function getCPIMonths(series, attr) {
+    const startDateString = "1996-01-01";
+    const startDate = duGetDateFromYYYYMMDD(startDateString); // validate startDate
+    const response = await fetch(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${series}&cosd=${startDateString}&coed=9999-12-31`);
+    const text = await response.text();
+    const rows = text.split("\n");
+    // skip header, strip out all dates before startDate and all rows with missing CPI values
+    const filtered = [];
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i].split(",");
+        if (row.length < 2) continue;
+        const month = duGetDateFromYYYYMMDD(row[0]);
+        if (duDateLessThan(month, startDate)) continue;
+        const CPI = row[1] * 1;
+        if (isNaN(CPI) || CPI === 0) continue;
 
-if (monthsText.length <= 100) {
-    console.error("Error: Not enough data points retrieved. probaby intermittent issue.");
-    process.exit(1);
+        filtered.push({
+            fullDate: row[0],
+            year: month.getFullYear(),
+            month: month.getMonth() + 1,
+            [attr]: CPI,
+        });
+    }
+    if (filtered.length <= 50) {
+        console.error(`Error: ${series}, Not enough data points retrieved. probaby intermittent issue.`);
+        process.exit(1);
+    }
+    return filtered;
 }
+const saMonths = await getCPIMonths("CPIAUCSL", "CPISA"); // Seasonally adjusted.
+const nsaMonths = await getCPIMonths("CPIAUCNS", "CPINSA"); // Not seasonally adjusted.
+
+
+
 
 // seed with the missing month due to 2025 Govt shutdown, then loop through the rest of the months and build the response for each month.
 let months = [{
-    month: "2025-10-01",
-    CPI: 325.604
+    year: 2025,
+    month: 10,
+    date: "2025-10-01",
+    CPINSA: 325.604,
+    CPISA: roundTo(325.604 / (100.038 / 100), 3)
 }];
-for (let i = 1; i < monthsText.length; i++) {
-    const row = monthsText[i].split(",");
-    const month = row[0];
-    const CPI = row[1] * 1;
-    if (isNaN(CPI) || CPI === 0) continue; // skip rows with missing CPI values
+for (let i = 1; i < saMonths.length; i++) {
+    const saRow = saMonths[i];
+    if (isNaN(saRow.CPISA) || saRow.CPISA === 0) continue; // skip rows with missing CPI values
+    const nsaRow = nsaMonths.find(nsa => nsa.year === saRow.year && nsa.month === saRow.month);
+    if (!nsaRow) continue; // skip rows with missing NSA CPI values
+    if (isNaN(nsaRow.CPINSA) || nsaRow.CPINSA === 0) continue; // skip rows with missing CPI values
+
     months.push({
-        month: month,
-        CPI: CPI,
+        year: saRow.year,
+        month: saRow.month,
+        date: saRow.fullDate,
+        CPINSA: nsaRow.CPINSA,
+        CPISA: saRow.CPISA,
     });
 }
-months.sort((a, b) => new Date(a.month) - new Date(b.month)); // sort by month to get shutdown month in correct order
+// sort forward by month to get shutdown month in correct order.
+months.sort((a, b) => new Date(a.date) - new Date(b.date));
 
+function formatMMDD(d) {
+    return (d.getMonth() + 1).toString().padStart(2, '0') + d.getDate().toString().padStart(2, '0');
+}
+// Now convert to daily values and add a Seasonal Factor column to the output.
+// The Seasonal Factor is the ratio of the NSA CPI to the SA CPI for each month.
 let resp = [];
 for (let i = 0; i < months.length - 1; i++) {
-    const month = months[i].month;
-    const nextMonth = months[i + 1].month;
-    const refCPI = months[i].CPI;
-    const nextRefCPI = months[i + 1].CPI;
+    const month = months[i].date;
+    const nextMonth = months[i + 1].date;
 
     // add 3 months to get the TIPS month that the CPI value applies to, as REFCPI is calculated with a 3 month lag. 
     const refCpiMonth = duGetDateFromYYYYMMDD(month);
     refCpiMonth.setMonth(refCpiMonth.getMonth() + 3);
     const nextRefCpiMonth = duGetDateFromYYYYMMDD(nextMonth);
     nextRefCpiMonth.setMonth(nextRefCpiMonth.getMonth() + 3);
-
     const monthDays = duDaysBetween(refCpiMonth, nextRefCpiMonth);
-    const dailyCPIIncrement = roundTo((nextRefCPI - refCPI) / monthDays, 6);
+
+    // this block calculates dail NSA REFCPI values.
+    const refCPINSA = months[i].CPINSA;
+    const nextRefCPINSA = months[i + 1].CPINSA;
+    const dailyCPINSAIncrement = roundTo((nextRefCPINSA - refCPINSA) / monthDays, 6);
+
+    // this block calculates dail SA REFCPI values.
+    const refCPISA = months[i].CPISA;
+    const nextRefCPISA = months[i + 1].CPISA;
+    const dailyCPISAIncrement = roundTo((nextRefCPISA - refCPISA) / monthDays, 6);
 
     for (let j = 0; j < monthDays; j++) {
         const dailyCPIDate = new Date(refCpiMonth);
         dailyCPIDate.setDate(dailyCPIDate.getDate() + j);
         resp.push({
             refCPIDate: dailyCPIDate.toISOString().substring(0, 10),
-            refCPI: refCPI + dailyCPIIncrement * j,
+            refCPINSA: refCPINSA + dailyCPINSAIncrement * j,
+            refCPISA: refCPISA + dailyCPISAIncrement * j,
+            SAFactor: roundTo((refCPINSA + dailyCPINSAIncrement * j) / (refCPISA + dailyCPISAIncrement * j), 6),
+            mmdd: formatMMDD(dailyCPIDate)
         });
     }
 }
 // add first day of last month with the last month's CPI value, as that is the last day that the last month's CPI value applies to.
-const lastDate = duGetDateFromYYYYMMDD(months[months.length - 1].month);
+const lastDate = duGetDateFromYYYYMMDD(months[months.length - 1].date);
 lastDate.setMonth(lastDate.getMonth() + 3);
 resp.push({
     refCPIDate: lastDate.toISOString().substring(0, 10),
-    refCPI: months[months.length - 1].CPI,
+    refCPINSA: months[months.length - 1].CPINSA,
+    refCPISA: months[months.length - 1].CPISA,
+    SAFactor: roundTo(months[months.length - 1].CPINSA / months[months.length - 1].CPISA, 6),
+    mmdd: formatMMDD(lastDate)
 });
+
+// reverse sort by month to get shutdown month in correct order for SA Factor lookup (latest is best).
+resp.sort((a, b) => new Date(b.refCPIDate) - new Date(a.refCPIDate));
 // output the .csv content for use in REFCPI.csv
-console.log(`date,REFCPI`);
+console.log(`Date,REFCPINSA,REFCPISA,SAFactor,MMDD`);
 for (let i = 0; i < resp.length; i++) {
     const r = resp[i];
-    console.log(`${r.refCPIDate},${roundToFixed(r.refCPI, 5, 6)}`);
+    console.log(`${r.refCPIDate},${roundToFixed(r.refCPINSA, 5, 6)},${roundToFixed(r.refCPISA, 5, 6)},${roundToFixed(r.SAFactor, 5, 6)},${r.mmdd}`);
 }
