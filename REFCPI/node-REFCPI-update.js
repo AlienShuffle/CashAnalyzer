@@ -44,6 +44,25 @@ async function getCPIMonths(series, attr) {
 const saMonths = await getCPIMonths("CPIAUCSL", "CPISA"); // Seasonally adjusted.
 const nsaMonths = await getCPIMonths("CPIAUCNS", "CPINSA"); // Not seasonally adjusted.
 
+// grep CPI release months.
+const cpiDatesStr = await fetch('https://cashoptimizer.pages.dev/Treasuries/CPI-dates.json');
+const cpiDatesText = await cpiDatesStr.text();
+const cpiDates = JSON.parse(cpiDatesText);
+cpiDates.sort((a, b) => new Date(a.rlsDate) - new Date(b.rlsDate));
+
+// function to find the latest CPI release date (rlsDate) that is less than or equal to the given date (date), return the corresponding refcpiDate.
+function findCPIReleaseDate(date) {
+    for (let i = cpiDates.length - 1; i >= 0; i--) {
+        const rlsDate = duGetDateFromYYYYMMDD(cpiDates[i].rlsDate);
+        // Find the latest release that is not later than the requested date.
+        if (!duDateLessThan(date, rlsDate)) {
+            // console.error(`DEBUG[${i}]: ${date.toISOString().substring(0, 10)}:${rlsDate}`);
+            return duGetDateFromYYYYMMDD(cpiDates[i].refcpiDate);
+        }
+    }
+    return null;
+}
+
 // seed with the missing month due to 2025 Govt shutdown, then loop through the rest of the months and build the response for each month.
 let months = [{
     year: 2025,
@@ -100,12 +119,15 @@ for (let i = 0; i < months.length - 1; i++) {
     for (let j = 0; j < monthDays; j++) {
         const dailyCPIDate = new Date(refCpiMonth);
         dailyCPIDate.setDate(dailyCPIDate.getDate() + j);
+        const maxREFCPI = findCPIReleaseDate(dailyCPIDate);
+        // console.error(`DEBUG: ${dailyCPIDate.toISOString().substring(0, 10)}: refCPINSA=${refCPINSA + dailyCPINSAIncrement * j}, refCPISA=${refCPISA + dailyCPISAIncrement * j}, SAFactor=${roundTo((refCPINSA + dailyCPINSAIncrement * j) / (refCPISA + dailyCPISAIncrement * j), 6)}, maxREFCPI=${maxREFCPI ? maxREFCPI.toISOString().substring(0, 10) : 'null'}`);
         resp.push({
             refCPIDate: dailyCPIDate.toISOString().substring(0, 10),
             refCPINSA: refCPINSA + dailyCPINSAIncrement * j,
             refCPISA: refCPISA + dailyCPISAIncrement * j,
             SAFactor: roundTo((refCPINSA + dailyCPINSAIncrement * j) / (refCPISA + dailyCPISAIncrement * j), 6),
-            mmdd: formatMMDD(dailyCPIDate)
+            mmdd: formatMMDD(dailyCPIDate),
+            maxREFCPI: maxREFCPI.toISOString().substring(0, 10)
         });
     }
 }
@@ -117,14 +139,15 @@ resp.push({
     refCPINSA: months[months.length - 1].CPINSA,
     refCPISA: months[months.length - 1].CPISA,
     SAFactor: roundTo(months[months.length - 1].CPINSA / months[months.length - 1].CPISA, 6),
-    mmdd: formatMMDD(lastDate)
+    mmdd: formatMMDD(lastDate),
+    maxREFCPI: lastDate.toISOString().substring(0, 10)
 });
 
 // reverse sort by month to get shutdown month in correct order for SA Factor lookup (latest is best).
 resp.sort((a, b) => new Date(b.refCPIDate) - new Date(a.refCPIDate));
 // output the .csv content for use in REFCPI.csv
-console.log(`Date,REFCPINSA,REFCPISA,SAFactor,MMDD`);
+console.log('Date,REFCPINSA,REFCPISA,SAFactor,MMDD,maxREFCPI');
 for (let i = 0; i < resp.length; i++) {
     const r = resp[i];
-    console.log(`${r.refCPIDate},${roundToFixed(r.refCPINSA, 5, 6)},${roundToFixed(r.refCPISA, 5, 6)},${roundToFixed(r.SAFactor, 5, 6)},${r.mmdd}`);
+    console.log(`${r.refCPIDate},${roundToFixed(r.refCPINSA, 5, 6)},${roundToFixed(r.refCPISA, 5, 6)},${roundToFixed(r.SAFactor, 5, 6)},${r.mmdd},${r.maxREFCPI}`);
 }
