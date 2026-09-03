@@ -44,9 +44,6 @@ async function getCPIMonths(series, attr) {
 const saMonths = await getCPIMonths("CPIAUCSL", "CPISA"); // Seasonally adjusted.
 const nsaMonths = await getCPIMonths("CPIAUCNS", "CPINSA"); // Not seasonally adjusted.
 
-
-
-
 // seed with the missing month due to 2025 Govt shutdown, then loop through the rest of the months and build the response for each month.
 let months = [{
     year: 2025,
@@ -55,7 +52,7 @@ let months = [{
     CPINSA: 325.604,
     CPISA: roundTo(325.604 / (100.038 / 100), 3)
 }];
-for (let i = 1; i < saMonths.length; i++) {
+for (let i = 0; i < saMonths.length; i++) {
     const saRow = saMonths[i];
     if (isNaN(saRow.CPISA) || saRow.CPISA === 0) continue; // skip rows with missing CPI values
     const nsaRow = nsaMonths.find(nsa => nsa.year === saRow.year && nsa.month === saRow.month);
@@ -74,7 +71,7 @@ for (let i = 1; i < saMonths.length; i++) {
 months.sort((a, b) => new Date(a.date) - new Date(b.date));
 
 function formatMMDD(d) {
-    return (d.getMonth() + 1).toString().padStart(2, '0') + d.getDate().toString().padStart(2, '0');
+    return ('M' + (d.getMonth() + 1).toString().padStart(2, '0') + d.getDate().toString().padStart(2, '0'));
 }
 // Now convert to daily values and add a Seasonal Factor column to the output.
 // The Seasonal Factor is the ratio of the NSA CPI to the SA CPI for each month.
