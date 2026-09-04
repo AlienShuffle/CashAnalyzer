@@ -201,7 +201,7 @@ function removeOutliersAndRecalculate(years, type, months) {
     }
     // now level set the total of all the average factors to 100, by adjusting each factor by the ratio of 100 to the total of all average factors.
     const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
-    const adjustmentRatio = 1200 / totalFactor;
+    const adjustmentRatio = 12 / totalFactor;
     for (let i = 0; i < historicalFactors.length; i++) {
         historicalFactors[i].factor = roundToFixed((historicalFactors[i].factor * adjustmentRatio), 5, 6);
     }
@@ -253,7 +253,7 @@ function buildFactorDataset(months, trimOutliers) {
     }
 
     if (trimOutliers) {
-        const adjustmentRatio = 120 / [...dataset.values()].reduce((sum, factor) => sum + factor, 0);
+        const adjustmentRatio = 12 / [...dataset.values()].reduce((sum, factor) => sum + factor, 0);
         for (const [month, factor] of dataset) {
             dataset.set(month, roundToFixed(factor * adjustmentRatio, 5, 6));
         }
