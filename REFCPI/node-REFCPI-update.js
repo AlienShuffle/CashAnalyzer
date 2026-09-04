@@ -125,7 +125,7 @@ for (let i = 0; i < months.length - 1; i++) {
             refCPIDate: dailyCPIDate.toISOString().substring(0, 10),
             refCPINSA: refCPINSA + dailyCPINSAIncrement * j,
             refCPISA: refCPISA + dailyCPISAIncrement * j,
-            SAFactor: roundTo((refCPINSA + dailyCPINSAIncrement * j) / (refCPISA + dailyCPISAIncrement * j), 6),
+            SAFactor: roundToFixed((refCPINSA + dailyCPINSAIncrement * j) / (refCPISA + dailyCPISAIncrement * j),5, 6),
             mmdd: formatMMDD(dailyCPIDate),
             maxREFCPI: maxREFCPI.toISOString().substring(0, 10)
         });
@@ -138,7 +138,7 @@ resp.push({
     refCPIDate: lastDate.toISOString().substring(0, 10),
     refCPINSA: months[months.length - 1].CPINSA,
     refCPISA: months[months.length - 1].CPISA,
-    SAFactor: roundTo(months[months.length - 1].CPINSA / months[months.length - 1].CPISA, 6),
+    SAFactor: roundToFixed(months[months.length - 1].CPINSA / months[months.length - 1].CPISA, 5, 6),
     mmdd: formatMMDD(lastDate),
     maxREFCPI: lastDate.toISOString().substring(0, 10)
 });
