@@ -253,7 +253,7 @@ function buildFactorDataset(months, trimOutliers) {
     }
 
     if (trimOutliers) {
-        const adjustmentRatio = 1200 / [...dataset.values()].reduce((sum, factor) => sum + factor, 0);
+        const adjustmentRatio = 120 / [...dataset.values()].reduce((sum, factor) => sum + factor, 0);
         for (const [month, factor] of dataset) {
             dataset.set(month, roundToFixed(factor * adjustmentRatio, 5, 6));
         }
