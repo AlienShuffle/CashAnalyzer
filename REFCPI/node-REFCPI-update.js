@@ -69,7 +69,7 @@ let months = [{
     month: 10,
     date: "2025-10-01",
     CPINSA: 325.604,
-    CPISA: roundTo(325.604 / (100.038 / 100), 3)
+    CPISA: 325.551
 }];
 for (let i = 0; i < saMonths.length; i++) {
     const saRow = saMonths[i];
@@ -109,12 +109,12 @@ for (let i = 0; i < months.length - 1; i++) {
     // this block calculates dail NSA REFCPI values.
     const refCPINSA = months[i].CPINSA;
     const nextRefCPINSA = months[i + 1].CPINSA;
-    const dailyCPINSAIncrement = roundTo((nextRefCPINSA - refCPINSA) / monthDays, 6);
+    const dailyCPINSAIncrement = (nextRefCPINSA - refCPINSA) / monthDays;
 
     // this block calculates dail SA REFCPI values.
     const refCPISA = months[i].CPISA;
     const nextRefCPISA = months[i + 1].CPISA;
-    const dailyCPISAIncrement = roundTo((nextRefCPISA - refCPISA) / monthDays, 6);
+    const dailyCPISAIncrement = (nextRefCPISA - refCPISA) / monthDays;
 
     for (let j = 0; j < monthDays; j++) {
         const dailyCPIDate = new Date(refCpiMonth);
