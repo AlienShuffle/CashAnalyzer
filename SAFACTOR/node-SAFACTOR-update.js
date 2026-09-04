@@ -70,7 +70,7 @@ for (let i = 0; i < slMonths.length; i++) {
         month: month,
         CPINS: nsCPI,
         CPISL: slCPI,
-        factor: roundTo((100 * nsCPI / slCPI), 3),
+        factor: roundToFixed((nsCPI / slCPI), 5, 6),
     });
 }
 //console.error(`last full year: ${lastFullYear}`);
@@ -114,7 +114,7 @@ function calcFactorHistory(years, type, months) {
         // calculate the average factor for each month over the 2-year period, and the daily delta and factor on the 15th of the month.
         if (factorGroups[i] && factorGroups[i].length > 0) {
             // find oldest month history.
-            const avgFactor = roundTo((factorGroups[i].reduce((sum, r) => sum + r.factor, 0) / factorGroups[i].length), 4);
+            const avgFactor = roundToFixed((factorGroups[i].reduce((sum, r) => sum + r.factor, 0) / factorGroups[i].length), 5, 6);
             const calcStart = factorGroups[i].reduce((min, r) => r.fullDate < min ? r.fullDate : min, factorGroups[i][0].fullDate);
             const calcEnd = factorGroups[i].reduce((max, r) => r.fullDate > max ? r.fullDate : max, factorGroups[i][0].fullDate);
             historicalFactors.push({
@@ -127,12 +127,6 @@ function calcFactorHistory(years, type, months) {
             });
         }
     }
-    // now level set the total of all the average factors to 100, by adjusting each factor by the ratio of 100 to the total of all average factors.
-    //const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
-    //const adjustmentRatio = 1200 / totalFactor;
-    //for (let i = 0; i < historicalFactors.length; i++) {
-    //    historicalFactors[i].factor = roundTo((historicalFactors[i].factor * adjustmentRatio), 3);
-    //}
 
     // calculate the daily delta and factor on the 15th of the month for each month, using the next month's factor as the end factor.
     // also output the results to the console in CSV format.
@@ -142,8 +136,8 @@ function calcFactorHistory(years, type, months) {
         const nextFactor = historicalFactors[(i + 1) % historicalFactors.length];
         const efactor = nextFactor.factor;
         const dim = new Date(new Date().getFullYear(), r.month, 0).getDate();
-        const dailyDelta = roundTo(((efactor - sfactor) / dim), 3);
-        const factor15th = roundTo((sfactor + dailyDelta * 14), 3);
+        const dailyDelta = roundToFixed(((efactor - sfactor) / dim), 5, 6);
+        const factor15th = roundToFixed((sfactor + dailyDelta * 14), 5, 6);
         historicalFactors[i].dim = dim;
         historicalFactors[i].dailyDelta = dailyDelta;
         historicalFactors[i].factor15th = factor15th;
@@ -160,7 +154,7 @@ console.log(`type,month,factor15th,factor,dailyDelta,factorYear,startDate,endDat
 // use most recent data (up to last month!)
 calcFactorHistory(1, "recent", allFactors);
 // remove partial year factors.
-let fullYearFactors = allFactors.filter(r => r.year <= lastFullYear );
+let fullYearFactors = allFactors.filter(r => r.year <= lastFullYear);
 
 // continue with full years only.
 const oneYearFactors = calcFactorHistory(1, "1-year", fullYearFactors);
@@ -191,7 +185,7 @@ function removeOutliersAndRecalculate(years, type, months) {
                 trimmedFactors.shift();
                 trimmedFactors.pop();
             }
-            const avgFactor = roundTo((trimmedFactors.reduce((sum, r) => sum + r, 0) / trimmedFactors.length), 4);
+            const avgFactor = roundToFixed((trimmedFactors.reduce((sum, r) => sum + r, 0) / trimmedFactors.length), 5, 6);
             // include calcstart and calcend dates for the factors used in the average calculation.
             const calcStart = adjustedMonthEntries.reduce((min, r) => r.fullDate < min ? r.fullDate : min, adjustedMonthEntries[0].fullDate);
             const calcEnd = adjustedMonthEntries.reduce((max, r) => r.fullDate > max ? r.fullDate : max, adjustedMonthEntries[0].fullDate);
@@ -209,17 +203,17 @@ function removeOutliersAndRecalculate(years, type, months) {
     const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
     const adjustmentRatio = 1200 / totalFactor;
     for (let i = 0; i < historicalFactors.length; i++) {
-        historicalFactors[i].factor = roundTo((historicalFactors[i].factor * adjustmentRatio), 3);
+        historicalFactors[i].factor = roundToFixed((historicalFactors[i].factor * adjustmentRatio), 5, 6);
     }
     // calculate the daily delta and factor on the 15th of the month for each month, using the next month's factor as the end factor.
     for (let i = 0; i < historicalFactors.length; i++) {
         const r = historicalFactors[i];
         const sfactor = r.factor;
         const nextFactor = historicalFactors[(i + 1) % historicalFactors.length];
-        const efactor   = nextFactor.factor;
+        const efactor = nextFactor.factor;
         const dim = new Date(new Date().getFullYear(), r.month, 0).getDate();
-        const dailyDelta = roundTo(((efactor - sfactor) / dim), 3);
-        const factor15th = roundTo((sfactor + dailyDelta * 14), 3);
+        const dailyDelta = roundToFixed(((efactor - sfactor) / dim), 5, 6);
+        const factor15th = roundToFixed((sfactor + dailyDelta * 14), 5, 6);
         historicalFactors[i].dim = dim;
         historicalFactors[i].dailyDelta = dailyDelta;
         historicalFactors[i].factor15th = factor15th;
@@ -255,13 +249,13 @@ function buildFactorDataset(months, trimOutliers) {
             factors.pop();
         }
         const average = factors.reduce((sum, factor) => sum + factor, 0) / factors.length;
-        dataset.set(month, roundTo(average, 4));
+        dataset.set(month, roundToFixed(average, 5, 6));
     }
 
     if (trimOutliers) {
         const adjustmentRatio = 1200 / [...dataset.values()].reduce((sum, factor) => sum + factor, 0);
         for (const [month, factor] of dataset) {
-            dataset.set(month, roundTo(factor * adjustmentRatio, 3));
+            dataset.set(month, roundToFixed(factor * adjustmentRatio, 5, 6));
         }
     }
     return dataset;
@@ -454,7 +448,7 @@ const datasetAnalysis = datasetsToEvaluate
     .map(dataset => evaluateDataset(dataset.label, dataset.years, dataset.trimOutliers))
     .sort((a, b) => (b.recent10YearForecastShapeMae ?? -Infinity)
         - (a.recent10YearForecastShapeMae ?? -Infinity));
-const formatAnalysisValue = value => value === null ? "NA" : roundTo(value, 6);
+const formatAnalysisValue = value => value === null ? "NA" : roundToFixed(value, 5, 6);
 const rankedDatasets = datasetAnalysis.filter(result => result.recent10YearForecastShapeMae !== null);
 for (const result of rankedDatasets) {
     console.log([
@@ -478,6 +472,6 @@ for (const result of rankedDatasets) {
         formatAnalysisValue(result.weightedMeanAbsPct),
     ].join(","));
 }
-    const bestDataset = rankedDatasets.reduce((best, result) =>
-        result.recent10YearForecastShapeMae < best.recent10YearForecastShapeMae ? result : best);
-        console.log(`,best recent 10-year forecast shape dataset,${bestDataset.label}`);
+const bestDataset = rankedDatasets.reduce((best, result) =>
+    result.recent10YearForecastShapeMae < best.recent10YearForecastShapeMae ? result : best);
+console.log(`,best recent 10-year forecast shape dataset,${bestDataset.label}`);
