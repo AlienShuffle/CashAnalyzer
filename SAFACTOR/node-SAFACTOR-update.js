@@ -70,7 +70,7 @@ for (let i = 0; i < slMonths.length; i++) {
         month: month,
         CPINS: nsCPI,
         CPISL: slCPI,
-        factor: roundToFixed((nsCPI / slCPI), 5, 6),
+        factor: roundToFixed((nsCPI / slCPI), 7, 8),
     });
 }
 //console.error(`last full year: ${lastFullYear}`);
@@ -136,7 +136,7 @@ function calcFactorHistory(years, type, months) {
         const nextFactor = historicalFactors[(i + 1) % historicalFactors.length];
         const efactor = nextFactor.factor;
         const dim = new Date(new Date().getFullYear(), r.month, 0).getDate();
-        const dailyDelta = roundToFixed(((efactor - sfactor) / dim), 5, 6);
+        const dailyDelta = roundToFixed(((efactor - sfactor) / dim), 7, 8);
         const factor15th = roundToFixed((sfactor + dailyDelta * 14), 5, 6);
         historicalFactors[i].dim = dim;
         historicalFactors[i].dailyDelta = dailyDelta;
@@ -212,7 +212,7 @@ function removeOutliersAndRecalculate(years, type, months) {
         const nextFactor = historicalFactors[(i + 1) % historicalFactors.length];
         const efactor = nextFactor.factor;
         const dim = new Date(new Date().getFullYear(), r.month, 0).getDate();
-        const dailyDelta = roundToFixed(((efactor - sfactor) / dim), 5, 6);
+        const dailyDelta = roundToFixed(((efactor - sfactor) / dim), 7, 8);
         const factor15th = roundToFixed((sfactor + dailyDelta * 14), 5, 6);
         historicalFactors[i].dim = dim;
         historicalFactors[i].dailyDelta = dailyDelta;
