@@ -1,11 +1,8 @@
 import {
     duDateLessThan,
-    duGetDateDelta,
-    duGetDateFromYYYYMMDD,
-    duGetISOString
+    duGetDateFromYYYYMMDD
 } from "../lib/dateUtils.mjs";
 import {
-    roundTo,
     roundToFixed
 } from "../lib/utils.mjs";
 
@@ -70,7 +67,7 @@ for (let i = 0; i < slMonths.length; i++) {
         month: month,
         CPINS: nsCPI,
         CPISL: slCPI,
-        factor: roundToFixed((nsCPI / slCPI), 7, 8),
+        factor: roundToFixed((nsCPI / slCPI), 8, 9),
     });
 }
 //console.error(`last full year: ${lastFullYear}`);
@@ -78,76 +75,79 @@ for (let i = 0; i < slMonths.length; i++) {
 //console.error(JSON.stringify(months, null, 2));
 
 // create an n-year factor history, starting with the most recent month, and including the previous n-1 months.
-// The factor is calculated as the ratio of NS to SA CPI values, multiplied by 100.
+// The factor is calculated as the ratio of NS to SA CPI values.
 // The daily delta is calculated as the difference between the current month's factor and the next month's factor,
 // divided by the number of days in the month.
 // The factor on the 15th of the month is calculated as the current month's factor plus the daily delta times 14.
+function calculateFactorAverages(months, trimOutliers = false) {
+    const factorGroups = [];
+    for (const r of months) {
+        const adjustedMonth = ((r.month + 3 - 1) % 12) + 1;
+        if (!factorGroups[adjustedMonth]) factorGroups[adjustedMonth] = [];
+        factorGroups[adjustedMonth].push(r);
+    }
+
+    const historicalFactors = [];
+    for (let month = 1; month <= 12; month++) {
+        const entries = factorGroups[month];
+        if (!entries || entries.length === 0) continue;
+
+        const factors = entries.map(r => r.factor).sort((a, b) => a - b);
+        if (trimOutliers && factors.length > 2) {
+            factors.shift();
+            factors.pop();
+        }
+        const average = factors.reduce((sum, factor) => sum + factor, 0) / factors.length;
+        const calcStart = entries.reduce((min, r) => r.fullDate < min ? r.fullDate : min, entries[0].fullDate);
+        const calcEnd = entries.reduce((max, r) => r.fullDate > max ? r.fullDate : max, entries[0].fullDate);
+        historicalFactors.push({
+            factor: roundToFixed(average, 5, 6),
+            month: month,
+            calcStart: calcStart,
+            calcEnd: calcEnd,
+            entriesTested: factors.length,
+        });
+    }
+
+    if (trimOutliers) {
+        const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
+        const adjustmentRatio = 12 / totalFactor;
+        for (const historicalFactor of historicalFactors) {
+            historicalFactor.factor = roundToFixed(historicalFactor.factor * adjustmentRatio, 5, 6);
+        }
+    }
+    return historicalFactors;
+}
+
+function finalizeFactorHistory(historicalFactors, type, output = true) {
+    for (let i = 0; i < historicalFactors.length; i++) {
+        const r = historicalFactors[i];
+        const sfactor = r.factor;
+        const nextFactor = historicalFactors[(i + 1) % historicalFactors.length];
+        const dim = new Date(new Date().getFullYear(), r.month, 0).getDate();
+        const dailyDelta = roundToFixed(((nextFactor.factor - sfactor) / dim), 8, 9);
+        const factor15th = roundToFixed((sfactor + dailyDelta * 14), 5, 6);
+        r.dim = dim;
+        r.dailyDelta = dailyDelta;
+        r.factor15th = factor15th;
+        r.factorYear = new Date().getFullYear();
+        r.startDate = r.calcStart;
+        r.endDate = r.calcEnd;
+        if (output) {
+            console.log(`${type},${r.month},${r.factor15th},${r.factor},${r.dailyDelta},${r.factorYear},${r.startDate},${r.endDate},${r.entriesTested}`);
+        }
+    }
+    return historicalFactors;
+}
+
 function calcFactorHistory(years, type, months) {
     const lastDate = duGetDateFromYYYYMMDD(months[months.length - 1].fullDate);
     const earliestDate = new Date(lastDate.getFullYear() - years, lastDate.getMonth() + 1, 1);
     //console.error(`Earliest date for ${years}-year factor history: ${duGetISOString(earliestDate)}`);
 
-    let factorGroups = [];
-    for (let i = months.length - 1; i >= 0; i--) {
-        const r = months[i];
-        if (duDateLessThan(duGetDateFromYYYYMMDD(r.fullDate), earliestDate)) {
-            break;
-        }
-
-        // add three months to r.month, wrap around modulo 12 (keeping 1-12 range)
-        // The factors are adjusted forward 3 months from the CPI data as per TIPS methodology.
-        const adjustedMonth = ((r.month + 3 - 1) % 12) + 1;
-
-        if (!factorGroups[adjustedMonth]) {
-            factorGroups[adjustedMonth] = [];
-        }
-        factorGroups[adjustedMonth].push({
-            factor: r.factor,
-            fullDate: r.fullDate,
-            month: adjustedMonth,
-        });
-    }
-    //console.error(JSON.stringify(factorGroups, null, 2));
-
-    let historicalFactors = [];
-    for (let i = 1; i <= 12; i++) {
-        // calculate the average factor for each month over the 2-year period, and the daily delta and factor on the 15th of the month.
-        if (factorGroups[i] && factorGroups[i].length > 0) {
-            // find oldest month history.
-            const avgFactor = roundToFixed((factorGroups[i].reduce((sum, r) => sum + r.factor, 0) / factorGroups[i].length), 5, 6);
-            const calcStart = factorGroups[i].reduce((min, r) => r.fullDate < min ? r.fullDate : min, factorGroups[i][0].fullDate);
-            const calcEnd = factorGroups[i].reduce((max, r) => r.fullDate > max ? r.fullDate : max, factorGroups[i][0].fullDate);
-            historicalFactors.push({
-                type: type,
-                factor: avgFactor,
-                entriesTested: factorGroups[i].length,
-                calcStart: calcStart,
-                calcEnd: calcEnd,
-                month: i,
-            });
-        }
-    }
-
-    // calculate the daily delta and factor on the 15th of the month for each month, using the next month's factor as the end factor.
-    // also output the results to the console in CSV format.
-    for (let i = 0; i < historicalFactors.length; i++) {
-        const r = historicalFactors[i];
-        const sfactor = r.factor;
-        const nextFactor = historicalFactors[(i + 1) % historicalFactors.length];
-        const efactor = nextFactor.factor;
-        const dim = new Date(new Date().getFullYear(), r.month, 0).getDate();
-        const dailyDelta = roundToFixed(((efactor - sfactor) / dim), 7, 8);
-        const factor15th = roundToFixed((sfactor + dailyDelta * 14), 5, 6);
-        historicalFactors[i].dim = dim;
-        historicalFactors[i].dailyDelta = dailyDelta;
-        historicalFactors[i].factor15th = factor15th;
-        historicalFactors[i].factorYear = new Date().getFullYear();
-        historicalFactors[i].startDate = r.calcStart;
-        historicalFactors[i].endDate = r.calcEnd;
-        console.log(`${r.type},${r.month},${r.factor15th},${r.factor},${r.dailyDelta},${r.factorYear},${r.startDate},${r.endDate},${r.entriesTested}`);
-    }
-    //console.log(JSON.stringify(historicalFactors, null, 2));
-    return historicalFactors;
+    const sourceMonths = months.filter(r =>
+        !duDateLessThan(duGetDateFromYYYYMMDD(r.fullDate), earliestDate));
+    return finalizeFactorHistory(calculateFactorAverages(sourceMonths), type);
 }
 
 console.log(`type,month,factor15th,factor,dailyDelta,factorYear,startDate,endDate,entriesTested`);
@@ -156,7 +156,7 @@ calcFactorHistory(1, "recent", allFactors);
 // remove partial year factors.
 let fullYearFactors = allFactors.filter(r => r.year <= lastFullYear);
 
-// continue with full years only.
+// continue with full years only, this is run to create the .csv output lines for set.
 const oneYearFactors = calcFactorHistory(1, "1-year", fullYearFactors);
 const twoYearFactors = calcFactorHistory(2, "2-year", fullYearFactors);
 const fiveYearFactors = calcFactorHistory(5, "5-year", fullYearFactors);
@@ -164,109 +164,25 @@ const tenYearFactors = calcFactorHistory(10, "10-year", fullYearFactors);
 const twentyYearFactors = calcFactorHistory(20, "20-year", fullYearFactors);
 const thirtyYearFactors = calcFactorHistory(30, "30-year", fullYearFactors);
 
-// remove the highest and lowest factor from each of the 10, 20, and 30 year factor arrays, and recalculate the average factor for each month.
+// Remove the highest and lowest factor from each requested year range and recalculate the monthly averages.
 function removeOutliersAndRecalculate(years, type, months) {
-    let factorGroups = [];
-    for (let i = 0; i < months.length; i++) {
-        const r = months[i];
-        const adjustedMonth = ((r.month + 3 - 1) % 12) + 1;
-        if (!factorGroups[adjustedMonth]) {
-            factorGroups[adjustedMonth] = [];
-        }
-        factorGroups[adjustedMonth].push(r.factor);
-    }
-    let historicalFactors = [];
-    for (let i = 1; i <= 12; i++) {
-        if (factorGroups[i] && factorGroups[i].length > 0) {
-            const adjustedMonthEntries = months.filter(r => ((r.month + 3 - 1) % 12) + 1 === i);
-            // remove the highest and lowest factor from the array.
-            const trimmedFactors = [...factorGroups[i]].sort((a, b) => a - b);
-            if (trimmedFactors.length > 2) {
-                trimmedFactors.shift();
-                trimmedFactors.pop();
-            }
-            const avgFactor = roundToFixed((trimmedFactors.reduce((sum, r) => sum + r, 0) / trimmedFactors.length), 5, 6);
-            // include calcstart and calcend dates for the factors used in the average calculation.
-            const calcStart = adjustedMonthEntries.reduce((min, r) => r.fullDate < min ? r.fullDate : min, adjustedMonthEntries[0].fullDate);
-            const calcEnd = adjustedMonthEntries.reduce((max, r) => r.fullDate > max ? r.fullDate : max, adjustedMonthEntries[0].fullDate);
-            historicalFactors.push({
-                type: type,
-                factor: avgFactor,
-                month: i,
-                calcStart: calcStart,
-                calcEnd: calcEnd,
-                entriesTested: trimmedFactors.length,
-            });
-        }
-    }
-    // now level set the total of all the average factors to 100, by adjusting each factor by the ratio of 100 to the total of all average factors.
-    const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
-    const adjustmentRatio = 12 / totalFactor;
-    for (let i = 0; i < historicalFactors.length; i++) {
-        historicalFactors[i].factor = roundToFixed((historicalFactors[i].factor * adjustmentRatio), 5, 6);
-    }
-    // calculate the daily delta and factor on the 15th of the month for each month, using the next month's factor as the end factor.
-    for (let i = 0; i < historicalFactors.length; i++) {
-        const r = historicalFactors[i];
-        const sfactor = r.factor;
-        const nextFactor = historicalFactors[(i + 1) % historicalFactors.length];
-        const efactor = nextFactor.factor;
-        const dim = new Date(new Date().getFullYear(), r.month, 0).getDate();
-        const dailyDelta = roundToFixed(((efactor - sfactor) / dim), 7, 8);
-        const factor15th = roundToFixed((sfactor + dailyDelta * 14), 5, 6);
-        historicalFactors[i].dim = dim;
-        historicalFactors[i].dailyDelta = dailyDelta;
-        historicalFactors[i].factor15th = factor15th;
-        historicalFactors[i].factorYear = new Date().getFullYear();
-        console.log(`${r.type},${r.month},${r.factor15th},${r.factor},${r.dailyDelta},${r.factorYear},${r.calcStart},${r.calcEnd},${r.entriesTested}`);
-    }
-    return historicalFactors;
+    const latestYear = Math.max(...months.map(r => r.year));
+    const sourceMonths = months.filter(r =>
+        r.year >= latestYear - years + 1 && r.year <= latestYear);
+    return finalizeFactorHistory(calculateFactorAverages(sourceMonths, true), type);
 }
-const sevenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 6 && r.year <= lastFullYear);
-const tenYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 9 && r.year <= lastFullYear);
-const twentyYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 19 && r.year <= lastFullYear);
-const thirtyYearSourceFactors = fullYearFactors.filter(r => r.year >= lastFullYear - 29 && r.year <= lastFullYear);
-
-const sevenYearTrimmedSeries = removeOutliersAndRecalculate(7, "7-year trimmed", sevenYearSourceFactors);
-const tenYearTrimmedSeries = removeOutliersAndRecalculate(10, "10-year trimmed", tenYearSourceFactors);
-const twentyYearTrimmedSeries = removeOutliersAndRecalculate(20, "20-year trimmed", twentyYearSourceFactors);
-const thirtyYearTrimmedSeries = removeOutliersAndRecalculate(30, "30-year trimmed", thirtyYearSourceFactors);
-
-function buildFactorDataset(months, trimOutliers) {
-    const factorGroups = [];
-    for (const r of months) {
-        const adjustedMonth = ((r.month + 3 - 1) % 12) + 1;
-        if (!factorGroups[adjustedMonth]) factorGroups[adjustedMonth] = [];
-        factorGroups[adjustedMonth].push(r.factor);
-    }
-
-    const dataset = new Map();
-    for (let month = 1; month <= 12; month++) {
-        if (!factorGroups[month] || factorGroups[month].length === 0) continue;
-        const factors = [...factorGroups[month]].sort((a, b) => a - b);
-        if (trimOutliers && factors.length > 2) {
-            factors.shift();
-            factors.pop();
-        }
-        const average = factors.reduce((sum, factor) => sum + factor, 0) / factors.length;
-        dataset.set(month, roundToFixed(average, 5, 6));
-    }
-
-    if (trimOutliers) {
-        const adjustmentRatio = 12 / [...dataset.values()].reduce((sum, factor) => sum + factor, 0);
-        for (const [month, factor] of dataset) {
-            dataset.set(month, roundToFixed(factor * adjustmentRatio, 5, 6));
-        }
-    }
-    return dataset;
-}
+const sevenYearTrimmedSeries = removeOutliersAndRecalculate(7, "7-year trimmed", fullYearFactors);
+const tenYearTrimmedSeries = removeOutliersAndRecalculate(10, "10-year trimmed", fullYearFactors);
+const twentyYearTrimmedSeries = removeOutliersAndRecalculate(20, "20-year trimmed", fullYearFactors);
+const thirtyYearTrimmedSeries = removeOutliersAndRecalculate(30, "30-year trimmed", fullYearFactors);
 
 function evaluateDataset(label, years, trimOutliers) {
     const errors = [];
     const firstYear = fullYearFactors[0].year;
     for (let targetYear = firstYear + years; targetYear <= lastFullYear; targetYear++) {
         const sourceFactors = fullYearFactors.filter(r => r.year >= targetYear - years && r.year < targetYear);
-        const dataset = buildFactorDataset(sourceFactors, trimOutliers);
+        const dataset = new Map(calculateFactorAverages(sourceFactors, trimOutliers)
+            .map(r => [r.month, r.factor]));
         const targetFactors = fullYearFactors.filter(r => r.year === targetYear);
         const comparisons = [];
         for (const target of targetFactors) {
@@ -308,7 +224,8 @@ function evaluateDataset(label, years, trimOutliers) {
     for (let originYear = recentForecastOriginStart; originYear <= recentForecastOriginEnd; originYear++) {
         const sourceFactors = fullYearFactors.filter(r =>
             r.year >= originYear - years + 1 && r.year <= originYear);
-        const dataset = buildFactorDataset(sourceFactors, trimOutliers);
+        const dataset = new Map(calculateFactorAverages(sourceFactors, trimOutliers)
+            .map(r => [r.month, r.factor]));
         for (let horizon = 1; horizon <= 10; horizon++) {
             const targetYear = originYear + horizon;
             const targetFactors = fullYearFactors.filter(r => r.year === targetYear);
@@ -363,73 +280,6 @@ function evaluateDataset(label, years, trimOutliers) {
     };
 }
 
-// older statistical comparison code, kept for reference, but not used in the current analysis.
-/*
-function compareFactorSeries(label, seriesA, seriesB) {
-    const monthMapA = new Map(seriesA.map(r => [r.month, r.factor]));
-    const monthMapB = new Map(seriesB.map(r => [r.month, r.factor]));
-    const months = [...new Set([...monthMapA.keys(), ...monthMapB.keys()])].sort((a, b) => a - b)
-        .filter(month => monthMapA.has(month) && monthMapB.has(month));
-
-    if (months.length === 0) {
-        console.error(`${label}: no matching months found.`);
-        return null;
-    }
-
-    const diffs = months.map(month => {
-        const a = monthMapA.get(month);
-        const b = monthMapB.get(month);
-        const diff = a - b;
-        const pct = (diff / b) * 100;
-        return { month, a, b, diff, pct };
-    });
-
-    const meanDiff = diffs.reduce((sum, r) => sum + r.diff, 0) / diffs.length;
-    const variance = diffs.reduce((sum, r) => sum + ((r.diff - meanDiff) ** 2), 0) / diffs.length;
-    const stdDev = Math.sqrt(variance);
-    const meanAbsPct = diffs.reduce((sum, r) => sum + Math.abs(r.pct), 0) / diffs.length;
-
-    const report = {
-        label,
-        monthsCompared: diffs.length,
-        meanDiff,
-        variance,
-        stdDev,
-        meanAbsPct,
-        diffs: diffs.map(r => ({ month: r.month, diff: r.diff, pct: r.pct }))
-    };
-
-    console.error([
-        label,
-        report.monthsCompared,
-        roundTo(report.meanDiff, 6),
-        roundTo(report.variance, 6),
-        roundTo(report.stdDev, 6),
-        roundTo(report.meanAbsPct, 6)
-    ].join(","));
-    return report;
-}
-
-
-console.error("label,monthsCompared,meanDiff,variance,stdDev,meanAbsPct");
-
-compareFactorSeries("1-year vs 5-year", oneYearFactors, fiveYearFactors);
-compareFactorSeries("1-year vs 7-year-trimmed", oneYearFactors, sevenYearTrimmedSeries);
-compareFactorSeries("1-year vs 10-year-trimmed", oneYearFactors, tenYearTrimmedSeries);
-compareFactorSeries("1-year vs 20-year-trimmed", oneYearFactors, twentyYearTrimmedSeries);
-compareFactorSeries("1-year vs 30-year-trimmed", oneYearFactors, thirtyYearTrimmedSeries);
-compareFactorSeries("5-year vs 7-year-trimmed", fiveYearFactors, sevenYearTrimmedSeries);
-compareFactorSeries("5-year vs 10-year-trimmed", fiveYearFactors, tenYearTrimmedSeries);
-compareFactorSeries("5-year vs 20-year-trimmed", fiveYearFactors, twentyYearTrimmedSeries);
-compareFactorSeries("5-year vs 30-year-trimmed", fiveYearFactors, thirtyYearTrimmedSeries);
-compareFactorSeries("5-year vs 10-year", fiveYearFactors, tenYearFactors);
-compareFactorSeries("5-year vs 20-year", fiveYearFactors, twentyYearFactors);
-compareFactorSeries("5-year vs 30-year", fiveYearFactors, thirtyYearFactors);
-compareFactorSeries("7-year-trimmed vs 10-year-trimmed", sevenYearTrimmedSeries, tenYearTrimmedSeries);
-compareFactorSeries("7-year-trimmed vs 20-year-trimmed", sevenYearTrimmedSeries, twentyYearTrimmedSeries);
-compareFactorSeries("7-year-trimmed vs 30-year-trimmed", sevenYearTrimmedSeries, thirtyYearTrimmedSeries);
-*/
-
 const datasetsToEvaluate = [
     { label: "1-year", years: 1, trimOutliers: false },
     { label: "2-year", years: 2, trimOutliers: false },
@@ -473,5 +323,6 @@ for (const result of rankedDatasets) {
     ].join(","));
 }
 const bestDataset = rankedDatasets.reduce((best, result) =>
-    result.recent10YearForecastShapeMae < best.recent10YearForecastShapeMae ? result : best);
+    result.recent10YearForecastShapeMae < best.recent10YearForecastShapeMae ? result : best
+);
 console.log(`,best recent 10-year forecast shape dataset,${bestDataset.label}`);
