@@ -93,8 +93,7 @@ export async function runSaFactorPipeline() {
             process.exit(1);
         }
 
-        const adjustedMonths = createSAValues(allFactors, sourceMonths);
-        return finalizeFactorHistory(calculateFactorAverages(adjustedMonths), type);
+        return finalizeFactorHistory(calculateFactorAverages(sourceMonths), type);
     }
 
     console.log(`type,month,factor15th,factor,dailyDelta,factorYear,startDate,endDate,entriesTested`);
@@ -241,17 +240,18 @@ export async function runSaFactorPipeline() {
             process.exit(1);
         }
 
-        const adjustedMonths = createSAValues(allFactors, sourceMonths);
+        const dataset = buildMonthFactorMap(sourceMonths, false);
         const errors = [];
 
-        const adjustedMean = adjustedMonths.reduce((sum, row) => sum + row.factor, 0) / adjustedMonths.length;
+        const predictedMean = Array.from(dataset.values()).reduce((sum, row) => sum + row, 0) / dataset.size;
         const actualMean = sourceMonths.reduce((sum, row) => sum + row.factor, 0) / sourceMonths.length;
 
         for (const actual of sourceMonths) {
-            const adjusted = adjustedMonths.find(r => r.fullDate === actual.fullDate);
-            if (!adjusted) continue;
-            const error = adjusted.factor - actual.factor;
-            const shapeError = (adjusted.factor / adjustedMean) - (actual.factor / actualMean);
+            const adjustedMonth = ((actual.month + 3 - 1) % 12) + 1;
+            const predicted = dataset.get(adjustedMonth);
+            if (predicted === undefined) continue;
+            const error = predicted - actual.factor;
+            const shapeError = (predicted / predictedMean) - (actual.factor / actualMean);
             errors.push({
                 year: actual.year,
                 error,
