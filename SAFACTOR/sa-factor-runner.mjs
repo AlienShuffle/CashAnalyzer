@@ -8,6 +8,7 @@ import {
     getCPIMonths,
     getMonthsInWindow,
 } from "./sa-factor-logic.mjs";
+import { writeFileSync } from "node:fs";
 import {
     duDateLessThan,
     duGetDateFromYYYYMMDD
@@ -55,6 +56,41 @@ function buildMovingAverageWindowDatasets(latestWindowDate) {
     ];
 }
 
+function buildChapsalisWindowDatasets(latestWindowDate) {
+    return [
+        {
+            label: "june-2025-to-june-2026-chapsalis",
+            startDate: "2025-06-01",
+            endDate: "2026-06-01"
+        },
+        {
+            label: "5-year-chapsalis",
+            startDate: formatWindowDate(new Date(latestWindowDate.getFullYear() - 5, latestWindowDate.getMonth(), 1)),
+            endDate: formatWindowDate(latestWindowDate),
+        },
+        {
+            label: "10-year-chapsalis",
+            startDate: formatWindowDate(new Date(latestWindowDate.getFullYear() - 10, latestWindowDate.getMonth(), 1)),
+            endDate: formatWindowDate(latestWindowDate),
+        },
+        {
+            label: "20-year-chapsalis",
+            startDate: formatWindowDate(new Date(latestWindowDate.getFullYear() - 20, latestWindowDate.getMonth(), 1)),
+            endDate: formatWindowDate(latestWindowDate),
+        },
+        {
+            label: "30-year-chapsalis",
+            startDate: formatWindowDate(new Date(latestWindowDate.getFullYear() - 30, latestWindowDate.getMonth(), 1)),
+            endDate: formatWindowDate(latestWindowDate),
+        },
+        {
+            label: "12-month-chapsalis",
+            startDate: formatWindowDate(new Date(latestWindowDate.getFullYear(), latestWindowDate.getMonth() - 11, 1)),
+            endDate: formatWindowDate(latestWindowDate),
+        },
+    ];
+}
+
 function printFactorHistoryRows(label, rows) {
     for (const row of rows) {
         console.log([
@@ -69,6 +105,26 @@ function printFactorHistoryRows(label, rows) {
             row.entriesTested,
         ].join(","));
     }
+}
+
+function buildChapsalisCoefficientRows(label, coefficients) {
+    const lines = ["dataset,stage,month,value"];
+
+    for (const row of coefficients.mrSeries) {
+        lines.push([label, "mr_i", row.month, row.mr_i].join(","));
+    }
+
+    lines.push([label, "residual-trend", "NA", coefficients.residualTrend].join(","));
+
+    for (const row of coefficients.additiveSeries) {
+        lines.push([label, "additive", row.month, row.alpha_i].join(","));
+    }
+
+    for (const row of coefficients.multiplicativeSeries) {
+        lines.push([label, "multiplicative", row.month, row.omega_i].join(","));
+    }
+
+    return `${lines.join("\n")}\n`;
 }
 
 export async function runSaFactorPipeline() {
@@ -96,11 +152,67 @@ export async function runSaFactorPipeline() {
         return finalizeFactorHistory(calculateFactorAverages(sourceMonths), type);
     }
 
+    function calcChapsalisCoefficientsForWindow(startDate, endDate, type, months) {
+        const sourceMonths = getMonthsInWindow(months, startDate, endDate);
+
+        if (sourceMonths.length === 0) {
+            console.error(`Error: ${type} requested window ${startDate} through ${endDate} returned no data.`);
+            process.exit(1);
+        }
+
+        const sourceFactorAverages = calculateFactorAverages(sourceMonths);
+        const mrSeries = sourceFactorAverages.map(row => ({
+            month: row.month,
+            mr_i: row.factor,
+        }));
+
+        const totalMr = mrSeries.reduce((sum, row) => sum + row.mr_i, 0);
+        if (Math.abs(totalMr) < Number.EPSILON) {
+            console.error(`Error: ${type} requested window ${startDate} through ${endDate} produced no valid mr_i values.`);
+            process.exit(1);
+        }
+
+        const residualTrend = 12 / totalMr;
+
+        const additiveSeriesRaw = mrSeries.map(row => ({
+            month: row.month,
+            alpha_i: residualTrend * row.mr_i - 1,
+        }));
+
+        const additiveSeries = additiveSeriesRaw.map(row => ({
+            month: row.month,
+            alpha_i: roundToFixed(row.alpha_i, 8, 9),
+        }));
+
+        const multiplicativeBase = additiveSeriesRaw.map(row => ({
+            month: row.month,
+            value: 1 + row.alpha_i,
+        }));
+
+        const multiplicativeResidual = Math.pow(
+            multiplicativeBase.reduce((product, row) => product * row.value, 1),
+            1 / 12,
+        );
+
+        const multiplicativeSeries = multiplicativeBase.map(row => ({
+            month: row.month,
+            omega_i: roundToFixed(row.value / multiplicativeResidual, 8, 9),
+        }));
+
+        return {
+            mrSeries,
+            residualTrend: roundToFixed(residualTrend, 8, 9),
+            additiveSeries,
+            multiplicativeSeries,
+        };
+    }
+
     console.log(`type,month,factor15th,factor,dailyDelta,factorYear,startDate,endDate,entriesTested`);
     printFactorHistoryRows("recent-BLS", calcFactorHistory(1, "recent-BLS", allFactors));
 
     const latestWindowDate = duGetDateFromYYYYMMDD(allFactors[allFactors.length - 1].fullDate);
     const movingAverageWindowDatasets = buildMovingAverageWindowDatasets(latestWindowDate);
+    const chapsalisWindowDatasets = buildChapsalisWindowDatasets(latestWindowDate);
 
     for (const dataset of movingAverageWindowDatasets) {
         printFactorHistoryRows(
@@ -108,6 +220,23 @@ export async function runSaFactorPipeline() {
             calcFactorHistoryForWindow(dataset.startDate, dataset.endDate, dataset.label, allFactors)
         );
     }
+
+    console.log("=== chapsalis stdout form ===");
+    for (const dataset of chapsalisWindowDatasets) {
+        printFactorHistoryRows(
+            dataset.label,
+            calcFactorHistoryForWindow(dataset.startDate, dataset.endDate, dataset.label, allFactors)
+        );
+    }
+
+    const chapsalisCsvParts = [];
+
+    for (const dataset of chapsalisWindowDatasets) {
+        const coefficients = calcChapsalisCoefficientsForWindow(dataset.startDate, dataset.endDate, dataset.label, allFactors);
+        chapsalisCsvParts.push(buildChapsalisCoefficientRows(dataset.label, coefficients));
+    }
+
+    writeFileSync(new URL("./chapsalis.csv", import.meta.url), chapsalisCsvParts.join("\n"), "utf8");
 
     const fullYearFactors = allFactors.filter(r => r.year <= lastFullYear);
 
@@ -309,7 +438,10 @@ export async function runSaFactorPipeline() {
     const movingAverageDatasetAnalysis = movingAverageWindowDatasets
         .map(dataset => evaluateMovingAverageWindowDataset(dataset.label, dataset.startDate, dataset.endDate));
 
-    const datasetAnalysis = [...standardDatasetAnalysis, ...movingAverageDatasetAnalysis]
+    const chapsalisDatasetAnalysis = chapsalisWindowDatasets
+        .map(dataset => evaluateMovingAverageWindowDataset(dataset.label, dataset.startDate, dataset.endDate));
+
+    const datasetAnalysis = [...standardDatasetAnalysis, ...movingAverageDatasetAnalysis, ...chapsalisDatasetAnalysis]
         .sort((a, b) => (b.recent10YearForecastShapeMae ?? -Infinity)
             - (a.recent10YearForecastShapeMae ?? -Infinity));
 
@@ -349,7 +481,7 @@ export async function runSaFactorPipeline() {
         result.recent10YearForecastShapeMae < best.recent10YearForecastShapeMae ? result : best
     );
 
-    console.log(`,best recent 10-year forecast shape dataset (BLS + moving-average datasets),${bestDataset.label}`);
+    console.log(`,best recent 10-year forecast shape dataset (BLS + moving-average + Chapsalis datasets),${bestDataset.label}`);
 
     return { datasetAnalysis, bestDataset };
 }
