@@ -48,5 +48,8 @@ export async function fetchCpiDates() {
     }
     return results.sort((a, b) => new Date(a.rlsDate) - new Date(b.rlsDate));;
 }
-// dump the list of dates.
-console.log(JSON.stringify(await fetchCpiDates()));
+
+// only dump the list of dates when this file is run directly, not when imported.
+if (import.meta.url === `file://${process.argv[1]}`) {
+    console.log(JSON.stringify(await fetchCpiDates()));
+}
