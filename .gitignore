@@ -279,3 +279,7 @@ lwlots/2-lot-detail.html
 lwlots/2-lot-detail.tmp.json
 CPI-dates/CPI-dates-new.json
 SAFACTOR/chapsalis.csv
+SAFACTOR/cpi-history.csv
+SAFACTOR/*.totest
+SAFACTOR/*.orig
+

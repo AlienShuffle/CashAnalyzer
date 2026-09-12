@@ -7,7 +7,7 @@ import {
 } from "../lib/utils.mjs";
 
 export async function getCPIMonths(metric) {
-    const startDate = new Date(1966, 0, 1);
+    const startDate = new Date(1996, 0, 1);
     const response = await fetch(`https://cashoptimizer.pages.dev/Treasuries/${metric}.csv`);
     const text = await response.text();
     const rows = text.split("\n");
@@ -39,8 +39,8 @@ export async function getCPIMonths(metric) {
     return filtered;
 }
 
-export function buildAllFactors(slMonths, nsMonths) {
-    let allFactors = [];
+export function buildBlsNsSaFactors(slMonths, nsMonths) {
+    let blsNsSaFactors = [];
     let lastFullYear = null;
 
     for (let i = 0; i < slMonths.length; i++) {
@@ -58,17 +58,19 @@ export function buildAllFactors(slMonths, nsMonths) {
             lastFullYear = year;
         }
 
-        allFactors.push({
+        const factor = nsCPI / slCPI;
+
+        blsNsSaFactors.push({
             fullDate: slMonths[i].fullDate,
             year,
             month,
             CPINS: nsCPI,
             CPISL: slCPI,
-            factor: roundToFixed((nsCPI / slCPI), 8, 9),
+            factor,
         });
     }
 
-    return { allFactors, lastFullYear };
+    return { blsFactors: blsNsSaFactors, lastFullYear };
 }
 
 function getNSCPI(year, month, nsMonths) {
@@ -90,32 +92,14 @@ export function getMonthsInWindow(months, startDate, endDate) {
     });
 }
 
-export function createErrorStatsHelpers(recentStartYear = null) {
-    const average = (rows, selector) => rows.length === 0 ? null
-        : rows.reduce((sum, row) => sum + selector(row), 0) / rows.length;
-
-    const weightedAverage = (rows, selector) => {
-        if (rows.length === 0) return null;
-        if (recentStartYear === null) {
-            return average(rows, selector);
-        }
-
-        const weightedRows = rows.map(row => ({
-            row,
-            weight: row.year >= recentStartYear ? 2 : 1,
-        }));
-
-        return weightedRows.reduce((sum, item) => sum + item.weight * selector(item.row), 0)
-            / weightedRows.reduce((sum, item) => sum + item.weight, 0);
-    };
-
-    return { average, weightedAverage };
+export function getTipsAdjustedMonth(month) {
+    return ((month + 3 - 1) % 12) + 1;
 }
 
-export function calculateFactorAverages(months, trimOutliers = false) {
+export function calculateBlsFactorAverages(months, trimOutliers = false) {
     const factorGroups = [];
     for (const r of months) {
-        const adjustedMonth = ((r.month + 3 - 1) % 12) + 1;
+        const adjustedMonth = getTipsAdjustedMonth(r.month);
         if (!factorGroups[adjustedMonth]) factorGroups[adjustedMonth] = [];
         factorGroups[adjustedMonth].push(r);
     }
@@ -125,7 +109,9 @@ export function calculateFactorAverages(months, trimOutliers = false) {
         const entries = factorGroups[month];
         if (!entries || entries.length === 0) continue;
 
-        const factors = entries.map(r => r.factor).sort((a, b) => a - b);
+        const factors = entries
+            .map(r => r.factor)
+            .sort((a, b) => a - b);
         if (trimOutliers && factors.length > 2) {
             factors.shift();
             factors.pop();
@@ -136,7 +122,7 @@ export function calculateFactorAverages(months, trimOutliers = false) {
         const calcEnd = entries.reduce((max, r) => r.fullDate > max ? r.fullDate : max, entries[0].fullDate);
 
         historicalFactors.push({
-            factor: roundToFixed(average, 5, 6),
+            factor: average,
             month,
             calcStart,
             calcEnd,
@@ -148,113 +134,139 @@ export function calculateFactorAverages(months, trimOutliers = false) {
         const totalFactor = historicalFactors.reduce((sum, r) => sum + r.factor, 0);
         const adjustmentRatio = 12 / totalFactor;
         for (const historicalFactor of historicalFactors) {
-            historicalFactor.factor = roundToFixed(historicalFactor.factor * adjustmentRatio, 5, 6);
+            historicalFactor.factor = historicalFactor.factor * adjustmentRatio;
         }
     }
 
     return historicalFactors;
 }
 
-export function createSAValues(historyMonths, monthsToAdjust) {
-    const sortedHistory = [...historyMonths].sort((a, b) =>
-        duGetDateFromYYYYMMDD(a.fullDate) - duGetDateFromYYYYMMDD(b.fullDate));
-    const sortedTargetMonths = [...monthsToAdjust].sort((a, b) =>
-        duGetDateFromYYYYMMDD(a.fullDate) - duGetDateFromYYYYMMDD(b.fullDate));
-
-    if (sortedHistory.length < 13) {
-        console.error("Error: createSAValues requires at least 13 months of history to build the moving-average seasonal pattern.");
-        process.exit(1);
-    }
-
-    const seasonalFactors = buildSeasonalFactors(sortedHistory);
-    if (!seasonalFactors) {
-        console.error("Error: createSAValues could not build a valid seasonal pattern from the CPINS history.");
-        process.exit(1);
-    }
-
-    return sortedTargetMonths.map((r) => {
-        const monthIndex = duGetDateFromYYYYMMDD(r.fullDate).getMonth();
-        const seasonalFactor = seasonalFactors[monthIndex];
-
-        if (!Number.isFinite(seasonalFactor)) {
-            console.error(`Error: no seasonal factor found for month ${monthIndex + 1} in createSAValues.`);
-            process.exit(1);
-        }
-
-        const saValue = roundToFixed(r.CPINS / (seasonalFactor / 100), 8, 9);
-
-        return {
-            ...r,
-            CPISL: saValue,
-            factor: roundToFixed(r.CPINS / saValue, 8, 9),
-        };
-    });
-}
-
-export function buildSeasonalFactors(months) {
-    // console.error(`Building seasonal factors from ${months.length} months of data, starting with ${months[0].fullDate} and ending with ${months[months.length - 1].fullDate}.`);
-
-    if (!Array.isArray(months) || months.length < 13) {
-        console.error("Error: buildSeasonalFactors requires at least 13 months of CPINS history.");
+export function buildBlsNsChapsalisSeasonalFactors(months) {
+    if (!Array.isArray(months) || months.length < 2) {
+        console.error("Error: buildBlsNsChapsalisSeasonalFactors requires at least 2 months of CPINS history.");
         return null;
     }
 
-    const ratios = [];
-
-    for (let i = 6; i <= months.length - 7; i++) {
-        let ma = 0;
-
-        for (let j = i - 6; j <= i + 5; j++) {
-            ma += months[j].CPINS;
-        }
-
-        ma /= 12;
-
-        ratios.push({
-            month: duGetDateFromYYYYMMDD(months[i].fullDate).getMonth(),
-            ratio: 100 * months[i].CPINS / ma,
-        });
-    }
+    const sortedMonths = [...months].sort((a, b) =>
+        duGetDateFromYYYYMMDD(a.fullDate) - duGetDateFromYYYYMMDD(b.fullDate));
 
     const monthValues = Array.from({ length: 12 }, () => []);
-    ratios.forEach(r => {
-        monthValues[r.month].push(r.ratio);
-    });
+
+    for (let i = 1; i < sortedMonths.length; i++) {
+        const prevMonth = sortedMonths[i - 1];
+        const currMonth = sortedMonths[i];
+
+        if (!Number.isFinite(prevMonth.CPINS) || !Number.isFinite(currMonth.CPINS) || prevMonth.CPINS <= 0 || currMonth.CPINS <= 0) {
+            continue;
+        }
+
+        const monthIndex = duGetDateFromYYYYMMDD(currMonth.fullDate).getMonth();
+        const actualGrowth = currMonth.CPINS / prevMonth.CPINS - 1;
+
+        monthValues[monthIndex].push(actualGrowth);
+    }
 
     const factors = monthValues.map((values, index) => {
         if (values.length === 0) {
-            console.error(`Warning: no moving-average ratios available for month ${index + 1}; skipping that month.`);
+            console.error(`Warning: no Chapsalis growth rates available for month ${index + 1}; skipping that month.`);
             return null;
         }
-        return values.reduce((a, b) => a + b, 0) / values.length;
+
+        const actualAverageGrowth = values.reduce((sum, value) => sum + value, 0) / values.length;
+
+        const totalGrowth = sortedMonths[sortedMonths.length - 1].CPINS / sortedMonths[0].CPINS - 1;
+        const monthlyTrendGrowth = Math.pow(1 + totalGrowth, 1 / 12) - 1;
+
+        return 1 + (monthlyTrendGrowth - actualAverageGrowth);
     });
 
     const validFactors = factors.filter(value => Number.isFinite(value));
     if (validFactors.length === 0) {
-        console.error("Error: buildSeasonalFactors produced no valid factors.");
+        console.error("Error: buildBlsNsChapsalisSeasonalFactors produced no valid factors.");
         return null;
     }
 
-    const avg = validFactors.reduce((a, b) => a + b, 0) / validFactors.length;
-    const normalized = factors.map(f => f === null ? null : 100 * f / avg);
+    const avg = validFactors.reduce((sum, value) => sum + value, 0) / validFactors.length;
+    const normalized = factors.map(f => f === null ? null : f / avg);
 
-    // console.error(`Seasonal factors length: ${normalized.length}: ${normalized.map(f => f === null ? "NA" : roundToFixed(f, 5, 6)).join(", ")}`);
     return normalized;
 }
 
-export function buildMonthFactorMap(months, trimOutliers = false) {
-    return new Map(
-        calculateFactorAverages(months, trimOutliers).map(r => [r.month, r.factor])
-    );
+export function buildBlsNsChapsalisFactorRows(months) {
+    if (!Array.isArray(months) || months.length < 2) {
+        console.error("Error: buildBlsNsChapsalisFactorRows requires at least 2 months of CPINS history.");
+        return null;
+    }
+
+    const seasonalFactors = buildBlsNsChapsalisSeasonalFactors(months);
+    if (!seasonalFactors) {
+        console.error("Error: buildBlsNsChapsalisFactorRows could not build valid BLS NS Chapsalis factors from the CPINS history.");
+        return null;
+    }
+
+    const sortedMonths = [...months].sort((a, b) =>
+        duGetDateFromYYYYMMDD(a.fullDate) - duGetDateFromYYYYMMDD(b.fullDate));
+
+    const calcStart = sortedMonths[0].fullDate;
+    const calcEnd = sortedMonths[sortedMonths.length - 1].fullDate;
+
+    const factors = seasonalFactors.map((seasonalFactor, index) => {
+        if (!Number.isFinite(seasonalFactor)) {
+            return null;
+        }
+
+        return {
+            month: index + 1,
+            factor: seasonalFactor,
+            calcStart,
+            calcEnd,
+            entriesTested: sortedMonths.length,
+        };
+    }).filter(Boolean);
+
+    if (factors.length === 0) {
+        console.error("Error: buildBlsNsChapsalisFactorRows produced no valid factors.");
+        return null;
+    }
+
+    return factors;
 }
 
-export function enrichFactorHistory(historicalFactors) {
-    return historicalFactors.map((r, index, rows) => {
+// This helper assumes historicalFactors are already sorted by month and have a factor property.
+// Callers must provide 13 consecutive source-month rows: 12 output months plus the following
+// source month used to close out the 12th month's dailyDelta. The output month is the source
+// month shifted forward three months for the TIPS delay, so source July is output month 10.
+// For example, a July 2025 through July 2026 input calculates July 2025's delta from August
+// 2025 and June 2026's delta from July 2026.
+export function finalizeFactorHistory(historicalFactors) {
+    if (!Array.isArray(historicalFactors) || historicalFactors.length !== 13) {
+        console.error("Error: finalizeFactorHistory requires 13 months of factor history, including the duplicate next-year month.");
+        return [];
+    }
+
+    const rows = [...historicalFactors];
+
+    for (let index = 1; index < rows.length; index++) {
+        const expectedDate = new Date(
+            duGetDateFromYYYYMMDD(rows[index - 1].fullDate).getFullYear(),
+            duGetDateFromYYYYMMDD(rows[index - 1].fullDate).getMonth() + 1,
+            1,
+        );
+        const actualDate = duGetDateFromYYYYMMDD(rows[index].fullDate);
+
+        if (expectedDate.getTime() !== actualDate.getTime()) {
+            console.error("Error: finalizeFactorHistory requires 13 consecutive monthly factor rows.");
+            return [];
+        }
+    }
+
+    return rows.slice(0, 12).map((r, index) => {
         const sfactor = r.factor;
-        const nextFactor = rows[(index + 1) % rows.length];
-        const dim = new Date(new Date().getFullYear(), r.month, 0).getDate();
-        const dailyDelta = roundToFixed(((nextFactor.factor - sfactor) / dim), 8, 9);
-        const factor15th = roundToFixed((sfactor + dailyDelta * 14), 5, 6);
+        const nextFactor = rows[index + 1].factor;
+        const sourceDate = duGetDateFromYYYYMMDD(r.fullDate);
+        const dim = new Date(sourceDate.getFullYear(), sourceDate.getMonth() + 1, 0).getDate();
+        const dailyDelta = (nextFactor - sfactor) / dim;
+        const factor15th = sfactor + dailyDelta * 14;
 
         return {
             ...r,
@@ -267,8 +279,3 @@ export function enrichFactorHistory(historicalFactors) {
         };
     });
 }
-
-export function finalizeFactorHistory(historicalFactors) {
-    return enrichFactorHistory(historicalFactors);
-}
-

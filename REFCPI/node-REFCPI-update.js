@@ -4,6 +4,7 @@ import {
     duDateLessThan
 } from '../lib/dateUtils.mjs';
 import { roundTo, roundToFixed } from "../lib/utils.mjs";
+import { fetchCpiDates } from "../CPI-dates/node-CPI-dates-update.mjs";
 
 // pull in a CPI metric and create a metric array.
 /**
@@ -45,10 +46,7 @@ const saMonths = await getCPIMonths("CPIAUCSL", "CPISA"); // Seasonally adjusted
 const nsaMonths = await getCPIMonths("CPIAUCNS", "CPINSA"); // Not seasonally adjusted.
 
 // grep CPI release months.
-const cpiDatesStr = await fetch('https://cashoptimizer.pages.dev/Treasuries/CPI-dates.json');
-const cpiDatesText = await cpiDatesStr.text();
-const cpiDates = JSON.parse(cpiDatesText);
-cpiDates.sort((a, b) => new Date(a.rlsDate) - new Date(b.rlsDate));
+const cpiDates = await fetchCpiDates();
 
 // function to find the latest CPI release date (rlsDate) that is less than or equal to the given date (date), return the corresponding refcpiDate.
 function findCPIReleaseDate(date) {

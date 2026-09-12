@@ -3,8 +3,8 @@
 # This tool now updates the REFCPI data on the cloudflare site.
 #
 # process the command argument list.
-# run 24 days after last publish, and only after 9am, 4 hours after if missed.
-pubDelayHours="$(echo "24 * 24" | bc)"
+# run 20 hours after last publish, and only after 9am, 4 hours after if missed.
+pubDelayHours=20
 runDelayHours=4
 nightDelayHour=9
 while [ -n "$1" ]; do
