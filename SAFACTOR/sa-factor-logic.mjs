@@ -5,38 +5,10 @@ import {
 import {
     roundToFixed
 } from "../lib/utils.mjs";
+import { fetchFredCpiMonths } from "../lib/fredCpiUtils.mjs";
 
 export async function getCPIMonths(metric) {
-    const startDate = new Date(1996, 0, 1);
-    const response = await fetch(`https://cashoptimizer.pages.dev/Treasuries/${metric}.csv`);
-    const text = await response.text();
-    const rows = text.split("\n");
-    const filtered = [];
-
-    for (let i = 1; i < rows.length; i++) {
-        const row = rows[i].split(",");
-        if (row.length < 2) continue;
-
-        const month = duGetDateFromYYYYMMDD(row[0]);
-        if (duDateLessThan(month, startDate)) continue;
-
-        const CPI = row[1] * 1;
-        if (isNaN(CPI) || CPI === 0) continue;
-
-        filtered.push({
-            fullDate: row[0],
-            year: month.getFullYear(),
-            month: month.getMonth() + 1,
-            CPI,
-        });
-    }
-
-    if (filtered.length <= 50) {
-        console.error(`Error: ${metric}, Not enough data points retrieved. probaby intermittent issue.`);
-        process.exit(1);
-    }
-
-    return filtered;
+    return fetchFredCpiMonths(metric, { startDateString: "1996-01-01" });
 }
 
 export function buildBlsNsSaFactors(slMonths, nsMonths) {

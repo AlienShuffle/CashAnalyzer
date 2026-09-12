@@ -3,47 +3,12 @@ import {
     duGetDateFromYYYYMMDD,
     duDateLessThan
 } from '../lib/dateUtils.mjs';
-import { roundTo, roundToFixed } from "../lib/utils.mjs";
-import { fetchCpiDates } from "../CPI-dates/node-CPI-dates-update.mjs";
+import { roundToFixed } from "../lib/utils.mjs";
+import { fetchCpiDates } from "../lib/cpiDatesUtils.mjs";
+import { fetchFredCpiMonths } from "../lib/fredCpiUtils.mjs";
 
-// pull in a CPI metric and create a metric array.
-/**
- * 
- * @param {string} series CPI series to pull from FRED. e.g. CPIAUCSL for seasonally adjusted, CPIAUCNS for not seasonally adjusted.
- * @param {string} attr json attribute name to use for the CPI value in the returned array. 
- * @returns 
- */
-async function getCPIMonths(series, attr) {
-    const startDateString = "2019-01-01";
-    const startDate = duGetDateFromYYYYMMDD(startDateString); // validate startDate
-    const response = await fetch(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${series}&cosd=${startDateString}&coed=9999-12-31`);
-    const text = await response.text();
-    const rows = text.split("\n");
-    // skip header, strip out all dates before startDate and all rows with missing CPI values
-    const filtered = [];
-    for (let i = 1; i < rows.length; i++) {
-        const row = rows[i].split(",");
-        if (row.length < 2) continue;
-        const month = duGetDateFromYYYYMMDD(row[0]);
-        if (duDateLessThan(month, startDate)) continue;
-        const CPI = row[1] * 1;
-        if (isNaN(CPI) || CPI === 0) continue;
-
-        filtered.push({
-            fullDate: row[0],
-            year: month.getFullYear(),
-            month: month.getMonth() + 1,
-            [attr]: CPI,
-        });
-    }
-    if (filtered.length <= 50) {
-        console.error(`Error: ${series}, Not enough data points retrieved. probaby intermittent issue.`);
-        process.exit(1);
-    }
-    return filtered;
-}
-const saMonths = await getCPIMonths("CPIAUCSL", "CPISA"); // Seasonally adjusted.
-const nsaMonths = await getCPIMonths("CPIAUCNS", "CPINSA"); // Not seasonally adjusted.
+const saMonths = await fetchFredCpiMonths("CPIAUCSL", { attr: "CPISA", startDateString: "2019-01-01" }); // Seasonally adjusted.
+const nsaMonths = await fetchFredCpiMonths("CPIAUCNS", { attr: "CPINSA", startDateString: "2019-01-01" }); // Not seasonally adjusted.
 
 // grep CPI release months.
 const cpiDates = await fetchCpiDates();
@@ -61,14 +26,8 @@ function findCPIReleaseDate(date) {
     return null;
 }
 
-// seed with the missing month due to 2025 Govt shutdown, then loop through the rest of the months and build the response for each month.
-let months = [{
-    year: 2025,
-    month: 10,
-    date: "2025-10-01",
-    CPINSA: 325.604,
-    CPISA: 325.551
-}];
+// build the response for each month; October 2025 (govt shutdown gap) is filled in by fetchFredCpiMonths.
+let months = [];
 for (let i = 0; i < saMonths.length; i++) {
     const saRow = saMonths[i];
     if (isNaN(saRow.CPISA) || saRow.CPISA === 0) continue; // skip rows with missing CPI values
@@ -118,12 +77,11 @@ for (let i = 0; i < months.length - 1; i++) {
         const dailyCPIDate = new Date(refCpiMonth);
         dailyCPIDate.setDate(dailyCPIDate.getDate() + j);
         const maxREFCPI = findCPIReleaseDate(dailyCPIDate);
-        // console.error(`DEBUG: ${dailyCPIDate.toISOString().substring(0, 10)}: refCPINSA=${refCPINSA + dailyCPINSAIncrement * j}, refCPISA=${refCPISA + dailyCPISAIncrement * j}, SAFactor=${roundTo((refCPINSA + dailyCPINSAIncrement * j) / (refCPISA + dailyCPISAIncrement * j), 6)}, maxREFCPI=${maxREFCPI ? maxREFCPI.toISOString().substring(0, 10) : 'null'}`);
         resp.push({
             refCPIDate: dailyCPIDate.toISOString().substring(0, 10),
             refCPINSA: refCPINSA + dailyCPINSAIncrement * j,
             refCPISA: refCPISA + dailyCPISAIncrement * j,
-            SAFactor: roundToFixed((refCPINSA + dailyCPINSAIncrement * j) / (refCPISA + dailyCPISAIncrement * j),5, 6),
+            SAFactor: (refCPINSA + dailyCPINSAIncrement * j) / (refCPISA + dailyCPISAIncrement * j),
             mmdd: formatMMDD(dailyCPIDate),
             maxREFCPI: maxREFCPI.toISOString().substring(0, 10)
         });
@@ -136,7 +94,7 @@ resp.push({
     refCPIDate: lastDate.toISOString().substring(0, 10),
     refCPINSA: months[months.length - 1].CPINSA,
     refCPISA: months[months.length - 1].CPISA,
-    SAFactor: roundToFixed(months[months.length - 1].CPINSA / months[months.length - 1].CPISA, 5, 6),
+    SAFactor: months[months.length - 1].CPINSA / months[months.length - 1].CPISA,
     mmdd: formatMMDD(lastDate),
     maxREFCPI: lastDate.toISOString().substring(0, 10)
 });
