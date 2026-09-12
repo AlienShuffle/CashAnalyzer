@@ -1,38 +1,13 @@
 import {
-    roundTo,
     roundToFixed
 } from "../lib/utils.mjs";
+import { fetchFredCpiMonths } from "../lib/fredCpiUtils.mjs";
 
 const series = "CPIAUCSL";
-const startDate = "1913-01-01";
-const response = await fetch(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${series}&cosd=${startDate}&coed=9999-12-31`);
-const csvText = await response.text();
-const monthsText = csvText.split("\n"); 0
-
-if (monthsText.length <= 100) {
-    console.error("Error: Not enough data points retrieved. probaby intermittent issue.");
-    process.exit(1);
-}
-
-// seed with the missing month due to 2025 Govt shutdown, then loop through the rest of the months and build the response for each month.
-let months = [{
-    month: "2025-10-01",
-    CPI: roundTo(325.604 / (100.038 / 100), 4)         // backed into, Treasury published NSA CPI of 325.604 for October 2025 and Seasonal Factor of 1.00038
-}];
-for (let i = 1; i < monthsText.length; i++) {
-    const row = monthsText[i].split(",");
-    const month = row[0];
-    const CPI = row[1] * 1;
-    if (isNaN(CPI) || CPI === 0) continue; // skip rows with missing CPI values
-    months.push({
-        month: month,
-        CPI: CPI,
-    });
-}
-months.sort((a, b) => new Date(a.month) - new Date(b.month)); // sort by month to get shutdown month in correct order
+const months = await fetchFredCpiMonths(series, { startDateString: "1913-01-01" });
 
 console.log(`date,${series}`);
 for (let i = 0; i < months.length; i++) {
     const r = months[i];
-    console.log(`${r.month},${roundToFixed(r.CPI, 3)}`);
+    console.log(`${r.fullDate},${roundToFixed(r.CPI, 3)}`);
 }
