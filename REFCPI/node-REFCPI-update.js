@@ -14,7 +14,7 @@ import { fetchCpiDates } from "../CPI-dates/node-CPI-dates-update.mjs";
  * @returns 
  */
 async function getCPIMonths(series, attr) {
-    const startDateString = "1996-01-01";
+    const startDateString = "2019-01-01";
     const startDate = duGetDateFromYYYYMMDD(startDateString); // validate startDate
     const response = await fetch(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${series}&cosd=${startDateString}&coed=9999-12-31`);
     const text = await response.text();
