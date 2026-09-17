@@ -19,14 +19,31 @@ if (debug) console.error(`Found content element with ${contentElementArray.lengt
 // This is only present if there is a current delinquency, so we need to check for it before trying to access the value.
 const inputElementArray = root.querySelectorAll('input');
 if (debug) console.error(`Found ${inputElementArray.length} input element child nodes.`);
-const currentDeliquency = inputElementArray.length > 0;
+// as of SEP-2026 the site no longer renders the payment form for parcels flagged for the
+// upcoming tax sale; it shows a "tax claim locked" message instead. treat that message as
+// a current delinquency too.
+const paymentLocked = htmlString.includes("Online payments are not accepted");
+if (debug) console.error(`Payment locked message present: ${paymentLocked}`);
+const currentDeliquency = inputElementArray.length > 0 || paymentLocked;
 
 let currentTaxesDue = 0;
 if (currentDeliquency) {
-    if (debug) console.error(`\titem 0 name is: ${inputElementArray[0].getAttribute('name')}`);
-    if (debug) console.error(`\titem 0 value is: ${inputElementArray[0].getAttribute('value')}`);
-    currentTaxesDue = inputElementArray[0].getAttribute('value');
-    if (debug) console.error(`\tcurrent taxes due: ${currentTaxesDue}`);
+    if (inputElementArray.length > 0) {
+        if (debug) console.error(`\titem 0 name is: ${inputElementArray[0].getAttribute('name')}`);
+        if (debug) console.error(`\titem 0 value is: ${inputElementArray[0].getAttribute('value')}`);
+        currentTaxesDue = inputElementArray[0].getAttribute('value');
+        if (debug) console.error(`\tcurrent taxes due: ${currentTaxesDue}`);
+    } else {
+        // payment form is locked, so use the grand total due from the final summary section.
+        for (const th of root.querySelectorAll('th')) {
+            if (th.text.includes("Total Due as of")) {
+                const totalDueElement = th.parentNode.querySelector('td');
+                if (totalDueElement) currentTaxesDue = totalDueElement.text.trim().replace(/[\$,]/g, '') * 1;
+                if (debug) console.error(`\tcurrent taxes due from Total Due summary: ${currentTaxesDue}`);
+                break;
+            }
+        }
+    }
 }
 
 let result = {
@@ -85,6 +102,8 @@ for (let i = 0; i < contentElementArray.length; i++) {
                 result.status.firstDeliquentYear = contentElementArray[j - 5].text.trim() * 1;
                 break;
             }
+            // single-year claims have no Total row; stop when the year rows end.
+            if (!/^\d{4}$/.test(contentElementArray[j].text.trim())) break;
             const amount = (contentElementArray[j + 1].text.trim().replace(/[\$,]/g, '') * 1).toFixed(2) * 1;
             if (debug) console.error(`${j}: amount: ${amount} Year: ${contentElementArray[j].text.trim()}`);
             result.status.historicalDelinquency = (result.status.historicalDelinquency + amount).toFixed(2) * 1;
