@@ -13,6 +13,10 @@ while [ -n "$1" ]; do
         #echo "collectionScript=$collectionScript"
         shift
         ;;
+    "--csvFields")
+        csvFields="$2"
+        shift
+        ;;
     "--collectionArg")
         collectionArg="$2"
         #echo "collectionArg=$collectionArg"
@@ -84,6 +88,10 @@ if [ -z "$processScript" ]; then
     processScript="./node-$sourceName-update.js"
 fi
 
+# comma-separated JSON fields published in the .csv (default: the FedInvest table).
+[ -n "$csvFields" ] || csvFields="asOfDate,cusip,securitytype,rate,maturitydate,calldate,buy,sell,endofday,key"
+csvHeader=$(echo "$csvFields" | sed 's/,/, /g')
+csvJq=$(echo "$csvFields" | sed 's/\([^,]*\)/.\1/g')
 # current rate files
 [ -d history ] || mkdir history
 injectRatesJson="inject-rates.json"
@@ -206,8 +214,8 @@ if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     # save the data file as a .csv as well.
     (
-        echo 'asOfDate, cusip, securitytype, rate, maturitydate, calldate, buy, sell, endofday, key'
-        jq -r '.[] | [.asOfDate, .cusip, .securitytype, .rate, .maturitydate, .calldate, .buy, .sell, .endofday, .key] | @csv' "$jsonRateNew"
+        echo "$csvHeader"
+        jq -r ".[] | [$csvJq] | @csv" "$jsonRateNew"
     ) >"$csvRateFlare"
     asOfDate=$(jq -r '.[] | .asOfDate' "$jsonRateFlare" | sort -u)
     dailyRateFile="$dailyFolder/$asOfDate-rate.json"
