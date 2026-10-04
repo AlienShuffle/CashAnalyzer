@@ -63,12 +63,12 @@ for (let i = 0; i < months.length - 1; i++) {
     nextRefCpiMonth.setMonth(nextRefCpiMonth.getMonth() + 3);
     const monthDays = duDaysBetween(refCpiMonth, nextRefCpiMonth);
 
-    // this block calculates dail NSA REFCPI values.
+    // this block calculates daily NSA REFCPI values.
     const refCPINSA = months[i].CPINSA;
     const nextRefCPINSA = months[i + 1].CPINSA;
     const dailyCPINSAIncrement = (nextRefCPINSA - refCPINSA) / monthDays;
 
-    // this block calculates dail SA REFCPI values.
+    // this block calculates daily SA REFCPI values.
     const refCPISA = months[i].CPISA;
     const nextRefCPISA = months[i + 1].CPISA;
     const dailyCPISAIncrement = (nextRefCPISA - refCPISA) / monthDays;

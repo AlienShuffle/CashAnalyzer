@@ -1,0 +1,66 @@
+// forward.gs
+// forward rate calculations.
+
+/**
+ * Given r1,t1 and r2,t2 for rates and times relative to t0, calculate the forward rate from t1 to t2.
+ * basic math: ((1+r2)^t2/(1+r1)^t1) ^ (1/(t2-t1)) - 1
+ * Rates are assumed to be consistly defined and I believe based upon as annual returns is normal.
+ * 365 days/year (or at least consistent between r1 and r2) 
+ *
+ * @param {number} r1 rate from t0 to t1
+ * @param {number} t1 yrs from t0 to t1
+ * @param {number} r2 rate from t0 to t2
+ * @param {number} t2 yrs from to to t2
+ * @return {number}
+ * @customfunction
+ */
+function mybondForwardRate(r1, t1, r2, t2) {
+
+  if (r1 <= -1 || r2 <= -1)
+    throw new Error("Rates must exceed -100%");
+
+  const rForward = Math.pow(
+    Math.pow(
+      1 + r2,
+      t2
+    ) /
+    Math.pow(
+      1 + r1,
+      t1
+    ),
+    1 / (t2 - t1)
+  )
+    - 1;
+  return mybondRoundYield(rForward);
+}
+
+/**
+ * Given three dates and rates from t0 to t1 (rForward), and t0 to t2 (rMaturity), calculate the rate from t1 to t2.
+ * Use 365 days to be consistent with rest of toolkits non-coupon annualization.
+ * Returns rMaturity if forward >= maturity.
+ * 
+ * @param {Date} settle current settlement date (t0)
+ * @param {Date} forward Forward settlement date (t1)
+ * @param {Date} maturity Maturity date (t2)
+ * @param {number} rForward Forward rate (calculated) - r1 rate from t0 to t1  (decimal)
+ * @param {number} rMaturity Maturity rate (Treasury Bill or Bond) - r2 rate from t0 to t2 (decimal)
+ *
+ * @return {number}
+ * @customfunction
+ */
+function mybondEasyForward(settle, forward, maturity, rForward, rMaturity) {
+  const settleDate = mydateNormalize_(settle);
+  const forwardDate = mydateNormalize_(forward);
+  const maturityDate = mydateNormalize_(maturity);
+  const t1 = mydateDaysBetween_(settleDate, forwardDate) / 365;
+  const t2 = mydateDaysBetween_(settleDate, maturityDate) / 365;
+
+  if (t2 <= t1) {
+    Logger.log(
+      `t2 (${t2}) must exceed t1 (${t1}), just return r2 as it is all known`
+    );
+    return "";
+  }
+  //Logger.log(`rForward=${rForward},t1=${t1},rMaturity=${rMaturity},t2=${t2}`)
+  return mybondForwardRate(rForward, t1, rMaturity, t2);
+}
