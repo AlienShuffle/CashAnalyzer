@@ -56,3 +56,37 @@ publishCurve settle-sa mktTips-curve-sa || exit $?
 publishCurve forward mktTips-curve-fwd || exit $?
 publishCurve forward-sa mktTips-curve-fwd-sa || exit $?
 publishCurve forward-sa-decay mktTips-curve-fwd-sa-decay || exit $?
+
+# publishNominalCurve <basis> <output name>: Svensson nominal zero curve (6-month points to 30 years) from the mktBonds ask quotes.
+publishNominalCurve() {
+    local basis="$1" name="$2"
+    local curveOutput="history/$name-rate-new.json"
+    local tmpCurveOutput="$curveOutput.tmp.$$"
+    local curveJsonFlare="$curveCloudflareDir/$name-rate.json"
+    local curveCsvFlare="$curveCloudflareDir/$name-rate.csv"
+    if ! node ./node-calc-mktBonds-curve.mjs "--basis=$basis" "--mktBonds=$curveCloudflareDir/mktBonds-rate.json" <"$curveInput" | jq . >"$tmpCurveOutput"; then
+        rm -f "$tmpCurveOutput"
+        return 1
+    fi
+    mv "$tmpCurveOutput" "$curveOutput"
+
+    local asOfDate
+    asOfDate=$(jq -er '.asOfDate' "$curveOutput") || return $?
+    if ../bin/jsonDifferent.sh "$curveOutput" "$curveJsonFlare"; then
+        local action="updated"
+        [ -s "$curveJsonFlare" ] || action="added"
+        cp "$curveOutput" "$curveJsonFlare"
+        (
+            echo 'asOfDate, basis, curveDate, term, date, zeroCc, zeroBey, discountFactor'
+            jq -r --arg asOfDate "$asOfDate" --arg basis "$basis" --arg curveDate "$(jq -r '.settleDate' "$curveOutput")" \
+                '.points[] | [$asOfDate, $basis, $curveDate, .term, .date, .zeroCc, .zeroBey, .discountFactor] | @csv' \
+                "$curveOutput"
+        ) >"$curveCsvFlare"
+        cp "$curveJsonFlare" "$curveDailyDir/$asOfDate-$name.json"
+        cp "$curveCsvFlare" "$curveDailyDir/$asOfDate-$name.csv"
+        echo "published $action $name cloudFlare rate files."
+    fi
+}
+
+publishNominalCurve settle mktBonds-curve || exit $?
+publishNominalCurve forward mktBonds-curve-fwd || exit $?

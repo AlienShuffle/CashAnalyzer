@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { parseDownloadDate } from "../node-collect-mktBonds.mjs";
+import { getSecurityType, parseDownloadDate } from "../node-collect-mktBonds.mjs";
 
 test("parseDownloadDate returns date and 24-hour HHMM", () => {
     assert.equal(parseDownloadDate("x\nDate downloaded   10/02/2026 02:05 PM"), "2026-10-02T1705");
@@ -11,4 +11,10 @@ test("parseDownloadDate returns date and 24-hour HHMM", () => {
     assert.equal(parseDownloadDate("Date downloaded   3/10/2026 08:00 AM"), "2026-03-10T1100");
     assert.equal(parseDownloadDate("Date downloaded   3/5/2026 08:00 AM"), "2026-03-05T1100");
     assert.throws(() => parseDownloadDate("nothing"), /Date downloaded/);
+});
+
+test("getSecurityType treats interest and principal strips as STRIP", () => {
+    assert.equal(getSecurityType("Treasury", "U S TREAS SEC STRIPPED INT PMT, 0.000%, 15-AUG-2056", ""), "STRIP");
+    assert.equal(getSecurityType("Treasury", "UNITED STATES TREAS BD STRIPP ZERO CPN, 0.000%, 15-NOV-2026", ""), "STRIP");
+    assert.equal(getSecurityType("Treasury", "UNITED STATES TREAS BDS, 6.500%, 15-NOV-2026", "semi-annually"), "Bond");
 });

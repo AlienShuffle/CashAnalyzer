@@ -53,12 +53,12 @@ function parsePrice(value) {
     return Number(match[1]);
 }
 
-function getSecurityType(product, description, frequency) {
+export function getSecurityType(product, description, frequency) {
     const upperProduct = product.trim().toUpperCase();
     const upperDescription = description.trim().toUpperCase();
 
     if (upperProduct === "TIPS") return "TIPS";
-    if (/\bSTRIP(?:PED)?\b/.test(upperDescription)) return "STRIP";
+    if (/\bSTRIPP?(?:ED)?\b/.test(upperDescription)) return "STRIP";
     if (/\bBILLS?\b/.test(upperDescription)) return "Bill";
     if (/\b(?:NTS?|NOTES?|BDS?|BONDS?)\b/.test(upperDescription) || frequency.trim()) {
         return "Bond";
