@@ -2,8 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
+import { accruedInterest } from "../lib/coupons.mjs";
 import {
-    analyzeTipsZero, dfToSimpleRate, dfToZeroBEY, dfToZeroCc, fitTipsSvensson, forwardCcFromDF, forwardCarryFactor,
+    analyzeTipsZero, dfToSimpleRate, dfToZeroBEY, dfToZeroCc, fitTipsSvensson, fitTipsSvenssonLegacy, forwardCcFromDF, forwardCarryFactor,
     forwardDF, simpleRateToDF, svenssonDF, svenssonZero, tipsZeroModelPrice, zeroBEYToCc, zeroBEYToDF, zeroCcToBEY,
     zeroCcToDF,
 } from "../lib/index.mjs";
@@ -69,7 +70,7 @@ test("parity with Apps Script svensson fit", () => {
     const ds = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
     context.inp = { settle: ds(settle), bonds: bonds.map(b => ({ ...b, maturity: ds(b.maturity) })) };
     const orig = vm.runInContext("fitTipsSvensson_(inp.settle, inp.bonds)", context);
-    const mine = fitTipsSvensson(settle, bonds);
+    const mine = fitTipsSvenssonLegacy(settle, bonds);
     assert.deepEqual(Array.from(orig.params), mine.params);
     assert.equal(orig.objective, mine.objective);
     context.p = mine.params;
@@ -78,4 +79,26 @@ test("parity with Apps Script svensson fit", () => {
         assert.equal(vm.runInContext("mytipsZeroModelPrice(inp.settle, b.maturity, b.coupon, p)", context),
             tipsZeroModelPrice(settle, b.maturity, b.coupon, mine.params));
     }
+});
+
+test("optimized Svensson fit escapes the legacy local minimum", () => {
+    const fixture = JSON.parse(readFileSync(new URL("./fixtures-tips-forward-curve.json", import.meta.url), "utf8"));
+    const market = fixture.bonds.map(([maturity, coupon, cleanPrice]) => ({ maturity, coupon, cleanPrice }));
+    const legacy = fitTipsSvenssonLegacy(fixture.settle, market);
+    const fit = fitTipsSvensson(fixture.settle, market);
+    assert.ok(fit.objective < legacy.objective * 0.6, `${fit.objective} vs ${legacy.objective}`);
+    assert.ok(fit.objective < 0.72);
+    assert.ok(fit.params[4] < fit.params[5]);
+});
+
+test("optimized Svensson fit reprices a synthetic curve", () => {
+    const fixture = JSON.parse(readFileSync(new URL("./fixtures-tips-forward-curve.json", import.meta.url), "utf8"));
+    const truth = [0.021, -0.006, 0.01, 0.015, 1.8, 9];
+    const synthetic = fixture.bonds.map(([maturity, coupon]) => ({
+        maturity,
+        coupon,
+        cleanPrice: tipsZeroModelPrice(fixture.settle, maturity, coupon, truth) - accruedInterest(fixture.settle, maturity, coupon),
+    }));
+    const fit = fitTipsSvensson(fixture.settle, synthetic);
+    assert.ok(fit.objective < 1e-8, `${fit.objective}`);
 });

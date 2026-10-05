@@ -10,15 +10,18 @@ function dateOnly(value) {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
+const BASES = ["settle", "forward", "forward-sa"];
+
 /**
  * @param {Array<object>} tipsRows output rows from node-mktTips-update.mjs
- * @param {{basis?: "settle"|"forward"}} options settle uses the settlement date and market clean
- *   price; forward uses the forward (maxREFCPI) date and the forward clean price. Bonds maturing on
- *   or before the forward date are excluded from both curves.
+ * @param {{basis?: "settle"|"forward"|"forward-sa"}} options settle uses the settlement date and
+ *   market clean price; forward uses the forward (maxREFCPI) date and the unadjusted forward clean
+ *   price; forward-sa multiplies that price by fwd_mature_sa_ratio (seasonally adjusted). Bonds
+ *   maturing on or before the forward date are excluded from every curve.
  * @return {object} dated Svensson fit and per-bond diagnostics
  */
 export function buildTipsCurveAnalysis(tipsRows, { basis = "settle" } = {}) {
-    if (!["settle", "forward"].includes(basis)) throw new Error("basis must be settle or forward");
+    if (!BASES.includes(basis)) throw new Error(`basis must be one of ${BASES.join(", ")}`);
     if (!Array.isArray(tipsRows) || tipsRows.length === 0) {
         throw new Error("No mktTips rows supplied for curve analysis");
     }
@@ -38,15 +41,17 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle" } = {}) {
     }
 
     const forwardDate = [...forwardDates][0];
-    const settleDate = basis === "forward" ? forwardDate : [...settlementDates][0];
-    const priceField = basis === "forward" ? "fwd_clean_price_unadjusted" : "settle_clean_price";
+    const settleDate = basis !== "settle" ? forwardDate : [...settlementDates][0];
+    const priceField = basis !== "settle" ? "fwd_clean_price_unadjusted" : "settle_clean_price";
+    const seasonal = basis === "forward-sa";
     const bonds = tipsRows
         .filter(row => normalizeDate(row.maturity_date) > normalizeDate(forwardDate))
+        .filter(row => !seasonal || Number.isFinite(Number(row.fwd_mature_sa_ratio)) && row.fwd_mature_sa_ratio != null)
         .map(row => ({
             cusip: row.cusip,
             maturity: row.maturity_date,
             coupon: row.interest_rate,
-            cleanPrice: row[priceField],
+            cleanPrice: seasonal ? row[priceField] * row.fwd_mature_sa_ratio : row[priceField],
         }));
     const fit = analyzeTipsZero(settleDate, bonds);
 

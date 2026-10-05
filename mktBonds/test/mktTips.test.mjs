@@ -63,6 +63,7 @@ test("TIPS curve analysis is generated as a separate dated Svensson result", () 
         interest_rate,
         settle_clean_price,
         fwd_clean_price_unadjusted: settle_clean_price + 0.1,
+        fwd_mature_sa_ratio: 1.01,
     }));
     curveRows.unshift({
         asOfDate: "2026-10-02T1405",
@@ -97,6 +98,14 @@ test("TIPS curve analysis is generated as a separate dated Svensson result", () 
     assert.equal(fwd.basis, "forward");
     assert.equal(fwd.settleDate, "2026-12-01");
     assert.ok(Math.abs(fwd.rows[0].marketClean - 99.7) < 1e-9);
+    const sa = buildTipsCurveAnalysis(curveRows, { basis: "forward-sa" });
+    assert.equal(sa.basis, "forward-sa");
+    assert.equal(sa.settleDate, "2026-12-01");
+    assert.ok(Math.abs(sa.rows[0].marketClean - 99.7 * 1.01) < 1e-9);
+    // Bonds without a seasonal ratio are left out of the adjusted curve only.
+    const noRatio = { ...curveRows[1], cusip: "NORATIO", fwd_mature_sa_ratio: null };
+    assert.ok(!buildTipsCurveAnalysis([noRatio, ...curveRows], { basis: "forward-sa" }).rows.some(r => r.cusip === "NORATIO"));
+    assert.ok(buildTipsCurveAnalysis([noRatio, ...curveRows], { basis: "forward" }).rows.some(r => r.cusip === "NORATIO"));
     assert.throws(() => buildTipsCurveAnalysis(curveRows, { basis: "x" }), /basis/);
 });
 

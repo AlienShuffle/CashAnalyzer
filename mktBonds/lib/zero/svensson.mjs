@@ -6,6 +6,7 @@ import { accruedInterest, couponSchedule } from "../coupons.mjs";
 import { macaulayDuration } from "../duration.mjs";
 import { roundPrice } from "../rounding.mjs";
 import { yieldFromPrice } from "../yield.mjs";
+import { fitPreparedSvensson } from "./svenssonFit.mjs";
 
 /**
  * Svensson continuously compounded zero rate.
@@ -65,19 +66,7 @@ function fastZero(t, b0, b1, b2, b3, tau1, tau2) {
     return b0 + b1 * a1 + b2 * (a1 - e1) + b3 * ((1 - e2) / x2 - e2);
 }
 
-/**
- * Fit a Svensson curve to TIPS dirty prices with inverse-duration weights (GSW style) using a
- * tau grid with beta coordinate descent, then a six-parameter local refinement.
- * @param {Date|string} settle
- * @param {Array<{maturity:Date|string, coupon:number, cleanPrice:number}>} bonds at least 6 usable
- * @return {{params:number[], objective:number}}
- */
-export function fitTipsSvensson(settle, bonds) {
-    const settleDate = normalizeDate(settle);
-    if (!Array.isArray(bonds) || bonds.length < 6) {
-        throw new Error(`Svensson fit requires at least 6 bonds; found ${bonds?.length ?? 0}`);
-    }
-
+function prepareBonds(settleDate, bonds) {
     const prepared = [];
     for (const bond of bonds) {
         const maturityDate = normalizeDate(bond.maturity);
@@ -100,6 +89,42 @@ export function fitTipsSvensson(settle, bonds) {
 
         prepared.push({ marketDirty, times, cashFlows, weight: 1 / duration });
     }
+    return prepared;
+}
+
+/**
+ * Fit a Svensson curve to TIPS dirty prices with inverse-duration weights (GSW style) using a
+ * deterministic tau grid with Levenberg-Marquardt, then a six-parameter polish of the best candidates.
+ * @param {Date|string} settle
+ * @param {Array<{maturity:Date|string, coupon:number, cleanPrice:number}>} bonds at least 6 usable
+ * @return {{params:number[], objective:number}}
+ */
+export function fitTipsSvensson(settle, bonds) {
+    const settleDate = normalizeDate(settle);
+    if (!Array.isArray(bonds) || bonds.length < 6) {
+        throw new Error(`Svensson fit requires at least 6 bonds; found ${bonds?.length ?? 0}`);
+    }
+    const prepared = prepareBonds(settleDate, bonds);
+    if (prepared.length < 6) {
+        throw new Error(`Insufficient usable bonds for Svensson fit: ${prepared.length}`);
+    }
+    return fitPreparedSvensson(prepared);
+}
+
+/**
+ * Apps Script search (kept for parity): fit a Svensson curve to TIPS dirty prices with inverse-duration weights (GSW style) using a
+ * tau grid with beta coordinate descent, then a six-parameter local refinement.
+ * @param {Date|string} settle
+ * @param {Array<{maturity:Date|string, coupon:number, cleanPrice:number}>} bonds at least 6 usable
+ * @return {{params:number[], objective:number}}
+ */
+export function fitTipsSvenssonLegacy(settle, bonds) {
+    const settleDate = normalizeDate(settle);
+    if (!Array.isArray(bonds) || bonds.length < 6) {
+        throw new Error(`Svensson fit requires at least 6 bonds; found ${bonds?.length ?? 0}`);
+    }
+
+    const prepared = prepareBonds(settleDate, bonds);
     if (prepared.length < 6) {
         throw new Error(`Insufficient usable bonds for Svensson fit: ${prepared.length}`);
     }
