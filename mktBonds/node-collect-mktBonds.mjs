@@ -67,7 +67,19 @@ function getSecurityType(product, description, frequency) {
     throw new Error(`Unable to determine security type for ${product}: ${description}`);
 }
 
+// The footer line reads "Date downloaded   10/02/2026 02:05 PM"; returns "2026-10-02T1405".
+export function parseDownloadDate(csvText) {
+    const match = csvText.match(/Date downloaded\s+(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})\s*([AP]M)/i);
+    if (!match) {
+        throw new Error("Treasury CSV is missing its 'Date downloaded' line.");
+    }
+    const [, month, day, year, hourText, minute, meridiem] = match;
+    const hour = Number(hourText) % 12 + (meridiem.toUpperCase() === "PM" ? 12 : 0);
+    return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T${String(hour).padStart(2, "0")}${minute}`;
+}
+
 export function parseTreasuryCsv(csvText) {
+    const asOfDate = parseDownloadDate(csvText);
     const rows = parseCsvToMatrix(csvText);
     if (rows.length === 0) {
         throw new Error("Treasury CSV is empty.");
@@ -97,6 +109,7 @@ export function parseTreasuryCsv(csvText) {
 
         const couponText = row[columnIndexes.coupon]?.trim() ?? "";
         records.push({
+            asOfDate,
             product,
             description,
             cusip,

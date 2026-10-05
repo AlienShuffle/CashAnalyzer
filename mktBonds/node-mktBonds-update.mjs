@@ -2,11 +2,10 @@
 // Columns follow the FedInvest table; rate is the coupon in percent and bid/ask are per $100.
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
-import { duGetISOString } from "../lib/dateUtils.mjs";
 
-export function toPublishedRows(records, asOfDate) {
+export function toPublishedRows(records) {
     return records.map(r => ({
-        asOfDate,
+        asOfDate: r.asOfDate,
         cusip: r.cusip,
         securitytype: r.securityType,
         rate: r.coupon === null ? "" : r.coupon.toFixed(5),
@@ -21,5 +20,5 @@ export function toPublishedRows(records, asOfDate) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const records = JSON.parse(fs.readFileSync(0, "utf-8"));
-    console.log(JSON.stringify(toPublishedRows(records, duGetISOString(new Date()))));
+    console.log(JSON.stringify(toPublishedRows(records)));
 }
