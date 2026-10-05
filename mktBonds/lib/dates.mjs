@@ -83,3 +83,15 @@ export function dateEquals(a, b) {
 export function dateLessThan(startDate, endDate) {
     return daysBetween(startDate, endDate) > 0;
 }
+
+/**
+ * Next weekday strictly after a date (Mon-Fri only; holidays are not handled yet).
+ * @param {Date|string} value
+ * @return {Date}
+ */
+export function nextWeekday(value) {
+    const d = normalizeDate(value);
+    const next = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1);
+    while (next.getDay() === 0 || next.getDay() === 6) next.setDate(next.getDate() + 1);
+    return next;
+}

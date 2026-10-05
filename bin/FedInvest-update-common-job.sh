@@ -13,6 +13,10 @@ while [ -n "$1" ]; do
         #echo "collectionScript=$collectionScript"
         shift
         ;;
+    "--outputName")
+        outputName="$2"
+        shift
+        ;;
     "--csvFields")
         csvFields="$2"
         shift
@@ -88,6 +92,14 @@ if [ -z "$processScript" ]; then
     processScript="./node-$sourceName-update.js"
 fi
 
+# published file prefix; defaults to the source name. A different name lets one source
+# publish several tables side by side (daily files then include the name).
+dailyName="rate"
+if [ -n "$outputName" ] && [ "$outputName" != "$sourceName" ]; then
+    dailyName="$outputName"
+else
+    outputName="$sourceName"
+fi
 # comma-separated JSON fields published in the .csv (default: the FedInvest table).
 [ -n "$csvFields" ] || csvFields="asOfDate,cusip,securitytype,rate,maturitydate,calldate,buy,sell,endofday,key"
 csvHeader=$(echo "$csvFields" | sed 's/,/, /g')
@@ -95,9 +107,9 @@ csvJq=$(echo "$csvFields" | sed 's/\([^,]*\)/.\1/g')
 # current rate files
 [ -d history ] || mkdir history
 injectRatesJson="inject-rates.json"
-jsonRateNew="history/$sourceName-rate-new.json"
-jsonRateFlare="$cloudFlareHome/Treasuries/$sourceName/$sourceName-rate.json"
-csvRateFlare="$cloudFlareHome/Treasuries/$sourceName/$sourceName-rate.csv"
+jsonRateNew="history/$outputName-rate-new.json"
+jsonRateFlare="$cloudFlareHome/Treasuries/$sourceName/$outputName-rate.json"
+csvRateFlare="$cloudFlareHome/Treasuries/$sourceName/$outputName-rate.csv"
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
 #  - note, if -f is passed to this script, I will run the script regardless, but report the aging status too.
@@ -218,8 +230,8 @@ if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
         jq -r ".[] | [$csvJq] | @csv" "$jsonRateNew"
     ) >"$csvRateFlare"
     asOfDate=$(jq -r '.[] | .asOfDate' "$jsonRateFlare" | sort -u)
-    dailyRateFile="$dailyFolder/$asOfDate-rate.json"
-    dailyRateCSV="$dailyFolder/$asOfDate-rate.csv"
+    dailyRateFile="$dailyFolder/$asOfDate-$dailyName.json"
+    dailyRateCSV="$dailyFolder/$asOfDate-$dailyName.csv"
     cat "$jsonRateFlare" >"$dailyRateFile"
     cat "$csvRateFlare" >"$dailyRateCSV"
     echo "published updated $sourceName cloudFlare daily rate files."
