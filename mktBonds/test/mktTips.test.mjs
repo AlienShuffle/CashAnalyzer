@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { nextWeekday, createRefCpiTable, tbillRepoRate } from "../lib/index.mjs";
+import { buildTipsCurveAnalysis } from "../node-calc-mktTips-curve.mjs";
 import { buildTipsRows, parseMeta, parseOptions } from "../node-mktTips-update.mjs";
 
 test("nextWeekday skips weekends", () => {
@@ -30,6 +31,8 @@ test("buildTipsRows joins quotes, picks the price side and skips unquoted bonds"
     const out = buildTipsRows(meta, quotes, table, { repoRate: 0.04, priceSide: "bid" });
     assert.equal(out.length, 1);
     assert.equal(out[0].settle_clean_price, 98);
+    assert.equal(out[0].report_source, "Fidelity bid");
+    assert.equal(buildTipsRows(meta, quotes, table, { repoRate: 0.04, priceSide: "ask" })[0].report_source, "Fidelity ask");
     assert.equal(out[0].settle_date, "2026-10-05");
     assert.equal(out[0].fwd_date, "2026-11-01");
     assert.ok(out[0].fwd_clean_price_unadjusted > 90);
@@ -44,4 +47,62 @@ test("tbillRepoRate brackets the target and derives a simple rate; auto repo is 
     assert.equal(r.after.maturity.getDate(), 3);
     assert.ok(r.rate > 0.03 && r.rate < 0.06);
     assert.throws(() => tbillRepoRate("2026-10-05", "2026-12-01", bills), /bracket/);
+});
+
+test("TIPS curve analysis is generated as a separate dated Svensson result", () => {
+    const curveRows = [
+        ["2027-04-15", 0.0125, 99.6], ["2027-10-15", 0.01, 99.2], ["2028-07-15", 0.0075, 98.0],
+        ["2029-01-15", 0.0125, 98.4], ["2030-07-15", 0.015, 97.9], ["2031-04-15", 0.0125, 96.5],
+        ["2032-07-15", 0.02, 98.1], ["2035-01-15", 0.02, 96.0],
+    ].map(([maturity_date, interest_rate, settle_clean_price]) => ({
+        cusip: `CUSIP-${maturity_date}`,
+        asOfDate: "2026-10-02T1405",
+        settle_date: "2026-10-05",
+        fwd_date: "2026-12-01",
+        maturity_date,
+        interest_rate,
+        settle_clean_price,
+        fwd_clean_price_unadjusted: settle_clean_price + 0.1,
+    }));
+    curveRows.unshift({
+        asOfDate: "2026-10-02T1405",
+        cusip: "MATURED",
+        settle_date: "2026-10-05",
+        fwd_date: "2026-12-01",
+        maturity_date: "2026-10-04",
+        interest_rate: NaN,
+        settle_clean_price: 0,
+    });
+
+    const result = buildTipsCurveAnalysis(curveRows);
+    assert.equal(result.method, "Svensson");
+    assert.equal(result.asOfDate, "2026-10-02T1405");
+    assert.equal(result.settleDate, "2026-10-05");
+    assert.equal(result.params.length, 6);
+    assert.equal(result.rows.length, 8);
+    assert.equal(Object.keys(result.rows[0])[0], "cusip");
+    assert.equal(result.rows[0].cusip, "CUSIP-2027-04-15");
+    assert.ok(result.rows.every(row => row.maturity > result.settleDate));
+    assert.equal(result.basis, "settle");
+
+    // A bond maturing between settlement and the forward date is excluded from both curves.
+    const early = { ...curveRows[1], cusip: "EARLY", maturity_date: "2026-11-15" };
+    for (const basis of ["settle", "forward"]) {
+        const r = buildTipsCurveAnalysis([early, ...curveRows], { basis });
+        assert.ok(!r.rows.some(row => row.cusip === "EARLY"));
+        assert.equal(r.rows.length, 8);
+    }
+
+    const fwd = buildTipsCurveAnalysis(curveRows, { basis: "forward" });
+    assert.equal(fwd.basis, "forward");
+    assert.equal(fwd.settleDate, "2026-12-01");
+    assert.ok(Math.abs(fwd.rows[0].marketClean - 99.7) < 1e-9);
+    assert.throws(() => buildTipsCurveAnalysis(curveRows, { basis: "x" }), /basis/);
+});
+
+test("TIPS curve analysis rejects mixed settlement dates", () => {
+    assert.throws(() => buildTipsCurveAnalysis([
+        { asOfDate: "2026-10-02T1405", settle_date: "2026-10-05", fwd_date: "2026-12-01" },
+        { asOfDate: "2026-10-02T1405", settle_date: "2026-10-06", fwd_date: "2026-12-01" },
+    ]), /one common settlement date/);
 });

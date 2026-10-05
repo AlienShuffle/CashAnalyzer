@@ -31,7 +31,7 @@ not the exact inverse of `yieldFromPrice` for zero-coupon securities under six m
 | 5. Returns (`lib/returns/`: `tipsNominalReturn[Table]`, `tipsPriceFromXirr`; nominal `xirr` in step 3) | done (parity-tested; `tips.intPmts`/`tipsIntPayments` skipped: unfinished drafts; replaced by the backlog item below) |
 | 6. Forwards and break-even (`lib/forwards/`: `forwardRate`, `easyForward`, `forwardTipsCleanPrice`, `forwardNominalCleanPrice`, `tbillDiscountFactor`, `tbillSimpleRate`, `beiSolverSA`, `binarySolver`) | done (parity-tested; original `mybondBEISolver` wrapper not ported: it passed cleanPrice/coupon swapped) |
 | 7. Zero curves (`zero.conversions`, `zero-coupon` Svensson fit) | done: `lib/zero/` (`conversions`, `svensson`: `svenssonZero`, `fitTipsSvensson`, `analyzeTipsZero` returns `{ params, objective, rows }` for curve analysis and excludes bonds matured by settlement) |
-| 8. `node-calc-mktBonds.mjs` wiring collector output to the library | in progress: publish job `job-mktBonds-update.sh` (collector table to cloudflare .json/.csv + daily history); calculations to be added |
+| 8. `node-calc-mktTips-curve.mjs` wiring published TIPS rows to the library | in progress: `job-mktTips-update.sh` publishes two change-detected Svensson curve-analysis JSON/CSV sets with dated history beside the mktTips table (`mktTips-curve`: settlement date and market clean price; `mktTips-curve-fwd`: forward/maxREFCPI date and forward clean price; bonds maturing on or before the forward date are excluded from both); bond rows start with CUSIP for spreadsheet lookup |
 
 ## Backlog
 

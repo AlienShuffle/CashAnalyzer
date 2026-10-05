@@ -89,7 +89,7 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holida
             series: m.series,
             maturity_date: m.maturity_date,
             dated_date: m.dated_date,
-            report_source: REPORT_SOURCE,
+            report_source: `${REPORT_SOURCE} ${priceSide}`,
             asOfDate: quote.asOfDate,
             settle_date: toIso(t0),
             fwd_date: toIso(t1),
