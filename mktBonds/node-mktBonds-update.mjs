@@ -1,5 +1,5 @@
 // Reads the collector's JSON records on stdin and writes the published mktBonds table as JSON.
-// Columns follow the FedInvest table; rate is the coupon in percent and bid/ask are per $100.
+// Columns follow the FedInvest table; rate is the coupon as a decimal and bid/ask are per $100.
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 
@@ -8,7 +8,7 @@ export function toPublishedRows(records) {
         asOfDate: r.asOfDate,
         cusip: r.cusip,
         securitytype: r.securityType,
-        rate: r.coupon === null ? "" : r.coupon.toFixed(5),
+        rate: r.coupon === null ? "" : (r.coupon / 100).toFixed(5),
         maturitydate: r.maturityDate,
         bid: r.bidPrice === null ? "" : r.bidPrice.toFixed(5),
         ask: r.askPrice === null ? "" : r.askPrice.toFixed(5),
