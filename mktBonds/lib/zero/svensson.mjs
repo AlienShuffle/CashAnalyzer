@@ -49,6 +49,18 @@ export function tipsZeroModelPrice(settle, maturity, coupon, params) {
     return dirtyPV;
 }
 
+/**
+ * Yield of a nominal bond with the given coupon and maturity priced off a Svensson zero curve.
+ * @return {number|null} null when the maturity is not after the curve date
+ */
+export function nominalZeroYtm(settle, maturity, coupon, params) {
+    const settleDate = normalizeDate(settle);
+    const maturityDate = normalizeDate(maturity);
+    const dirty = tipsZeroModelPrice(settleDate, maturityDate, coupon, params);
+    if (dirty === null) return null;
+    return yieldFromPrice(settleDate, maturityDate, coupon, dirty - accruedInterest(settleDate, maturityDate, coupon));
+}
+
 /** Model dirty minus market dirty price for one bond ({maturity, coupon, cleanPrice}). */
 export function tipsZeroResidual(settle, bond, params) {
     const marketDirty = bond.cleanPrice + accruedInterest(settle, bond.maturity, bond.coupon);

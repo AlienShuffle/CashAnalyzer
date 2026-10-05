@@ -1,14 +1,32 @@
 // Fits the TIPS Svensson zero curve from the published mktTips rows.
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
-import { normalizeDate } from "./lib/dates.mjs";
-import { roundPrice, roundTo } from "./lib/rounding.mjs";
-import { analyzeTipsZero } from "./lib/zero/index.mjs";
+import { daysBetween, normalizeDate } from "./lib/dates.mjs";
+import { roundPrice, roundTo, roundYield } from "./lib/rounding.mjs";
+import { analyzeTipsZero, nominalZeroYtm } from "./lib/zero/index.mjs";
 
 function dateOnly(value) {
     const date = normalizeDate(value);
     if (!date || !Number.isFinite(date.getTime())) throw new Error(`Invalid date: ${value}`);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+const MARKET_YTM_NEIGHBORS = 6;
+
+// Local linear fit of observed nominal yields on maturity (years) over the nearest bonds, evaluated at
+// the target maturity; null when the target lies outside the observed maturities.
+function nominalMarketYtm(curveDate, maturity, fitBonds) {
+    const base = normalizeDate(curveDate);
+    const years = date => daysBetween(base, normalizeDate(date)) / 365;
+    const target = years(maturity);
+    const points = fitBonds.map(bond => ({ x: years(bond.maturity), y: bond.ytm }));
+    if (points.length < 2 || target < Math.min(...points.map(p => p.x)) || target > Math.max(...points.map(p => p.x))) return null;
+    const near = points.sort((a, b) => Math.abs(a.x - target) - Math.abs(b.x - target)).slice(0, MARKET_YTM_NEIGHBORS);
+    const meanX = near.reduce((s, p) => s + p.x, 0) / near.length;
+    const meanY = near.reduce((s, p) => s + p.y, 0) / near.length;
+    const sxx = near.reduce((s, p) => s + (p.x - meanX) ** 2, 0);
+    const slope = sxx > 0 ? near.reduce((s, p) => s + (p.x - meanX) * (p.y - meanY), 0) / sxx : 0;
+    return roundYield(meanY + slope * (target - meanX));
 }
 
 const RICH_CHEAP_THRESHOLD_BP = 2;
@@ -30,7 +48,7 @@ const BASES = ["settle", "settle-sa", "forward", "forward-sa", "forward-sa-decay
  *   maturing on or before the forward date are excluded from every curve.
  * @return {object} dated Svensson fit and per-bond diagnostics
  */
-export function buildTipsCurveAnalysis(tipsRows, { basis = "settle" } = {}) {
+export function buildTipsCurveAnalysis(tipsRows, { basis = "settle", nominalCurve = null } = {}) {
     if (!BASES.includes(basis)) throw new Error(`basis must be one of ${BASES.join(", ")}`);
     if (!Array.isArray(tipsRows) || tipsRows.length === 0) {
         throw new Error("No mktTips rows supplied for curve analysis");
@@ -65,6 +83,9 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle" } = {}) {
             coupon: row.interest_rate,
             cleanPrice: seasonal ? row[priceField] * row[ratioField] : row[priceField],
         }));
+    if (nominalCurve && dateOnly(nominalCurve.settleDate) !== dateOnly(settleDate)) {
+        throw new Error(`Nominal curve date ${nominalCurve.settleDate} does not match the ${basis} curve date ${settleDate}`);
+    }
     const fit = analyzeTipsZero(settleDate, bonds);
 
     return {
@@ -87,6 +108,10 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle" } = {}) {
                 modelYtm: row.modelYtm,
                 residualBp,
                 richCheap: richCheap(residualBp),
+                ...(nominalCurve && {
+                    nominalModelYtm: roundYield(nominalZeroYtm(settleDate, row.maturity, row.coupon, nominalCurve.params)),
+                    nominalMarketYtm: nominalMarketYtm(settleDate, row.maturity, nominalCurve.fitBonds),
+                }),
             };
         }),
     };
@@ -95,5 +120,7 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle" } = {}) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const basis = (process.argv[2] || "--basis=settle").replace(/^--basis=/, "");
     const tipsRows = JSON.parse(fs.readFileSync(0, "utf-8"));
-    console.log(JSON.stringify(buildTipsCurveAnalysis(tipsRows, { basis })));
+    const nominalArg = process.argv.slice(3).find(arg => arg.startsWith("--nominalCurve="));
+    const nominalCurve = nominalArg ? JSON.parse(fs.readFileSync(nominalArg.slice("--nominalCurve=".length), "utf-8")) : null;
+    console.log(JSON.stringify(buildTipsCurveAnalysis(tipsRows, { basis, nominalCurve })));
 }

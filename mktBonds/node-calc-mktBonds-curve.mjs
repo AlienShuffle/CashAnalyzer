@@ -128,6 +128,7 @@ export function buildNominalCurveAnalysis(quotes, context, { basis = "settle", p
         objective: fit.objective,
         bondsUsed: bonds.length,
         excluded,
+        fitBonds: bonds.map(bond => ({ cusip: bond.cusip, maturity: bond.maturity, coupon: bond.coupon, ytm: bond.ytm })),
         points,
     };
 }

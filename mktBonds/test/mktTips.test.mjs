@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { nextWeekday, createRefCpiTable, tbillRepoRate } from "../lib/index.mjs";
+import { nominalZeroYtm } from "../lib/zero/index.mjs";
 import { buildTipsCurveAnalysis } from "../node-calc-mktTips-curve.mjs";
 import { buildTipsRows, parseMeta, parseOptions } from "../node-mktTips-update.mjs";
 
@@ -116,6 +117,34 @@ test("TIPS curve analysis is generated as a separate dated Svensson result", () 
     assert.ok(!buildTipsCurveAnalysis([noRatio, ...curveRows], { basis: "forward-sa" }).rows.some(r => r.cusip === "NORATIO"));
     assert.ok(buildTipsCurveAnalysis([noRatio, ...curveRows], { basis: "forward" }).rows.some(r => r.cusip === "NORATIO"));
     assert.throws(() => buildTipsCurveAnalysis(curveRows, { basis: "x" }), /basis/);
+});
+
+test("nominal model and market yields are added from the nominal curve", () => {
+    const flat = [0.04, 0, 0, 0, 2, 8];
+    const fitBonds = [2027, 2029, 2031, 2033, 2035, 2037, 2040].map(y => ({ cusip: `N${y}`, maturity: `${y}-01-15`, coupon: 0.04, ytm: 0.04 + (y - 2027) * 0.001 }));
+    const rows = [
+        ["2029-01-15", 0.0125, 98.4], ["2030-07-15", 0.015, 97.9], ["2031-04-15", 0.0125, 96.5],
+        ["2032-07-15", 0.02, 98.1], ["2033-01-15", 0.02, 96.0], ["2035-01-15", 0.02, 96.0],
+    ].map(([maturity_date, interest_rate, settle_clean_price]) => ({
+        cusip: maturity_date, asOfDate: "2026-10-02T1405", settle_date: "2026-10-05", fwd_date: "2026-12-01",
+        maturity_date, interest_rate, settle_clean_price,
+    }));
+    const plain = buildTipsCurveAnalysis(rows);
+    assert.ok(plain.rows.every(r => !("nominalModelYtm" in r)));
+    const nominalCurve = { settleDate: "2026-10-05", params: flat, fitBonds };
+    const result = buildTipsCurveAnalysis(rows, { nominalCurve });
+    for (const [i, r] of result.rows.entries()) {
+        // A matched-coupon bond on a flat 4% continuous curve yields about 4.04% semiannual.
+        assert.ok(Math.abs(r.nominalModelYtm - 0.0404) < 0.0005, r.maturity);
+        assert.equal(r.nominalModelYtm, Math.round(nominalZeroYtm("2026-10-05", r.maturity, rows[i].interest_rate, flat) * 1e5) / 1e5);
+        // Observed yields rise 10 bp a year (one grid bond every two years) on this grid, so the local fit recovers that line.
+        const years = (new Date(r.maturity) - new Date("2026-10-05")) / 86400000 / 365;
+        const expected = 0.04 + (years - (new Date("2027-01-15") - new Date("2026-10-05")) / 86400000 / 365) * 0.001;
+        assert.ok(Math.abs(r.nominalMarketYtm - expected) < 0.0005, `${r.maturity} ${r.nominalMarketYtm} ${expected}`);
+    }
+    const outside = buildTipsCurveAnalysis(rows, { nominalCurve: { ...nominalCurve, fitBonds: fitBonds.slice(0, 2) } });
+    assert.ok(outside.rows.filter(r => r.maturity > "2029-01-15").every(r => r.nominalMarketYtm === null));
+    assert.throws(() => buildTipsCurveAnalysis(rows, { nominalCurve: { ...nominalCurve, settleDate: "2026-12-01" } }), /does not match/);
 });
 
 test("TIPS curve analysis rejects mixed settlement dates", () => {

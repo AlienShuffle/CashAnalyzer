@@ -27,7 +27,9 @@ publishCurve() {
     local tmpCurveOutput="$curveOutput.tmp.$$"
     local curveJsonFlare="$curveCloudflareDir/$name-rate.json"
     local curveCsvFlare="$curveCloudflareDir/$name-rate.csv"
-    if ! node ./node-calc-mktTips-curve.mjs "--basis=$basis" <"$curveInput" | jq . >"$tmpCurveOutput"; then
+    local nominalName="mktBonds-curve"
+    [[ "$basis" == forward* ]] && nominalName="mktBonds-curve-fwd"
+    if ! node ./node-calc-mktTips-curve.mjs "--basis=$basis" "--nominalCurve=history/$nominalName-rate-new.json" <"$curveInput" | jq . >"$tmpCurveOutput"; then
         rm -f "$tmpCurveOutput"
         return 1
     fi
@@ -40,9 +42,9 @@ publishCurve() {
         [ -s "$curveJsonFlare" ] || action="added"
         cp "$curveOutput" "$curveJsonFlare"
         (
-            echo 'cusip, asOfDate, basis, settleDate, maturity, coupon, marketClean, modelClean, priceResidual, marketYtm, modelYtm, residualBp, richCheap'
+            echo 'cusip, asOfDate, basis, settleDate, maturity, coupon, marketClean, modelClean, priceResidual, marketYtm, modelYtm, residualBp, richCheap, nominalModelYtm, nominalMarketYtm'
             jq -r --arg asOfDate "$asOfDate" --arg basis "$basis" --arg settleDate "$(jq -r '.settleDate' "$curveOutput")" \
-                '.rows[] | [.cusip, $asOfDate, $basis, $settleDate, .maturity, .coupon, .marketClean, .modelClean, .priceResidual, .marketYtm, .modelYtm, .residualBp, .richCheap] | @csv' \
+                '.rows[] | [.cusip, $asOfDate, $basis, $settleDate, .maturity, .coupon, .marketClean, .modelClean, .priceResidual, .marketYtm, .modelYtm, .residualBp, .richCheap, .nominalModelYtm, .nominalMarketYtm] | @csv' \
                 "$curveOutput"
         ) >"$curveCsvFlare"
         cp "$curveJsonFlare" "$curveDailyDir/$asOfDate-$name.json"
@@ -51,11 +53,6 @@ publishCurve() {
     fi
 }
 
-publishCurve settle mktTips-curve || exit $?
-publishCurve settle-sa mktTips-curve-sa || exit $?
-publishCurve forward mktTips-curve-fwd || exit $?
-publishCurve forward-sa mktTips-curve-fwd-sa || exit $?
-publishCurve forward-sa-decay mktTips-curve-fwd-sa-decay || exit $?
 
 # publishNominalCurve <basis> <output name>: Svensson nominal zero curve (6-month points to 30 years) from the mktBonds ask quotes.
 publishNominalCurve() {
@@ -88,5 +85,11 @@ publishNominalCurve() {
     fi
 }
 
+# The TIPS curves need the nominal curve of the same date, so publish those first.
 publishNominalCurve settle mktBonds-curve || exit $?
 publishNominalCurve forward mktBonds-curve-fwd || exit $?
+publishCurve settle mktTips-curve || exit $?
+publishCurve settle-sa mktTips-curve-sa || exit $?
+publishCurve forward mktTips-curve-fwd || exit $?
+publishCurve forward-sa mktTips-curve-fwd-sa || exit $?
+publishCurve forward-sa-decay mktTips-curve-fwd-sa-decay || exit $?
