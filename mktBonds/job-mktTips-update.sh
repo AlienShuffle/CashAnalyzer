@@ -40,9 +40,9 @@ publishCurve() {
         [ -s "$curveJsonFlare" ] || action="added"
         cp "$curveOutput" "$curveJsonFlare"
         (
-            echo 'cusip, asOfDate, basis, settleDate, maturity, coupon, marketClean, modelClean, priceResidual, marketYtm, modelYtm, residualBp'
+            echo 'cusip, asOfDate, basis, settleDate, maturity, coupon, marketClean, modelClean, priceResidual, marketYtm, modelYtm, residualBp, richCheap'
             jq -r --arg asOfDate "$asOfDate" --arg basis "$basis" --arg settleDate "$(jq -r '.settleDate' "$curveOutput")" \
-                '.rows[] | [.cusip, $asOfDate, $basis, $settleDate, .maturity, .coupon, .marketClean, .modelClean, .priceResidual, .marketYtm, .modelYtm, .residualBp] | @csv' \
+                '.rows[] | [.cusip, $asOfDate, $basis, $settleDate, .maturity, .coupon, .marketClean, .modelClean, .priceResidual, .marketYtm, .modelYtm, .residualBp, .richCheap] | @csv' \
                 "$curveOutput"
         ) >"$curveCsvFlare"
         cp "$curveJsonFlare" "$curveDailyDir/$asOfDate-$name.json"

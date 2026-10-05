@@ -96,6 +96,7 @@ test("TIPS curve analysis is generated as a separate dated Svensson result", () 
         assert.equal(r.rows.length, 8);
     }
 
+    assert.ok(result.rows.every(r => r.richCheap === (Math.abs(r.residualBp) < 2 ? "" : r.residualBp > 0 ? "cheap" : "rich")));
     const fwd = buildTipsCurveAnalysis(curveRows, { basis: "forward" });
     assert.equal(fwd.basis, "forward");
     assert.equal(fwd.settleDate, "2026-12-01");

@@ -11,6 +11,14 @@ function dateOnly(value) {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
+const RICH_CHEAP_THRESHOLD_BP = 2;
+
+// Market yield above the curve (positive residual) is cheap, below is rich; small residuals stay blank.
+function richCheap(residualBp) {
+    if (Math.abs(residualBp) < RICH_CHEAP_THRESHOLD_BP) return "";
+    return residualBp > 0 ? "cheap" : "rich";
+}
+
 const BASES = ["settle", "settle-sa", "forward", "forward-sa", "forward-sa-decay"];
 
 /**
@@ -66,17 +74,21 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle" } = {}) {
         method: "Svensson",
         params: fit.params,
         objective: fit.objective,
-        rows: fit.rows.map((row, index) => ({
-            cusip: bonds[index].cusip,
-            maturity: dateOnly(row.maturity),
-            coupon: row.coupon,
-            marketClean: roundPrice(row.marketClean),
-            modelClean: roundPrice(row.modelClean),
-            priceResidual: roundPrice(row.priceResidual),
-            marketYtm: row.marketYtm,
-            modelYtm: row.modelYtm,
-            residualBp: roundTo(row.residualBp, 3),
-        })),
+        rows: fit.rows.map((row, index) => {
+            const residualBp = roundTo(row.residualBp, 3);
+            return {
+                cusip: bonds[index].cusip,
+                maturity: dateOnly(row.maturity),
+                coupon: row.coupon,
+                marketClean: roundPrice(row.marketClean),
+                modelClean: roundPrice(row.modelClean),
+                priceResidual: roundPrice(row.priceResidual),
+                marketYtm: row.marketYtm,
+                modelYtm: row.modelYtm,
+                residualBp,
+                richCheap: richCheap(residualBp),
+            };
+        }),
     };
 }
 
