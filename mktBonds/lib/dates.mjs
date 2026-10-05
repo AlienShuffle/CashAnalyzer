@@ -95,3 +95,20 @@ export function nextWeekday(value) {
     while (next.getDay() === 0 || next.getDay() === 6) next.setDate(next.getDate() + 1);
     return next;
 }
+
+function isoLocal(d) {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+/**
+ * Next bond-market trading day strictly after a date: skips weekends and the given holidays.
+ * @param {Date|string} value trade (report) date
+ * @param {Iterable<string>} [holidays] YYYY-MM-DD holiday dates (see lib/holidays.mjs)
+ * @return {Date}
+ */
+export function getSettlementDate(value, holidays = []) {
+    const closed = new Set(holidays);
+    let next = nextWeekday(value);
+    while (closed.has(isoLocal(next))) next = nextWeekday(next);
+    return next;
+}

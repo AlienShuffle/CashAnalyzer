@@ -9,3 +9,4 @@ export * from "./tips/index.mjs";
 export * from "./returns/index.mjs";
 export * from "./forwards/index.mjs";
 export * from "./zero/index.mjs";
+export * from "./holidays.mjs";
