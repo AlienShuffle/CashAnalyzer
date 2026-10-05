@@ -41,13 +41,23 @@ const bonds = [
     ["2032-07-15", 0.02, 98.1], ["2035-01-15", 0.02, 96.0],
 ].map(([maturity, coupon, cleanPrice]) => ({ maturity, coupon, cleanPrice }));
 
-test("fit requires at least 6 bonds and analysis reports a row per bond", () => {
+test("fit requires at least 6 bonds and analysis reports a row per active bond", () => {
     assert.throws(() => fitTipsSvensson(settle, bonds.slice(0, 3)), /at least 6/);
-    const r = analyzeTipsZero(settle, bonds, { forward: "2027-10-05" });
+    const r = analyzeTipsZero(settle, bonds);
+    assert.deepEqual(Object.keys(r), ["params", "objective", "rows"]);
     assert.equal(r.rows.length, bonds.length);
     assert.equal(r.params.length, 6);
-    assert.ok(typeof r.forwardZero === "number");
     assert.ok(r.rows.every(x => Math.abs(x.priceResidual) < 1));
+});
+
+test("TIPS zero analysis excludes bonds matured by settlement", () => {
+    const matured = [
+        { maturity: "2026-10-04", coupon: NaN, cleanPrice: 0 },
+        { maturity: settle, coupon: NaN, cleanPrice: 0 },
+    ];
+    const r = analyzeTipsZero(settle, [...matured, ...bonds]);
+    assert.equal(r.rows.length, bonds.length);
+    assert.ok(r.rows.every(row => row.maturity > new Date(2026, 9, 5)));
 });
 
 test("parity with Apps Script svensson fit", () => {

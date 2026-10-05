@@ -1,10 +1,10 @@
 // Svensson real zero-coupon curve fitted to TIPS clean prices, plus per-bond analysis against
 // the fit. Ported from mybond.zero-coupon.gs. The Sheets wrappers (range flattening, 2D output
 // table) became plain object inputs and outputs.
-import { daysBetween, daysInYearFrom, normalizeDate } from "../dates.mjs";
+import { daysBetween, normalizeDate } from "../dates.mjs";
 import { accruedInterest, couponSchedule } from "../coupons.mjs";
 import { macaulayDuration } from "../duration.mjs";
-import { roundPrice, roundYield } from "../rounding.mjs";
+import { roundPrice } from "../rounding.mjs";
 import { yieldFromPrice } from "../yield.mjs";
 
 /**
@@ -227,22 +227,28 @@ export function fitTipsSvensson(settle, bonds) {
  * market YTM minus model YTM (positive: cheap to the curve).
  * @param {Date|string} settle
  * @param {Array<{maturity:Date|string, coupon:number, cleanPrice:number}>} bonds
- * @param {{forward?: Date|string|null}} [options] also report the fitted zero rate at a forward date
- * @return {{params:number[], objective:number, rows:object[], forwardZero:number|null}}
+ * @return {{params:number[], objective:number, rows:object[]}}
  */
-export function analyzeTipsZero(settle, bonds, { forward = null } = {}) {
+export function analyzeTipsZero(settle, bonds) {
     const settleDate = normalizeDate(settle);
     if (!bonds || bonds.length === 0) throw new Error("No TIPS supplied");
 
-    const clean = bonds.map((b, i) => {
-        const coupon = Number(b.coupon);
-        const cleanPrice = Number(b.cleanPrice);
-        if (!Number.isFinite(coupon)) throw new Error(`Invalid coupon at input row ${i + 1}: ${b.coupon}`);
-        if (!Number.isFinite(cleanPrice) || cleanPrice <= 0) {
-            throw new Error(`Invalid clean price at input row ${i + 1}: ${b.cleanPrice}`);
+    const clean = [];
+    for (const [i, bond] of bonds.entries()) {
+        const maturity = normalizeDate(bond.maturity);
+        if (!maturity || !Number.isFinite(maturity.getTime())) {
+            throw new Error(`Invalid maturity at input row ${i + 1}: ${bond.maturity}`);
         }
-        return { maturity: normalizeDate(b.maturity), coupon, cleanPrice };
-    });
+        if (maturity <= settleDate) continue;
+
+        const coupon = Number(bond.coupon);
+        const cleanPrice = Number(bond.cleanPrice);
+        if (!Number.isFinite(coupon)) throw new Error(`Invalid coupon at input row ${i + 1}: ${bond.coupon}`);
+        if (!Number.isFinite(cleanPrice) || cleanPrice <= 0) {
+            throw new Error(`Invalid clean price at input row ${i + 1}: ${bond.cleanPrice}`);
+        }
+        clean.push({ maturity, coupon, cleanPrice });
+    }
 
     const { params, objective } = fitTipsSvensson(settleDate, clean);
 
@@ -263,11 +269,5 @@ export function analyzeTipsZero(settle, bonds, { forward = null } = {}) {
         };
     });
 
-    let forwardZero = null;
-    if (forward !== null && forward !== "" && forward !== undefined) {
-        const fwdYrs = daysBetween(settleDate, normalizeDate(forward)) / daysInYearFrom(settleDate);
-        forwardZero = roundYield(svenssonZero(fwdYrs, params));
-    }
-
-    return { params, objective, rows, forwardZero };
+    return { params, objective, rows };
 }
