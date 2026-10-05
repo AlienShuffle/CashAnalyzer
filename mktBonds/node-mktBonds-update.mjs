@@ -2,16 +2,17 @@
 // Columns follow the FedInvest table; rate is the coupon as a decimal and bid/ask are per $100.
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
+import { roundPrice, roundYield } from "./lib/rounding.mjs";
 
 export function toPublishedRows(records) {
     return records.map(r => ({
         asOfDate: r.asOfDate,
         cusip: r.cusip,
         securitytype: r.securityType,
-        rate: r.coupon === null ? "" : (r.coupon / 100).toFixed(5),
+        rate: r.coupon === null ? "" : roundYield(r.coupon / 100),
         maturitydate: r.maturityDate,
-        bid: r.bidPrice === null ? "" : r.bidPrice.toFixed(5),
-        ask: r.askPrice === null ? "" : r.askPrice.toFixed(5),
+        bid: r.bidPrice === null ? "" : roundPrice(r.bidPrice),
+        ask: r.askPrice === null ? "" : roundPrice(r.askPrice),
         frequency: r.frequency,
         description: r.description,
         key: `${r.maturityDate}-${r.cusip}`

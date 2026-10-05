@@ -9,7 +9,7 @@ import { pathToFileURL } from "node:url";
 import { parseCsvToMatrix } from "../lib/parseCsv.mjs";
 import { getSettlementDate, normalizeDate } from "./lib/dates.mjs";
 import { loadSifmaHolidays } from "./lib/holidays.mjs";
-import { roundTo } from "./lib/rounding.mjs";
+import { roundSeasonal, roundYield } from "./lib/rounding.mjs";
 import { applyCredibilityFactor, createRefCpiTable, loadRefCpiTable } from "./lib/tips/index.mjs";
 import { forwardTipsCleanPrice, tbillRepoRate } from "./lib/forwards/index.mjs";
 
@@ -32,8 +32,6 @@ export function parseMeta(csvText) {
     const [header, ...rows] = parseCsvToMatrix(csvText).filter(r => r.length > 1);
     return rows.map(r => Object.fromEntries(header.map((h, i) => [h.trim(), r[i]])));
 }
-
-const round5 = v => (v == null ? null : roundTo(v, 5));
 
 /**
  * @param {object[]} meta rows from TIPSmeta.csv
@@ -97,11 +95,11 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holida
             dated_refcpi: datedRefCpi,
             settle_refcpi: settleRefCpi,
             fwd_refcpi: fwdRefCpi,
-            settle_mature_sa_ratio: matureFactor ? round5(settleFactor / matureFactor) : null,
-            settle_mature_sa_ratio_decay: matureDecay ? round5(settleFactor / matureDecay) : null,
-            fwd_mature_sa_ratio: matureFactor ? round5(fwdFactor / matureFactor) : null,
-            fwd_mature_sa_ratio_decay: fwdMatureDecay ? round5(fwdFactor / fwdMatureDecay) : null,
-            repo_rate: round5(repo),
+            settle_mature_sa_ratio: matureFactor ? roundSeasonal(settleFactor / matureFactor) : null,
+            settle_mature_sa_ratio_decay: matureDecay ? roundSeasonal(settleFactor / matureDecay) : null,
+            fwd_mature_sa_ratio: matureFactor ? roundSeasonal(fwdFactor / matureFactor) : null,
+            fwd_mature_sa_ratio_decay: fwdMatureDecay ? roundSeasonal(fwdFactor / fwdMatureDecay) : null,
+            repo_rate: roundYield(repo),
             fwd_clean_price_unadjusted: forwardTipsCleanPrice({
                 settle: t0, forward: t1, maturity, coupon, price, datedRefCpi, settleRefCpi,
                 forwardRefCpi: fwdRefCpi, repoRate: repo, getRefCpi: table.getRefCpi,

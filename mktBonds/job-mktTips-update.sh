@@ -18,7 +18,7 @@ curveCloudflareDir="$cloudFlareHome/Treasuries/mktBonds"
 curveDailyDir="$curveCloudflareDir/daily"
 mkdir -p "$curveDailyDir"
 
-# publishCurve <basis> <output name>: settle = settlement-date curve, forward = maxREFCPI-date curve, forward-sa = same with fwd_mature_sa_ratio applied.
+# publishCurve <basis> <output name>: settle = settlement-date curve, forward = maxREFCPI-date curve, forward-sa = same with fwd_mature_sa_ratio applied, forward-sa-decay = same with fwd_mature_sa_ratio_decay applied.
 publishCurve() {
     local basis="$1" name="$2"
     local curveOutput="history/$name-rate-new.json"
@@ -49,3 +49,4 @@ publishCurve() {
 publishCurve settle mktTips-curve || exit $?
 publishCurve forward mktTips-curve-fwd || exit $?
 publishCurve forward-sa mktTips-curve-fwd-sa || exit $?
+publishCurve forward-sa-decay mktTips-curve-fwd-sa-decay || exit $?

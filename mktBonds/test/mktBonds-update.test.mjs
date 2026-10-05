@@ -15,7 +15,7 @@ test("toPublishedRows publishes coupons as decimal rates", () => {
         description: "UNITED STATES TREAS SER AT-2026",
     }]);
 
-    assert.equal(row.rate, "0.04625");
+    assert.equal(row.rate, 0.04625);
 });
 
 test("toPublishedRows keeps missing coupons blank", () => {
