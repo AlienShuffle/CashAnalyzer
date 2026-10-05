@@ -11,13 +11,13 @@ function dateOnly(value) {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-const BASES = ["settle", "forward", "forward-sa", "forward-sa-decay"];
+const BASES = ["settle", "settle-sa", "forward", "forward-sa", "forward-sa-decay"];
 
 /**
  * @param {Array<object>} tipsRows output rows from node-mktTips-update.mjs
- * @param {{basis?: "settle"|"forward"|"forward-sa"|"forward-sa-decay"}} options settle uses the settlement date and
+ * @param {{basis?: "settle"|"settle-sa"|"forward"|"forward-sa"|"forward-sa-decay"}} options settle uses the settlement date and
  *   market clean price; forward uses the forward (maxREFCPI) date and the unadjusted forward clean
- *   price; forward-sa multiplies that price by fwd_mature_sa_ratio (seasonally adjusted). Bonds
+ *   price; settle-sa multiplies settle_clean_price by settle_mature_sa_ratio; forward-sa multiplies that price by fwd_mature_sa_ratio (seasonally adjusted). Bonds
  *   forward-sa-decay does the same with fwd_mature_sa_ratio_decay. Bonds
  *   maturing on or before the forward date are excluded from every curve.
  * @return {object} dated Svensson fit and per-bond diagnostics
@@ -43,10 +43,11 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle" } = {}) {
     }
 
     const forwardDate = [...forwardDates][0];
-    const settleDate = basis !== "settle" ? forwardDate : [...settlementDates][0];
-    const priceField = basis !== "settle" ? "fwd_clean_price_unadjusted" : "settle_clean_price";
-    const ratioField = basis === "forward-sa-decay" ? "fwd_mature_sa_ratio_decay" : "fwd_mature_sa_ratio";
-    const seasonal = basis === "forward-sa" || basis === "forward-sa-decay";
+    const forward = basis.startsWith("forward");
+    const settleDate = forward ? forwardDate : [...settlementDates][0];
+    const priceField = forward ? "fwd_clean_price_unadjusted" : "settle_clean_price";
+    const ratioField = { "settle-sa": "settle_mature_sa_ratio", "forward-sa": "fwd_mature_sa_ratio", "forward-sa-decay": "fwd_mature_sa_ratio_decay" }[basis];
+    const seasonal = ratioField !== undefined;
     const bonds = tipsRows
         .filter(row => normalizeDate(row.maturity_date) > normalizeDate(forwardDate))
         .filter(row => !seasonal || Number.isFinite(Number(row[ratioField])) && row[ratioField] != null)

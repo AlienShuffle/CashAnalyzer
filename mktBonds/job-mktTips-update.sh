@@ -18,7 +18,7 @@ curveCloudflareDir="$cloudFlareHome/Treasuries/mktBonds"
 curveDailyDir="$curveCloudflareDir/daily"
 mkdir -p "$curveDailyDir"
 
-# publishCurve <basis> <output name>: settle = settlement-date curve, forward = maxREFCPI-date curve, forward-sa = same with fwd_mature_sa_ratio applied, forward-sa-decay = same with fwd_mature_sa_ratio_decay applied.
+# publishCurve <basis> <output name>: settle = settlement-date curve, settle-sa = settle with settle_mature_sa_ratio applied, forward = maxREFCPI-date curve, forward-sa = same with fwd_mature_sa_ratio applied, forward-sa-decay = same with fwd_mature_sa_ratio_decay applied.
 publishCurve() {
     local basis="$1" name="$2"
     local curveOutput="history/$name-rate-new.json"
@@ -34,6 +34,8 @@ publishCurve() {
     local asOfDate
     asOfDate=$(jq -er '.asOfDate' "$curveOutput") || return $?
     if ../bin/jsonDifferent.sh "$curveOutput" "$curveJsonFlare"; then
+        local action="updated"
+        [ -s "$curveJsonFlare" ] || action="added"
         cp "$curveOutput" "$curveJsonFlare"
         (
             echo 'cusip, asOfDate, basis, settleDate, maturity, coupon, marketClean, modelClean, priceResidual, marketYtm, modelYtm, residualBp'
@@ -43,10 +45,12 @@ publishCurve() {
         ) >"$curveCsvFlare"
         cp "$curveJsonFlare" "$curveDailyDir/$asOfDate-$name.json"
         cp "$curveCsvFlare" "$curveDailyDir/$asOfDate-$name.csv"
+        echo "published $action $name cloudFlare rate files."
     fi
 }
 
 publishCurve settle mktTips-curve || exit $?
+publishCurve settle-sa mktTips-curve-sa || exit $?
 publishCurve forward mktTips-curve-fwd || exit $?
 publishCurve forward-sa mktTips-curve-fwd-sa || exit $?
 publishCurve forward-sa-decay mktTips-curve-fwd-sa-decay || exit $?

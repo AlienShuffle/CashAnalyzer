@@ -63,6 +63,7 @@ test("TIPS curve analysis is generated as a separate dated Svensson result", () 
         interest_rate,
         settle_clean_price,
         fwd_clean_price_unadjusted: settle_clean_price + 0.1,
+        settle_mature_sa_ratio: 1.03,
         fwd_mature_sa_ratio: 1.01,
         fwd_mature_sa_ratio_decay: 1.02,
     }));
@@ -103,6 +104,9 @@ test("TIPS curve analysis is generated as a separate dated Svensson result", () 
     assert.equal(sa.basis, "forward-sa");
     assert.equal(sa.settleDate, "2026-12-01");
     assert.ok(Math.abs(sa.rows[0].marketClean - 99.7 * 1.01) < 1e-9);
+    const settleSa = buildTipsCurveAnalysis(curveRows, { basis: "settle-sa" });
+    assert.equal(settleSa.settleDate, "2026-10-05");
+    assert.ok(Math.abs(settleSa.rows[0].marketClean - 99.6 * 1.03) < 1e-9);
     const decay = buildTipsCurveAnalysis(curveRows, { basis: "forward-sa-decay" });
     assert.equal(decay.basis, "forward-sa-decay");
     assert.ok(Math.abs(decay.rows[0].marketClean - 99.7 * 1.02) < 1e-9);
