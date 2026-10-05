@@ -7,7 +7,8 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { parseCsvToMatrix } from "../lib/parseCsv.mjs";
-import { nextWeekday, normalizeDate } from "./lib/dates.mjs";
+import { getSettlementDate, normalizeDate } from "./lib/dates.mjs";
+import { loadSifmaHolidays } from "./lib/holidays.mjs";
 import { roundTo } from "./lib/rounding.mjs";
 import { applyCredibilityFactor, createRefCpiTable, loadRefCpiTable } from "./lib/tips/index.mjs";
 import { forwardTipsCleanPrice, tbillRepoRate } from "./lib/forwards/index.mjs";
@@ -38,8 +39,9 @@ const round5 = v => (v == null ? null : roundTo(v, 5));
  * @param {object[]} meta rows from TIPSmeta.csv
  * @param {object[]} quotes published mktBonds rows
  * @param {{getRefCpi:Function,getFactor:Function,maxDate:Date}} table REFCPI lookups
+ * holidays: YYYY-MM-DD bond-market holidays used for the settlement date
  */
-export function buildTipsRows(meta, quotes, table, { repoRate, priceSide }) {
+export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holidays = [] }) {
     const quoteByCusip = new Map(quotes.filter(q => q.securitytype === "TIPS").map(q => [q.cusip, q]));
     const t1 = table.maxDate;
     const rows = [];
@@ -49,7 +51,7 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide }) {
     if (repo === "auto") {
         const bills = quotes.filter(q => q.securitytype === "Bill" && Number(q[priceSide]) > 0);
         if (bills.length === 0) throw new Error("No T-bill quotes available to derive the repo rate");
-        const billSettle = nextWeekday(bills[0].asOfDate.slice(0, 10));
+        const billSettle = getSettlementDate(bills[0].asOfDate.slice(0, 10), holidays);
         repo = tbillRepoRate(billSettle, t1, bills.map(b => ({ maturity: b.maturitydate, price: b[priceSide] }))).rate;
     }
 
@@ -59,7 +61,7 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide }) {
         if (!quote || !(price > 0)) continue;
 
         const reportDate = quote.asOfDate.slice(0, 10);
-        const t0 = nextWeekday(reportDate);
+        const t0 = getSettlementDate(reportDate, holidays);
         const maturity = normalizeDate(m.maturity_date);
         if (!(t0 < maturity)) continue;
 
@@ -74,10 +76,11 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide }) {
         const settleFactor = table.getFactor(t0);
         const matureFactor = table.getFactor(maturity);
         const fwdFactor = table.getFactor(t1);
-        // Published maturities have an exact factor; later ones decay toward 1.0.
-        const matureDecay = table.getRefCpi(maturity) != null
-            ? matureFactor
-            : applyCredibilityFactor(matureFactor, t0, maturity);
+        // Published maturities have an exact factor; later ones decay toward 1.0 by the horizon
+        // from the settle (t0) or forward (t1) date.
+        const published = table.getRefCpi(maturity) != null;
+        const matureDecay = published ? matureFactor : applyCredibilityFactor(matureFactor, t0, maturity);
+        const fwdMatureDecay = published ? matureFactor : applyCredibilityFactor(matureFactor, t1, maturity);
 
         rows.push({
             cusip: m.cusip,
@@ -97,6 +100,7 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide }) {
             settle_mature_sa_ratio: matureFactor ? round5(settleFactor / matureFactor) : null,
             settle_mature_sa_ratio_decay: matureDecay ? round5(settleFactor / matureDecay) : null,
             fwd_mature_sa_ratio: matureFactor ? round5(fwdFactor / matureFactor) : null,
+            fwd_mature_sa_ratio_decay: fwdMatureDecay ? round5(fwdFactor / fwdMatureDecay) : null,
             repo_rate: round5(repo),
             fwd_clean_price_unadjusted: forwardTipsCleanPrice({
                 settle: t0, forward: t1, maturity, coupon, price, datedRefCpi, settleRefCpi,
@@ -116,5 +120,11 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     const meta = parseMeta(fs.readFileSync(0, "utf-8"));
     const quotes = JSON.parse(fs.readFileSync(options.mktBonds, "utf-8"));
     const table = await loadRefCpiTable();
-    console.log(JSON.stringify(buildTipsRows(meta, quotes, table, options)));
+    let holidays = [];
+    try {
+        holidays = await loadSifmaHolidays();
+    } catch (error) {
+        console.error(`Warning: ${error.message}; settlement dates skip weekends only.`);
+    }
+    console.log(JSON.stringify(buildTipsRows(meta, quotes, table, { ...options, holidays })));
 }

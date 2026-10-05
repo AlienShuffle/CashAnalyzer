@@ -33,6 +33,7 @@ test("buildTipsRows joins quotes, picks the price side and skips unquoted bonds"
     assert.equal(out[0].settle_date, "2026-10-05");
     assert.equal(out[0].fwd_date, "2026-11-01");
     assert.ok(out[0].fwd_clean_price_unadjusted > 90);
+    assert.ok("fwd_mature_sa_ratio_decay" in out[0]);
 });
 
 test("tbillRepoRate brackets the target and derives a simple rate; auto repo is used in rows", () => {
