@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { nextWeekday, createRefCpiTable, tbillRepoRate } from "../lib/index.mjs";
 import { nominalZeroYtm } from "../lib/zero/index.mjs";
+import { yieldFromPrice } from "../lib/yield.mjs";
 import { buildTipsCurveAnalysis } from "../node-calc-mktTips-curve.mjs";
 import { buildTipsRows, parseMeta, parseOptions } from "../node-mktTips-update.mjs";
 
@@ -32,12 +33,18 @@ test("buildTipsRows joins quotes, picks the price side and skips unquoted bonds"
     const out = buildTipsRows(meta, quotes, table, { repoRate: 0.04, priceSide: "bid" });
     assert.equal(out.length, 1);
     assert.equal(out[0].settle_clean_price, 98);
-    assert.equal(out[0].report_source, "Fidelity bid");
-    assert.equal(buildTipsRows(meta, quotes, table, { repoRate: 0.04, priceSide: "ask" })[0].report_source, "Fidelity ask");
+    assert.equal(out[0].report_source, "Market bid");
+    assert.equal(buildTipsRows(meta, quotes, table, { repoRate: 0.04, priceSide: "ask" })[0].report_source, "Market ask");
     assert.equal(out[0].settle_date, "2026-10-05");
     assert.equal(out[0].fwd_date, "2026-11-01");
     assert.ok(out[0].fwd_clean_price_unadjusted > 90);
     assert.ok("fwd_mature_sa_ratio_decay" in out[0]);
+    assert.equal(out[0].settle_ytm, yieldFromPrice(out[0].settle_date, out[0].maturity_date, out[0].interest_rate, out[0].settle_clean_price));
+    assert.equal(out[0].settle_sa_ytm, yieldFromPrice(out[0].settle_date, out[0].maturity_date, out[0].interest_rate, out[0].settle_clean_price * out[0].settle_mature_sa_ratio));
+    assert.equal(out[0].settle_sa_decay_ytm, yieldFromPrice(out[0].settle_date, out[0].maturity_date, out[0].interest_rate, out[0].settle_clean_price * out[0].settle_mature_sa_ratio_decay));
+    assert.equal(out[0].forward_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price_unadjusted));
+    assert.equal(out[0].forward_sa_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price_unadjusted * out[0].fwd_mature_sa_ratio));
+    assert.equal(out[0].forward_sa_decay_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price_unadjusted * out[0].fwd_mature_sa_ratio_decay));
 });
 
 test("tbillRepoRate brackets the target and derives a simple rate; auto repo is used in rows", () => {

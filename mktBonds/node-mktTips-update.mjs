@@ -12,8 +12,9 @@ import { loadSifmaHolidays } from "./lib/holidays.mjs";
 import { roundSeasonal, roundYield } from "./lib/rounding.mjs";
 import { applyCredibilityFactor, createRefCpiTable, loadRefCpiTable } from "./lib/tips/index.mjs";
 import { forwardTipsCleanPrice, tbillRepoRate } from "./lib/forwards/index.mjs";
+import { yieldFromPrice } from "./lib/yield.mjs";
 
-export const REPORT_SOURCE = "Fidelity";
+export const REPORT_SOURCE = "Market";
 const defaultMktBonds = path.join(os.homedir(), "cloudflare/public/Treasuries/mktBonds/mktBonds-rate.json");
 
 export function parseOptions(text = "") {
@@ -80,6 +81,15 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holida
         const matureDecay = published ? matureFactor : applyCredibilityFactor(matureFactor, t0, maturity);
         const fwdMatureDecay = published ? matureFactor : applyCredibilityFactor(matureFactor, t1, maturity);
 
+        const forwardCleanPrice = forwardTipsCleanPrice({
+            settle: t0, forward: t1, maturity, coupon, price, datedRefCpi, settleRefCpi,
+            forwardRefCpi: fwdRefCpi, repoRate: repo, getRefCpi: table.getRefCpi,
+        });
+        const settleSaRatio = matureFactor ? roundSeasonal(settleFactor / matureFactor) : null;
+        const settleSaDecayRatio = matureDecay ? roundSeasonal(settleFactor / matureDecay) : null;
+        const forwardSaRatio = matureFactor ? roundSeasonal(fwdFactor / matureFactor) : null;
+        const forwardSaDecayRatio = fwdMatureDecay ? roundSeasonal(fwdFactor / fwdMatureDecay) : null;
+
         rows.push({
             cusip: m.cusip,
             interest_rate: coupon,
@@ -95,15 +105,22 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holida
             dated_refcpi: datedRefCpi,
             settle_refcpi: settleRefCpi,
             fwd_refcpi: fwdRefCpi,
-            settle_mature_sa_ratio: matureFactor ? roundSeasonal(settleFactor / matureFactor) : null,
-            settle_mature_sa_ratio_decay: matureDecay ? roundSeasonal(settleFactor / matureDecay) : null,
-            fwd_mature_sa_ratio: matureFactor ? roundSeasonal(fwdFactor / matureFactor) : null,
-            fwd_mature_sa_ratio_decay: fwdMatureDecay ? roundSeasonal(fwdFactor / fwdMatureDecay) : null,
+            settle_mature_sa_ratio: settleSaRatio,
+            settle_mature_sa_ratio_decay: settleSaDecayRatio,
+            fwd_mature_sa_ratio: forwardSaRatio,
+            fwd_mature_sa_ratio_decay: forwardSaDecayRatio,
             repo_rate: repo,
-            fwd_clean_price_unadjusted: forwardTipsCleanPrice({
-                settle: t0, forward: t1, maturity, coupon, price, datedRefCpi, settleRefCpi,
-                forwardRefCpi: fwdRefCpi, repoRate: repo, getRefCpi: table.getRefCpi,
-            }),
+            fwd_clean_price_unadjusted: forwardCleanPrice,
+            settle_ytm: yieldFromPrice(t0, maturity, coupon, price),
+            settle_sa_ytm: settleSaRatio == null ? null : yieldFromPrice(t0, maturity, coupon, price * settleSaRatio),
+            settle_sa_decay_ytm: settleSaDecayRatio == null ? null : yieldFromPrice(t0, maturity, coupon, price * settleSaDecayRatio),
+            forward_ytm: yieldFromPrice(t1, maturity, coupon, forwardCleanPrice),
+            forward_sa_ytm: forwardSaRatio == null || forwardCleanPrice == null
+                ? null
+                : yieldFromPrice(t1, maturity, coupon, forwardCleanPrice * forwardSaRatio),
+            forward_sa_decay_ytm: forwardSaDecayRatio == null || forwardCleanPrice == null
+                ? null
+                : yieldFromPrice(t1, maturity, coupon, forwardCleanPrice * forwardSaDecayRatio),
         });
     }
     return rows;

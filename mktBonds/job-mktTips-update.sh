@@ -5,7 +5,7 @@ set -o pipefail
     --outputName mktTips \
     --collectionScript ./collect-mktTips.sh \
     --processScript ./node-mktTips-update.mjs \
-    --csvFields cusip,interest_rate,security_term,series,maturity_date,dated_date,report_source,asOfDate,settle_date,fwd_date,settle_clean_price,dated_refcpi,settle_refcpi,fwd_refcpi,settle_mature_sa_ratio,settle_mature_sa_ratio_decay,fwd_mature_sa_ratio,fwd_mature_sa_ratio_decay,repo_rate,fwd_clean_price_unadjusted \
+    --csvFields cusip,interest_rate,security_term,series,maturity_date,dated_date,report_source,asOfDate,settle_date,fwd_date,settle_clean_price,dated_refcpi,settle_refcpi,fwd_refcpi,settle_mature_sa_ratio,settle_mature_sa_ratio_decay,fwd_mature_sa_ratio,fwd_mature_sa_ratio_decay,repo_rate,fwd_clean_price_unadjusted,settle_ytm,settle_sa_ytm,settle_sa_decay_ytm,forward_ytm,forward_sa_ytm,forward_sa_decay_ytm \
     --nightDelayHour 8 \
     --pubDelay 3 \
     "$@" || exit $?
@@ -20,16 +20,22 @@ curveCloudflareDir="$cloudFlareHome/Treasuries/mktBonds"
 curveDailyDir="$curveCloudflareDir/daily"
 mkdir -p "$curveDailyDir"
 
+curveReportSource=$(jq -er '[.[].report_source] | unique | if length == 1 then .[0] else error("mktTips rows must have one report_source") end' "$curveInput") || exit $?
+tipSourceSide=${curveReportSource// /-}
+nominalSource=${curveReportSource% *}
+nominalSource=${nominalSource// /-}
+
 # publishCurve <basis> <output name>: settle = settlement-date curve, settle-sa = settle with settle_mature_sa_ratio applied, forward = maxREFCPI-date curve, forward-sa = same with fwd_mature_sa_ratio applied, forward-sa-decay = same with fwd_mature_sa_ratio_decay applied.
 publishCurve() {
     local basis="$1" name="$2"
+    local sourceBasis="$tipSourceSide-$basis"
     local curveOutput="history/$name-rate-new.json"
     local tmpCurveOutput="$curveOutput.tmp.$$"
     local curveJsonFlare="$curveCloudflareDir/$name-rate.json"
     local curveCsvFlare="$curveCloudflareDir/$name-rate.csv"
     local nominalName="mktBonds-curve"
     [[ "$basis" == forward* ]] && nominalName="mktBonds-curve-fwd"
-    if ! node ./node-calc-mktTips-curve.mjs "--basis=$basis" "--nominalCurve=history/$nominalName-rate-new.json" <"$curveInput" | jq . >"$tmpCurveOutput"; then
+    if ! node ./node-calc-mktTips-curve.mjs "--basis=$basis" "--nominalCurve=history/$nominalName-rate-new.json" <"$curveInput" | jq --arg basis "$sourceBasis" '.basis = $basis' >"$tmpCurveOutput"; then
         rm -f "$tmpCurveOutput"
         return 1
     fi
@@ -43,7 +49,7 @@ publishCurve() {
         cp "$curveOutput" "$curveJsonFlare"
         (
             echo 'cusip, asOfDate, basis, settleDate, maturity, coupon, marketClean, modelClean, priceResidual, marketYtm, modelYtm, residualBp, richCheap, nominalMarketYtm, marketBei, nominalModelYtm, modelBei'
-            jq -r --arg asOfDate "$asOfDate" --arg basis "$basis" --arg settleDate "$(jq -r '.settleDate' "$curveOutput")" \
+            jq -r --arg asOfDate "$asOfDate" --arg basis "$sourceBasis" --arg settleDate "$(jq -r '.settleDate' "$curveOutput")" \
                 '.rows[] | [.cusip, $asOfDate, $basis, $settleDate, .maturity, .coupon, .marketClean, .modelClean, .priceResidual, .marketYtm, .modelYtm, .residualBp, .richCheap, .nominalMarketYtm, .marketBei, .nominalModelYtm, .modelBei] | @csv' \
                 "$curveOutput"
         ) >"$curveCsvFlare"
@@ -57,11 +63,12 @@ publishCurve() {
 # publishNominalCurve <basis> <output name>: Svensson nominal zero curve (6-month points to 30 years) from the mktBonds ask quotes.
 publishNominalCurve() {
     local basis="$1" name="$2"
+    local sourceBasis="$nominalSource-ask-$basis"
     local curveOutput="history/$name-rate-new.json"
     local tmpCurveOutput="$curveOutput.tmp.$$"
     local curveJsonFlare="$curveCloudflareDir/$name-rate.json"
     local curveCsvFlare="$curveCloudflareDir/$name-rate.csv"
-    if ! node ./node-calc-mktBonds-curve.mjs "--basis=$basis" "--mktBonds=$curveCloudflareDir/mktBonds-rate.json" <"$curveInput" | jq . >"$tmpCurveOutput"; then
+    if ! node ./node-calc-mktBonds-curve.mjs "--basis=$basis" "--priceSide=ask" "--mktBonds=$curveCloudflareDir/mktBonds-rate.json" <"$curveInput" | jq --arg basis "$sourceBasis" '.basis = $basis' >"$tmpCurveOutput"; then
         rm -f "$tmpCurveOutput"
         return 1
     fi
@@ -75,7 +82,7 @@ publishNominalCurve() {
         cp "$curveOutput" "$curveJsonFlare"
         (
             echo 'asOfDate, basis, curveDate, term, date, zeroCc, zeroBey, discountFactor'
-            jq -r --arg asOfDate "$asOfDate" --arg basis "$basis" --arg curveDate "$(jq -r '.settleDate' "$curveOutput")" \
+            jq -r --arg asOfDate "$asOfDate" --arg basis "$sourceBasis" --arg curveDate "$(jq -r '.settleDate' "$curveOutput")" \
                 '.points[] | [$asOfDate, $basis, $curveDate, .term, .date, .zeroCc, .zeroBey, .discountFactor] | @csv' \
                 "$curveOutput"
         ) >"$curveCsvFlare"
