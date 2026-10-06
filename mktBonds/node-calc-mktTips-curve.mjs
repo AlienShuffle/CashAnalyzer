@@ -37,14 +37,14 @@ function richCheap(residualBp) {
     return residualBp > 0 ? "cheap" : "rich";
 }
 
-const BASES = ["settle", "settle-sa", "forward", "forward-sa", "forward-sa-decay"];
+const BASES = ["settle", "settle-sa", "settle-sa-decay", "forward", "forward-sa", "forward-sa-decay"];
 
 /**
  * @param {Array<object>} tipsRows output rows from node-mktTips-update.mjs
- * @param {{basis?: "settle"|"settle-sa"|"forward"|"forward-sa"|"forward-sa-decay"}} options settle uses the settlement date and
+ * @param {{basis?: "settle"|"settle-sa"|"settle-sa-decay"|"forward"|"forward-sa"|"forward-sa-decay"}} options settle uses the settlement date and
  *   market clean price; forward uses the forward (maxREFCPI) date and the unadjusted forward clean
  *   price; settle-sa multiplies settle_clean_price by settle_mature_sa_ratio; forward-sa multiplies that price by fwd_mature_sa_ratio (seasonally adjusted). Bonds
- *   forward-sa-decay does the same with fwd_mature_sa_ratio_decay. Bonds
+ *   settle-sa-decay uses settle_mature_sa_ratio_decay; forward-sa-decay uses fwd_mature_sa_ratio_decay. Bonds
  *   maturing on or before the forward date are excluded from every curve.
  * @return {object} dated Svensson fit and per-bond diagnostics
  */
@@ -72,7 +72,7 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle", nominalCurv
     const forward = basis.startsWith("forward");
     const settleDate = forward ? forwardDate : [...settlementDates][0];
     const priceField = forward ? "fwd_clean_price_unadjusted" : "settle_clean_price";
-    const ratioField = { "settle-sa": "settle_mature_sa_ratio", "forward-sa": "fwd_mature_sa_ratio", "forward-sa-decay": "fwd_mature_sa_ratio_decay" }[basis];
+    const ratioField = { "settle-sa": "settle_mature_sa_ratio", "settle-sa-decay": "settle_mature_sa_ratio_decay", "forward-sa": "fwd_mature_sa_ratio", "forward-sa-decay": "fwd_mature_sa_ratio_decay" }[basis];
     const seasonal = ratioField !== undefined;
     const bonds = tipsRows
         .filter(row => normalizeDate(row.maturity_date) > normalizeDate(forwardDate))

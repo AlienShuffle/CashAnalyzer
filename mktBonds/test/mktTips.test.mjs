@@ -72,6 +72,7 @@ test("TIPS curve analysis is generated as a separate dated Svensson result", () 
         settle_clean_price,
         fwd_clean_price_unadjusted: settle_clean_price + 0.1,
         settle_mature_sa_ratio: 1.03,
+        settle_mature_sa_ratio_decay: 1.015,
         fwd_mature_sa_ratio: 1.01,
         fwd_mature_sa_ratio_decay: 1.02,
     }));
@@ -116,6 +117,13 @@ test("TIPS curve analysis is generated as a separate dated Svensson result", () 
     const settleSa = buildTipsCurveAnalysis(curveRows, { basis: "settle-sa" });
     assert.equal(settleSa.settleDate, "2026-10-05");
     assert.ok(Math.abs(settleSa.rows[0].marketClean - 99.6 * 1.03) < 1e-9);
+    const settleDecay = buildTipsCurveAnalysis(curveRows, { basis: "settle-sa-decay" });
+    assert.equal(settleDecay.basis, "settle-sa-decay");
+    assert.equal(settleDecay.settleDate, "2026-10-05");
+    assert.ok(Math.abs(settleDecay.rows[0].marketClean - 99.6 * 1.015) < 1e-9);
+    const noDecayRatio = { ...curveRows[1], cusip: "NODECAY", settle_mature_sa_ratio_decay: null };
+    assert.ok(!buildTipsCurveAnalysis([noDecayRatio, ...curveRows], { basis: "settle-sa-decay" }).rows.some(r => r.cusip === "NODECAY"));
+    assert.ok(buildTipsCurveAnalysis([noDecayRatio, ...curveRows], { basis: "settle" }).rows.some(r => r.cusip === "NODECAY"));
     const decay = buildTipsCurveAnalysis(curveRows, { basis: "forward-sa-decay" });
     assert.equal(decay.basis, "forward-sa-decay");
     assert.ok(Math.abs(decay.rows[0].marketClean - 99.7 * 1.02) < 1e-9);
