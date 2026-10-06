@@ -143,7 +143,11 @@ test("nominal model and market yields are added from the nominal curve", () => {
         assert.ok(Math.abs(r.nominalMarketYtm - expected) < 0.0005, `${r.maturity} ${r.nominalMarketYtm} ${expected}`);
     }
     const outside = buildTipsCurveAnalysis(rows, { nominalCurve: { ...nominalCurve, fitBonds: fitBonds.slice(0, 2) } });
-    assert.ok(outside.rows.filter(r => r.maturity > "2029-01-15").every(r => r.nominalMarketYtm === null));
+    for (const r of result.rows) {
+        assert.equal(r.marketBei, Math.round((r.nominalMarketYtm - r.marketYtm) * 1e5) / 1e5);
+        assert.equal(r.modelBei, Math.round((r.nominalModelYtm - r.modelYtm) * 1e5) / 1e5);
+    }
+    assert.ok(outside.rows.filter(r => r.maturity > "2029-01-15").every(r => r.nominalMarketYtm === null && r.marketBei === null));
     assert.throws(() => buildTipsCurveAnalysis(rows, { nominalCurve: { ...nominalCurve, settleDate: "2026-12-01" } }), /does not match/);
 });
 

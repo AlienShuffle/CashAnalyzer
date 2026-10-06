@@ -97,6 +97,12 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle", nominalCurv
         objective: fit.objective,
         rows: fit.rows.map((row, index) => {
             const residualBp = roundTo(row.residualBp, 3);
+            const nominalModelYield = nominalCurve
+                ? roundYield(nominalZeroYtm(settleDate, row.maturity, row.coupon, nominalCurve.params))
+                : undefined;
+            const nominalMarketYield = nominalCurve
+                ? nominalMarketYtm(settleDate, row.maturity, nominalCurve.fitBonds)
+                : undefined;
             return {
                 cusip: bonds[index].cusip,
                 maturity: dateOnly(row.maturity),
@@ -109,8 +115,10 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle", nominalCurv
                 residualBp,
                 richCheap: richCheap(residualBp),
                 ...(nominalCurve && {
-                    nominalModelYtm: roundYield(nominalZeroYtm(settleDate, row.maturity, row.coupon, nominalCurve.params)),
-                    nominalMarketYtm: nominalMarketYtm(settleDate, row.maturity, nominalCurve.fitBonds),
+                    nominalMarketYtm: nominalMarketYield,
+                    marketBei: nominalMarketYield == null ? null : roundYield(nominalMarketYield - row.marketYtm),
+                    nominalModelYtm: nominalModelYield,
+                    modelBei: roundYield(nominalModelYield - row.modelYtm),
                 }),
             };
         }),
