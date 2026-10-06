@@ -12,7 +12,7 @@ const quotes = [
     { cusip: "TIPS", securitytype: "TIPS", rate: 0.01, maturitydate: "2030-07-15", bid: 98, ask: 99 },
     { cusip: "MATURED", securitytype: "Bond", rate: 0.04, maturitydate: "2026-10-04", bid: 100, ask: 100 },
     { cusip: "MISSING", securitytype: "Bond", rate: 0.04, maturitydate: "2030-07-15", bid: "", ask: "" },
-].map(q => ({ ...q, asOfDate: "2026-10-02T1405" }));
+].map(q => ({ ...q, asOfDate: "2026-10-02T1405", frequency: "semi-annually", key: `${q.maturitydate}-${q.cusip}` }));
 
 test("nominal ask and bid tables select matching prices, repo rates and yields without SA", () => {
     for (const priceSide of ["ask", "bid"]) {
@@ -27,13 +27,20 @@ test("nominal ask and bid tables select matching prices, repo rates and yields w
             .filter(q => q.securitytype === "Bill")
             .map(q => ({ maturity: q.maturitydate, price: q[priceSide] }))).rate);
         assert.equal(row.repo_rate, repo);
-        assert.equal(row.fwd_clean_price_unadjusted, forwardNominalCleanPrice({
-            settle: row.settle_date, forward: row.fwd_date, maturity: row.maturitydate,
-            coupon: row.rate, price: row.settle_clean_price, repoRate: repo,
+        assert.equal(row.fwd_clean_price, forwardNominalCleanPrice({
+            settle: row.settle_date, forward: row.fwd_date, maturity: row.maturity_date,
+            coupon: row.interest_rate, price: row.settle_clean_price, repoRate: repo,
         }));
-        assert.equal(row.settle_ytm, yieldFromPrice(row.settle_date, row.maturitydate, row.rate, row.settle_clean_price));
-        assert.equal(row.forward_ytm, yieldFromPrice(row.fwd_date, row.maturitydate, row.rate, row.fwd_clean_price_unadjusted));
-        assert.equal(rows[1].fwd_clean_price_unadjusted, null);
+        assert.equal(row.settle_ytm, yieldFromPrice(row.settle_date, row.maturity_date, row.interest_rate, row.settle_clean_price));
+        assert.equal(row.forward_ytm, yieldFromPrice(row.fwd_date, row.maturity_date, row.interest_rate, row.fwd_clean_price));
+        assert.equal(rows[1].fwd_clean_price, null);
+        assert.deepEqual(Object.keys(row).slice(0, 9), [
+            "cusip", "interest_rate", "security_type", "description", "maturity_date",
+            "report_source", "asOfDate", "settle_date", "fwd_date",
+        ]);
+        for (const field of ["rate", "securitytype", "maturitydate", "frequency", "key", "fwd_clean_price_unadjusted"]) {
+            assert.ok(!(field in row), field);
+        }
         assert.equal(rows[1].forward_ytm, null);
         assert.ok(rows.every(r => !Object.keys(r).some(k => k.includes("_sa_"))));
     }

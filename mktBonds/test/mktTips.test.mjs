@@ -37,14 +37,14 @@ test("buildTipsRows joins quotes, picks the price side and skips unquoted bonds"
     assert.equal(buildTipsRows(meta, quotes, table, { repoRate: 0.04, priceSide: "ask" })[0].report_source, "Market ask");
     assert.equal(out[0].settle_date, "2026-10-05");
     assert.equal(out[0].fwd_date, "2026-11-01");
-    assert.ok(out[0].fwd_clean_price_unadjusted > 90);
+    assert.ok(out[0].fwd_clean_price > 90);
     assert.ok("fwd_mature_sa_ratio_decay" in out[0]);
     assert.equal(out[0].settle_ytm, yieldFromPrice(out[0].settle_date, out[0].maturity_date, out[0].interest_rate, out[0].settle_clean_price));
     assert.equal(out[0].settle_sa_ytm, yieldFromPrice(out[0].settle_date, out[0].maturity_date, out[0].interest_rate, out[0].settle_clean_price * out[0].settle_mature_sa_ratio));
     assert.equal(out[0].settle_sa_decay_ytm, yieldFromPrice(out[0].settle_date, out[0].maturity_date, out[0].interest_rate, out[0].settle_clean_price * out[0].settle_mature_sa_ratio_decay));
-    assert.equal(out[0].forward_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price_unadjusted));
-    assert.equal(out[0].forward_sa_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price_unadjusted * out[0].fwd_mature_sa_ratio));
-    assert.equal(out[0].forward_sa_decay_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price_unadjusted * out[0].fwd_mature_sa_ratio_decay));
+    assert.equal(out[0].forward_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price));
+    assert.equal(out[0].forward_sa_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price * out[0].fwd_mature_sa_ratio));
+    assert.equal(out[0].forward_sa_decay_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price * out[0].fwd_mature_sa_ratio_decay));
 });
 
 test("tbillRepoRate brackets the target and derives a simple rate; auto repo is used in rows", () => {
@@ -70,7 +70,7 @@ test("TIPS curve analysis is generated as a separate dated Svensson result", () 
         maturity_date,
         interest_rate,
         settle_clean_price,
-        fwd_clean_price_unadjusted: settle_clean_price + 0.1,
+        fwd_clean_price: settle_clean_price + 0.1,
         settle_mature_sa_ratio: 1.03,
         settle_mature_sa_ratio_decay: 1.015,
         fwd_mature_sa_ratio: 1.01,

@@ -71,7 +71,7 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle", nominalCurv
     const forwardDate = [...forwardDates][0];
     const forward = basis.startsWith("forward");
     const settleDate = forward ? forwardDate : [...settlementDates][0];
-    const priceField = forward ? "fwd_clean_price_unadjusted" : "settle_clean_price";
+    const priceField = forward ? "fwd_clean_price" : "settle_clean_price";
     const ratioField = { "settle-sa": "settle_mature_sa_ratio", "settle-sa-decay": "settle_mature_sa_ratio_decay", "forward-sa": "fwd_mature_sa_ratio", "forward-sa-decay": "fwd_mature_sa_ratio_decay" }[basis];
     const seasonal = ratioField !== undefined;
     const bonds = tipsRows

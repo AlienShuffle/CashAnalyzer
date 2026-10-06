@@ -110,7 +110,7 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holida
             fwd_mature_sa_ratio: forwardSaRatio,
             fwd_mature_sa_ratio_decay: forwardSaDecayRatio,
             repo_rate: repo,
-            fwd_clean_price_unadjusted: forwardCleanPrice,
+            fwd_clean_price: forwardCleanPrice,
             settle_ytm: yieldFromPrice(t0, maturity, coupon, price),
             settle_sa_ytm: settleSaRatio == null ? null : yieldFromPrice(t0, maturity, coupon, price * settleSaRatio),
             settle_sa_decay_ytm: settleSaDecayRatio == null ? null : yieldFromPrice(t0, maturity, coupon, price * settleSaDecayRatio),

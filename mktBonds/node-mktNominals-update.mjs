@@ -38,15 +38,22 @@ export function buildNominalRows(quotes, forwardDate, { repoRate = "auto", price
             settle, forward, maturity, coupon, price, repoRate: repo,
         });
         rows.push({
-            ...quote,
+            cusip: quote.cusip,
+            interest_rate: coupon,
+            security_type: quote.securitytype,
+            description: quote.description,
+            maturity_date: quote.maturitydate,
             report_source: `${REPORT_SOURCE} ${priceSide}`,
+            asOfDate: quote.asOfDate,
             settle_date: toIso(settle),
             fwd_date: toIso(forward),
             settle_clean_price: price,
             repo_rate: repo,
-            fwd_clean_price_unadjusted: forwardPrice,
+            fwd_clean_price: forwardPrice,
             settle_ytm: yieldFromPrice(settle, maturity, coupon, price),
             forward_ytm: yieldFromPrice(forward, maturity, coupon, forwardPrice),
+            bid: quote.bid,
+            ask: quote.ask,
         });
     }
     return rows;
