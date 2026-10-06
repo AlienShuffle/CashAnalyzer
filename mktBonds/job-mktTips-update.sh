@@ -41,7 +41,6 @@ publishCurve() {
     fi
 }
 
-
 # publishNominalCurve <basis> <output name>: Svensson nominal zero curve (6-month points to 30 years) from the mktBonds ask quotes.
 publishNominalCurve() {
     local basis="$1" name="$2"
@@ -104,6 +103,7 @@ runTipsSide() {
     publishNominalCurve forward "mktNominal-curve-fwd-$side" || return $?
     publishCurve settle "mktTips-curve-$side" || return $?
     publishCurve settle-sa "mktTips-curve-sa-$side" || return $?
+    publishCurve settle-sa-decay "mktTips-curve-sa-decay-$side" || return $?
     publishCurve forward "mktTips-curve-fwd-$side" || return $?
     publishCurve forward-sa "mktTips-curve-fwd-sa-$side" || return $?
     publishCurve forward-sa-decay "mktTips-curve-fwd-sa-decay-$side" || return $?
