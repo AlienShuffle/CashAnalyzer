@@ -51,7 +51,7 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holida
         const bills = quotes.filter(q => q.securitytype === "Bill" && Number(q[priceSide]) > 0);
         if (bills.length === 0) throw new Error("No T-bill quotes available to derive the repo rate");
         const billSettle = getSettlementDate(bills[0].asOfDate.slice(0, 10), holidays);
-        repo = roundYield(tbillRepoRate(billSettle, t1, bills.map(b => ({ maturity: b.maturitydate, price: b[priceSide] }))).rate);
+        repo = roundYield(tbillRepoRate(billSettle, t1, bills.map(b => ({ maturity: b.maturity_date, price: b[priceSide] }))).rate);
     }
 
     for (const m of meta) {

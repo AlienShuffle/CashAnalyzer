@@ -45,6 +45,12 @@ test("buildTipsRows joins quotes, picks the price side and skips unquoted bonds"
     assert.equal(out[0].forward_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price));
     assert.equal(out[0].forward_sa_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price * out[0].fwd_mature_sa_ratio));
     assert.equal(out[0].forward_sa_decay_ytm, yieldFromPrice(out[0].fwd_date, out[0].maturity_date, out[0].interest_rate, out[0].fwd_clean_price * out[0].fwd_mature_sa_ratio_decay));
+    const bills = [
+        { maturity_date: "2026-10-29", bid: 99.743 },
+        { maturity_date: "2026-11-03", bid: 99.687 },
+    ].map(b => ({ ...b, securitytype: "Bill", asOfDate: quotes[0].asOfDate }));
+    const [auto] = buildTipsRows(meta, [...quotes, ...bills], table, { repoRate: "auto", priceSide: "bid" });
+    assert.ok(auto.repo_rate > 0.03 && auto.repo_rate < 0.06);
 });
 
 test("tbillRepoRate brackets the target and derives a simple rate; auto repo is used in rows", () => {

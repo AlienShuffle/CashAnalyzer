@@ -11,7 +11,7 @@ const context = { asOfDate: "2026-10-05T1235", settleDate: settle, forwardDate: 
 function quote(maturity, coupon, extra = {}) {
     const clean = tipsZeroModelPrice(settle, maturity, coupon, params) - accruedInterest(settle, maturity, coupon);
     return {
-        asOfDate: context.asOfDate, cusip: `C${maturity}`, securitytype: "Bond", rate: String(coupon), maturitydate: maturity,
+        asOfDate: context.asOfDate, cusip: `C${maturity}`, securitytype: "Bond", interest_rate: String(coupon), maturity_date: maturity,
         bid: clean - 0.05, ask: clean, description: `UNITED STATES TREAS NTS, ${coupon}`, ...extra,
     };
 }

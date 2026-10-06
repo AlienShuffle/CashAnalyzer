@@ -6,13 +6,13 @@ import { roundYield } from "../lib/rounding.mjs";
 import { yieldFromPrice } from "../lib/yield.mjs";
 
 const quotes = [
-    { cusip: "BOND", securitytype: "Bond", rate: 0.04, maturitydate: "2030-07-15", bid: 98, ask: 99 },
-    { cusip: "BEFORE", securitytype: "Bill", rate: "", maturitydate: "2026-10-29", bid: 99.7, ask: 99.75 },
-    { cusip: "AFTER", securitytype: "Bill", rate: "", maturitydate: "2026-11-03", bid: 99.65, ask: 99.7 },
-    { cusip: "TIPS", securitytype: "TIPS", rate: 0.01, maturitydate: "2030-07-15", bid: 98, ask: 99 },
-    { cusip: "MATURED", securitytype: "Bond", rate: 0.04, maturitydate: "2026-10-04", bid: 100, ask: 100 },
-    { cusip: "MISSING", securitytype: "Bond", rate: 0.04, maturitydate: "2030-07-15", bid: "", ask: "" },
-].map(q => ({ ...q, asOfDate: "2026-10-02T1405", frequency: "semi-annually", key: `${q.maturitydate}-${q.cusip}` }));
+    { cusip: "BOND", securitytype: "Bond", interest_rate: 0.04, maturity_date: "2030-07-15", bid: 98, ask: 99 },
+    { cusip: "BEFORE", securitytype: "Bill", interest_rate: "", maturity_date: "2026-10-29", bid: 99.7, ask: 99.75 },
+    { cusip: "AFTER", securitytype: "Bill", interest_rate: "", maturity_date: "2026-11-03", bid: 99.65, ask: 99.7 },
+    { cusip: "TIPS", securitytype: "TIPS", interest_rate: 0.01, maturity_date: "2030-07-15", bid: 98, ask: 99 },
+    { cusip: "MATURED", securitytype: "Bond", interest_rate: 0.04, maturity_date: "2026-10-04", bid: 100, ask: 100 },
+    { cusip: "MISSING", securitytype: "Bond", interest_rate: 0.04, maturity_date: "2030-07-15", bid: "", ask: "" },
+].map(q => ({ ...q, asOfDate: "2026-10-02T1405" }));
 
 test("nominal ask and bid tables select matching prices, repo rates and yields without SA", () => {
     for (const priceSide of ["ask", "bid"]) {
@@ -25,7 +25,7 @@ test("nominal ask and bid tables select matching prices, repo rates and yields w
         assert.equal(row.settle_clean_price, quotes[0][priceSide]);
         const repo = roundYield(tbillRepoRate(row.settle_date, row.fwd_date, quotes
             .filter(q => q.securitytype === "Bill")
-            .map(q => ({ maturity: q.maturitydate, price: q[priceSide] }))).rate);
+            .map(q => ({ maturity: q.maturity_date, price: q[priceSide] }))).rate);
         assert.equal(row.repo_rate, repo);
         assert.equal(row.fwd_clean_price, forwardNominalCleanPrice({
             settle: row.settle_date, forward: row.fwd_date, maturity: row.maturity_date,

@@ -15,7 +15,11 @@ test("toPublishedRows publishes coupons as decimal rates", () => {
         description: "UNITED STATES TREAS SER AT-2026",
     }]);
 
-    assert.equal(row.rate, 0.04625);
+    assert.equal(row.interest_rate, 0.04625);
+    assert.equal(row.maturity_date, "2026-10-15");
+    assert.deepEqual(Object.keys(row), [
+        "asOfDate", "cusip", "securitytype", "interest_rate", "maturity_date", "bid", "ask", "description",
+    ]);
 });
 
 test("toPublishedRows keeps missing coupons blank", () => {
@@ -31,5 +35,5 @@ test("toPublishedRows keeps missing coupons blank", () => {
         description: "UNITED STATES TREAS BILLS ZERO CPN",
     }]);
 
-    assert.equal(row.rate, "");
+    assert.equal(row.interest_rate, "");
 });

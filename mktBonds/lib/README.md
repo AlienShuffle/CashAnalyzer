@@ -34,7 +34,8 @@ The ask/bid CSV tables begin with CUSIP, `interest_rate`, security term/type,
 series/description, and `maturity_date`, followed by the TIPS-only `dated_date`,
 `report_source`, `asOfDate`, `settle_date`, and `fwd_date`. Nominal JSON uses
 `security_type` and `maturity_date` and omits `frequency` and `key`; the combined
-quote feed retains its original schema. Both table types use `fwd_clean_price`
+quote feed uses `interest_rate` and `maturity_date` and also omits `frequency` and
+`key`, retaining `securitytype` and both quote sides. Both table types use `fwd_clean_price`
 for the unadjusted forward clean price.
 
 | Step | Status |

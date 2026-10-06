@@ -77,14 +77,14 @@ export function buildNominalCurveAnalysis(quotes, context, { basis = "settle", p
     for (const q of quotes) {
         if (!NOMINAL_TYPES.has(q.securitytype) || /\bSTRIP/i.test(q.description ?? "")) continue;
         const ask = Number(q[priceSide]);
-        if (!(ask > 0) || !(normalizeDate(q.maturitydate) > normalizeDate(forwardDate))) continue;
-        const coupon = Number(q.rate) || 0;
+        if (!(ask > 0) || !(normalizeDate(q.maturity_date) > normalizeDate(forwardDate))) continue;
+        const coupon = Number(q.interest_rate) || 0;
         const cleanPrice = basis === "forward"
-            ? forwardNominalCleanPrice({ settle: settleDate, forward: forwardDate, maturity: q.maturitydate, coupon, price: ask, repoRate })
+            ? forwardNominalCleanPrice({ settle: settleDate, forward: forwardDate, maturity: q.maturity_date, coupon, price: ask, repoRate })
             : ask;
-        const ytm = cleanPrice > 0 ? yieldFromPrice(curveDate, q.maturitydate, coupon, cleanPrice) : null;
+        const ytm = cleanPrice > 0 ? yieldFromPrice(curveDate, q.maturity_date, coupon, cleanPrice) : null;
         if (!Number.isFinite(ytm)) continue;
-        candidates.push({ cusip: q.cusip, maturity: q.maturitydate, coupon, cleanPrice, ytm });
+        candidates.push({ cusip: q.cusip, maturity: q.maturity_date, coupon, cleanPrice, ytm });
     }
     candidates.sort((a, b) => (a.maturity < b.maturity ? -1 : a.maturity > b.maturity ? 1 : a.cusip < b.cusip ? -1 : 1));
 

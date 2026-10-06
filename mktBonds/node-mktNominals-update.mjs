@@ -25,15 +25,15 @@ export function buildNominalRows(quotes, forwardDate, { repoRate = "auto", price
     const repo = repoRate === "auto"
         ? roundYield(tbillRepoRate(settle, forward, quotes
             .filter(q => q.securitytype === "Bill" && Number(q[priceSide]) > 0)
-            .map(q => ({ maturity: q.maturitydate, price: q[priceSide] }))).rate)
+            .map(q => ({ maturity: q.maturity_date, price: q[priceSide] }))).rate)
         : repoRate;
     const rows = [];
     for (const quote of quotes) {
         if (!["Bond", "Bill"].includes(quote.securitytype)) continue;
         const price = Number(quote[priceSide]);
-        const maturity = normalizeDate(quote.maturitydate);
+        const maturity = normalizeDate(quote.maturity_date);
         if (!(price > 0) || !(maturity > settle)) continue;
-        const coupon = Number(quote.rate);
+        const coupon = Number(quote.interest_rate);
         const forwardPrice = forwardNominalCleanPrice({
             settle, forward, maturity, coupon, price, repoRate: repo,
         });
@@ -42,7 +42,7 @@ export function buildNominalRows(quotes, forwardDate, { repoRate = "auto", price
             interest_rate: coupon,
             security_type: quote.securitytype,
             description: quote.description,
-            maturity_date: quote.maturitydate,
+            maturity_date: quote.maturity_date,
             report_source: `${REPORT_SOURCE} ${priceSide}`,
             asOfDate: quote.asOfDate,
             settle_date: toIso(settle),
