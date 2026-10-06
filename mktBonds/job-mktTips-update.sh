@@ -15,8 +15,8 @@ publishCurve() {
     local tmpCurveOutput="$curveOutput.tmp.$$"
     local curveJsonFlare="$curveCloudflareDir/$name-rate.json"
     local curveCsvFlare="$curveCloudflareDir/$name-rate.csv"
-    local nominalName="mktBonds-curve-$priceSide"
-    [[ "$basis" == forward* ]] && nominalName="mktBonds-curve-fwd-$priceSide"
+    local nominalName="mktNominal-curve-$priceSide"
+    [[ "$basis" == forward* ]] && nominalName="mktNominal-curve-fwd-$priceSide"
     if ! node ./node-calc-mktTips-curve.mjs "--basis=$basis" "--nominalCurve=history/$nominalName-rate-new.json" <"$curveInput" | jq --arg basis "$sourceBasis" '.basis = $basis' >"$tmpCurveOutput"; then
         rm -f "$tmpCurveOutput"
         return 1
@@ -100,8 +100,8 @@ runTipsSide() {
     nominalSource=${nominalSource// /-}
 
     # The TIPS curves need the nominal curve of the same date and quote side.
-    publishNominalCurve settle "mktBonds-curve-$side" || return $?
-    publishNominalCurve forward "mktBonds-curve-fwd-$side" || return $?
+    publishNominalCurve settle "mktNominal-curve-$side" || return $?
+    publishNominalCurve forward "mktNominal-curve-fwd-$side" || return $?
     publishCurve settle "mktTips-curve-$side" || return $?
     publishCurve settle-sa "mktTips-curve-sa-$side" || return $?
     publishCurve forward "mktTips-curve-fwd-$side" || return $?
@@ -124,6 +124,6 @@ writeCsvManifest() {
 }
 
 writeCsvManifest "$curveCloudflareDir" 'mktTips-*.csv' mktTips-manifest.txt || exit $?
-writeCsvManifest "$curveCloudflareDir" 'mktBonds-*.csv' mktBonds-manifest.txt || exit $?
+writeCsvManifest "$curveCloudflareDir" 'mktNominal-*.csv' mktNominal-manifest.txt || exit $?
 writeCsvManifest "$curveDailyDir" '*-mktTips-*.csv' mktTips-manifest.txt || exit $?
-writeCsvManifest "$curveDailyDir" '*-mktBonds-*.csv' mktBonds-manifest.txt || exit $?
+writeCsvManifest "$curveDailyDir" '*-mktNominal-*.csv' mktNominal-manifest.txt || exit $?
