@@ -1,9 +1,9 @@
 import puppeteer from "puppeteer";
 import {
   readFileSync,
-  readdirSync,
+  writeFileSync,
   renameSync,
-  statSync,
+  rmSync,
   mkdirSync,
   existsSync
 } from "fs";
@@ -23,6 +23,11 @@ const browserPromise = puppeteer.launch({
 });
 const browser = await browserPromise;
 
+// Download completion is tracked through browser-level CDP events rather than by watching the
+// download directory. Chrome emits these on the browser target, not on a page session.
+const downloadSession = await browser.target().createCDPSession();
+const downloadTimeoutMs = 60000;
+
 // this is the main function
 // get a list of tickers from stdin, scrape each one, and output facts as JSON to stdout
 const rawTickers = readFileSync(0, 'utf8');
@@ -36,6 +41,29 @@ for (const ticker of tickers) {
   const downloadPath = `./downloads/${ticker}`;
   const url = `https://advisors.vanguard.com/investments/products/${ticker}`;
   const page = await browser.newPage();
+
+  // The page fetches its own distribution history on load. Capturing that response gives a
+  // structured source that does not depend on the CSV export button working.
+  let distributionsData = null;
+  page.on("response", async response => {
+    if (!/\/api\/funds\/[^/]+\/pricing\/distributions(\?|$)/.test(response.url())) return;
+    try {
+      const body = await response.json();
+      if (Array.isArray(body) && body.length > 0) distributionsData = body;
+    } catch {
+      // Ignore responses that are redirected, aborted, or not JSON.
+    }
+  });
+
+  function saveDistributionsData() {
+    if (!distributionsData) return false;
+    mkdirSync(downloadPath, { recursive: true });
+    writeFileSync(
+      join(downloadPath, `${ticker}-distributions.json`),
+      JSON.stringify(distributionsData, null, 1)
+    );
+    return true;
+  }
 
   let rowData = {
     "ticker": ticker,
@@ -105,57 +133,70 @@ for (const ticker of tickers) {
     'div[data-rpa-tag-id*="fixed"]'
   ];
 
-  // Helper: wait until no .crdownload files remain
-  async function waitForDownloadComplete(dir) {
-    // make sure download starts
-    await sleep(800);
-    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-    // return once the .crdownload file is removed (completed).
+  // Helper: resolve with the GUID of the download Chrome just completed, or null on
+  // failure. Listeners are registered before the click so a fast download cannot be missed.
+  function waitForDownload() {
     return new Promise(resolve => {
-      const interval = setInterval(() => {
-        const files = readdirSync(dir);
-        const downloading = files.some(f => f.endsWith(".crdownload"));
-        if (!downloading) {
-          clearInterval(interval);
-          resolve();
-        }
-      }, 500);
+      let guid = null;
+      const onBegin = event => { guid = event.guid; };
+      const onProgress = event => {
+        if (guid && event.guid !== guid) return;
+        if (event.state === "completed") finish(event.guid || guid);
+        else if (event.state === "canceled") finish(null);
+      };
+      const finish = value => {
+        clearTimeout(timer);
+        downloadSession.off("Browser.downloadWillBegin", onBegin);
+        downloadSession.off("Browser.downloadProgress", onProgress);
+        resolve(value);
+      };
+      const timer = setTimeout(() => finish(null), downloadTimeoutMs);
+      downloadSession.on("Browser.downloadWillBegin", onBegin);
+      downloadSession.on("Browser.downloadProgress", onProgress);
     });
   }
 
-  // Helper: rename the most recently downloaded file
-  async function renameLatestFile(downloadDir, newName) {
-    const files = readdirSync(downloadDir)
-      .filter(f => !f.endsWith(".crdownload"))
-      .sort((a, b) => statSync(join(downloadDir, b)).mtimeMs -
-        statSync(join(downloadDir, a)).mtimeMs);
-
-    if (files.length === 0) return null;
-
-    const oldPath = join(downloadDir, files[0]);
-    const newPath = join(downloadDir, newName);
-    renameSync(oldPath, newPath);
-    if (debug) console.error("Renamed file:", newPath);
-    return newPath;
-  }
-
-  async function downloadFile(buttonText, downloadPath, csvFileName) {
+  // Downloads land under their GUID ("allowAndName"), so the file belonging to this click is
+  // identified exactly. Any failure leaves the existing target file untouched and returns
+  // false, so a broken export can never be mistaken for fresh data.
+  async function downloadFile(buttonText, downloadPath, csvFileName, expectedContent) {
     const exportButton = await exportButtonFinder(buttonText);
     if (!exportButton) {
       console.error(`Button with text '${buttonText}' not found.`);
       return false;
     }
     mkdirSync(downloadPath, { recursive: true });
-    await page._client().send("Page.setDownloadBehavior", {
-      behavior: "allow",
-      downloadPath: downloadPath
+    await downloadSession.send("Browser.setDownloadBehavior", {
+      behavior: "allowAndName",
+      downloadPath: downloadPath,
+      eventsEnabled: true
     });
+
+    const downloadComplete = waitForDownload();
     await exportButton.focus();
     await exportButton.click();
 
     if (debug) console.error("Waiting for CSV download...");
-    await waitForDownloadComplete(downloadPath);
-    await renameLatestFile(downloadPath, csvFileName);
+    const guid = await downloadComplete;
+    if (!guid) {
+      console.error(`Download '${buttonText}' never completed; keeping '${csvFileName}' unchanged.`);
+      return false;
+    }
+
+    const downloadedPath = join(downloadPath, guid);
+    if (!existsSync(downloadedPath)) {
+      console.error(`Download '${buttonText}' reported complete but '${guid}' is missing.`);
+      return false;
+    }
+    if (expectedContent && !readFileSync(downloadedPath, "utf8").includes(expectedContent)) {
+      console.error(`Download '${buttonText}' lacks '${expectedContent}'; discarding wrong file.`);
+      rmSync(downloadedPath, { force: true });
+      return false;
+    }
+
+    const newPath = join(downloadPath, csvFileName);
+    renameSync(downloadedPath, newPath);
+    if (debug) console.error("Renamed file:", newPath);
     return true;
   }
 
@@ -243,7 +284,13 @@ for (const ticker of tickers) {
   await sleep(2000);
   if (!await selectElement('#price-distribution-nav-item', false)) break;
   await sleep(2000);
-  if (!await downloadFile("Export distribution data", downloadPath, `${ticker}-distributions.csv`)) break;
+  const distributionsJsonSaved = saveDistributionsData();
+  const distributionsCsvSaved = await downloadFile(
+    "Export distribution data", downloadPath, `${ticker}-distributions.csv`, "$/SHARE");
+  if (!distributionsCsvSaved && !distributionsJsonSaved) {
+    console.error(`No distribution data captured for ticker '${ticker}'.`);
+    break;
+  }
 
   //await downloadFile("Export full holdings", downloadPath, `${ticker}-holdings.csv`);
 
@@ -436,7 +483,7 @@ for (const ticker of tickers) {
   await sleep(2000);
   if (!await clickButtonByText('Issuer type')) break;
   await sleep(2000);
-  if (!await downloadFile("Export issuer type data", downloadPath, `${ticker}-issuer-type.csv`)) break;
+  if (!await downloadFile("Export issuer type data", downloadPath, `${ticker}-issuer-type.csv`, "Weighted exposures")) break;
   if (debug) console.error("Completed processing for ticker:", ticker);
   await sleep(2000);
   await page.close();

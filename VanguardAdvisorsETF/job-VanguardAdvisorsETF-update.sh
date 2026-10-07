@@ -22,8 +22,9 @@ if [ -f "$factsFile" ]; then
     cat $factsFile |
         jq -r '.[] | [.ticker] | @csv' | tr -d '"' |
         while IFS= read -r ticker; do
-            distroFile="downloads/$ticker/$ticker-distributions.csv"
-            [ -f "$distroFile" ] || continue
+            distroJson="downloads/$ticker/$ticker-distributions.json"
+            distroCsv="downloads/$ticker/$ticker-distributions.csv"
+            [ -s "$distroJson" ] || [ -s "$distroCsv" ] || continue
             echo $ticker | ../bin/ETF-distro-update-common-job.sh --ticker "$ticker" -f "$@"
         done
 fi

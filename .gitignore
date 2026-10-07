@@ -284,3 +284,4 @@ SAFACTOR/*.totest
 SAFACTOR/*.orig
 
 */debug/
+VanguardAdvisorsETF/downloads/*/*.json
