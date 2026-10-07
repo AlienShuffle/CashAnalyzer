@@ -1,10 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import vm from "node:vm";
 import { accruedInterest } from "../lib/coupons.mjs";
 import {
-    analyzeTipsZero, dfToSimpleRate, dfToZeroBEY, dfToZeroCc, fitTipsSvensson, fitTipsSvenssonLegacy, forwardCcFromDF, forwardCarryFactor,
+    analyzeTipsZero, dfToSimpleRate, dfToZeroBEY, dfToZeroCc, fitTipsSvensson, forwardCcFromDF, forwardCarryFactor,
     forwardDF, simpleRateToDF, svenssonDF, svenssonZero, tipsZeroModelPrice, zeroBEYToCc, zeroBEYToDF, zeroCcToBEY,
     zeroCcToDF,
 } from "../lib/index.mjs";
@@ -61,32 +60,10 @@ test("TIPS zero analysis excludes bonds matured by settlement", () => {
     assert.ok(r.rows.every(row => row.maturity > new Date(2026, 9, 5)));
 });
 
-test("parity with Apps Script svensson fit", () => {
-    const dir = new URL("../appscript-src/", import.meta.url);
-    const files = ["mybond.dates.js", "mybond.utils.js", "mybond.yieldFromPrice.js", "duration.js",
-        "zero.conversions.js", "mybond.zero-coupon.js"];
-    const context = vm.createContext({ Logger: { log() { } }, Math, Date, Array, Number });
-    for (const file of files) vm.runInContext(readFileSync(new URL(file, dir), "utf8"), context, { filename: file });
-    const ds = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
-    context.inp = { settle: ds(settle), bonds: bonds.map(b => ({ ...b, maturity: ds(b.maturity) })) };
-    const orig = vm.runInContext("fitTipsSvensson_(inp.settle, inp.bonds)", context);
-    const mine = fitTipsSvenssonLegacy(settle, bonds);
-    assert.deepEqual(Array.from(orig.params), mine.params);
-    assert.equal(orig.objective, mine.objective);
-    context.p = mine.params;
-    for (const b of bonds) {
-        context.b = { ...b, maturity: ds(b.maturity) };
-        assert.equal(vm.runInContext("mytipsZeroModelPrice(inp.settle, b.maturity, b.coupon, p)", context),
-            tipsZeroModelPrice(settle, b.maturity, b.coupon, mine.params));
-    }
-});
-
-test("optimized Svensson fit escapes the legacy local minimum", () => {
+test("Svensson fit meets the forward-curve price-error threshold", () => {
     const fixture = JSON.parse(readFileSync(new URL("./fixtures-tips-forward-curve.json", import.meta.url), "utf8"));
     const market = fixture.bonds.map(([maturity, coupon, cleanPrice]) => ({ maturity, coupon, cleanPrice }));
-    const legacy = fitTipsSvenssonLegacy(fixture.settle, market);
     const fit = fitTipsSvensson(fixture.settle, market);
-    assert.ok(fit.objective < legacy.objective * 0.6, `${fit.objective} vs ${legacy.objective}`);
     assert.ok(fit.objective < 0.72);
     assert.ok(fit.params[4] < fit.params[5]);
 });

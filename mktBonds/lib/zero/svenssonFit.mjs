@@ -1,6 +1,5 @@
 // Deterministic Svensson fit: a tau grid with Levenberg-Marquardt on the betas, then a six-parameter
-// Levenberg-Marquardt polish of the best grid candidates. Replaces the compute-light Apps Script
-// search (still available as fitTipsSvenssonLegacy) that stalls in local minima.
+// Levenberg-Marquardt polish of the best grid candidates.
 
 const TAU1_RANGE = [0.1, 15];
 const TAU2_RANGE = [0.5, 60];
