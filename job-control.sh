@@ -1,6 +1,12 @@
 #!/usr/bin/bash
 cd $HOME/CashAnalyzer
 [ -d $HOME/CashAnalyzer/log ] || mkdir -p $HOME/CashAnalyzer/log
+
+echo "---- Environment ----"
+echo "Using node version: $(node -v)"
+echo "Using npm version: $(npm -v)"
+echo "--------------------"
+
 # set sleep parameter default to 60 minutes or use argument if provided as a parameter --sleep
 # (not passed on to the scripts)
 while [ -n "$1" ]; do
