@@ -30,6 +30,10 @@ while [ -n "$1" ]; do
         forceRun=true
         #echo "forceRun=$forceRun"
         ;;
+    "--forceOverwrite")
+        forceOverwrite=true
+        echo "forceOverwrite=$forceOverwrite"
+        ;;
     "--injectProcessedJson")
         injectProcessedJson="$2"
         #echo "injectProcessedJson=$injectProcessedJson"
@@ -82,6 +86,11 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+
+# this allows the script to overwrite existing files if the --forceOverwrite flag is set.
+if [ -n "$forceOverwrite" ]; then
+    protectOverwrite=false
+fi
 
 # if a sourceName is not specified, use the current directory name.
 if [ -z "$sourceName" ]; then
@@ -213,11 +222,17 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
         rm "$jsonHistoryTemp"
 
         # sort/filter/gapfill this combined history with data from all sources in cloudflare repository.
+        rm -f "$jsonHistoryFlareTemp"
         if [ ! -s "$jsonHistoryFlare" ]; then
-            cat "$jsonHistoryUnique" |
-                node ../lib/node-MM-sortBest.js |
-                jq . >"$jsonHistoryFlareTemp"
             echo "$sourceName $ticker cloudFlare history file has not been published."
+            if [ "$protectOverwrite" = "true" ]; then
+                echo "skipping merge as $sourceName $ticker cloudFlare history file does not exist."
+            else
+                cat "$jsonHistoryUnique" |
+                    node ../lib/node-MM-sortBest.js |
+                    jq . >"$jsonHistoryFlareTemp"
+            fi
+
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         else
@@ -228,7 +243,9 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
         #
         # process cloudFlare history files for this data source.
         #
-        if ../bin/jsonDifferent.sh "$jsonHistoryFlareTemp" "$jsonHistoryFlare"; then
+        if { [ "$protectOverwrite" != "true" ] || [ -s "$jsonHistoryFlare" ]; } &&
+            [ -s "$jsonHistoryFlareTemp" ] &&
+            ../bin/jsonDifferent.sh "$jsonHistoryFlareTemp" "$jsonHistoryFlare"; then
             cat "$jsonHistoryFlareTemp" >"$jsonHistoryFlare"
             (
                 echo "$csvHeader"
@@ -246,10 +263,13 @@ if [ -z "$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,
 fi
 if [ ! -s "$jsonRateFlare" ]; then
     echo "$sourceName cloudFlare rate file has not been published."
+    if [ "$protectOverwrite" = "true" ]; then
+        echo "skipping merge as $sourceName cloudFlare rate file does not exist."
+    fi
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
+if { [ "$protectOverwrite" != "true" ] || [ -s "$jsonRateFlare" ]; } && ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
     cat "$jsonRateNew" >"$jsonRateFlare"
     (
         echo "$csvHeader"
@@ -266,14 +286,18 @@ if [ -s "$jsonRateAllFlare" ]; then
         jq . >tmp-all-flare.json
 else
     echo "$jsonRateAllFlare cloudFlare file has not been published."
+    if [ "$protectOverwrite" = "true" ]; then
+        echo "skipping merge as $jsonRateAllFlare does not exist."
+    else
+        cat "$jsonRateNew" |
+            node ../lib/node-MM-sortBest.js latest |
+            jq . >tmp-all-flare.json
+    fi
     dir=$(dirname "$jsonRateAllFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
-    cat "$jsonRateNew" |
-        node ../lib/node-MM-sortBest.js latest |
-        jq . >tmp-all-flare.json
 fi
 # if the new merged file is different, then publish it.
-if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
+if { [ "$protectOverwrite" != "true" ] || [ -s "$jsonRateAllFlare" ]; } && ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
     cat tmp-all-flare.json >"$jsonRateAllFlare"
     (
         echo "$csvHeader"

@@ -29,3 +29,6 @@ MFPReportsDir="../EDGAR-e-MFP-parse/reports"
 [ -d "$MFPReportsDir" ] || mkdir -p "$MFPReportsDir"
 
 cloudFlareHome="$HOME/cloudflare/public"
+
+# flag to protect against overwriting existing files that look like they are zero length.
+protectOverwrite="true"
