@@ -104,6 +104,82 @@ jsonRateFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-rates.json"
 csvRateFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-rates.csv"
 jsonRateAllFlare="$cloudFlareHome/$accountClass/all-rates.json"
 csvRateAllFlare="$cloudFlareHome/$accountClass/all-rates.csv"
+csvHeader='asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
+csvElements='.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield,.source] | @csv'
+#
+# debug support - merge failures are logged to stdout (captured by job-control) and to $debugLog,
+# and the inputs/outputs/stderr of the failed step are preserved in $debugDir/<runId>-<step>[-<ticker>]/
+#
+debugDir="debug"
+debugLog="$debugDir/merge-debug.log"
+[ -d "$debugDir" ] || mkdir -p "$debugDir"
+find "$debugDir" -mindepth 1 -maxdepth 1 -type d -mtime +14 -exec rm -rf {} + 2>/dev/null
+runId="$(date +%Y%m%d-%H%M%S)-$$"
+errFile="$debugDir/stderr-$$.txt"
+trap 'rm -f "$errFile"' EXIT
+
+logDebug() {
+    local msg
+    msg="$(date '+%F %T') [$sourceName pid=$$] $*"
+    echo "$msg" >>"$debugLog"
+    echo "$msg"
+}
+fileInfo() {
+    if [ -e "$1" ]; then
+        echo "size=$(stat -c %s "$1") mtime=$(stat -c %y "$1" | cut -d. -f1) type=$(jq -e -r 'type + "[" + (length|tostring) + "]"' "$1" 2>/dev/null || echo INVALID-JSON)"
+    else
+        echo "missing"
+    fi
+}
+isJsonArray() {
+    [ -s "$1" ] && jq -e 'type == "array" and length > 0' "$1" >/dev/null 2>&1
+}
+# usage: stepFailed <step> <ticker> <pipeStatuses> <outputFile> [inputFiles...]
+stepFailed() {
+    local step="$1" ticker="$2" statuses="$3" output="$4" f dir
+    shift 4
+    dir="$debugDir/$runId-$step${ticker:+-${ticker// /-}}"
+    mkdir -p "$dir"
+    logDebug "STEP FAILED step=$step ticker=${ticker:-n/a} pipeStatus=[$statuses]"
+    for f in "$@" "$output"; do
+        logDebug "    $f: $(fileInfo "$f")"
+        [ -e "$f" ] && cp -p "$f" "$dir/"
+    done
+    if [ -s "$errFile" ]; then
+        sed 's/^/    stderr: /' "$errFile" | tee -a "$debugLog"
+        cp "$errFile" "$dir/stderr.txt"
+    fi
+    logDebug "    debug copies saved in $(pwd)/$dir"
+}
+# true if every element of the given PIPESTATUS list is zero.
+pipeOk() {
+    local s
+    for s in "$@"; do [ "$s" -eq 0 ] || return 1; done
+}
+# atomically replace a published json file (and its csv), refusing to publish empty or invalid json.
+publishJson() {
+    local src="$1" dest="$2" csvDest="$3"
+    if ! isJsonArray "$src"; then
+        logDebug "REFUSED to publish $dest from $src: $(fileInfo "$src")"
+        stepFailed "publish" "$(basename "$dest" .json)" "n/a" "$src" "$dest"
+        return 1
+    fi
+    cp "$src" "$dest.tmp.$$" && mv -f "$dest.tmp.$$" "$dest" || {
+        logDebug "failed to write $dest"
+        rm -f "$dest.tmp.$$"
+        return 1
+    }
+    if [ -n "$csvDest" ]; then
+        {
+            echo "$csvHeader"
+            jq -r "$csvElements" "$dest"
+        } >"$csvDest.tmp.$$" && mv -f "$csvDest.tmp.$$" "$csvDest" || {
+            logDebug "failed to write $csvDest"
+            rm -f "$csvDest.tmp.$$"
+            return 1
+        }
+    fi
+}
 #
 # preamble - test to see how long since this last run occured, skip out if this run is too soon.
 #  - note, if -f is passed to this script, I will run the script regardless, but still report the aging status.
@@ -137,13 +213,15 @@ else
         fi
         tmpCollect="tmpCollect.json"
         #echo "running $collectionScript"
+        : >"$errFile"
         if [ -n "$collectionArg" ]; then
-            $collectionScript "$collectionArg" >"$tmpCollect"
+            $collectionScript "$collectionArg" >"$tmpCollect" 2>>"$errFile"
         else
-            $collectionScript >"$tmpCollect"
+            $collectionScript >"$tmpCollect" 2>>"$errFile"
         fi
         statuses=("${PIPESTATUS[@]}")
         if [ "${statuses[0]}" -ne 0 ]; then
+            stepFailed "collect" "" "${statuses[*]}" "$tmpCollect"
             echo "$sourceName rate retrieval failed, exiting."
             exit 1
         fi
@@ -152,18 +230,23 @@ else
             exit 1
         fi
         #echo "running node $processScript"
-        cat "$tmpCollect" | node $processScript "$nodeArg" | jq . >"$jsonRateNew"
+        : >"$errFile"
+        cat "$tmpCollect" | node $processScript "$nodeArg" 2>>"$errFile" | jq . >"$jsonRateNew" 2>>"$errFile"
         statuses=("${PIPESTATUS[@]}")
-        rm -f "$tmpCollect"
-        if [ "${statuses[1]}" -ne 0 ]; then
+        if ! pipeOk "${statuses[@]}"; then
+            stepFailed "process" "" "${statuses[*]}" "$jsonRateNew" "$tmpCollect"
+            rm -f "$tmpCollect"
             echo "$sourceName rate retrieval failed, exiting."
             exit 1
         fi
+        rm -f "$tmpCollect"
     else
         #echo "node $processScript $nodeArg | jq . >$jsonRateNew"; exit 1
-        node $processScript "$nodeArg" | jq . >"$jsonRateNew"
+        : >"$errFile"
+        node $processScript "$nodeArg" 2>>"$errFile" | jq . >"$jsonRateNew" 2>>"$errFile"
         statuses=("${PIPESTATUS[@]}")
-        if [ "${statuses[0]}" -ne 0 ]; then
+        if ! pipeOk "${statuses[@]}"; then
+            stepFailed "process" "" "${statuses[*]}" "$jsonRateNew"
             echo "$sourceName rate retrieval failed, exiting."
             exit 1
         fi
@@ -179,18 +262,38 @@ else
     fi
 fi
 # sort/normalize the file now.
-jq 'sort_by([.accountType,.asOfDate])' "$jsonRateNew" >tmp.sort.json
+: >"$errFile"
+jq 'sort_by([.accountType,.asOfDate])' "$jsonRateNew" >tmp.sort.json 2>>"$errFile"
+sortStatus=$?
+if [ "$sortStatus" -ne 0 ] || ! isJsonArray tmp.sort.json; then
+    stepFailed "sort-new" "" "$sortStatus" tmp.sort.json "$jsonRateNew"
+    rm -f tmp.sort.json
+    echo "$sourceName failed to sort $jsonRateNew, exiting."
+    exit 1
+fi
 cat tmp.sort.json >"$jsonRateNew"
 #cat $jsonRateNew
 rm -f tmp.sort.json
+#
+# Everything from here on reads and writes files shared by all $accountClass sources in cloudflare.
+# Serialize with any other job doing the same so nobody reads a file while it is being rewritten.
+#
+lockFile="${TMPDIR:-/tmp}/CashAnalyzer-$accountClass-publish.lock"
+exec 9>"$lockFile"
+if ! flock -n 9; then
+    logDebug "LOCK CONTENTION: another $accountClass job holds $lockFile ($(fuser "$lockFile" 2>/dev/null)), waiting..."
+    if ! flock -w 1800 9; then
+        logDebug "could not acquire $lockFile after 1800s, exiting."
+        exit 1
+    fi
+    logDebug "acquired $lockFile after waiting."
+fi
 #
 # Process the daily history results in rate and merge with history.
 #
 # get list of rates that were updated.
 # Then loop through this list of names, extract them from the rate sheet and merge it into the history sheet.
 #
-csvHeader='asOfDate,ticker,oneDayYield,sevenDayYield,thirtyDayYield,source'
-csvElements='.[] | [.asOfDate, .ticker, .oneDayYield, .sevenDayYield, .thirtyDayYield,.source] | @csv'
 grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e 's/"$//' | sort -u |
     while IFS= read -r ticker; do
         dirname="$(echo "$ticker" | sed -e 's/ /-/g')"
@@ -209,36 +312,70 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
         csvHistoryFlare="$cloudFlareHome/$accountClass/$dirname/$dirname-rate-history.csv"
 
         # I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
-        cat "$jsonRateNew" | jq "[.[] | select(.ticker==\"$ticker\")]" >"$jsonRateTicker"
+        : >"$errFile"
+        jq "[.[] | select(.ticker==\"$ticker\")]" "$jsonRateNew" >"$jsonRateTicker" 2>>"$errFile"
+        stepStatus=$?
+        if [ "$stepStatus" -ne 0 ] || ! isJsonArray "$jsonRateTicker"; then
+            stepFailed "extract-ticker" "$ticker" "$stepStatus" "$jsonRateTicker" "$jsonRateNew"
+            continue
+        fi
 
         # sort/filter/gap fill the combined history and current date's rates using only this tool's data.
+        : >"$errFile"
         if [ -f "$jsonHistoryUnique" ]; then
             #echo "$sourceName $ticker unique file exists, sorting it in."
-            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateTicker" "$jsonHistoryUnique" >"$jsonHistoryTemp"
+            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateTicker" "$jsonHistoryUnique" >"$jsonHistoryTemp" 2>>"$errFile"
         else
             cat "$jsonRateTicker" >"$jsonHistoryTemp"
         fi
-        cat "$jsonHistoryTemp" | node ../lib/node-MM-sortBest.js | jq . >"$jsonHistoryUnique"
+        stepStatus=$?
+        if [ "$stepStatus" -ne 0 ] || ! isJsonArray "$jsonHistoryTemp"; then
+            stepFailed "unique-combine" "$ticker" "$stepStatus" "$jsonHistoryTemp" "$jsonRateTicker" "$jsonHistoryUnique"
+            rm -f "$jsonHistoryTemp"
+            continue
+        fi
+        node ../lib/node-MM-sortBest.js <"$jsonHistoryTemp" 2>>"$errFile" | jq . >"$jsonHistoryUnique.new" 2>>"$errFile"
+        statuses=("${PIPESTATUS[@]}")
+        if ! pipeOk "${statuses[@]}" || ! isJsonArray "$jsonHistoryUnique.new"; then
+            stepFailed "unique-sortBest" "$ticker" "${statuses[*]}" "$jsonHistoryUnique.new" "$jsonHistoryTemp" "$jsonHistoryUnique"
+            rm -f "$jsonHistoryTemp" "$jsonHistoryUnique.new"
+            continue
+        fi
+        mv -f "$jsonHistoryUnique.new" "$jsonHistoryUnique"
         rm "$jsonHistoryTemp"
 
         # sort/filter/gapfill this combined history with data from all sources in cloudflare repository.
         rm -f "$jsonHistoryFlareTemp"
+        : >"$errFile"
         if [ ! -s "$jsonHistoryFlare" ]; then
             echo "$sourceName $ticker cloudFlare history file has not been published."
             if [ "$protectOverwrite" = "true" ]; then
                 echo "skipping merge as $sourceName $ticker cloudFlare history file does not exist."
+                [ -e "$jsonHistoryFlare" ] && logDebug "$jsonHistoryFlare exists but is EMPTY: $(fileInfo "$jsonHistoryFlare")"
             else
-                cat "$jsonHistoryUnique" |
-                    node ../lib/node-MM-sortBest.js |
-                    jq . >"$jsonHistoryFlareTemp"
+                node ../lib/node-MM-sortBest.js <"$jsonHistoryUnique" 2>>"$errFile" |
+                    jq . >"$jsonHistoryFlareTemp" 2>>"$errFile"
+                statuses=("${PIPESTATUS[@]}")
+                if ! pipeOk "${statuses[@]}" || ! isJsonArray "$jsonHistoryFlareTemp"; then
+                    stepFailed "flare-new" "$ticker" "${statuses[*]}" "$jsonHistoryFlareTemp" "$jsonHistoryUnique"
+                    rm -f "$jsonHistoryFlareTemp"
+                fi
             fi
 
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         else
-            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonHistoryUnique" "$jsonHistoryFlare" |
-                node ../lib/node-MM-sortBest.js |
-                jq . >"$jsonHistoryFlareTemp"
+            # snapshot the shared file first so the debug copy is exactly what was merged.
+            cp -p "$jsonHistoryFlare" "$jsonHistoryFlareTemp.in"
+            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonHistoryUnique" "$jsonHistoryFlareTemp.in" 2>>"$errFile" |
+                node ../lib/node-MM-sortBest.js 2>>"$errFile" |
+                jq . >"$jsonHistoryFlareTemp" 2>>"$errFile"
+            statuses=("${PIPESTATUS[@]}")
+            if ! pipeOk "${statuses[@]}" || ! isJsonArray "$jsonHistoryFlareTemp"; then
+                stepFailed "flare-merge" "$ticker" "${statuses[*]}" "$jsonHistoryFlareTemp" "$jsonHistoryUnique" "$jsonHistoryFlareTemp.in"
+                rm -f "$jsonHistoryFlareTemp"
+            fi
+            rm -f "$jsonHistoryFlareTemp.in"
         fi
         #
         # process cloudFlare history files for this data source.
@@ -246,12 +383,9 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
         if { [ "$protectOverwrite" != "true" ] || [ -s "$jsonHistoryFlare" ]; } &&
             [ -s "$jsonHistoryFlareTemp" ] &&
             ../bin/jsonDifferent.sh "$jsonHistoryFlareTemp" "$jsonHistoryFlare"; then
-            cat "$jsonHistoryFlareTemp" >"$jsonHistoryFlare"
-            (
-                echo "$csvHeader"
-                jq -r "$csvElements" "$jsonHistoryFlare"
-            ) >"$csvHistoryFlare"
-            [ "$quiet" = "true" ] || echo "published updated $sourceName $ticker cloudFlare yield files."
+            if publishJson "$jsonHistoryFlareTemp" "$jsonHistoryFlare" "$csvHistoryFlare"; then
+                [ "$quiet" = "true" ] || echo "published updated $sourceName $ticker cloudFlare yield files."
+            fi
         fi
     done
 #
@@ -270,39 +404,49 @@ if [ ! -s "$jsonRateFlare" ]; then
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
 if { [ "$protectOverwrite" != "true" ] || [ -s "$jsonRateFlare" ]; } && ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
-    cat "$jsonRateNew" >"$jsonRateFlare"
-    (
-        echo "$csvHeader"
-        jq -r "$csvElements" "$jsonRateFlare"
-    ) >"$csvRateFlare"
-    [ "$quiet" = "true" ] || echo "published updated cloudflare $sourceName-rates files."
+    if publishJson "$jsonRateNew" "$jsonRateFlare" "$csvRateFlare"; then
+        [ "$quiet" = "true" ] || echo "published updated cloudflare $sourceName-rates files."
+    fi
 fi
 #
 # Merge current tool's current rates into the All tools rate file (keeping only best, most recent reported values)
 #
+rm -f tmp-all-flare.json
+: >"$errFile"
 if [ -s "$jsonRateAllFlare" ]; then
-    jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateNew" "$jsonRateAllFlare" |
-        node ../lib/node-MM-sortBest.js latest |
-        jq . >tmp-all-flare.json
+    cp -p "$jsonRateAllFlare" tmp-all-flare-in.json
+    jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateNew" tmp-all-flare-in.json 2>>"$errFile" |
+        node ../lib/node-MM-sortBest.js latest 2>>"$errFile" |
+        jq . >tmp-all-flare.json 2>>"$errFile"
+    statuses=("${PIPESTATUS[@]}")
+    if ! pipeOk "${statuses[@]}" || ! isJsonArray tmp-all-flare.json; then
+        stepFailed "all-rates-merge" "" "${statuses[*]}" tmp-all-flare.json "$jsonRateNew" tmp-all-flare-in.json
+        rm -f tmp-all-flare.json
+    fi
+    rm -f tmp-all-flare-in.json
 else
     echo "$jsonRateAllFlare cloudFlare file has not been published."
+    [ -e "$jsonRateAllFlare" ] && logDebug "$jsonRateAllFlare exists but is EMPTY: $(fileInfo "$jsonRateAllFlare")"
     if [ "$protectOverwrite" = "true" ]; then
         echo "skipping merge as $jsonRateAllFlare does not exist."
     else
-        cat "$jsonRateNew" |
-            node ../lib/node-MM-sortBest.js latest |
-            jq . >tmp-all-flare.json
+        node ../lib/node-MM-sortBest.js latest <"$jsonRateNew" 2>>"$errFile" |
+            jq . >tmp-all-flare.json 2>>"$errFile"
+        statuses=("${PIPESTATUS[@]}")
+        if ! pipeOk "${statuses[@]}" || ! isJsonArray tmp-all-flare.json; then
+            stepFailed "all-rates-new" "" "${statuses[*]}" tmp-all-flare.json "$jsonRateNew"
+            rm -f tmp-all-flare.json
+        fi
     fi
     dir=$(dirname "$jsonRateAllFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
 # if the new merged file is different, then publish it.
-if { [ "$protectOverwrite" != "true" ] || [ -s "$jsonRateAllFlare" ]; } && ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
-    cat tmp-all-flare.json >"$jsonRateAllFlare"
-    (
-        echo "$csvHeader"
-        jq -r "$csvElements" "$jsonRateAllFlare"
-    ) >"$csvRateAllFlare"
-    [ "$quiet" = "true" ] || echo "published updated cloudflare all-rates files."
+if { [ "$protectOverwrite" != "true" ] || [ -s "$jsonRateAllFlare" ]; } &&
+    [ -s tmp-all-flare.json ] &&
+    ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonRateAllFlare"; then
+    if publishJson tmp-all-flare.json "$jsonRateAllFlare" "$csvRateAllFlare"; then
+        [ "$quiet" = "true" ] || echo "published updated cloudflare all-rates files."
+    fi
 fi
 rm -f tmp-all-flare.json

@@ -34,7 +34,7 @@ while true; do
       echo
     done
     echo "sleep $SLEEP_TIME @ $(date)"
-  ) | tee -a log/cash-analyzer-jobs.log
+  ) 2>&1 | tee -a log/cash-analyzer-jobs.log
   sleep $SLEEP_TIME
   echo '#####################################################################################'
 done

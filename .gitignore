@@ -283,3 +283,4 @@ SAFACTOR/cpi-history.csv
 SAFACTOR/*.totest
 SAFACTOR/*.orig
 
+*/debug/
