@@ -17,6 +17,7 @@ test("parseOptions defaults and validation", () => {
     assert.equal(parseOptions("").repoRate, "auto");
     assert.equal(parseOptions("--repoRate=0.05").repoRate, 0.05);
     assert.equal(parseOptions("--repoRate=0.05 --priceSide=bid").priceSide, "bid");
+    assert.equal(parseOptions("--asOfDate=2026-03-11 --priceSide=bid").asOfDate, "2026-03-11");
     assert.throws(() => parseOptions("--priceSide=mid"), /ask or bid/);
     assert.throws(() => parseOptions("--bogus=1"), /Unknown/);
 });
@@ -51,6 +52,14 @@ test("buildTipsRows joins quotes, picks the price side and skips unquoted bonds"
     ].map(b => ({ ...b, securitytype: "Bill", asOfDate: quotes[0].asOfDate }));
     const [auto] = buildTipsRows(meta, [...quotes, ...bills], table, { repoRate: "auto", priceSide: "bid" });
     assert.ok(auto.repo_rate > 0.03 && auto.repo_rate < 0.06);
+    const historical = createRefCpiTable([
+        ...rows.map(r => ({ ...r, maxRefCpi: "2026-11-01" })),
+        { date: "2026-12-01", refCpiNSA: 400, saFactor: 1.1, maxRefCpi: "2027-01-01" },
+    ], { asOfDate: "2026-10-02" });
+    const [backtest] = buildTipsRows(meta, [...quotes, ...bills], historical, { repoRate: "auto", priceSide: "bid" });
+    assert.equal(backtest.fwd_date, "2026-11-01");
+    assert.equal(backtest.fwd_clean_price, auto.fwd_clean_price);
+    assert.equal(backtest.repo_rate, auto.repo_rate);
 });
 
 test("tbillRepoRate brackets the target and derives a simple rate; auto repo is used in rows", () => {

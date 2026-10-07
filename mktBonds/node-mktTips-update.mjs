@@ -1,6 +1,6 @@
 // Joins TIPS reference data (TIPSmeta.csv format on stdin) with the latest published mktBonds
 // quotes and adds settlement/forward REFCPI, seasonal ratios and the forward clean price.
-// Options (single argument, space separated): --repoRate=auto|<decimal> --priceSide=ask|bid --mktBonds=<path>
+// Options: --repoRate=auto|<decimal> --priceSide=ask|bid --mktBonds=<path> --asOfDate=YYYY-MM-DD
 // repoRate=auto derives the financing rate from the T-bills bracketing the forward date.
 import fs from "node:fs";
 import os from "node:os";
@@ -18,7 +18,7 @@ export const REPORT_SOURCE = "Market";
 const defaultMktBonds = path.join(os.homedir(), "cloudflare/public/Treasuries/mktBonds/mktBonds-rate.json");
 
 export function parseOptions(text = "") {
-    const options = { repoRate: "auto", priceSide: "ask", mktBonds: defaultMktBonds };
+    const options = { repoRate: "auto", priceSide: "ask", mktBonds: defaultMktBonds, asOfDate: undefined };
     for (const token of text.split(/\s+/).filter(Boolean)) {
         const [key, value] = token.replace(/^--/, "").split("=");
         if (!(key in options) || value === undefined) throw new Error(`Unknown option: ${token}`);
@@ -139,7 +139,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     const options = parseOptions(process.argv.slice(2).join(" "));
     const meta = parseMeta(fs.readFileSync(0, "utf-8"));
     const quotes = JSON.parse(fs.readFileSync(options.mktBonds, "utf-8"));
-    const table = await loadRefCpiTable();
+    const table = await loadRefCpiTable({ asOfDate: options.asOfDate });
     let holidays = [];
     try {
         holidays = await loadSifmaHolidays();

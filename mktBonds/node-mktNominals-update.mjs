@@ -66,7 +66,7 @@ function toIso(date) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const options = parseOptions(process.argv.slice(2).join(" "));
     const quotes = JSON.parse(fs.readFileSync(options.mktBonds, "utf-8"));
-    const table = await loadRefCpiTable();
+    const table = await loadRefCpiTable({ asOfDate: options.asOfDate });
     let holidays = [];
     try {
         holidays = await loadSifmaHolidays();

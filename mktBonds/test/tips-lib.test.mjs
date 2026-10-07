@@ -11,6 +11,8 @@ import {
     getSaoCurve,
     normalizeDate,
     parseRefCpiCsv,
+    loadRefCpiTable,
+    REFCPI_URL,
     simpleCanty,
     simpleCantyPrice,
 } from "../lib/index.mjs";
@@ -37,6 +39,43 @@ test("refCpi table: exact, same-month/day projection and misses", () => {
     assert.equal(t.getRefCpi("2025-03-15"), 320);
     assert.equal(t.getRefCpi("2030-03-15"), null);
     assert.equal(t.maxDate.getTime(), normalizeDate("2026-03-02").getTime());
+});
+
+const PROJECT_CSV = `Date,REFCPINSA,REFCPISA,SAFactor,MMDD,maxREFCPI
+2026-05-01,335,334,1.003,M0501,2026-06-01
+2026-04-01,334,333,1.002,M0401,2026-05-01
+2026-03-12,332,331,1.001,M0312,2026-05-01
+2026-03-11,331,330,1.004,M0311,2026-04-01
+2026-03-01,330,329,1.005,M0301,2026-04-01
+2025-05-01,320,319,1.006,M0501,2025-06-01`;
+
+test("project REFCPI historical horizon changes on the mapped release day", () => {
+    const rows = parseRefCpiCsv(PROJECT_CSV);
+    assert.equal(rows[0].maxRefCpi.getTime(), normalizeDate("2026-06-01").getTime());
+    const before = createRefCpiTable(rows, { asOfDate: "2026-03-11" });
+    assert.equal(before.maxDate.getTime(), normalizeDate("2026-04-01").getTime());
+    assert.equal(before.getRefCpi("2026-05-01"), null);
+    assert.equal(before.getFactor("2030-05-01"), 1.006);
+    const on = createRefCpiTable(rows, { asOfDate: "2026-03-12" });
+    assert.equal(on.maxDate.getTime(), normalizeDate("2026-05-01").getTime());
+    assert.equal(on.getRefCpi("2026-05-01"), 335);
+    const parsed = parseRefCpiCsv(PROJECT_CSV, { asOfDate: "2026-03-11T1405", oldestDate: "2026-04-01" });
+    assert.deepEqual(parsed.map(r => r.date.getTime()), [normalizeDate("2026-04-01").getTime()]);
+    assert.equal(createRefCpiTable(rows).maxDate.getTime(), on.maxDate.getTime());
+    assert.throws(() => parseRefCpiCsv(PROJECT_CSV, { asOfDate: "2020-01-01" }), /no historical horizon/);
+    assert.throws(() => parseRefCpiCsv(CSV, { asOfDate: "2026-03-01" }), /maxREFCPI column/);
+    for (const asOfDate of ["garbage", "", "2026-02-30"]) {
+        assert.throws(() => parseRefCpiCsv(PROJECT_CSV, { asOfDate }), /Invalid asOfDate/);
+    }
+});
+
+test("REFCPI loader uses the project source and propagates the historical cutoff", async () => {
+    assert.equal(REFCPI_URL, "https://cashoptimizer.pages.dev/Treasuries/REFCPI.csv");
+    const url = `data:text/csv,${encodeURIComponent(PROJECT_CSV)}`;
+    const historical = await loadRefCpiTable({ url, asOfDate: "2026-03-11" });
+    assert.equal(historical.maxDate.getTime(), normalizeDate("2026-04-01").getTime());
+    const full = await loadRefCpiTable({ url });
+    assert.equal(full.getRefCpi("2026-05-01"), 335);
 });
 
 test("credibility shrinks factor toward 1 with horizon", () => {

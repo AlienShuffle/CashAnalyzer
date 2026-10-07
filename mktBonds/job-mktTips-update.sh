@@ -1,5 +1,15 @@
 set -o pipefail
 
+asOfArg=""
+jobArgs=()
+for arg in "$@"; do
+    case "$arg" in
+        --asOfDate=*) asOfArg=" $arg" ;;
+        *) jobArgs+=("$arg") ;;
+    esac
+done
+set -- "${jobArgs[@]}"
+
 source ../meta.common.sh
 curveCloudflareDir="$cloudFlareHome/Treasuries/mktBonds"
 curveDailyDir="$curveCloudflareDir/daily"
@@ -82,7 +92,7 @@ runTipsSide() {
         --collectionScript ./collect-mktTips.sh \
         --processScript ./node-mktTips-update.mjs \
         --csvFields "$csvFields" \
-        -nodeArg "--priceSide=$side" \
+        -nodeArg "--priceSide=$side$asOfArg" \
         --nightDelayHour 8 \
         --pubDelay 3 \
         "$@" || return $?

@@ -22,6 +22,27 @@ not the exact inverse of `yieldFromPrice` for zero-coupon securities under six m
 
 ## Migration status
 
+### Historical REFCPI availability
+
+The default REFCPI source is this project's published
+`https://cashoptimizer.pages.dev/Treasuries/REFCPI.csv`. The loader preserves the
+`maxREFCPI` calendar-date mapping as `maxRefCpi` on parsed rows.
+
+`parseRefCpiCsv`, `createRefCpiTable`, and `loadRefCpiTable` accept optional
+`asOfDate`. They read the latest mapping on or before that calendar day, retain
+only reference dates through its `maxREFCPI` horizon, and compute `maxDate` and
+all lookups from the retained rows. Future reference dates already known on the
+as-of day remain available. Without `asOfDate`, the entire table is used.
+Historical analysis requires the mapping column and a date within its coverage.
+
+Both TIPS and nominal table processors and their publication jobs accept
+`--asOfDate=YYYY-MM-DD`. Their forward prices, repo rates, seasonal projections,
+and downstream settlement/forward curves inherit the capped REFCPI horizon.
+Supply historical quote inputs for historical price analysis: this option does
+not retrieve past quotes or undo later CPI/seasonal-data revisions. Publication
+jobs still write the normal output names, so run backtests with isolated output
+configuration rather than overwriting current analyst datasets.
+
 `job-mktBonds-update.sh` retains the combined `mktBonds-rate` quote feed for downstream
 TIPS and curve calculations and additionally publishes `mktNominal-ask-rate` and
 `mktNominal-bid-rate` JSON/CSV tables with dated history. These nominal-only tables select

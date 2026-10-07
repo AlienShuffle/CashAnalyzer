@@ -4,6 +4,7 @@ import { buildNominalRows } from "../node-mktNominals-update.mjs";
 import { forwardNominalCleanPrice, tbillRepoRate } from "../lib/forwards/index.mjs";
 import { roundYield } from "../lib/rounding.mjs";
 import { yieldFromPrice } from "../lib/yield.mjs";
+import { createRefCpiTable } from "../lib/tips/refCpi.mjs";
 
 const quotes = [
     { cusip: "BOND", securitytype: "Bond", interest_rate: 0.04, maturity_date: "2030-07-15", bid: 98, ask: 99 },
@@ -57,4 +58,16 @@ test("nominal tables validate side, dates and financing inputs", () => {
     assert.throws(() => buildNominalRows(quotes, "2027-01-01"), /bracket/);
     const [row] = buildNominalRows(quotes, "2026-11-01", { repoRate: 0.04 });
     assert.equal(row.repo_rate, 0.04);
+});
+
+test("nominal forwards use the historical REFCPI horizon", () => {
+    const table = createRefCpiTable([
+        { date: "2026-10-02", refCpiNSA: 330, saFactor: 1, maxRefCpi: "2026-11-01" },
+        { date: "2026-11-01", refCpiNSA: 331, saFactor: 1, maxRefCpi: "2026-12-01" },
+        { date: "2026-12-01", refCpiNSA: 332, saFactor: 1, maxRefCpi: "2027-01-01" },
+    ], { asOfDate: "2026-10-02" });
+    for (const priceSide of ["ask", "bid"]) {
+        const rows = buildNominalRows(quotes, table.maxDate, { priceSide });
+        assert.deepEqual(rows, buildNominalRows(quotes, "2026-11-01", { priceSide }));
+    }
 });
