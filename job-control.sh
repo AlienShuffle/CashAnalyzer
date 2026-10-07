@@ -2,10 +2,12 @@
 cd $HOME/CashAnalyzer
 [ -d $HOME/CashAnalyzer/log ] || mkdir -p $HOME/CashAnalyzer/log
 
-echo "---- Environment ----"
-echo "Using node version: $(node -v)"
-echo "Using npm version: $(npm -v)"
-echo "--------------------"
+(
+  echo "---- Environment ----"
+  echo "Using node version: $(node -v)"
+  echo "Using npm version: $(npm -v)"
+  echo "--------------------"
+) | tee -a log/cash-analyzer-jobs.log
 
 # set sleep parameter default to 60 minutes or use argument if provided as a parameter --sleep
 # (not passed on to the scripts)

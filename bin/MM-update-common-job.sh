@@ -134,6 +134,9 @@ fileInfo() {
 isJsonArray() {
     [ -s "$1" ] && jq -e 'type == "array" and length > 0' "$1" >/dev/null 2>&1
 }
+isEmptyJsonArray() {
+    [ -s "$1" ] && jq -e 'type == "array" and length == 0' "$1" >/dev/null 2>&1
+}
 # usage: stepFailed <step> <ticker> <pipeStatuses> <outputFile> [inputFiles...]
 stepFailed() {
     local step="$1" ticker="$2" statuses="$3" output="$4" f dir
@@ -187,6 +190,10 @@ publishJson() {
 if [ -n "$injectProcessedJson" ] && [ -s "$injectProcessedJson" ]; then
     echo "Using $injectProcessedJson instead of querying online source."
     jsonRateNew="$injectProcessedJson"
+    if isEmptyJsonArray "$jsonRateNew"; then
+        logDebug "NO REPORTABLE YIELDS in $jsonRateNew; skipping publish."
+        exit 0
+    fi
 else
     source ../bin/skipWeekends.sh
     pubDelayFile="$jsonRateFlare"
