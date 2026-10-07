@@ -4,9 +4,9 @@
 import { daysBetween, daysInYearFrom, normalizeDate } from "../dates.mjs";
 import { roundYield } from "../rounding.mjs";
 
-const SAO_NOISE_YRS = 0.1; // maturities under this are excluded from the fit
-const SAO_BLEND_START_YRS = 6.0; // full snap to the curve below this
-const SAO_BLEND_END_YRS = 10.0; // raw SA yield above this; linear fade between
+const SAO_NOISE_YRS = 0.5; // maturities under this are excluded from the fit
+const SAO_BLEND_START_YRS = 5.0; // full snap to the curve below this
+const SAO_BLEND_END_YRS = 6.0; // raw SA yield above this; linear fade between
 
 // NSS basis at maturity tau for decay params l1, l2: [level, slope, curv1, curv2].
 function nssBasis(tau, l1, l2) {
