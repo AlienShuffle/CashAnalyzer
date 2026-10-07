@@ -55,6 +55,11 @@ and `mktTips-curve-sa-decay-bid`: settlement clean prices multiplied by
 `settle_mature_sa_ratio_decay`, fitted at the settlement date. Rows without a finite
 decay ratio are excluded from this adjusted curve.
 
+Each TIPS ask/bid table appends `settle_sao` to its JSON rows and at the right edge
+of its CSV. This runs the unchanged `getSaoCurve` over the table's
+`settle_sa_decay_ytm` yields using settlement dates and maturities. It preserves
+SAO's fitted/raw yield blending, including raw yields beyond six years.
+
 ## Backlog
 
 - **TIPS interest paid to date** (new function; `tips.intPmts.js`/`tipsIntPayments.js` stay unported): given a TIPS, its purchase date, settlement date and the usual details (coupon, maturity, dated REFCPI, REFCPI lookup), return the total nominal coupon interest paid from purchase to settlement, net of accrued interest at purchase.

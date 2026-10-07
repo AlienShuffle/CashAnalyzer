@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { nextWeekday, createRefCpiTable, tbillRepoRate } from "../lib/index.mjs";
+import { nextWeekday, createRefCpiTable, tbillRepoRate, getSaoCurve } from "../lib/index.mjs";
 import { nominalZeroYtm } from "../lib/zero/index.mjs";
 import { yieldFromPrice } from "../lib/yield.mjs";
 import { buildTipsCurveAnalysis } from "../node-calc-mktTips-curve.mjs";
@@ -61,6 +61,34 @@ test("tbillRepoRate brackets the target and derives a simple rate; auto repo is 
     assert.equal(r.after.maturity.getDate(), 3);
     assert.ok(r.rate > 0.03 && r.rate < 0.06);
     assert.throws(() => tbillRepoRate("2026-10-05", "2026-12-01", bills), /bracket/);
+});
+
+test("settle_sao fits each quote side's settlement SA-decay yields as one curve", () => {
+    const meta = ["2027-07-15", "2028-07-15", "2029-07-15", "2030-07-15", "2031-07-15", "2034-07-15"]
+        .map((maturity_date, i) => ({
+            cusip: `SAO${i}`, maturity_date, interest_rate: 0.02, security_term: 10,
+            series: "X", dated_date: "2024-07-15", ref_cpi_on_dated_date: 300,
+        }));
+    const quotes = meta.map((m, i) => ({
+        cusip: m.cusip, securitytype: "TIPS", asOfDate: "2026-10-02T1405",
+        bid: 98 + i * 0.15, ask: 98.2 + i * 0.2,
+    }));
+    const table = {
+        maxDate: new Date(2026, 10, 1),
+        getRefCpi: () => 330,
+        getFactor: () => 1,
+    };
+    for (const priceSide of ["ask", "bid"]) {
+        const rows = buildTipsRows(meta, quotes, table, { repoRate: 0.04, priceSide });
+        const expected = getSaoCurve(
+            rows.map(r => r.settle_date), rows.map(r => r.maturity_date), rows.map(r => r.settle_sa_decay_ytm),
+        );
+        assert.deepEqual(rows.map(r => r.settle_sao), expected);
+        assert.ok(rows.every(r => Object.keys(r).at(-1) === "settle_sao"));
+        assert.ok(rows.some(r => r.settle_sao !== r.settle_sa_decay_ytm));
+        assert.equal(rows.at(-1).settle_sao, rows.at(-1).settle_sa_decay_ytm);
+    }
+    assert.deepEqual(buildTipsRows([], quotes, table, { repoRate: 0.04, priceSide: "ask" }), []);
 });
 
 test("TIPS curve analysis is generated as a separate dated Svensson result", () => {

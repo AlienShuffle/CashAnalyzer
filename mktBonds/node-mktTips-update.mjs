@@ -10,7 +10,7 @@ import { parseCsvToMatrix } from "../lib/parseCsv.mjs";
 import { getSettlementDate, normalizeDate } from "./lib/dates.mjs";
 import { loadSifmaHolidays } from "./lib/holidays.mjs";
 import { roundSeasonal, roundYield } from "./lib/rounding.mjs";
-import { applyCredibilityFactor, createRefCpiTable, loadRefCpiTable } from "./lib/tips/index.mjs";
+import { applyCredibilityFactor, createRefCpiTable, getSaoCurve, loadRefCpiTable } from "./lib/tips/index.mjs";
 import { forwardTipsCleanPrice, tbillRepoRate } from "./lib/forwards/index.mjs";
 import { yieldFromPrice } from "./lib/yield.mjs";
 
@@ -123,7 +123,12 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holida
                 : yieldFromPrice(t1, maturity, coupon, forwardCleanPrice * forwardSaDecayRatio),
         });
     }
-    return rows;
+    const sao = getSaoCurve(
+        rows.map(row => row.settle_date),
+        rows.map(row => row.maturity_date),
+        rows.map(row => row.settle_sa_decay_ytm),
+    );
+    return rows.map((row, index) => ({ ...row, settle_sao: sao[index] }));
 }
 
 function toIso(d) {

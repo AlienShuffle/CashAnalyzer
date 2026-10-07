@@ -15,7 +15,7 @@
 // is noise to be removed. So SAO_i = smoothCurve(maturity_i) for every TIPS.
 //
 // The smooth curve is Nelson-Siegel-Svensson (the Fed/GSW real-yield-curve standard).
-const SAO_NOISE_YRS = 0.1;  // aerokam had 0.5, exclude < this from the FIT (near-maturity SA is price-noise-dominated)
+const SAO_NOISE_YRS = 0.5;  // aerokam had 0.5, exclude < this from the FIT (near-maturity SA is price-noise-dominated)
 // XXXX - I chose 0.1 to remove any dates before the max REFCPI date, but the best approach
 // XXXX - is to simply remove them from the series. There is no inflation prediction
 // XXXX - left in the TIPS. It is as fully baked in as a 30 day T-bill.
@@ -25,8 +25,8 @@ const SAO_NOISE_YRS = 0.1;  // aerokam had 0.5, exclude < this from the FIT (nea
 // ~5-6yrs the SA curve is already smooth on its own, so snapping it to NSS there would
 // smooth away genuine coupon/relative-value structure instead of seasonal residual.
 // So the curve-fit weight fades from 1 (full snap) to 0 (report raw SA) over this band.
-const SAO_BLEND_START_YRS = 6.0; // aerokam had 5.0
-const SAO_BLEND_END_YRS = 10.0;  // aerokam had 6.0
+const SAO_BLEND_START_YRS = 5.0; // aerokam had 5.0
+const SAO_BLEND_END_YRS = 6.0;  // aerokam had 6.0
 // XXXX - eased mostly to see if there is any impact, aerokam's dates are probably best match.
 
 /**
