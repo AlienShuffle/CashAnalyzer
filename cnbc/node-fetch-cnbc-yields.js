@@ -37,14 +37,21 @@ for (let i = 0; i < tickers.length; i++) {
     const dateList = priceBars.map(bar => bar.tradeTime);
     const yields = priceBars.map(bar => bar.close);
     const timestamp = new Date;
-    // drop last entry as it is actually a price, not a yield, and we only want the yield history.
-    dateList.pop();
-    yields.pop();
 
-    // build the response for each ticker
+    // Filter $1 prices by value rather than assuming the final bar is a price.
     for (let i = 0; i < dateList.length; i++) {
         const asOfDate = convertToISODate(dateList[i]);
+        if (!yields[i] || yields[i] === 1.0) {
+            continue;
+        }
         const yieldVal = (yields[i] / 100).toFixed(6) * 1;
+        if (!Number.isFinite(yieldVal)) {
+            console.error(`Invalid yield for ticker ${ticker} on ${asOfDate}: ${yields[i]}`);
+            continue;
+        }
+        if (yieldVal === 0 || yieldVal === 0.01) {
+            continue;
+        }
         resp.push({
             "asOfDate": asOfDate,
             "price": 1,
