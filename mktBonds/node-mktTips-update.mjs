@@ -123,12 +123,27 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holida
                 : yieldFromPrice(t1, maturity, coupon, forwardCleanPrice * forwardSaDecayRatio),
         });
     }
-    const sao = getSaoCurve(
+    const settleSaoArgs = [
         rows.map(row => row.settle_date),
         rows.map(row => row.maturity_date),
         rows.map(row => row.settle_sa_decay_ytm),
-    );
-    return rows.map((row, index) => ({ ...row, settle_sao: sao[index] }));
+    ];
+    const forwardSaoArgs = [
+        rows.map(row => row.fwd_date),
+        rows.map(row => row.maturity_date),
+        rows.map(row => row.forward_sa_decay_ytm),
+    ];
+    const sao = getSaoCurve(...settleSaoArgs, { shortEndTweak: false });
+    const forwardSao = getSaoCurve(...forwardSaoArgs, { shortEndTweak: false });
+    const settleSaoTweak = getSaoCurve(...settleSaoArgs, { shortEndTweak: true });
+    const forwardSaoTweak = getSaoCurve(...forwardSaoArgs, { shortEndTweak: true });
+    return rows.map((row, index) => ({
+        ...row,
+        settle_sao: sao[index],
+        forward_sao: forwardSao[index],
+        settle_sao_tweak: settleSaoTweak[index],
+        forward_sao_tweak: forwardSaoTweak[index],
+    }));
 }
 
 function toIso(d) {

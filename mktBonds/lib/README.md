@@ -76,10 +76,14 @@ and `mktTips-curve-sa-decay-bid`: settlement clean prices multiplied by
 `settle_mature_sa_ratio_decay`, fitted at the settlement date. Rows without a finite
 decay ratio are excluded from this adjusted curve.
 
-Each TIPS ask/bid table appends `settle_sao` to its JSON rows and at the right edge
-of its CSV. This runs the unchanged `getSaoCurve` over the table's
-`settle_sa_decay_ytm` yields using settlement dates and maturities. It preserves
-SAO's fitted/raw yield blending, including raw yields beyond six years.
+Each TIPS ask/bid table appends `settle_sao`, `forward_sao`, `settle_sao_tweak`
+and `forward_sao_tweak` to its JSON rows and at the right edge of its CSV. The
+unsuffixed columns run `getSaoCurve` without the short-end tweak; the `_tweak`
+columns hold the curve flat below its shortest fitted maturity. Settlement
+columns use `settle_sa_decay_ytm` and settlement dates; forward columns use
+`forward_sa_decay_ytm` and forward dates. Both variants preserve SAO's
+fitted/raw yield blending, including raw yields beyond six years. The
+`getSaoCurve` option `shortEndTweak` defaults to `true` for existing callers.
 
 ## Backlog
 

@@ -98,6 +98,17 @@ test("sao: blanks stay null, short input falls back to raw yields", () => {
     assert.throws(() => getSaoCurve(["2026-03-10"], [], []), /different lengths/);
 });
 
+test("sao: short-end tweak is optional and defaults on", () => {
+    const settles = Array(6).fill("2026-03-10");
+    const matures = ["2026-04-15", "2027-01-15", "2028-04-15", "2029-07-15", "2031-04-15", "2036-01-15"];
+    const yields = [0.015, 0.0175, 0.0182, 0.0191, 0.0203, 0.0224];
+    const defaultResult = getSaoCurve(settles, matures, yields);
+    const tweaked = getSaoCurve(settles, matures, yields, { shortEndTweak: true });
+    const untweaked = getSaoCurve(settles, matures, yields, { shortEndTweak: false });
+    assert.deepEqual(defaultResult, tweaked);
+    assert.notEqual(untweaked[0], tweaked[0]);
+});
+
 function loadAppsScript() {
     const dir = new URL("../appscript-src/", import.meta.url);
     const files = ["mybond.dates.js", "mybond.utils.js", "mybond.yieldFromPrice.js", "mybond.priceFromYield.js",
@@ -139,7 +150,7 @@ test("parity with Apps Script: Canty, credibility and SAO", () => {
     const settles = Array(9).fill("2026-03-10");
     const matures = ["2026-04-15", "2027-01-15", "2028-04-15", "2029-07-15", "2031-04-15", "2033-01-15", "2036-01-15", "2041-02-15", "2046-02-15"];
     const ys = [0.015, 0.0175, 0.0182, 0.0191, 0.0203, 0.0211, 0.0224, 0.0231, 0.0242];
-    const ours = getSaoCurve(settles, matures, ys);
+    const ours = getSaoCurve(settles, matures, ys, { shortEndTweak: false });
     const theirs = Array.from(gs.getSaoCurve(settles, matures, ys), r => r[0]);
     assert.deepEqual(ours, Array.from(theirs));
 });

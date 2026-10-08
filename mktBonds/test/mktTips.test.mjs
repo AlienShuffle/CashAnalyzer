@@ -72,8 +72,8 @@ test("tbillRepoRate brackets the target and derives a simple rate; auto repo is 
     assert.throws(() => tbillRepoRate("2026-10-05", "2026-12-01", bills), /bracket/);
 });
 
-test("settle_sao fits each quote side's settlement SA-decay yields as one curve", () => {
-    const meta = ["2027-07-15", "2028-07-15", "2029-07-15", "2030-07-15", "2031-07-15", "2034-07-15"]
+test("SAO report columns compare untweaked and short-end-tweaked curves", () => {
+    const meta = ["2027-01-15", "2027-07-15", "2028-07-15", "2029-07-15", "2030-07-15", "2034-07-15"]
         .map((maturity_date, i) => ({
             cusip: `SAO${i}`, maturity_date, interest_rate: 0.02, security_term: 10,
             series: "X", dated_date: "2024-07-15", ref_cpi_on_dated_date: 300,
@@ -89,13 +89,26 @@ test("settle_sao fits each quote side's settlement SA-decay yields as one curve"
     };
     for (const priceSide of ["ask", "bid"]) {
         const rows = buildTipsRows(meta, quotes, table, { repoRate: 0.04, priceSide });
-        const expected = getSaoCurve(
+        const settleArgs = [
             rows.map(r => r.settle_date), rows.map(r => r.maturity_date), rows.map(r => r.settle_sa_decay_ytm),
-        );
+        ];
+        const forwardArgs = [
+            rows.map(r => r.fwd_date), rows.map(r => r.maturity_date), rows.map(r => r.forward_sa_decay_ytm),
+        ];
+        const expected = getSaoCurve(...settleArgs, { shortEndTweak: false });
+        const expectedForward = getSaoCurve(...forwardArgs, { shortEndTweak: false });
+        const expectedTweak = getSaoCurve(...settleArgs, { shortEndTweak: true });
+        const expectedForwardTweak = getSaoCurve(...forwardArgs, { shortEndTweak: true });
         assert.deepEqual(rows.map(r => r.settle_sao), expected);
-        assert.ok(rows.every(r => Object.keys(r).at(-1) === "settle_sao"));
-        assert.ok(rows.some(r => r.settle_sao !== r.settle_sa_decay_ytm));
-        assert.equal(rows.at(-1).settle_sao, rows.at(-1).settle_sa_decay_ytm);
+        assert.deepEqual(rows.map(r => r.forward_sao), expectedForward);
+        assert.deepEqual(rows.map(r => r.settle_sao_tweak), expectedTweak);
+        assert.deepEqual(rows.map(r => r.forward_sao_tweak), expectedForwardTweak);
+        assert.ok(rows.every(r => {
+            const keys = Object.keys(r);
+            return keys.slice(-4).join(",") === "settle_sao,forward_sao,settle_sao_tweak,forward_sao_tweak";
+        }));
+        assert.ok(rows.some(r => r.settle_sao_tweak !== r.settle_sao));
+        assert.ok(rows.some(r => r.forward_sao_tweak !== r.forward_sao));
     }
     assert.deepEqual(buildTipsRows([], quotes, table, { repoRate: 0.04, priceSide: "ask" }), []);
 });

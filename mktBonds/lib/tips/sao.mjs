@@ -77,9 +77,10 @@ const isBlank = v => v === "" || v === null || v === undefined;
  * @param {Array<Date|string>} settles settlement dates
  * @param {Array<Date|string>} matures maturity dates
  * @param {Array<number>} yields seasonally adjusted real yields (decimal)
+ * @param {{shortEndTweak?: boolean}} [options] hold the curve flat below its shortest fitted maturity
  * @return {Array<number|null>} adjusted yields; null where an input was blank
  */
-export function getSaoCurve(settles, matures, yields) {
+export function getSaoCurve(settles, matures, yields, { shortEndTweak = true } = {}) {
     if (settles.length !== matures.length) {
         throw new Error(`settles[${settles.length}] and matures[${matures.length}] are different lengths`);
     }
@@ -99,10 +100,12 @@ export function getSaoCurve(settles, matures, yields) {
     const fitIdx = [];
     bonds.forEach((b, i) => { if (b.years !== null && b.years >= SAO_NOISE_YRS) fitIdx.push(i); });
     const curve = fitNSS(fitIdx.map(i => bonds[i].years), fitIdx.map(i => bonds[i].saYield));
+    const tMin = fitIdx.length ? Math.min(...fitIdx.map(i => bonds[i].years)) : 0;
 
     return bonds.map(b => {
         if (b.years === null) return null;
-        const fit = curve ? curve(b.years) : b.saYield;
+        const fitYears = shortEndTweak ? Math.max(b.years, tMin) : b.years;
+        const fit = curve ? curve(fitYears) : b.saYield;
         const weight = b.years < SAO_NOISE_YRS
             ? 1
             : Math.min(1, Math.max(0, (SAO_BLEND_END_YRS - b.years) / (SAO_BLEND_END_YRS - SAO_BLEND_START_YRS)));
