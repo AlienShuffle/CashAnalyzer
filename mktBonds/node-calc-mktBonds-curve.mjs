@@ -16,7 +16,7 @@ import { fitTipsSvensson, svenssonDF, svenssonZero, tipsZeroModelPrice, zeroCcTo
 
 const BASES = ["settle", "forward"];
 const NOMINAL_TYPES = new Set(["Bond", "Bill"]);
-const POINTS = 60;
+export const POINTS = 60;
 const defaultMktBonds = path.join(os.homedir(), "cloudflare/public/Treasuries/mktBonds/mktBonds-rate.json");
 
 function dateOnly(value) {
@@ -26,7 +26,7 @@ function dateOnly(value) {
 }
 
 // Same calendar day n months later, clamped to the end of shorter months.
-function addMonths(date, months) {
+export function addMonths(date, months) {
     const target = new Date(date.getFullYear(), date.getMonth() + months, 1);
     const lastDay = new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate();
     target.setDate(Math.min(date.getDate(), lastDay));

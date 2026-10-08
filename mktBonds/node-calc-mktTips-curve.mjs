@@ -3,7 +3,7 @@ import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 import { daysBetween, normalizeDate } from "./lib/dates.mjs";
 import { roundPrice, roundTo, roundYield } from "./lib/rounding.mjs";
-import { analyzeTipsZero, nominalZeroYtm } from "./lib/zero/index.mjs";
+import { analyzeTipsZero, nominalZeroYtm, svenssonZero, zeroCcToBEY } from "./lib/zero/index.mjs";
 
 function dateOnly(value) {
     const date = normalizeDate(value);
@@ -103,6 +103,13 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle", nominalCurv
             const nominalMarketYield = nominalCurve
                 ? nominalMarketYtm(settleDate, row.maturity, nominalCurve.fitBonds)
                 : undefined;
+            const years = daysBetween(normalizeDate(settleDate), normalizeDate(row.maturity)) / 365;
+            const zeroBei = nominalCurve
+                ? roundYield(zeroCcToBEY(svenssonZero(years, nominalCurve.params)) - zeroCcToBEY(svenssonZero(years, fit.params)))
+                : undefined;
+            const nominalResidualBp = nominalMarketYield == null ? null : roundTo((nominalMarketYield - nominalModelYield) * 10000, 3);
+            // marketBei - modelBei, i.e. the nominal residual less the TIPS residual.
+            const beiResidualBp = nominalResidualBp == null ? null : roundTo(nominalResidualBp - residualBp, 3);
             return {
                 cusip: bonds[index].cusip,
                 maturity: dateOnly(row.maturity),
@@ -119,6 +126,9 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle", nominalCurv
                     marketBei: nominalMarketYield == null ? null : roundYield(nominalMarketYield - row.marketYtm),
                     nominalModelYtm: nominalModelYield,
                     modelBei: roundYield(nominalModelYield - row.modelYtm),
+                    nominalResidualBp,
+                    beiResidualBp,
+                    zeroBei,
                 }),
             };
         }),

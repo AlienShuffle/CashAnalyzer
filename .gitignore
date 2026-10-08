@@ -217,6 +217,7 @@ EDGAR-b-submissions/submissions-ext/*.json
 EDGAR-b-submissions/submissionExtensionFile.json
 */history/*-rate-new.json
 */history/*-new.json
+*/history/*-cache.json
 */history/*-distro-new-unique.json
 */history/history-*.json
 */tmp.json

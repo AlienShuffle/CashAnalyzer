@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { nextWeekday, createRefCpiTable, tbillRepoRate, getSaoCurve } from "../lib/index.mjs";
-import { nominalZeroYtm } from "../lib/zero/index.mjs";
+import { nominalZeroYtm, svenssonZero, zeroCcToBEY } from "../lib/zero/index.mjs";
 import { yieldFromPrice } from "../lib/yield.mjs";
 import { buildTipsCurveAnalysis } from "../node-calc-mktTips-curve.mjs";
 import { buildTipsRows, parseMeta, parseOptions } from "../node-mktTips-update.mjs";
@@ -217,7 +217,16 @@ test("nominal model and market yields are added from the nominal curve", () => {
     for (const r of result.rows) {
         assert.equal(r.marketBei, Math.round((r.nominalMarketYtm - r.marketYtm) * 1e5) / 1e5);
         assert.equal(r.modelBei, Math.round((r.nominalModelYtm - r.modelYtm) * 1e5) / 1e5);
+        assert.ok(Math.abs(r.nominalResidualBp - (r.nominalMarketYtm - r.nominalModelYtm) * 10000) < 1e-6);
+        assert.ok(Math.abs(r.beiResidualBp - (r.nominalResidualBp - r.residualBp)) < 1e-6);
+        // marketBei - modelBei, up to the 5-decimal rounding of the published yields.
+        assert.ok(Math.abs(r.beiResidualBp - (r.marketBei - r.modelBei) * 10000) < 0.2, r.maturity);
+        const years = (new Date(r.maturity) - new Date("2026-10-05")) / 86400000 / 365;
+        const tipsZero = svenssonZero(years, result.params);
+        assert.ok(Math.abs(r.zeroBei - (zeroCcToBEY(0.04) - zeroCcToBEY(tipsZero))) < 6e-6, r.maturity);
     }
+    assert.ok(plain.rows.every(r => !("zeroBei" in r)));
+    assert.ok(outside.rows.filter(r => r.maturity > "2029-01-15").every(r => r.nominalResidualBp === null && r.beiResidualBp === null && Number.isFinite(r.zeroBei)));
     assert.ok(outside.rows.filter(r => r.maturity > "2029-01-15").every(r => r.nominalMarketYtm === null && r.marketBei === null));
     assert.throws(() => buildTipsCurveAnalysis(rows, { nominalCurve: { ...nominalCurve, settleDate: "2026-12-01" } }), /does not match/);
 });
