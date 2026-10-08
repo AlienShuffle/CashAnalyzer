@@ -1,5 +1,8 @@
 # mktBonds bond math library
 
+For published file naming conventions and the CSV column glossary, see the
+[market Treasury report reference](../README.md).
+
 Node ESM port of the Google Apps Script code kept for reference in [../appscript-src/](../appscript-src).
 Import from `./index.mjs`. Dates are `Date` objects or `YYYY-MM-DD` strings, rates are decimals (4% = `0.04`),
 prices are per $100 par.
