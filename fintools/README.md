@@ -93,8 +93,8 @@ are best-effort and can be evicted early.
 
 Changes require uploading the library and regenerated wrappers. Smoke-test
 with the generic development-mode consumer before publishing a new version;
-the cross-account toolkit remains pinned to 156 until you select that new
-published version. No manifest version is advanced automatically.
+the cross-account toolkit keeps its current pin until a new version is
+published and pinned (see [Release script](#release-script)).
 
 ## Development and deployment
 
@@ -102,7 +102,7 @@ published version. No manifest version is advanced automatically.
   with `developmentMode: true`. It is the same-account smoke-test consumer and
   tests the library's saved HEAD.
 - The [worksheet manifest](../mktBonds/toolkit-app-script-src/appsscript.json)
-  pins published version `"156"` with development mode disabled (omitting
+  pins a published library version with development mode disabled (omitting
   `developmentMode` also defaults to disabled). It supports regression testing
   from the worksheet's separate Google account with access to the library.
 
@@ -122,9 +122,37 @@ Deployment order:
    Ensure the dependency is named `fintools` and test representative worksheet
    formulas, cache refreshes, and the TIPS Controls menu.
 
-This repository migration does not itself upload, publish, or deploy either
-Apps Script project. Local VM tests cannot certify Google Sheets authorization,
-library access, or execution-time limits.
+Local VM tests cannot certify Google Sheets authorization, library access, or
+execution-time limits.
+
+### Release script
+
+After committing, run [clasp-release.sh](./clasp-release.sh) from anywhere in
+the repository:
+
+```bash
+fintools/clasp-release.sh --dry-run   # preview every step
+fintools/clasp-release.sh             # lib, wrapper, toolkit
+fintools/clasp-release.sh wrapper     # any subset of lib|wrapper|toolkit
+```
+
+Each project uses `clasp -A .clasp.auth` from its own directory, so the library
+and the worksheet can use different Google accounts. The steps are:
+
+1. Prechecks (skip with `--skip-checks`): no uncommitted changes under
+   `fintools/`, `mktBonds/toolkit-app-script-src/` or `mktBonds/test/`,
+   `sync-wrappers.mjs --check`, and `node --test mktBonds/test/*.test.mjs`.
+2. `lib`: `push --force`, `version "<sha> <subject>"`, then redeploy the
+   latest versioned library deployment to the new version (or create one when
+   none exists; skip with `--no-deploy`).
+3. `wrapper`: `push --force` only; it stays in development mode.
+4. `toolkit`: set the `fintools` pin in its manifest to the version just
+   created (or `--pin <n>`), `push --force`, then commit only the manifest as
+   "Pin toolkit to fintools library version N" (skip with `--no-commit`).
+   Without `lib` or `--pin`, the current pin is pushed unchanged.
+
+`.clasp.auth` files are git-ignored and must never be committed. The script
+lives outside the clasp project directories so it is never uploaded.
 
 ## REFCPI caching
 
