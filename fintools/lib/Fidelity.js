@@ -90,7 +90,7 @@ function buildFidelityFundListTable() {
     "Legal Name",
     "Portfolio Name",
     "Fiscal Year End",
-    "Minimum Initial Investment",
+
   ]);
 
   for (const ticker of Object.keys(fundIds).sort()) {
@@ -105,53 +105,10 @@ function buildFidelityFundListTable() {
       fundFacts.legalName,
       fundFacts.portfolioLegalName,
       fundFacts.fiscalYearEndMonthName,
-      fundFacts.minimumInitialInvestment,
+
     ]);
   }
   return list;
-}
-
-// This function pulls correct fund names and minimums from the dump table and re-creates the fund list for Fidelity above.
-function rebuildFidelityFundList_() {
-  const fundIds = getFidelityFundIDs_();
-  const dump = mmGetCachedDumpAll();
-  let list = '';
-  for (const ticker of Object.keys(fundIds).sort()) {
-    const fundId = fundIds[ticker];
-    list += "'" + ticker + "': '" + fundId + "',";
-    for (let space = fundId.length; space < 4; space++) list += ' ';
-
-    for (let dumpRow = 0; dumpRow < dump.length; dumpRow++) {
-      if (dump[dumpRow][mmDumpAllCols_.indexOf('ticker')] == ticker) {
-        const name = dump[dumpRow][mmDumpAllCols_.indexOf('name')];
-        const minimum = dump[dumpRow][mmDumpAllCols_.indexOf('minimumInitialInvestment')];
-        list += " // " + name;
-        switch (minimum) {
-          case 1:
-            list += " ($1)"
-            break;
-          case 25000:
-            list += " ($25K)"
-            break;
-          case 100000:
-            list += " ($100K)"
-            break;
-          case 1000000:
-            list += " ($1M)"
-            break;
-          case 10000000:
-            list += " ($10M)"
-            break;
-          default:
-            list += " ($" + minimum + ")"
-            break;
-        }
-        break;
-      }
-    }
-    list += "\n";
-  }
-  Logger.log("\n\n" + list + "\n\n");
 }
 
 /**
@@ -405,15 +362,7 @@ function retrieveFidelityFundFacts_(fundId, forceRefresh = false) {
 
   const data = retrieveFidelityYieldHistoryJSON_(fundId);
   const ticker = data.overview.tradingSymbol;
-  // find the minimum investment amount since it appears to unpopulated on the Fidelity site.
-  const dump = mmGetCachedDumpAll();
-  var minimum = "";
-  for (let dumpRow = 0; dumpRow < dump.length; dumpRow++) {
-    if (dump[dumpRow][mmDumpAllCols_.indexOf('ticker')] == ticker) {
-      minimum = dump[dumpRow][mmDumpAllCols_.indexOf('minimumInitialInvestment')];
-      break;
-    }
-  }
+
   const resp = {
     "marketingName": data.overview.marketingName,
     "fundNo": data.overview.fundNo,
@@ -424,7 +373,6 @@ function retrieveFidelityFundFacts_(fundId, forceRefresh = false) {
     "shareClass": data.overview.shareClass,
     "portfolioLegalName": data.overview.portfolioLegalName,
     "fiscalYearEndMonthName": data.overview.fiscalYearEndMonthName,
-    "minimumInitialInvestment": minimum,
   };
   cache.put(cacheKey, JSON.stringify(resp), 2 * 24 * 60 * 60);
   return resp;

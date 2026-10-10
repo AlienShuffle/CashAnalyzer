@@ -45,6 +45,32 @@ function bankGetCachedRateHistory(bank, account, start_date, end_date, forceRefr
   // internal function that does the query and retrieval.
   function bankGetRateHistory(bank, account, start_date, end_date) {
 
+    // breaks up date ranges into ranges that all include a single year. returns an array of date pairs.
+    function archiveDateYearPairs_(sDateStart, sDateEnd) {
+      const dStart = new Date(sDateStart);
+      const dEnd = new Date(sDateEnd);
+      const startYear = dStart.getFullYear();
+      const endYear = dEnd.getFullYear();
+      const yearCount = endYear - startYear;
+
+      let datePairs = [];
+      if (yearCount < 0 || dEnd < dStart) {
+        throw 'Start Date (' + sDateStart + ') after End Date ' + sDateEnd;
+      } else if (yearCount == 0) {
+        datePairs.push([dStart, dEnd]);
+      } else if (yearCount == 1) {
+        datePairs.push([dStart, new Date(startYear, 11, 31)]);
+        datePairs.push([new Date(endYear, 0, 1), dEnd]);
+      } else {
+        datePairs.push([dStart, new Date(startYear, 11, 31)]);
+        for (let i = 1; i < yearCount; i++) {
+          datePairs.push([new Date(startYear + i, 0, 1), new Date(startYear + i, 11, 31)]);
+        }
+        datePairs.push([new Date(endYear, 0, 1), dEnd]);
+      }
+      return datePairs;
+    }
+
     const aDateStringPairs = archiveDateYearPairs_(start_date, end_date);
     const resp = bankGetCurrentRateHistoryFileContents(bank, account);
     const json = JSON.parse(resp);
