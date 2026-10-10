@@ -57,7 +57,7 @@ function tipsGetRefCpi(searchDate, forceRefresh = false) {
   const rows = cloudGetCachedREFCPI(forceRefresh);
 
   for (let i = 0; i < rows.length - 1; i++) {
-    const rd = rows[i].date;
+    const rd = mydateNormalize_(rows[i].date);
     if (mydateIsEqual_(rd, date))
       return rows[i].refCpiNSA;
     if (mydateLessThan_(rd, date))
