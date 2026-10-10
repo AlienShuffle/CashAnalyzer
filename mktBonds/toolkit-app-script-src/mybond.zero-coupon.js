@@ -392,7 +392,8 @@ function svenssonZero(t, p) {
  *   objective: weighted SSE
  * }
  *
- * Compatible with svenssonZero_(t, params).
+ * Uses Node's deterministic tau-grid and Levenberg-Marquardt optimizer.
+ * Compatible with svenssonZero(t, params).
  */
 function fitTipsSvensson_(settle, bonds) {
 
@@ -400,7 +401,7 @@ function fitTipsSvensson_(settle, bonds) {
 
   if (!Array.isArray(bonds) || bonds.length < 6) {
     throw new Error(
-      `Svensson fit requires at least 6 bonds; found ${bonds.length}`
+      `Svensson fit requires at least 6 bonds; found ${bonds?.length ?? 0}`
     );
   }
 
@@ -527,387 +528,149 @@ function fitTipsSvensson_(settle, bonds) {
     );
   }
 
-  // ============================================================
-  // 2. FAST SVENSSON ZERO FUNCTION
-  //
-  // This deliberately avoids:
-  //
-  //   array destructuring
-  //   helper-function calls
-  //   temporary arrays
-  //
-  // because this code runs thousands/millions of times.
-  // ============================================================
+  const fit = fitPreparedSvensson_(prepared);
+  Logger.log(`Svensson fit bonds=${prepared.length}`);
+  Logger.log(`Svensson params=${fit.params}`);
+  Logger.log(`Svensson objective=${fit.objective}`);
+  return fit;
+}
 
-  function zero_(
-    t,
-    b0,
-    b1,
-    b2,
-    b3,
-    tau1,
-    tau2
-  ) {
+/**
+ * Deterministic tau grid with Levenberg-Marquardt beta fits and six-parameter polish.
+ * Ported from lib/zero/svenssonFit.mjs; helpers stay local to avoid Apps Script globals.
+ * @param {Array<{marketDirty:number,times:number[],cashFlows:number[],weight:number}>} prepared
+ * @return {{params:number[], objective:number}}
+ */
+function fitPreparedSvensson_(prepared) {
+  const TAU1_RANGE = [0.1, 15];
+  const TAU2_RANGE = [0.5, 60];
+  const MIN_TAU_RATIO = 1.05;
+  const geometric = (lo, hi, n) => Array.from({ length: n }, (_, i) => lo * (hi / lo) ** (i / (n - 1)));
+  const sumSquares = r => r.reduce((s, v) => s + v * v, 0);
 
-    if (t <= 0) return b0 + b1;
-
-    const x1 = t / tau1;
-    const e1 = Math.exp(-x1);
-
-    const a1 = (1 - e1) / x1;
-
-    const a2 = a1 - e1;
-
-    const x2 = t / tau2;
-    const e2 = Math.exp(-x2);
-
-    const a3 = (1 - e2) / x2 - e2;
-
-    return (
-      b0 +
-      b1 * a1 +
-      b2 * a2 +
-      b3 * a3
-    );
+  function inBounds(p) {
+    const [, , , , tau1, tau2] = p;
+    return tau1 >= TAU1_RANGE[0] && tau1 <= TAU1_RANGE[1]
+      && tau2 >= TAU2_RANGE[0] && tau2 <= TAU2_RANGE[1]
+      && tau2 >= tau1 * MIN_TAU_RATIO;
   }
 
-  // ============================================================
-  // 3. FAST OBJECTIVE FUNCTION
-  // ============================================================
-
-  function objective_(p) {
-
-    const b0 = p[0];
-    const b1 = p[1];
-    const b2 = p[2];
-    const b3 = p[3];
-    const tau1 = p[4];
-    const tau2 = p[5];
-
-    // Reject invalid decay constants immediately.
-    if (tau1 <= 0.05 ||
-      tau2 <= 0.05)
-      return Number.POSITIVE_INFINITY;
-
-
-    let sse = 0;
-
-
-    for (let j = 0; j < prepared.length; j++) {
-
-      const bond = prepared[j];
-      const times = bond.times;
-      const cashFlows = bond.cashFlows;
+  // Weighted residuals and analytic beta Jacobian.
+  function evaluate(prepared, p, withJacobian) {
+    const [b0, b1, b2, b3, tau1, tau2] = p;
+    const n = prepared.length;
+    const r = new Float64Array(n);
+    const J = withJacobian ? Array.from({ length: n }, () => new Float64Array(4)) : null;
+    for (let i = 0; i < n; i++) {
+      const bond = prepared[i];
+      const sw = Math.sqrt(bond.weight);
       let pv = 0;
-      for (let i = 0; i < times.length; i++) {
-
-        const t = times[i];
-
-        const z =
-          zero_(
-            t,
-            b0,
-            b1,
-            b2,
-            b3,
-            tau1,
-            tau2
-          );
-
-        const df = Math.exp(-z * t);
-
-        pv += cashFlows[i] * df;
+      for (let k = 0; k < bond.times.length; k++) {
+        const t = bond.times[k];
+        const x1 = t / tau1;
+        const e1 = Math.exp(-x1);
+        const a1 = (1 - e1) / x1;
+        const x2 = t / tau2;
+        const e2 = Math.exp(-x2);
+        const h = (1 - e2) / x2 - e2;
+        const df = Math.exp(-(b0 + b1 * a1 + b2 * (a1 - e1) + b3 * h) * t);
+        const cfdf = bond.cashFlows[k] * df;
+        pv += cfdf;
+        if (J) {
+          const g = -cfdf * t * sw;
+          J[i][0] += g;
+          J[i][1] += g * a1;
+          J[i][2] += g * (a1 - e1);
+          J[i][3] += g * h;
+        }
       }
-
-      const error = pv - bond.marketDirty;
-
-      // Duration-style weighting.
-      sse +=
-        bond.weight *
-        error *
-        error;
+      r[i] = sw * (pv - bond.marketDirty);
     }
-
-    return sse;
+    return { r, J };
   }
 
-
-  // ============================================================
-  // 4. REASONABLE STARTING PARAMETERS
-  //
-  // Betas are decimal yields.
-  // ============================================================
-
-  let p = [
-    0.0200,   // beta0
-    -0.0050,  // beta1
-    0.0050,   // beta2
-    0.0000,   // beta3
-    1.50,     // tau1
-    6.00      // tau2
-  ];
-
-
-  // ============================================================
-  // 5. COARSE PARAMETER SEARCH
-  //
-  // Much smaller than the previous 500-iteration six-dimensional
-  // coordinate descent.
-  // ============================================================
-
-  const tau1Grid = [
-    0.50,
-    1.00,
-    1.50,
-    2.00,
-    3.00
-  ];
-
-  const tau2Grid = [
-    3.00,
-    4.00,
-    5.00,
-    7.00,
-    10.00,
-    15.00,
-    20.00,
-    30.00
-  ];
-
-
-  let best =
-    Number.POSITIVE_INFINITY;
-
-  let bestP =
-    p.slice();
-
-
-  // ============================================================
-  // For each tau pair, do a relatively cheap beta optimization.
-  // ============================================================
-
-  for (let t1i = 0; t1i < tau1Grid.length; t1i++) {
-
-    for (let t2i = 0; t2i < tau2Grid.length; t2i++) {
-
-      const tau1 = tau1Grid[t1i];
-      const tau2 = tau2Grid[t2i];
-      // Skip nearly identical decay constants.
-      if (Math.abs(tau1 - tau2) < 0.10) continue;
-
-      let candidate = [
-        p[0],
-        p[1],
-        p[2],
-        p[3],
-        tau1,
-        tau2
-      ];
-
-      let candidateValue =
-        objective_(candidate);
-
-
-      // Beta-only coordinate descent.
-      //
-      // These start at 25 bp and progressively shrink.
-      const betaSteps = [
-        0.0025,
-        0.0025,
-        0.0025,
-        0.0025
-      ];
-
-
-      for (let iteration = 0; iteration < 60; iteration++) {
-
-        let improved = false;
-
-        for (let j = 0; j < 4; j++) {
-
-          const original = candidate[j];
-
-
-          // Try downward.
-          candidate[j] = original - betaSteps[j];
-
-          let value = objective_(candidate);
-
-          if (value < candidateValue) {
-
-            candidateValue = value;
-            improved = true;
-            continue;
-          }
-
-
-          // Try upward.
-          candidate[j] = original + betaSteps[j];
-
-          value = objective_(candidate);
-
-          if (value < candidateValue) {
-
-            candidateValue = value;
-            improved = true;
-            continue;
-          }
-
-          // Neither direction helped.
-          candidate[j] = original;
-        }
-
-        if (!improved) {
-
-          let maxStep = 0;
-
-          for (let j = 0;
-            j < 4;
-            j++) {
-
-            betaSteps[j] *= 0.5;
-
-            maxStep =
-              Math.max(
-                maxStep,
-                betaSteps[j]
-              );
-          }
-
-
-          if (maxStep < 1e-7)
-            break;
-        }
-      }
-
-
-      if (candidateValue < best) {
-
-        best =
-          candidateValue;
-
-        bestP =
-          candidate.slice();
+  function solve(A, b) {
+    const m = b.length;
+    const M = A.map((row, i) => [...row, b[i]]);
+    for (let c = 0; c < m; c++) {
+      let piv = c;
+      for (let i = c + 1; i < m; i++) if (Math.abs(M[i][c]) > Math.abs(M[piv][c])) piv = i;
+      if (Math.abs(M[piv][c]) < 1e-300) return null;
+      [M[c], M[piv]] = [M[piv], M[c]];
+      for (let i = c + 1; i < m; i++) {
+        const f = M[i][c] / M[c][c];
+        for (let j = c; j <= m; j++) M[i][j] -= f * M[c][j];
       }
     }
+    const x = new Array(m);
+    for (let i = m - 1; i >= 0; i--) {
+      let s = M[i][m];
+      for (let j = i + 1; j < m; j++) s -= M[i][j] * x[j];
+      x[i] = s / M[i][i];
+    }
+    return x;
   }
 
-  // ============================================================
-  // 6. LOCAL SIX-PARAMETER REFINEMENT
-  //
-  // We've now reached a good neighborhood. Perform a much smaller
-  // coordinate search over all six parameters.
-  // ============================================================
+  // Tau Jacobian columns use central differences.
+  function levenbergMarquardt(prepared, start, free, maxIterations) {
+    let p = start.slice();
+    let sse = sumSquares(evaluate(prepared, p, false).r);
+    let lambda = 1e-3;
+    for (let iteration = 0; iteration < maxIterations; iteration++) {
+      const { r, J } = evaluate(prepared, p, true);
+      const cols = free.map(j => {
+        if (j < 4) return J.map(row => row[j]);
+        const h = 1e-5 * p[j];
+        const up = p.slice(); up[j] += h;
+        const dn = p.slice(); dn[j] -= h;
+        const ru = evaluate(prepared, up, false).r;
+        const rd = evaluate(prepared, dn, false).r;
+        return Array.from(ru, (v, i) => (v - rd[i]) / (2 * h));
+      });
+      const m = free.length;
+      const JtJ = Array.from({ length: m }, (_, a) => Array.from({ length: m }, (_, b) =>
+        cols[a].reduce((s, v, i) => s + v * cols[b][i], 0)));
+      const grad = cols.map(col => col.reduce((s, v, i) => s + v * r[i], 0));
 
-  p = bestP.slice();
-
-  let steps = [
-    0.00025,  // beta0 = 2.5 bp
-    0.00025,  // beta1
-    0.00025,  // beta2
-    0.00025,  // beta3
-    0.10,     // tau1
-    0.25      // tau2
-  ];
-
-  best = objective_(p);
-
-  for (let iteration = 0; iteration < 100; iteration++) {
-
-    let improved = false;
-    for (let j = 0; j < 6; j++) {
-
-      const original = p[j];
-
-      // Try lower value.
-      p[j] = original - steps[j];
-
-      if (
-        (j === 4 || j === 5) &&
-        p[j] <= 0.05
-      ) {
-
-        p[j] = original;
-
-      } else {
-
-        let value = objective_(p);
-
-        if (value < best) {
-
-          best = value;
-          improved = true;
-          continue;
+      let accepted = false;
+      for (let attempt = 0; attempt < 12; attempt++) {
+        const damped = JtJ.map((row, a) => row.map((v, b) => (a === b ? v + lambda * Math.max(v, 1e-12) : v)));
+        const step = solve(damped, grad.map(v => -v));
+        if (!step || !step.every(Number.isFinite)) { lambda *= 10; continue; }
+        const trial = p.slice();
+        free.forEach((j, a) => { trial[j] += step[a]; });
+        if (!inBounds(trial)) { lambda *= 10; continue; }
+        const trialSse = sumSquares(evaluate(prepared, trial, false).r);
+        if (Number.isFinite(trialSse) && trialSse < sse) {
+          const converged = sse - trialSse <= 1e-13 * sse;
+          p = trial;
+          sse = trialSse;
+          lambda = Math.max(lambda / 5, 1e-12);
+          accepted = true;
+          if (converged) return { p, sse };
+          break;
         }
-
-        p[j] = original;
+        lambda *= 10;
       }
-
-      // Try higher value.
-      p[j] = original + steps[j];
-
-      let value = objective_(p);
-
-      if (value < best) {
-
-        best = value;
-        improved = true;
-        continue;
-      }
-
-      p[j] = original;
+      if (!accepted) break;
     }
-
-    if (!improved) {
-
-      let maxBetaStep = 0;
-      let maxTauStep = 0;
-
-
-      for (let j = 0;
-        j < 6;
-        j++) {
-
-        steps[j] *= 0.5;
-
-        if (j < 4) {
-          maxBetaStep =
-            Math.max(
-              maxBetaStep,
-              steps[j]
-            );
-        } else {
-          maxTauStep =
-            Math.max(
-              maxTauStep,
-              steps[j]
-            );
-        }
-      }
-
-
-      if (
-        maxBetaStep < 1e-8 &&
-        maxTauStep < 1e-5
-      )
-        break;
-    }
+    return { p, sse };
   }
 
-  Logger.log(
-    `Svensson fit bonds=${prepared.length}`
-  );
-
-  Logger.log(
-    `Svensson params=${p}`
-  );
-
-  Logger.log(
-    `Svensson objective=${best}`
-  );
-
-  return {
-    params: p,
-    objective: best
-  };
+  const candidates = [];
+  for (const tau1 of geometric(0.3, 8, 12)) {
+    for (const tau2 of geometric(2, 40, 12)) {
+      if (tau2 < tau1 * 1.5) continue;
+      const fit = levenbergMarquardt(prepared, [0.03, -0.01, 0, 0, tau1, tau2], [0, 1, 2, 3], 40);
+      candidates.push(fit);
+    }
+  }
+  candidates.sort((a, b) => a.sse - b.sse);
+  let best = null;
+  for (const candidate of candidates.slice(0, 8)) {
+    const fit = levenbergMarquardt(prepared, candidate.p, [0, 1, 2, 3, 4, 5], 200);
+    if (!best || fit.sse < best.sse) best = fit;
+  }
+  if (!best) throw new Error("Svensson fit failed to converge");
+  return { params: best.p, objective: best.sse };
 }

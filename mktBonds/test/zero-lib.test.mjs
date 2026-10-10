@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import vm from "node:vm";
 import { accruedInterest } from "../lib/coupons.mjs";
 import {
     analyzeTipsZero, dfToSimpleRate, dfToZeroBEY, dfToZeroCc, fitTipsSvensson, forwardCcFromDF, forwardCarryFactor,
@@ -78,4 +79,87 @@ test("optimized Svensson fit reprices a synthetic curve", () => {
     }));
     const fit = fitTipsSvensson(fixture.settle, synthetic);
     assert.ok(fit.objective < 1e-8, `${fit.objective}`);
+});
+
+function loadToolkit() {
+    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+    const context = vm.createContext({ Date, Math, Logger: { log() { } } });
+    for (const file of ["mybond._dates.js", "mybond._utils.js", "mybond.accrued.js",
+        "mybond.yieldFromPrice.js", "mybond.duration.js", "mybond.zero-coupon.js"]) {
+        vm.runInContext(readFileSync(new URL(file, dir), "utf8"), context, { filename: file });
+    }
+    return context;
+}
+
+function assertFitParity(actual, expected) {
+    assert.deepEqual(Object.keys(actual), ["params", "objective"]);
+    assert.deepEqual(Array.from(actual.params), expected.params);
+    assert.equal(actual.objective, expected.objective);
+    assert.ok(actual.params.every(Number.isFinite));
+    assert.ok(Number.isFinite(actual.objective));
+    assert.ok(actual.params[4] >= 0.1 && actual.params[4] <= 15);
+    assert.ok(actual.params[5] >= 0.5 && actual.params[5] <= 60);
+    assert.ok(actual.params[5] >= actual.params[4] * 1.05);
+}
+
+test("toolkit Svensson matches Node parameters, objective and forward-fit threshold", () => {
+    const gs = loadToolkit();
+    const fixture = JSON.parse(readFileSync(new URL("./fixtures-tips-forward-curve.json", import.meta.url), "utf8"));
+    const market = fixture.bonds.map(([maturity, coupon, cleanPrice]) => ({ maturity, coupon, cleanPrice }));
+    const expected = fitTipsSvensson(fixture.settle, market);
+    const fit = gs.fitTipsSvensson_(fixture.settle, market);
+    assertFitParity(fit, expected);
+    assert.ok(fit.objective < 0.72, `${fit.objective}`);
+    assertFitParity(gs.fitTipsSvensson_(fixture.settle, market), expected);
+    for (const bond of market) {
+        assert.equal(gs.mytipsZeroModelPrice(fixture.settle, bond.maturity, bond.coupon, fit.params),
+            tipsZeroModelPrice(fixture.settle, bond.maturity, bond.coupon, expected.params));
+    }
+});
+
+test("toolkit Svensson reprices a synthetic curve with Node fit quality", () => {
+    const gs = loadToolkit();
+    const truth = [0.021, -0.006, 0.01, 0.015, 1.8, 9];
+    const synthetic = bonds.map(bond => ({
+        ...bond,
+        cleanPrice: tipsZeroModelPrice(settle, bond.maturity, bond.coupon, truth) -
+            accruedInterest(settle, bond.maturity, bond.coupon),
+    }));
+    const fit = gs.fitTipsSvensson_(settle, synthetic);
+    assertFitParity(fit, fitTipsSvensson(settle, synthetic));
+    assert.ok(fit.objective < 1e-8, `${fit.objective}`);
+});
+
+test("toolkit Svensson preserves usable-bond validation and excludes matured bonds", () => {
+    const gs = loadToolkit();
+    for (const input of [null, [], bonds.slice(0, 3)]) {
+        assert.throws(() => gs.fitTipsSvensson_(settle, input), /at least 6 bonds/);
+    }
+    const unusable = bonds.map(bond => ({ ...bond, cleanPrice: 0 }));
+    assert.throws(() => gs.fitTipsSvensson_(settle, unusable), /Insufficient usable bonds/);
+    const mixed = [
+        { maturity: "2026-10-04", coupon: 0.01, cleanPrice: 100 },
+        { maturity: settle, coupon: 0.01, cleanPrice: 100 },
+        { maturity: "2030-01-15", coupon: NaN, cleanPrice: 100 },
+        ...bonds,
+    ];
+    assertFitParity(gs.fitTipsSvensson_(settle, mixed), fitTipsSvensson(settle, bonds));
+});
+
+test("toolkit spreadsheet zero analysis retains table shape and reprices the Node fit", () => {
+    const gs = loadToolkit();
+    const result = gs.mybondsZeroAnalyze(settle, bonds.map(b => [b.maturity]),
+        bonds.map(b => [b.coupon]), bonds.map(b => [b.cleanPrice]));
+    const expected = analyzeTipsZero(settle, bonds);
+    assert.equal(result.length, bonds.length + 1);
+    assert.ok(result.every(row => row.length === 8));
+    assert.deepEqual(Array.from(result[0]), ["Maturity", "Coupon", "Market Clean",
+        "Model Clean", "Price Residual", "Market YTM", "Model YTM", "Residual (bp)"]);
+    for (let i = 0; i < bonds.length; i++) {
+        assert.equal(result[i + 1][3], expected.rows[i].modelClean);
+        assert.equal(result[i + 1][4], expected.rows[i].priceResidual);
+        assert.equal(result[i + 1][5], expected.rows[i].marketYtm);
+        assert.equal(result[i + 1][6], expected.rows[i].modelYtm);
+        assert.equal(result[i + 1][7], expected.rows[i].residualBp);
+    }
 });

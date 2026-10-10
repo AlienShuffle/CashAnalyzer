@@ -45,6 +45,24 @@ Market BEI reports and nominal-minus-TIPS yield/zero-rate calculations are
 unaffected. The original solver sources remain in `appscript-src/` as
 historical reference, not as an active Node dependency.
 
+### Shared Svensson fitting
+
+The toolkit's `fitTipsSvensson_` in
+[mybond.zero-coupon.js](../toolkit-app-script-src/mybond.zero-coupon.js) now uses
+the optimizer from [svenssonFit.mjs](./zero/svenssonFit.mjs): a deterministic
+12-by-12 geometric tau grid, analytic beta Jacobians, and six-parameter
+Levenberg-Marquardt refinement of the best eight candidates. Both implementations
+use inverse-duration weighted dirty-price errors, the same convergence settings,
+tau bounds, and minimum tau separation. The result remains `{ params, objective }`.
+Spreadsheet entry points and their analysis-table layout are unchanged.
+
+Run `node --test mktBonds/test/zero-lib.test.mjs` for exact parameter/objective
+parity, deterministic repeatability, forward-fixture objective below `0.72`,
+synthetic-curve objective below `1e-8`, and worksheet analysis parity.
+These tests execute GAS source in a local JavaScript VM; runtime under Google
+Sheets' custom-function execution limit must still be checked after deployment
+with realistic worksheet inputs.
+
 ## Migration status
 
 ### Historical REFCPI availability
@@ -92,7 +110,7 @@ for the unadjusted forward clean price.
 | 4. TIPS / seasonal adjustment (`lib/tips/`: REFCPI table + factor lookups, credibility, simple/full Canty, SAO curve) | done (parity-tested; `mySaPriceFromYield` intentionally not ported) |
 | 5. Returns (`lib/returns/`: `tipsNominalReturn[Table]`, `tipsPriceFromXirr`; nominal `xirr` in step 3) | done (parity-tested; `tips.intPmts`/`tipsIntPayments` skipped: unfinished drafts; replaced by the backlog item below) |
 | 6. Forwards (`lib/forwards/`: `forwardRate`, `easyForward`, `forwardTipsCleanPrice`, `forwardNominalCleanPrice`, `tbillDiscountFactor`, `tbillSimpleRate`) | done (parity-tested; unused legacy BEI/root solvers removed) |
-| 7. Zero curves (`zero.conversions`, `zero-coupon` Svensson fit) | done: `lib/zero/` (`conversions`, `svensson`: `svenssonZero`, `fitTipsSvensson` uses a deterministic tau-grid + Levenberg-Marquardt fit; the legacy coordinate-descent fitter and its Apps Script fit-parity requirement are retired; `analyzeTipsZero` returns `{ params, objective, rows }` for curve analysis and excludes bonds matured by settlement) |
+| 7. Zero curves (`zero.conversions`, `zero-coupon` Svensson fit) | done: `lib/zero/` (`conversions`, `svensson`: `svenssonZero`, `fitTipsSvensson` uses a deterministic tau-grid + Levenberg-Marquardt fit, parity-tested against the toolkit; `analyzeTipsZero` returns `{ params, objective, rows }` for curve analysis and excludes bonds matured by settlement) |
 | 8. `node-calc-mktTips-curve.mjs` wiring published TIPS rows to the library | done: `job-mktTips-update.sh` publishes parallel ask and bid TIPS datasets, each with a side-specific input table (`mktTips-ask-rate`, `mktTips-bid-rate`), five Svensson curve-analysis JSON/CSV sets, and dated history (`mktTips-curve-ask`/`mktTips-curve-bid`, `mktTips-curve-sa-*`, `mktTips-curve-fwd-*`, `mktTips-curve-fwd-sa-*`, `mktTips-curve-fwd-sa-decay-*`). Each side's curves use that side's TIPS market prices and matching nominal grid zero curve; `richCheap` is `cheap`/`rich` when |`residualBp`| is at least 2, else blank; bonds maturing on or before the forward date are excluded from all; bond rows start with CUSIP for spreadsheet lookup. Published basis labels prefix the source and side (for example, `Market-ask-settle-sa-decay`) before the settle/forward and seasonal-adjustment qualifiers. Each side-specific mktTips source table includes six calculated YTMs (settle unadjusted/SA/SA-decay, then forward unadjusted/SA/SA-decay). The Cloudflare target directory and its `daily` subdirectory contain sorted `mktTips-manifest.txt` and `mktNominal-manifest.txt` lists of matching CSV filenames; daily manifests preserve the timestamp-prefixed CSV filenames |
 | 9. Nominal zero curves for break-even inflation (`node-calc-mktBonds-curve.mjs`) | done: `job-mktTips-update.sh` publishes separate `mktNominal-grid-ask`, `mktNominal-grid-fwd-ask`, `mktNominal-grid-bid` and `mktNominal-grid-fwd-bid` datasets from the corresponding quote side; each is a Svensson fit with 6-month zero points (`zeroCc`, `zeroBey`, `discountFactor`) out to 30 years; candidates are non-STRIP notes, bonds and bills maturing after the forward date; bonds more than 15 bp (`--maxDeviationBp`) from the fitted curve are listed under `excluded` and refitted without; nominal basis labels prefix source, side and settle/forward (for example, `Market-ask-forward`). TIPS curve rows carry `nominalMarketYtm` (local linear fit of the nearest 6 observed nominal yields, blank outside the observed maturity range), `marketBei` (`nominalMarketYtm - marketYtm`), `nominalModelYtm` (YTM of a nominal bond with the TIPS coupon and maturity priced off the nominal zero curve of the same date), `modelBei` (`nominalModelYtm - modelYtm`), `nominalResidualBp` (`nominalMarketYtm - nominalModelYtm` in bp), `beiResidualBp` (`nominalResidualBp - residualBp`, i.e. market minus model BEI in bp) and `zeroBei` (nominal minus TIPS semiannual zero rate at the bond's maturity). `node-calc-mktBei-grid.mjs` publishes the matching `mktBei-grid-*` datasets: TIPS and nominal zero rates and their spread on the same 6-month grid |
 
