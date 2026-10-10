@@ -1,11 +1,11 @@
+import { readText } from "../lib/jsonIO.mjs";
 import {
     normalizeAddress,
     normalizeName
 } from './node-common-code.js';
-import { readFileSync } from 'fs';
 
 // read HTML from file given as stdin, this is a lot-detail.json.
-const lotDetailBuffer = readFileSync(0, 'utf8');
+const lotDetailBuffer = await readText();
 const lotDetailJson = JSON.parse(lotDetailBuffer);
 
 // walk through all the lots, then rectify the names.

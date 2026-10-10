@@ -40,6 +40,7 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 pubDelayFile=""
 runDelayFile="$CIKmap"
 source ../bin/testDelays.sh
@@ -50,5 +51,14 @@ fi
 tmpFile=co_tickers_mf.json
 ../bin/getEDGAR.sh "https://www.sec.gov/files/company_tickers_mf.json" |
     jq . >"$tmpFile"
-node ./node-CIK-map-update.js "$fundsList" <"$tmpFile" | jq . >"$CIKmap"
+if ! pipeOk "${PIPESTATUS[@]}" || [ ! -s "$tmpFile" ]; then
+    echo "company_tickers_mf.json download failed."
+    rm -f "$tmpFile"
+    exit 1
+fi
+if ! runNode "$CIKmap" "$tmpFile" ./node-CIK-map-update.js "$fundsList"; then
+    echo "node-CIK-map-update failed (status ${statuses[*]}), raw output kept in $CIKmap.raw."
+    rm -f "$tmpFile"
+    exit 1
+fi
 rm -f "$tmpFile"

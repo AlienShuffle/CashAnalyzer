@@ -16,6 +16,5 @@ elif [ -s "$csvFile" ]; then
 else
     exit 1
 fi
-cat "$file" |
-    node ./node-VanguardAdvisorsETF-distro-update.js "$ticker" |
-    jq .
+source ../bin/nodeJobUtils.sh
+nodeJson "$file" ./node-VanguardAdvisorsETF-distro-update.js "$ticker"

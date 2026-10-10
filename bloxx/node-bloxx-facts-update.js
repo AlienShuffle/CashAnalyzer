@@ -1,3 +1,4 @@
+import { readText } from "../lib/jsonIO.mjs";
 import puppeteer from "puppeteer";
 import { readFileSync } from 'fs';
 import dynamicSort from '../lib/dynamicSort.mjs';
@@ -9,7 +10,7 @@ if (process.argv.length != 3) throw 'missing argv[2] tickerlist.csv';
 const tickerList = readFileSync(process.argv[2], 'utf-8').split("\n");
 
 // read entire stdin (fd 0) as the JSON payload.
-const contentText = readFileSync(0, 'utf-8');
+const contentText = await readText();
 const funds = JSON.parse(contentText);
 
 let urls = [];

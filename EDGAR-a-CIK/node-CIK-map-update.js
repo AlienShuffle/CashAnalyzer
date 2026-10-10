@@ -1,3 +1,4 @@
+import { readText } from "../lib/jsonIO.mjs";
 import { readFileSync } from 'fs';
 import process from 'process';
 import dynamicSort from '../lib/dynamicSort.mjs';
@@ -11,7 +12,7 @@ let funds = [];
 for (let i = 0; i < fundList.length; i++) if (fundList[i].length > 0) funds[fundList[i]] = true;
 
 // read in from stdin, the moneymarket.fun source data json file.
-const stdinBuffer = readFileSync(process.stdin.fd, 'utf-8');
+const stdinBuffer = await readText();
 const json = JSON.parse(stdinBuffer);
 let resp = [];
 // go through each ticker report provided, see if it is in the track list, publish map if in the list.

@@ -1,8 +1,8 @@
+import { readText } from "../lib/jsonIO.mjs";
 import { duGetISOString, duGetDateFromYYYYMMDD } from "../lib/dateUtils.mjs";
-import { readFileSync } from 'fs';
 import process from 'process';
 import dynamicSort from '../lib/dynamicSort.mjs';
-const stdinBuffer = readFileSync(process.stdin.fd, 'utf-8');
+const stdinBuffer = await readText();
 const inputJson = JSON.parse(stdinBuffer);
 let outputJson = [];
 for (let i = 0; i < inputJson.length; i++) {

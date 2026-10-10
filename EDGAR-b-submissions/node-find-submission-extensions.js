@@ -6,7 +6,9 @@ const process = require("process");
 const formType = (process.argv[2] && process.argv[2].length > 1) ? process.argv[2] : 'MFP';
 
 // read in from stdin, the list of submissions for this CIK and pull out the requested reports and export the details.
-const stdinBuffer = fs.readFileSync(0, 'utf-8');
+const { readText, runMain } = require('../lib/jsonIO.js');
+runMain(async () => {
+const stdinBuffer = await readText();
 const json = JSON.parse(stdinBuffer);
 const recentFilings = json.filings.files;
 const cik = json.cik;
@@ -32,3 +34,4 @@ for (let i = 0; i < recentFilings.length; i++) {
     });
 }
 console.log(JSON.stringify(resp));
+});

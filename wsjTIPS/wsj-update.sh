@@ -45,6 +45,7 @@ if [ -z "$sourceName" ]; then
     exit 1
 fi
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 
 # current rate files
 injectRatesJson="inject-rates.json"
@@ -73,13 +74,8 @@ else
         echo "Missing $scriptFile file."
         exit 1
     fi
-    if [ -z "$stdInFile" ]; then
-        node $scriptFile "$nodeArg" | jq . >"$jsonRateNew"
-    else
-        node $scriptFile "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
-    fi
-    if [ ! $? ]; then
-        echo "$sourceName rate retrieval failed, exiting."
+    if ! runNode "$jsonRateNew" "${stdInFile:--}" $scriptFile "$nodeArg"; then
+        echo "$sourceName rate retrieval failed (status ${statuses[*]}), raw output kept in $jsonRateNew.raw, exiting."
         exit 1
     fi
     if [ ! -s "$jsonRateNew" ]; then

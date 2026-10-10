@@ -57,7 +57,9 @@ function findFiscalYear(cik) {
 if (debug) console.log('fiscalYears.length=' + fiscalYears.length)
 
 // read in from stdin, the finra.org source data json file.
-const stdinBuffer = fs.readFileSync(0, 'utf-8');
+const { readText, runMain } = require('../lib/jsonIO.js');
+runMain(async () => {
+const stdinBuffer = await readText();
 const finraFundList = JSON.parse(stdinBuffer);
 function findfinraFundByTicker(ticker) {
     for (let i = 0; i < finraFundList.length; i++) {
@@ -100,3 +102,4 @@ for (let i = 0; i < fundList.length; i++) {
     });
 }
 console.log(JSON.stringify(resp.sort(dynamicSort('ticker'))));
+});

@@ -1,3 +1,4 @@
+import { readText } from "../lib/jsonIO.mjs";
 import { duGetISOString } from "../lib/dateUtils.mjs";
 // Work on POSIX and Windows
 import { readFileSync } from "fs";
@@ -8,7 +9,7 @@ function safeObjectRef(obj) {
 }
 
 // read in from stdin, the BlackRock json file.
-const stdinBuffer = readFileSync(0, 'utf-8');
+const stdinBuffer = await readText();
 const json = JSON.parse(stdinBuffer);
 
 // parse the fund list file, which is a simple text file with one ticker per line, and create a set of tickers to filter the json data by.

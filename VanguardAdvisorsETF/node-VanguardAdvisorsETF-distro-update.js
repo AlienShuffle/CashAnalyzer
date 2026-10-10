@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readText } from "../lib/jsonIO.mjs";
 import dynamicSort from '../lib/dynamicSort.mjs';
 import { parseCsvToMatrix } from '../lib/parseCsv.mjs';
 
@@ -67,7 +67,7 @@ function readCsvRecords(contentText) {
   return records;
 }
 
-const contentText = readFileSync(0, 'utf-8');
+const contentText = await readText();
 if (!contentText.trim()) {
   console.error(`No distribution content supplied for ticker '${ticker}'`);
   process.exit(1);

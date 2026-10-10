@@ -1,6 +1,6 @@
-import { readFileSync } from 'fs';
+import { readText } from "../lib/jsonIO.mjs";
 
-const lotReportBuffer = readFileSync(0, 'utf8');
+const lotReportBuffer = await readText();
 const lotReportJson = JSON.parse(lotReportBuffer);
 function getlotReport(lot) {
     for (let i = 0; i < lotReportJson.length; i++) {

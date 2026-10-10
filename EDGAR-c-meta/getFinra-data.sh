@@ -41,6 +41,7 @@ fi
 
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 
 pubDelayFile=""
 runDelayFile="$finraFile"
@@ -68,10 +69,16 @@ curl --header 'Accept:application/json, text/plain, */*' \
     --header "Referer: https://tools.finra.org/fund_analyzer/search" \
     -b $cookies \
     --data "$searchFile" \
-    -sSL "https://tools.finra.org/fa_api/search/funds" | #tee raw.json |
-    node ./node-process-finra.js | jq . >"$tmpFile"
-#jq . <raw.json >raw.jq.json
-#wc ../data/finra.json $tmpFile raw.json raw.jq.json
+    -sSL "https://tools.finra.org/fa_api/search/funds" -o raw.json
+if [ $? -ne 0 ] || [ ! -s raw.json ]; then
+    echo "finra fund search download failed."
+    rm -f raw.json
+    exit 1
+fi
+if ! runNode "$tmpFile" raw.json ./node-process-finra.js; then
+    echo "node-process-finra failed (status ${statuses[*]}), raw output kept in $tmpFile.raw."
+    exit 1
+fi
 if [ ! -s "$tmpFile" ]; then
     echo "Empty $tmpFile file."
     exit 1

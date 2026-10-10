@@ -37,6 +37,7 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 
 if [ ! -s "$fundsMetaFile" ]; then
     echo "$fundsMetaFile does not exist, exiting..."
@@ -67,8 +68,10 @@ cat $fundsList |
             [ "$(stat -c '%s' $tickerFile)" -lt 6 ] && continue
 
         #echo "updating $ticker..."
-        node ./node-taxation-calc.js <"$tickerFile" |
-            jq . >"$taxFile"
+        if ! runNode "$taxFile" "$tickerFile" ./node-taxation-calc.js; then
+            echo "node-taxation-calc failed (status ${statuses[*]}) for $ticker, skipping publish."
+            continue
+        fi
 
         tickerDir="$cloudFlareHome/$accountClass/$ticker/"
         [ -d "$tickerDir" ] || mkdir -p "$tickerDir"

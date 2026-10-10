@@ -2,6 +2,7 @@
 // quotes and adds settlement/forward REFCPI, seasonal ratios and the forward clean price.
 // Options: --repoRate=auto|<decimal> --priceSide=ask|bid --mktBonds=<path> --asOfDate=YYYY-MM-DD
 // repoRate=auto derives the financing rate from the T-bills bracketing the forward date.
+import { readText } from "../lib/jsonIO.mjs";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -152,7 +153,7 @@ function toIso(d) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const options = parseOptions(process.argv.slice(2).join(" "));
-    const meta = parseMeta(fs.readFileSync(0, "utf-8"));
+    const meta = parseMeta(await readText());
     const quotes = JSON.parse(fs.readFileSync(options.mktBonds, "utf-8"));
     const table = await loadRefCpiTable({ asOfDate: options.asOfDate });
     let holidays = [];

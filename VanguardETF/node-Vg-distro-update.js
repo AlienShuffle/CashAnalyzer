@@ -6,7 +6,9 @@ require('../lib/dynamicSort.js')();
 const ticker = (process.argv[2]) ? process.argv[2] : null;
 
 // read in from stdin, the yieldFinder.app source data json file.
-const stdinBuffer = fs.readFileSync(0, 'utf-8');
+const { readText, runMain } = require('../lib/jsonIO.js');
+runMain(async () => {
+const stdinBuffer = await readText();
 const json = JSON.parse(stdinBuffer);
 const distros = json.divCapGain.item;
 // check if distro list is empty.
@@ -57,3 +59,4 @@ for (let i = 0; i < distros.length; i++) {
 let results = [];
 for (i in resp) { results.push(resp[i]); }
 console.log(JSON.stringify(results.sort(dynamicSort('-recordDate'))));
+});

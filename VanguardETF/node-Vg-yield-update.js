@@ -8,7 +8,9 @@ const ticker = (process.argv[2] && process.argv[2].length > 1) ? process.argv[2]
 if (ticker == '') throw 'missing argv[2]=ticker!';
 
 // read in from stdin, the source data json file.
-const stdinBuffer = fs.readFileSync(0, 'utf-8');
+const { readText, runMain } = require('../lib/jsonIO.js');
+runMain(async () => {
+const stdinBuffer = await readText();
 const json = JSON.parse(stdinBuffer);
 const distros = json.divCapGain.item;
 // check if distro list is empty.
@@ -33,3 +35,4 @@ if (Array.isArray(distros)) {
     resp.push(parseIt(distros));
 }
 console.log(JSON.stringify(resp));
+});

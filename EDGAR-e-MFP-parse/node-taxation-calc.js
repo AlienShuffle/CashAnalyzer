@@ -1,5 +1,5 @@
+import { readText } from "../lib/jsonIO.mjs";
 import { duGetDateFromYYYYMMDD } from "../lib/dateUtils.mjs";
-import { readFileSync } from 'fs';
 import dynamicSort from '../lib/dynamicSort.mjs'
 import process from 'node:process';
 import { time } from "node:console";
@@ -7,7 +7,7 @@ import { time } from "node:console";
 const debug = false;    // turn on for more logging.
 
 // read in the MFP XML file from stdin.
-const stdinBuffer = readFileSync(0, 'utf-8');
+const stdinBuffer = await readText();
 const json = JSON.parse(stdinBuffer);
 
 if (json.length == 0) process.exit(1);

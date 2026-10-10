@@ -37,6 +37,7 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 
 if [ ! -s "$fundsMetaFile" ]; then
     echo "$fundsMetaFile does not exist, exiting..."
@@ -73,8 +74,14 @@ cat $fundsList |
         #echo "updating $ticker..."
         find "$cikDir" -type f -exec cat {} \; |
             jq -s "flatten | [.[] | select(.ticker==\"$ticker\")]" >tmp.json
-        node ./sortReportDate.js <tmp.json |
-            jq . >$tickerFile
+        if ! pipeOk "${PIPESTATUS[@]}"; then
+            echo "collecting $ticker reports failed, skipping."
+            continue
+        fi
+        if ! runNode "$tickerFile" tmp.json ./sortReportDate.js; then
+            echo "sortReportDate failed (status ${statuses[*]}) for $ticker, skipping publish."
+            continue
+        fi
 
         tickerDir="$cloudFlareHome/$accountClass/$ticker/"
         [ -d "$tickerDir" ] || mkdir -p "$tickerDir"

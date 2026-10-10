@@ -37,6 +37,7 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 
 yieldReportsDir="yields"
 
@@ -51,15 +52,19 @@ find $MFPFilesDir -type f -name '*.xml' -print |
         #echo "filingDate=$filingDate"
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$xmlFile" -nt "$newFile" ]; then
             echo processing $xmlFile
-            node node-parse-MFP-file.js "$fundsMetaFile" "$filingDate" <"$xmlFile" | jq . >"$newFile"
+            runNode "$newFile" "$xmlFile" node-parse-MFP-file.js "$fundsMetaFile" "$filingDate" ||
+                echo "node-parse-MFP-file failed (status ${statuses[*]}) for $xmlFile"
         fi
         yieldDir="$yieldReportsDir/$accession"
         [ -d "$yieldDir" ] || mkdir -p "$yieldDir"
         yieldFile="$yieldDir/$(basename $xmlFile | sed -e 's/\.xml/\.json/')"
         if [ -n "$forceRun" ] || [ ! -s "$yieldFile" ] || [ "$xmlFile" -nt "$yieldFile" ]; then
             echo processing yield for $xmlFile
-            node node-parse-MFP-yield.js "$fundsMetaFile" <"$xmlFile" | jq . >"$yieldFile"
-            ../bin/MM-update-common-job.sh -f --injectProcessedJson $yieldFile
+            if runNode "$yieldFile" "$xmlFile" node-parse-MFP-yield.js "$fundsMetaFile"; then
+                ../bin/MM-update-common-job.sh -f --injectProcessedJson $yieldFile
+            else
+                echo "node-parse-MFP-yield failed (status ${statuses[*]}) for $xmlFile"
+            fi
         fi
     done
 exit 0

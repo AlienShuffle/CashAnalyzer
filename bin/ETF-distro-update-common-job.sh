@@ -88,8 +88,9 @@ if [ -n "$collectionArg" ]; then
 else
   $collectionScript >"$jsonNew"
 fi
-if [ ! $? ]; then
-  echo "$ticker distro retrieval failed, exiting."
+collectStatus=$?
+if [ "$collectStatus" -ne 0 ]; then
+  echo "$ticker distro retrieval failed (status $collectStatus), exiting."
   exit 1
 fi
 if [ ! -s "$jsonNew" ]; then

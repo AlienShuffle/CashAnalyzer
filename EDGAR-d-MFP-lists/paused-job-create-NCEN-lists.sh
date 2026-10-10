@@ -37,6 +37,7 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 
 # create data source file paths (move to meta.common.sh once this is fully implemented.)
 NCENlistsDir="../EDGAR-d-MFP-lists/NCEN-lists"
@@ -47,7 +48,8 @@ find $submissionsFilesDir -type f -print |
         newFile="$NCENlistsDir/$(basename $submissionFile)"
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$submissionFile" -nt "$newFile" ]; then
             echo processing $submissionFile
-            node node-parse-submission-file.js 'N-CEN' <"$submissionFile" | jq . >"$newFile"
+            runNode "$newFile" "$submissionFile" node-parse-submission-file.js 'N-CEN' ||
+                echo "node-parse-submission-file failed (status ${statuses[*]}) for $submissionFile"
         fi
     done
 exit 0

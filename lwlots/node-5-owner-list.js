@@ -1,6 +1,6 @@
+import { readText } from "../lib/jsonIO.mjs";
 import { isEmptyLot, isHomeLot } from './node-common-code.js';
 import dynamicSort from '../lib/dynamicSort.mjs';
-import { readFileSync } from 'fs';
 
 // [{ owner, lots:[{type, lot}, ...] }, ...]
 let ownersList = [];
@@ -57,7 +57,7 @@ function addOwnerToList(owner, lot, type) {
 }
 
 // read HTML from file given as stdin, this is a lot-detail.json.
-const inputBuffer = readFileSync(0, 'utf8');
+const inputBuffer = await readText();
 const lotDetailJson = JSON.parse(inputBuffer);
 function getLotDetail(lot) {
     for (let i = 0; i < lotDetailJson.length; i++) {

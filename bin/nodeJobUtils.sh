@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# Shared helpers for the *-update-common-job.sh scripts (source this file).
+# Shared helpers for job scripts that run node (source this file).
 #
 # Node is never fed through a pipe: node v24.21.0 intermittently crashed reading piped stdin
 # (fs.readFileSync(0)), and the truncated output of `... | node | jq . >file` pipelines got published.
@@ -22,6 +22,7 @@ pipeOk() {
 # usage: runNode <outFile> <stdinFile|-> <node args...>
 #   runs node with stdin redirected from a file (or /dev/null), then pretty prints its output into <outFile> with jq.
 #   sets statuses=(nodeStatus jqStatus); the raw node output is kept in <outFile>.raw only when a step fails.
+#   <outFile> is only replaced when both steps succeed.
 runNode() {
     local out="$1" in="$2" raw="$1.raw" err="${errFile:-/dev/stderr}" nodeStatus jqStatus=0
     shift 2
@@ -29,11 +30,26 @@ runNode() {
     node "$@" <"$in" >"$raw" 2>>"$err"
     nodeStatus=$?
     if [ "$nodeStatus" -eq 0 ]; then
-        jq . "$raw" >"$out" 2>>"$err"
+        jq . "$raw" >"$out.tmp.$$" 2>>"$err" && mv -f "$out.tmp.$$" "$out"
         jqStatus=$?
+        rm -f "$out.tmp.$$"
     fi
     statuses=("$nodeStatus" "$jqStatus")
     pipeOk "${statuses[@]}" && rm -f "$raw"
+}
+# usage: nodeJson <stdinFile|-> <node args...>
+#   for collection scripts: runs node with stdin from a file (or /dev/null) and pretty prints its JSON to stdout
+#   only when node succeeds. Returns non-zero if either node or jq fails.
+nodeJson() {
+    local in="$1" raw status
+    shift
+    [ "$in" = "-" ] && in=/dev/null
+    raw=$(mktemp) || return 1
+    node "$@" <"$in" >"$raw"
+    status=$?
+    [ "$status" -eq 0 ] && { jq . "$raw"; status=$?; }
+    rm -f "$raw"
+    return "$status"
 }
 # usage: publishFile <srcFile> <destFile>  - atomically replace destFile with a copy of srcFile.
 publishFile() {

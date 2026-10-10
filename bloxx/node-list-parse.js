@@ -1,3 +1,4 @@
+import { readText } from "../lib/jsonIO.mjs";
 import { parse } from 'node-html-parser';
 import { readFileSync } from 'fs';
 
@@ -5,7 +6,7 @@ if (process.argv.length != 3) throw 'missing argv[2] tickerlist.csv';
 const tickerList = readFileSync(process.argv[2], 'utf-8').split("\n");
 
 // read HTML from stdin - expects BondBloxx ticker table HTML
-const htmlString = readFileSync(0, 'utf8');
+const htmlString = await readText();
 const root = parse(htmlString);
 
 // Extract the first table (ticker-table)

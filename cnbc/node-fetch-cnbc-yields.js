@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readText } from "../lib/jsonIO.mjs";
 
 // Function to convert a string like "20250430000000" to ISO date "YYYY-MM-DD"
 const convertToISODate = (dateStr) => `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`;
@@ -20,7 +20,7 @@ function buildUrl(symbol, timeRange) {
 }
 
 // read in from stdin, a list of tickers to query.
-const stdinBuffer = readFileSync(0, 'utf-8');
+const stdinBuffer = await readText();
 const tickers = stdinBuffer.split("\n").filter(line => line.trim() != "");
 
 let resp = [];

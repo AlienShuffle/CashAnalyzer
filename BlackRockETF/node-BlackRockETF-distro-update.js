@@ -1,5 +1,5 @@
 // Work on POSIX and Windows
-import { readFileSync } from "fs";
+import { readText } from "../lib/jsonIO.mjs";
 import dynamicSort from '../lib/dynamicSort.mjs';
 import { duGetISOString } from "../lib/dateUtils.mjs";
 
@@ -30,7 +30,7 @@ function parseDateValue(value) {
     return duGetISOString(date);
 }
 
-const contentText = readFileSync(0, 'utf-8');
+const contentText = await readText();
 const sheetMatch = contentText.match(/<ss:Worksheet[^>]*ss:Name="Distributions"[^>]*>([\s\S]*?)<\/ss:Worksheet>/i);
 if (!sheetMatch) {
     throw new Error('Distribution worksheet not found in BlackRock document');

@@ -1,3 +1,4 @@
+import { readText } from "../lib/jsonIO.mjs";
 import { duGetDateFromYYYYMMDD } from "../lib/dateUtils.mjs";
 import { XMLParser } from 'fast-xml-parser';
 import { XMLValidator } from 'fast-xml-parser';
@@ -35,7 +36,7 @@ if (debug) console.log('fundList.length=' + fundList.length)
 const filingDate = process.argv[3];
 
 // read in the MFP XML file from stdin.
-const xmlFile = readFileSync(process.stdin.fd, 'utf8');
+const xmlFile = await readText();
 if (debug) console.log('xmlFile.length=' + xmlFile.length);
 // validate the file to know it will parse.
 const result = XMLValidator.validate(xmlFile);

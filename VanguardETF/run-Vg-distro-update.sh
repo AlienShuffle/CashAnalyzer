@@ -41,6 +41,7 @@ if [ -z "$ticker" ]; then
 fi
 
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 source ../bin/skipWeekends.sh
 
 jsonNew="history/$ticker-distro-new.json"
@@ -60,9 +61,12 @@ source ../bin/testDelays.sh
 curlFile="$ticker-file.json"
 curl -sSL -o- --referer https://investor.vanguard.com \
   https://investor.vanguard.com/investment-products/etfs/profile/api/$ticker/distribution >"$curlFile"
-node ./node-Vg-distro-update.js <"$curlFile" | jq . >"$jsonNew"
-if [ ! $? ]; then
-  echo "$ticker distro retrieval failed, exiting."
+if [ $? -ne 0 ]; then
+  echo "$ticker distro download failed, exiting."
+  exit 1
+fi
+if ! runNode "$jsonNew" "$curlFile" ./node-Vg-distro-update.js; then
+  echo "$ticker distro retrieval failed (status ${statuses[*]}), raw output kept in $jsonNew.raw, exiting."
   exit 1
 fi
 if [ ! -s "$jsonNew" ]; then

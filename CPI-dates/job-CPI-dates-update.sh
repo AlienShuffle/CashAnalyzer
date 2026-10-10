@@ -77,8 +77,7 @@ if [ ! -s "$scriptFile" ]; then
         exit 1
     fi
 fi
-node $scriptFile "$nodeArg" >"$jsonNew"
-if [ ! $? ]; then
+if ! node $scriptFile "$nodeArg" >"$jsonNew"; then
     echo "$sourceName rate retrieval failed, exiting."
     exit 1
 fi

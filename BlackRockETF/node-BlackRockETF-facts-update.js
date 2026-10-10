@@ -1,5 +1,5 @@
+import { readText } from "../lib/jsonIO.mjs";
 import puppeteer from "puppeteer";
-import { readFileSync } from "fs";
 import { extractFundFactsFromText } from "./lib/blackrockFactsParser.mjs";
 
 //function safeObjectRef(obj) { return (typeof obj === 'undefined') ? '' : obj; }
@@ -16,7 +16,7 @@ const browser = await browserPromise;
 
 // this is the main function
 // get a list of tickers with site URL (ticker,url) from stdin, scrape each one, and output facts as JSON to stdout
-const rawFunds = readFileSync(0, 'utf8');
+const rawFunds = await readText();
 const funds = rawFunds.split('\n').filter(line => line.trim().length > 0);
 if (debug) console.error(`Scraping: '${funds.join(", ")}'`);
 

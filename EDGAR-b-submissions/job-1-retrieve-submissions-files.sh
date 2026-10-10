@@ -53,7 +53,14 @@ pubDelayFile=""
 runDelayFile="$submissionsCIKs"
 source ../bin/testDelays.sh
 
-node ./node-create-submissions-CIKs.js <"$companyMap" | sort -u >$submissionsCIKs
+if ! node ./node-create-submissions-CIKs.js <"$companyMap" >"$submissionsCIKs.raw" ||
+    ! sort -u "$submissionsCIKs.raw" >"$submissionsCIKs.tmp"; then
+    echo "node-create-submissions-CIKs failed, raw output kept in $submissionsCIKs.raw."
+    rm -f "$submissionsCIKs.tmp"
+    exit 1
+fi
+mv -f "$submissionsCIKs.tmp" "$submissionsCIKs"
+rm -f "$submissionsCIKs.raw"
 cat $submissionsCIKs |
     while IFS= read -r cik; do
         echo retrieving $cik

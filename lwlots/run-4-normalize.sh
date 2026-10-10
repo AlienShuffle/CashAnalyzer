@@ -12,11 +12,15 @@ workDir="${1:-.}"
 
 # Get the directory where this script is located
 scriptDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$scriptDir/../bin/nodeJobUtils.sh"
 
 exportPrefix=4-lot-normalized
 cd "$workDir" || { echo "Error: Cannot change to directory: $workDir"; exit 1; }
 
-cat 2-lot-detail.json | node "$scriptDir/node-4-normalize-names.js" | jq . > "$exportPrefix.json"
+if ! runNode "$exportPrefix.json" 2-lot-detail.json "$scriptDir/node-4-normalize-names.js"; then
+    echo "$(basename "$0") failed (status ${statuses[*]}), raw output kept in $exportPrefix.json.raw."
+    exit 1
+fi
 cat "$exportPrefix.json" | "$scriptDir/csv-2-lot-detail.sh" > "$exportPrefix.csv"
 rm -f $listTmpFile $curlTmpFile
 

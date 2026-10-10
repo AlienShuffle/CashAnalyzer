@@ -40,6 +40,7 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 
 if [ ! -s "$fundsMetaFile" ] ||
     [ "$fundsMetaFile" -ot "$companyMap" ] ||
@@ -51,7 +52,11 @@ else
     runDelayFile="$fundsMetaFile"
     source ../bin/testDelays.sh
 fi
-cat "$finraFile" | node ./node-update-metaData.js "$companyMap" "$fiscalYearFile" | jq . >fundMeta.tmp.json
+if ! runNode fundMeta.tmp.json "$finraFile" ./node-update-metaData.js "$companyMap" "$fiscalYearFile"; then
+    echo "node-update-metaData failed (status ${statuses[*]}), raw output kept in fundMeta.tmp.json.raw."
+    rm -f fundMeta.tmp.json
+    exit 1
+fi
 if ../bin/jsonDifferent.sh fundMeta.tmp.json "$fundsMetaFile"; then
     cat fundMeta.tmp.json >"$fundsMetaFile"
     echo $fundsMetaFile updated.

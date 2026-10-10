@@ -1,3 +1,4 @@
+import { readText } from "../lib/jsonIO.mjs";
 import puppeteer from "puppeteer";
 import {
   readFileSync,
@@ -30,7 +31,7 @@ const downloadTimeoutMs = 60000;
 
 // this is the main function
 // get a list of tickers from stdin, scrape each one, and output facts as JSON to stdout
-const rawTickers = readFileSync(0, 'utf8');
+const rawTickers = await readText();
 const tickers = rawTickers.split('\n').filter(line => line.trim().length > 0);
 if (debug) console.error(`Scraping: '${tickers.join(", ")}'`);
 

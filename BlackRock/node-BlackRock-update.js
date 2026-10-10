@@ -1,5 +1,5 @@
+import { readText } from "../lib/jsonIO.mjs";
 import { duGetISOString } from "../lib/dateUtils.mjs";
-import { readFileSync } from "fs";
 
 function safeObjectRef(obj) {
     if (typeof obj === "undefined") return "";
@@ -7,7 +7,7 @@ function safeObjectRef(obj) {
 }
 
 // read in from stdin, the BlackRock json file.
-const stdinBuffer = readFileSync(0, 'utf-8');
+const stdinBuffer = await readText();
 const json = JSON.parse(stdinBuffer);
 //console.log(`json.length = ${json.length}`);
 

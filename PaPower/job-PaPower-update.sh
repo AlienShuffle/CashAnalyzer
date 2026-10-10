@@ -50,6 +50,7 @@ fi
 # look for a -f to force run, overriding the time delays.
 
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 # current rate files
 jsonRateNew="$bankName-rate-new.json"
 jsonRateFlare="$cloudFlareHome/$bankName/$bankName-rate.json"
@@ -74,13 +75,8 @@ if [ ! -s "$scriptFile" ]; then
     echo "Missing $scriptFile file."
     exit 1
 fi
-if [ -z "$stdInFile" ]; then
-    node $scriptFile "$nodeArg" | jq . >"$jsonRateNew"
-else
-    node $scriptFile "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
-fi
-if [ ! $? ]; then
-    echo "$bankName rate retrieval failed, exiting."
+if ! runNode "$jsonRateNew" "${stdInFile:--}" $scriptFile "$nodeArg"; then
+    echo "$bankName rate retrieval failed (status ${statuses[*]}), raw output kept in $jsonRateNew.raw, exiting."
     exit 1
 fi
 if [ ! -s "$jsonRateNew" ]; then

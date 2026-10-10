@@ -1,3 +1,4 @@
+import { readText } from "../lib/jsonIO.mjs";
 import { readFileSync } from 'fs';
 import process from 'process';
 
@@ -11,7 +12,7 @@ function isValidAccession(num) {
             return true;
     return false;
 }
-const downloadedFilesBuffer = readFileSync(process.stdin.fd, 'utf-8');
+const downloadedFilesBuffer = await readText();
 const downloadedList = downloadedFilesBuffer.split('\n');
 for (let i = 0; i < downloadedList.length; i++) {
     const path = downloadedList[i];

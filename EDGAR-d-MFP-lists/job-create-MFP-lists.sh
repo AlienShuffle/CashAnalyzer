@@ -37,13 +37,15 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 
 find $submissionsFilesDir -type f -print |
     while read -r submissionFile; do
         newFile="$MFPListsDir/$(basename $submissionFile)"
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$submissionFile" -nt "$newFile" ]; then
             echo processing $submissionFile # "=>" $newFile
-            node node-parse-submission-file.js <"$submissionFile" | jq . >"$newFile"
+            runNode "$newFile" "$submissionFile" node-parse-submission-file.js ||
+                echo "node-parse-submission-file failed (status ${statuses[*]}) for $submissionFile"
         fi
     done
 
@@ -54,7 +56,8 @@ find $submissionsExtensionsDir -type f -print |
         #echo $cik
         if [ -n "$forceRun" ] || [ ! -s "$newFile" ] || [ "$submissionFile" -nt "$newFile" ]; then
             echo processing $submissionFile
-            node node-parse-submission-extension.js "$cik" <"$submissionFile" | jq . >"$newFile"
+            runNode "$newFile" "$submissionFile" node-parse-submission-extension.js "$cik" ||
+                echo "node-parse-submission-extension failed (status ${statuses[*]}) for $submissionFile"
         fi
     done
 exit 0

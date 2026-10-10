@@ -1,4 +1,5 @@
 //import { duGetDateFromYYYYMMDD } from "../lib/dateUtils.mjs";
+import { readText } from "../lib/jsonIO.mjs";
 import dynamicSort from '../lib/dynamicSort.mjs';
 import { XMLParser } from 'fast-xml-parser';
 import { XMLValidator } from 'fast-xml-parser';
@@ -24,7 +25,7 @@ function findFund(cik, series, classId) {
 if (debug) console.log('fundList.length=' + fundList.length)
 
 // read in the MFP XML file from stdin.
-const xmlFile = readFileSync(process.stdin.fd, 'utf8');
+const xmlFile = await readText();
 // validate the file to know it will parse.
 const result = XMLValidator.validate(xmlFile);
 if (result.err) throw "XML invalid: " + result.err.msg

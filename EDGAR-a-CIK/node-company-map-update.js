@@ -1,3 +1,4 @@
+import { readText } from "../lib/jsonIO.mjs";
 import { XMLParser } from 'fast-xml-parser';
 import { XMLValidator } from 'fast-xml-parser';
 import { readFileSync } from 'fs';
@@ -19,7 +20,7 @@ const manualJson = JSON.parse(manualListBuffer);
 //console.log(`manualJson.length=${manualJson.length}`);
 
 // read in the MFP XML file from stdin.
-const xmlFile = readFileSync(0, 'utf8');
+const xmlFile = await readText();
 // validate the file to know it will parse.
 const result = XMLValidator.validate(xmlFile);
 if (result.err) throw "XML invalid: " + result.err.msg

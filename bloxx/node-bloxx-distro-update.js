@@ -1,12 +1,12 @@
+import { readText } from "../lib/jsonIO.mjs";
 import dynamicSort from '../lib/dynamicSort.mjs';
 import { parse } from 'node-html-parser';
-import { readFileSync } from 'fs';
 
 const ticker = (process.argv[2] && process.argv[2].length > 1) ? process.argv[2] : '';
 if (ticker == '') throw 'missing argv[2] ticker!';
 
 // read HTML from stdin - expects BondBloxx ticker table HTML
-const htmlString = readFileSync(0, 'utf8');
+const htmlString = await readText();
 const root = parse(htmlString);
 
 // Extract the first table (ticker-table)

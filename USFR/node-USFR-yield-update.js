@@ -1,9 +1,9 @@
-import { readFileSync } from "fs";
+import { readText } from "../lib/jsonIO.mjs";
 
 function safeObjectRef(obj) { return (typeof obj === 'undefined') ? '' : obj; }
 
 // read in from stdin, the data produced by the facts-update prociess as a json file.
-const stdinBuffer = readFileSync(0, 'utf-8');
+const stdinBuffer = await readText();
 const json = JSON.parse(stdinBuffer);
 // strip facts only data and output in rates.json file format on stdout.
 let resp = [];

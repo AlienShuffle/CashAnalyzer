@@ -1,5 +1,5 @@
+import { readText } from "../lib/jsonIO.mjs";
 import dynamicSort from '../lib/dynamicSort.mjs';
-import { readFileSync } from 'fs';
 
 // [{ address, lots:[lot, ...] }, ...]
 let addrList = [];
@@ -49,7 +49,7 @@ function addAddressToList(address, lot) {
 }
 
 // read HTML from file given as stdin, this is a lot-detail.json.
-const inputBuffer = readFileSync(0, 'utf8');
+const inputBuffer = await readText();
 const json = JSON.parse(inputBuffer);
 
 for (let i = 0; i < json.length; i++) {

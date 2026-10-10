@@ -1,4 +1,5 @@
 // Fits the TIPS Svensson zero curve from the published mktTips rows.
+import { readText } from "../lib/jsonIO.mjs";
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 import { daysBetween, normalizeDate } from "./lib/dates.mjs";
@@ -137,7 +138,7 @@ export function buildTipsCurveAnalysis(tipsRows, { basis = "settle", nominalCurv
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const basis = (process.argv[2] || "--basis=settle").replace(/^--basis=/, "");
-    const tipsRows = JSON.parse(fs.readFileSync(0, "utf-8"));
+    const tipsRows = JSON.parse(await readText());
     const nominalArg = process.argv.slice(3).find(arg => arg.startsWith("--nominalCurve="));
     const nominalCurve = nominalArg ? JSON.parse(fs.readFileSync(nominalArg.slice("--nominalCurve=".length), "utf-8")) : null;
     console.log(JSON.stringify(buildTipsCurveAnalysis(tipsRows, { basis, nominalCurve })));

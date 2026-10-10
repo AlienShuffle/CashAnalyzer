@@ -1,3 +1,4 @@
+import { readText } from "../lib/jsonIO.mjs";
 import puppeteer from "puppeteer";
 import { readFileSync } from 'fs';
 import dynamicSort from '../lib/dynamicSort.mjs';
@@ -9,9 +10,8 @@ const debug = false;
 if (process.argv.length != 3) throw 'missing argv[2] tickerlist.csv';
 const tickerList = readFileSync(process.argv[2], 'utf-8').split("\n");
 
-// read entire stdin (fd 0) as the JSON payload; using process.stdin directly
-// would pass a Socket object which fs.readFileSync doesn't accept.
-const contentText = readFileSync(0, 'utf-8');
+// read entire stdin as the JSON payload.
+const contentText = await readText();
 const json = JSON.parse(contentText);
 const datas = json.data.funds.etfs.datas;
 

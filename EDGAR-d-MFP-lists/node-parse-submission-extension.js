@@ -11,7 +11,9 @@ if (cik == '') throw 'missing arv[2]=cik!';
 const formType = (process.argv[3] && process.argv[3].length > 1) ? process.argv[3] : 'MFP';
 
 // read in from stdin, the list of submissions for this CIK and pull out the requested reports and export the details.
-const stdinBuffer = fs.readFileSync(0, 'utf-8');
+const { readText, runMain } = require('../lib/jsonIO.js');
+runMain(async () => {
+const stdinBuffer = await readText();
 const json = JSON.parse(stdinBuffer);
 let resp = [];
 // go through each ticker report provided, see if it is in the track list, publish map if in the list.
@@ -40,3 +42,4 @@ for (let i = 0; i < json.accessionNumber.length; i++) {
     });
 }
 console.log(JSON.stringify(resp));
+});

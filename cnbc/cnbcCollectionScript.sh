@@ -1,2 +1,3 @@
 #!/usr/bin/bash
-node ../cnbc/node-fetch-cnbc-yields.js | jq .
+source ../bin/nodeJobUtils.sh
+nodeJson - ../cnbc/node-fetch-cnbc-yields.js

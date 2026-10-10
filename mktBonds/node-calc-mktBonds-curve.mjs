@@ -3,6 +3,7 @@
 // stdin: published mktTips rows (supply asOfDate, settle date, forward/maxREFCPI date and repo rate).
 // Options (single argument, space separated): --basis=settle|forward --mktBonds=<path>
 //   --priceSide=ask|bid --maxDeviationBp=<bp>
+import { readText } from "../lib/jsonIO.mjs";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -135,7 +136,7 @@ export function buildNominalCurveAnalysis(quotes, context, { basis = "settle", p
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const options = parseOptions(process.argv.slice(2).join(" "));
-    const tipsRows = JSON.parse(fs.readFileSync(0, "utf-8"));
+    const tipsRows = JSON.parse(await readText());
     const quotes = JSON.parse(fs.readFileSync(options.mktBonds, "utf-8"));
     const [first] = tipsRows;
     if (!first) throw new Error("No mktTips rows supplied for the nominal curve");

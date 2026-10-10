@@ -1,9 +1,9 @@
-import { readFileSync } from "fs";
+import { readText } from "../lib/jsonIO.mjs";
 import dynamicSort from '../lib/dynamicSort.mjs';
 import { parseCsvToMatrix } from '../lib/parseCsv.mjs';
 
 const ticker = 'BOXX';
-const contentText = readFileSync(0, 'utf-8');
+const contentText = await readText();
 const csvMatrix = parseCsvToMatrix(contentText);
 
 const outputHeader = ["recordDate", "exDividendDate", "payableDate", "totalDistribution", "ordinaryIncome", "stcg", "ltcg", "returnOfCapital"];

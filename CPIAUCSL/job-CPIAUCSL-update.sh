@@ -74,8 +74,7 @@ if [ ! -s "$scriptFile" ]; then
     echo "Missing $scriptFile file."
     exit 1
 fi
-node $scriptFile "$nodeArg" >"$cvsNew"
-if [ ! $? ]; then
+if ! node $scriptFile "$nodeArg" >"$cvsNew"; then
     echo "$sourceName rate retrieval failed, exiting."
     exit 1
 fi

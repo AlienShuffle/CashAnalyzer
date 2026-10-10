@@ -1,10 +1,10 @@
-import { readFileSync } from 'fs';
+import { readText } from "../lib/jsonIO.mjs";
 
 // export field separator for the stats output. '\t\ for tab, ',' for comma, etc.
 const sep = ',';
 
 // Read the lot report from stdin and parse it as JSON.
-const lotReportBuffer = readFileSync(0, 'utf8');
+const lotReportBuffer = await readText();
 const lotDetailsJson = JSON.parse(lotReportBuffer);
 // Build a map of all lotDetails. 
 const lotDetailsMap = new Map();

@@ -1,5 +1,6 @@
 // Reads the collector's JSON records on stdin and writes the published mktBonds table as JSON.
 // interest_rate is the coupon as a decimal and bid/ask are per $100.
+import { readText } from "../lib/jsonIO.mjs";
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 import { roundPrice, roundYield } from "./lib/rounding.mjs";
@@ -18,6 +19,6 @@ export function toPublishedRows(records) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-    const records = JSON.parse(fs.readFileSync(0, "utf-8"));
+    const records = JSON.parse(await readText());
     console.log(JSON.stringify(toPublishedRows(records)));
 }

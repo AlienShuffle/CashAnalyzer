@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readText } from "../lib/jsonIO.mjs";
 import dynamicSort from '../lib/dynamicSort.mjs';
 import { duGetISOString } from "../lib/dateUtils.mjs";
 function safeObjectRef(obj) { return (typeof obj === 'undefined') ? '' : obj; }
@@ -6,7 +6,7 @@ function safeObjectRef(obj) { return (typeof obj === 'undefined') ? '' : obj; }
 const ticker = (process.argv[2] && process.argv[2].length > 1) ? process.argv[2] : '';
 if (ticker == '') throw 'missing argv[2] ticker!';
 
-const contentText = readFileSync(0, 'utf-8');
+const contentText = await readText();
 const json = JSON.parse(contentText);
 let results = [];
 for (let i = 0; i < json.length; i++) {
