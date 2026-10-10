@@ -1,4 +1,4 @@
-bankGetCachedRateHistory// Banks.RateHistory.gs - get historical APY rates for various bank products.
+// Banks.RateHistory.gs - get historical APY rates for various bank products.
 // v99 - reworked Bank API to be generic one entry point for all banks.
 // v103 - added bankGetCachedRateHistoryDates
 // v114 - moved to cloudFlare 
@@ -6,19 +6,15 @@ bankGetCachedRateHistory// Banks.RateHistory.gs - get historical APY rates for v
 // v127 - update to Banks v2 (split out each accountType's history into individual files)
 
 /**
- * Retrieve bank rate (APY) history for a bank account. This will use cached values if available.
- * Caching improves user experience and spreadsheet performance, but does not update the quotes as often,
- * causing mild delays in data in some cases. Not an issues with Price Yield History.
- * Returns a matrix with each row including
- * {[date, float, ]} [date, apy]
- * as an array returned from the fintools bank database.
- *
- * @param {string} bank Institution {"Ally"=, "Vanguard"}.
- * @param {string} account account type, varies {"Savings"=, "Checking"}.
- * @param {date} start_date First date for which to retrieve price and yield.
- * @param {date} end_date Last date for which to retrieve price and yield.
- * @param {false} forceRefresh [optional, default = false]. true forces a new query, ignores the cache.
- * @return [[asOfDate, apy]].
+ * Returns Cash Optimizer bank APY history in ascending date order, using the script cache.
+ * No header; APYs are decimals (0.04 = 4%). Throws when no matching history exists.
+ * Example: =bankGetCachedRateHistory("Ally", "Savings", DATE(2026,1,1), DATE(2026,10,10))
+ * @param {string} bank Bank source name.
+ * @param {string} account Exact account type.
+ * @param {Date|string} start_date Inclusive first date.
+ * @param {Date|string} end_date Inclusive last date.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date|number>>} Rows: [asOfDate, APY].
  * @customfunction
  */
 function bankGetCachedRateHistory(bank, account, start_date, end_date, forceRefresh = false) {
@@ -34,7 +30,7 @@ function bankGetCachedRateHistory(bank, account, start_date, end_date, forceRefr
     // parse the stored JSON if it exists and return to the caller.
     if (cacheVal != null && cacheVal.substring(0, 7) != 'failed:') {
       const cacheArray = JSON.parse(cacheVal);
-      for (i in cacheArray) {
+      for (const i in cacheArray) {
         if (cacheArray[i] != null && cacheArray[i][0])
           cacheArray[i][0] = new Date(cacheArray[i][0]);
       }
@@ -52,6 +48,9 @@ function bankGetCachedRateHistory(bank, account, start_date, end_date, forceRefr
       const startYear = dStart.getFullYear();
       const endYear = dEnd.getFullYear();
       const yearCount = endYear - startYear;
+      if (!Number.isFinite(dStart.getTime()) || !Number.isFinite(dEnd.getTime())) {
+        throw new Error('Invalid bank history date range');
+      }
 
       let datePairs = [];
       if (yearCount < 0 || dEnd < dStart) {
@@ -97,24 +96,23 @@ function bankGetCachedRateHistory(bank, account, start_date, end_date, forceRefr
   const resp = bankGetRateHistory(bank, account, start_date, end_date);
   // check if we found anything to return.
   if (resp.length < 1)
-    return;
+    throw new Error('No bank history for ' + bank + '/' + account + ' in the requested date range');
 
   // set ttl for 7AM as the tickers normally are not updated after 7AM. A user could force a refresh if necessary.
   const ttl = cacheCalcTTLAfterHour_(7);
   cacheLogTTL_(cacheKey, new Date, ttl);
-  cache.set(cacheKey, JSON.stringify(resp), ttl);
+  cache.set(cacheKey, JSON.stringify(resp), { expiry: ttl });
   return resp;
 }
 
 /**
- * Retrieve date range for the bank rate (APY) history for a bank acount. 
- * [date, date]
- * as an array returned from the fintools bank database.
- *
- * @param {string} bank Institution {"Ally"=, "Vanguard"}.
- * @param {string} account account type, varies {"Savings"=, "Checking"}
- * @param {boolean=} forceRefresh [optional, default = false]. true forces a new query, ignores the cache.
- * @return [oldestDate, newestDate]
+ * Returns the available Cash Optimizer APY history date range, using the script cache.
+ * Throws for an unknown bank/account pair. No header.
+ * Example: =bankGetCachedRateHistoryDates("Ally", "Savings")
+ * @param {string} bank Bank source name.
+ * @param {string} account Exact account type.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date>>} One row: [[oldestDate, newestDate]].
  * @customfunction
  */
 function bankGetCachedRateHistoryDates(bank, account, forceRefresh = false) {
@@ -146,7 +144,7 @@ function bankGetCachedRateHistoryDates(bank, account, forceRefresh = false) {
   // set ttl for 7AM as the tickers normally are not updated after 7AM. A user could force a refresh if necessary.
   const ttl = cacheCalcTTLAfterHour_(7);
   cacheLogTTL_(cacheKey, new Date, ttl);
-  cache.set(cacheKey, JSON.stringify(resp), ttl);
+  cache.set(cacheKey, JSON.stringify(resp), { expiry: ttl });
   return resp;
 }
 
@@ -156,8 +154,8 @@ function bankGetRateHistoryDates_(bank, account) {
   const resp = bankGetCurrentRateHistoryFileContents(bank, account);
   const json = JSON.parse(resp);
 
-  let oldestDate = new Date;
-  let newestDate = new Date("1/1/2000");
+  let oldestDate;
+  let newestDate;
   let accountFound = false;
 
   for (let r in json) {
@@ -165,10 +163,10 @@ function bankGetRateHistoryDates_(bank, account) {
     if (!safeObjectRef_(json[r].apy)) continue;
     accountFound = true;
     const jsonDate = duGetDateFromYYYYMMDD_(json[r].asOfDate);
-    if (jsonDate > newestDate) {
+    if (!newestDate || jsonDate > newestDate) {
       newestDate = jsonDate;
     }
-    if (jsonDate < oldestDate) {
+    if (!oldestDate || jsonDate < oldestDate) {
       oldestDate = jsonDate;
     }
   }
@@ -178,23 +176,24 @@ function bankGetRateHistoryDates_(bank, account) {
 
 // ---- This section is the internal control for retrieving cloudflare files with the data.
 /**
- * This retrieves the unprocessed contents of a bank rate history file.
- * This is here primarily to allow a file to be retrieved without knowledge of where or how the file is stored.
- * JSON structure is well defined though.
- *
- * @param {string} bank bank to query
- * @param {string} account bank account within the bank to query (new added in v127)
- * @return file contents.
+ * Fetches raw Cash Optimizer bank/account APY history JSON without caching.
+ * Entries contain accountType, asOfDate, and decimal apy. Tries legacy paths if needed.
+ * Example: =bankGetCurrentRateHistoryFileContents("Ally", "Savings")
+ * @param {string} bank Bank source name.
+ * @param {string} account Required account type.
+ * @return {string} JSON text, not parsed objects. Throws if all retrieval attempts fail.
  * @customfunction
  */
 function bankGetCurrentRateHistoryFileContents(bank, account) {
+  if (typeof bank !== 'string' || !bank.trim()) throw new Error('Bank name is required');
+  if (typeof account !== 'string' || !account.trim()) throw new Error('Bank account type is required');
   let path = 'Banks/' + bank + '/history/' + account.replaceAll(' ', '-') + '/rate-history.json';
   try {
     const contents = cloudGetFileContents_(path);
     if (contents.length > 0) return contents;
     Logger.log('empty or not found: ' + path);
   } catch (err) {
-    Logger.log('failed: retrieve ' + path + ': ' + err.message);
+    Logger.log('failed: retrieve ' + path + ': ' + (err.message || String(err)));
   }
   // if that fails, look in the base folder (no history) for account.
   path = 'Banks/' + bank + '/' + account.replaceAll(' ', '-') + '/rate-history.json';
@@ -203,7 +202,7 @@ function bankGetCurrentRateHistoryFileContents(bank, account) {
     if (contents.length > 0) return contents;
     Logger.log('empty or not found: ' + path);
   } catch (err) {
-    Logger.log('failed: retrieve ' + path + ': ' + err.message);
+    Logger.log('failed: retrieve ' + path + ': ' + (err.message || String(err)));
   }
   // If the file does not exist in the new format, look for it in the old format (this allows a transition).
   path = 'Banks/' + bank + '/' + bank + '-history.json'
@@ -212,22 +211,20 @@ function bankGetCurrentRateHistoryFileContents(bank, account) {
     if (contents.length > 0) return contents;
     Logger.log('empty or not found: ' + path);
   } catch (err) {
-    throw 'failed: retrieve ' + path + ': ' + err.message;
+    throw new Error('Failed to retrieve ' + path + ': ' + (err.message || String(err)));
   }
 }
 
 /**
- * Retrieve an array of available money market fund tickers from the bank database. 
- * This function cache's results.
- * returns an array of the following values: [[ticker, year-of-results, start-date, end-date]]
- * There will be one row for each year that a fund is bankd.
- *
- * @param {false} forceRefresh [optional, default = false]. true forces a new query, ignores the cache.
- * @return [[ticker, year-of-results, start-date, end-date]
+ * Returns available bank source names from Cash Optimizer's Banks/bank-list.txt.
+ * Uses the script cache. The source is a newline-separated list, not fund history.
+ * Example: =bankCachedAvailableBanks()
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<string>>} One bank name per row; no header.
  * @customfunction
  */
 function bankCachedAvailableBanks(forceRefresh = false) {
-  const cacheKey = "bankAvailableTickers-v128";
+  const cacheKey = "bankAvailableBanks-v157";
   const cache = new Cacher({
     cachePoint: CacheService.getScriptCache()
   });
@@ -248,9 +245,9 @@ function bankCachedAvailableBanks(forceRefresh = false) {
     try {
       file = cloudGetFileContents_('Banks/bank-list.txt');
     } catch (err) {
-      throw 'failed: retrieve Banks/bank-listtxt file: ' + err.message;
+      throw new Error('Failed to retrieve Banks/bank-list.txt: ' + (err.message || String(err)));
     }
-    const matrix = csvToMatrix_(file);
+    const matrix = file.trim().split(/\r?\n/).map(bank => [bank.trim()]).filter(row => row[0]);
     var data = [];
     for (let i = 0; i < matrix.length; i++) {
       data.push(matrix[i]);
@@ -263,6 +260,6 @@ function bankCachedAvailableBanks(forceRefresh = false) {
   // set ttl for 7am.
   const ttl = cacheCalcTTLAfterHour_(7);
   cacheLogTTL_(cacheKey, new Date, ttl);
-  cache.set(cacheKey, JSON.stringify(resp), ttl);
+  cache.set(cacheKey, JSON.stringify(resp), { expiry: ttl });
   return resp;
 }

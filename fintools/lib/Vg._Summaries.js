@@ -65,12 +65,12 @@ function vanguardGetPriceYieldAndAttributes_(getPrice = 1, getYield = 1, getID =
       // ticker is always included.
       dataRow.push(json.fund.entity[row].profile.ticker);
 
-      if (getPrice) dataRow.push(+json.fund.entity[row].dailyPrice.regular.price);
+      if (getPrice) dataRow.push(vanguardNumber_(json.fund.entity[row].dailyPrice.regular.price));
 
       // Yield: some funds don't provide it, so must check.
       if (getYield) {
         const yield = json.fund.entity[row].yield.yieldPct;
-        dataRow.push((yield) ? parseFloat(yield) / 100 : "");
+        dataRow.push(vanguardNumber_(yield, 100));
       }
 
       if (getID) dataRow.push(json.fund.entity[row].profile.fundId);
@@ -78,7 +78,10 @@ function vanguardGetPriceYieldAndAttributes_(getPrice = 1, getYield = 1, getID =
       if (getCategoryHigh) dataRow.push(json.fund.entity[row].profile.fundCategory.high.name);
       if (getAssetClass) dataRow.push(json.fund.entity[row].profile.fundCategory.customizedHighCategoryName);
       if (getCategoryLow) dataRow.push(json.fund.entity[row].profile.fundCategory.low.name);
-      if (getExpenseRatio) dataRow.push(parseFloat(safeObjectRef_(json.fund.entity[row].profile.expenseRatio)) / 100);
+      if (getExpenseRatio) {
+        const ratio = json.fund.entity[row].profile.expenseRatio;
+        dataRow.push(vanguardNumber_(ratio, 100));
+      }
       // Share class: requires checking three true/false attributes
       if (getShareClass) {
         let shareClass;
@@ -133,26 +136,34 @@ function vanguardGetBondAttributes_() {
 
     // Loop through funds (entities), and extract attributes of interest.
     let numRows = json.fund.entity.length;
-    for (row = 0; row < numRows; row++) {
+    for (let row = 0; row < numRows; row++) {
       // Only interested in Bond Funds.
       if (json.fund.entity[row].profile.fundCategory.high.name == "Bond Funds") {
         let dataRow = [];
         // must initialize new row array on each pass.
         dataRow.push(safeObjectRef_(json.fund.entity[row].profile.ticker));
         dataRow.push(safeObjectRef_(json.fund.entity[row].profile.longName));
-        dataRow.push(parseFloat(safeObjectRef_(json.fund.entity[row].attributes.averageDuration).replace("/ years/", "")));
-        dataRow.push(parseFloat(safeObjectRef_(json.fund.entity[row].attributes.averageMaturity).replace("/ years/", "")));
-        dataRow.push(safeObjectRef_(json.fund.entity[row].attributes.yieldToMaturity) / 100);
-        dataRow.push(safeObjectRef_(json.fund.entity[row].attributes.averageCoupon) / 100);
+        const attributes = json.fund.entity[row].attributes;
+        dataRow.push(vanguardNumber_(attributes.averageDuration));
+        dataRow.push(vanguardNumber_(attributes.averageMaturity));
+        dataRow.push(vanguardNumber_(attributes.yieldToMaturity, 100));
+        dataRow.push(vanguardNumber_(attributes.averageCoupon, 100));
 
         const a = json.fund.entity[row].asOfDate;
         dataRow.push((a && a.length) ? duGetDateFromYYYYMMDD_(a.substring(0, 10)) : "");
         // Asset class
         dataRow.push(safeObjectRef_(json.fund.entity[row].profile.fundCategory.customizedHighCategoryName));
-        dataRow.push(safeObjectRef_(json.fund.entity[row].profile.expenseRatio) / 100);
+        dataRow.push(vanguardNumber_(json.fund.entity[row].profile.expenseRatio, 100));
         data.push(dataRow);
       }
     }
   }
   return data;
+}
+
+function vanguardNumber_(value, divisor = 1) {
+  if (value == null || value === '') return '';
+  const number = parseFloat(value);
+  if (!Number.isFinite(number)) throw new Error('Invalid Vanguard numeric value: ' + value);
+  return number / divisor;
 }

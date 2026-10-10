@@ -18,11 +18,13 @@ functions and six documented script-callable zero-curve helpers. With its
 three existing Treasury custom functions, the toolkit retains all 36 worksheet
 functions. Names, argument defaults, return shapes, and financial calculations
 are preserved. Private trailing-underscore helpers remain inside the library.
-The existing fintools wrapper families are retained unchanged.
+The existing fintools wrapper families retain their callable names and now
+generate from the library's public JSDoc, including a correctly spelled
+`bankGetCachedAccountTypes` alias alongside `bankGetCachedAccounTypes`.
 
 ## Maintaining wrappers
 
-Edit financial implementations and their public JSDoc in [lib/](./lib/), then
+Edit implementations and their public JSDoc in [lib/](./lib/), then
 run from the repository root:
 
 ```sh
@@ -31,10 +33,11 @@ node fintools/sync-wrappers.mjs --check
 node --test mktBonds/test/*.test.mjs
 ```
 
-[sync-wrappers.mjs](./sync-wrappers.mjs) generates the new canonical wrappers
-and identical worksheet copies. It also maintains the worksheet's three
-Treasury adapters from the existing canonical
-[fintools.Treasury.js](./wrapper/fintools.Treasury.js). Do not edit generated
+[sync-wrappers.mjs](./sync-wrappers.mjs) generates all nine legacy `fintools.*`
+wrapper families and the migrated financial wrappers from library sources.
+It maintains identical financial worksheet copies and the worksheet's three
+Treasury adapters. Other legacy families are not copied into the toolkit.
+Do not edit generated
 files directly. The generator supports the migrated APIs' simple named
 parameters and literal defaults; new signatures must remain compatible or
 extend the generator and its tests.
@@ -44,6 +47,54 @@ Node regression/parity tests execute the actual fintools implementations.
 checks merged-source loading, declaration collisions, wrapper coverage and
 synchronization, argument/default forwarding, output identity, error
 propagation, and library-to-worksheet calculation/cache boundaries.
+[fintools-legacy.test.mjs](../mktBonds/test/fintools-legacy.test.mjs) exercises
+legacy API documentation/exposure, real cache helpers, service stubs, and
+fresh/cached/forced output contracts.
+
+## Legacy API contracts and compatibility
+
+Public library JSDoc and generated wrappers describe schemas, units, defaults,
+headers, sources, and examples. Rates, APYs, expense ratios, and price changes
+are decimals, not percentage points. Quote APIs return one-row two-dimensional
+tables; Yahoo expense ratio is a scalar number or `"n/a"`. Source dates are
+Date values on both fresh and cached reads. Yahoo quote dates preserve the
+epoch instant; the worksheet controls the displayed timezone.
+
+Intentional corrections to previously broken or misleading behavior:
+
+- `bankGetCurrentRateHistoryFileContents(bank, account)` requires the account;
+  its old wrapper incorrectly treated argument two as a refresh boolean.
+  Both raw bank-file APIs always fetch and have no refresh parameter.
+- `treasuryGetCachedRecentTBillCoupons()` now uses the cache by default.
+  "Coupons" remains a compatibility name for bank-discount rates.
+- Omitting the CMT year now selects the current year, not 2023. CMT `YYYYMM`
+  selects the full year; T-bill `YYYYMM` uses the month-specific endpoint.
+- Unknown Vanguard tickers/invalid column indices and missing named ranges
+  throw informative errors instead of silently returning `undefined`/`""`.
+- Empty requested bank/yield history throws explicitly. Cloud History
+  propagates retrieval/parse errors rather than returning misleading ticker
+  error text; failures are not cached. History gap filling carries forward
+  observations only between available dates, and is documented.
+- `ssTrackRangeUses` batch-reads the used range and matches exact
+  case-insensitive identifier tokens, ignoring quoted strings/sheet names and
+  function names. It is not a formula parser and does not resolve `INDIRECT`.
+  A1 output supports columns beyond AZ.
+- `ssSetNamedRangeValue` remains script/menu-callable but is no longer
+  advertised as a worksheet custom function (custom functions cannot write
+  arbitrary cells). `buildFidelityFundListTable` also remains script-callable;
+  a cold cache may require one request per fund, so use it from a script/menu
+  rather than a time-limited worksheet formula.
+
+Shared cache calculators bound expiry to 1-21,600 seconds, including the
+formerly multi-day Yahoo/Vanguard/Fidelity requests. Banks and Cloud History
+pass expiry through `Cacher`'s options object. Cacher child chunks also respect
+the six-hour limit. No multi-day persistence store was added; all cache entries
+are best-effort and can be evicted early.
+
+Changes require uploading the library and regenerated wrappers. Smoke-test
+with the generic development-mode consumer before publishing a new version;
+the cross-account toolkit remains pinned to 156 until you select that new
+published version. No manifest version is advanced automatically.
 
 ## Development and deployment
 

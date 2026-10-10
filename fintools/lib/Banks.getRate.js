@@ -4,15 +4,13 @@
 // v114 - moved to cloudFlare
 
 /**
- * Function to returns latest Bank Savings Rate looking in the cache first. This pulled
- * from readngtndude's Google Drive folder where a json file is updated daily using a
- * scheduled script run off a locally managed computer.
- * returns [[asOfDate, rate]]
- * 
- * @param {string} bank Institution {"Ally"=, "Vanguard"}.
- * @param {string} account account type, varies {"Savings"=, "Checking"}.
- * @param {boolean} forceRefresh [optional, default = false]. true forces a new query, ignores the cache.
- * @returns {[[date,float]]}
+ * Returns the latest bank APY from Cash Optimizer, using the script cache.
+ * No header. APY is a decimal (0.04 = 4%). Throws for an unknown account or missing rate.
+ * Example: =bankGetCachedRate("Ally", "Savings")
+ * @param {string} bank Bank source name; see bankCachedAvailableBanks.
+ * @param {string} account Account type, matched case-insensitively.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date|number>>} One row: [[asOfDate, APY]].
  * @customfunction
  */
 function bankGetCachedRate(bank, account, forceRefresh = false) {
@@ -79,14 +77,12 @@ function bankGetRate_(bank, account) {
 }
 
 /**
- * Function to returns latest Bank Savings Rate for accounts in the bank looking in the cache first. This pulled
- * from readngtndude's Google Drive folder where a json file is updated daily using a
- * scheduled script run off a locally managed computer.
- * returns [[asOfDate, rate]]
- * 
- * @param {string} bank Institution {"Ally"=, "Vanguard"}.
- * @param {boolean=} forceRefresh [optional, default = false]. true forces a new query, ignores the cache.
- * @returns {[[date,float]]}
+ * Returns nonzero account APYs from Cash Optimizer, sorted by account type.
+ * Uses the script cache; no header. APYs are decimals (0.04 = 4%).
+ * Example: =bankGetCachedAllRates("Ally")
+ * @param {string} bank Bank source name.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<string|Date|number>>} Rows: [accountType, asOfDate, APY].
  * @customfunction
  */
 function bankGetCachedAllRates(bank, forceRefresh = false) {
@@ -124,7 +120,7 @@ function bankGetCachedAllRates(bank, forceRefresh = false) {
 function bankGetAllRates_(bank) {
   if (!bank) throw 'Function bankGetRate_ parameter 1 expects a valid bank, but no bank was provided.';
   const resp = bankGetCurrentRateFileContents(bank);
-  if (resp.length < 1) throw 'No content found for: ' + bank + '-' + account;
+  if (resp.length < 1) throw new Error('No content found for bank: ' + bank);
 
   // parse apy and asOfDate.
   const data = JSON.parse(resp);
@@ -134,17 +130,30 @@ function bankGetAllRates_(bank) {
     if (apy) results.push([data[i].accountType, duGetDateFromYYYYMMDD_(data[i].asOfDate), apy]);
   }
   results.sort((a, b) => a[0].localeCompare(b[0]));
+  if (!results.length) throw new Error('No rates found for bank: ' + bank);
   return results;
 }
 
 /**
- * This retrieves a list of account Types currently recorded in the rates file.
- * @param {string} bank Institution {"Ally"=, "Vanguard"}.
- * @param {boolean=} forceRefresh [optional, default = false]. true forces a new query, ignores the cache.
- * @return [accountTypes] list of entries.
+ * Compatibility alias for bankGetCachedAccountTypes; retains the original misspelling.
+ * @param {string} bank Bank source name.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<string>} Sorted account types with positive APYs; no header.
  * @customfunction
  */
 function bankGetCachedAccounTypes(bank, forceRefresh = false) {
+  return bankGetCachedAccountTypes(bank, forceRefresh);
+}
+
+/**
+ * Returns account types with positive APYs from Cash Optimizer, using the script cache.
+ * Example: =bankGetCachedAccountTypes("Ally")
+ * @param {string} bank Bank source name.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<string>} Sorted account types; no header.
+ * @customfunction
+ */
+function bankGetCachedAccountTypes(bank, forceRefresh = false) {
   const cacheKey = 'bankGetCachedAccounTypes-v128-' + bank;
   const cache = new Cacher({
     cachePoint: CacheService.getScriptCache()
@@ -165,7 +174,7 @@ function bankGetCachedAccounTypes(bank, forceRefresh = false) {
 
   const banks = bankGetCurrentRateFileContents(bank);
   if (banks.length < 1)
-    throw 'No content found for: ' + bank + '-' + account;
+    throw new Error('No content found for bank: ' + bank);
 
   const data = JSON.parse(banks);
   let resp = [];
@@ -177,24 +186,24 @@ function bankGetCachedAccounTypes(bank, forceRefresh = false) {
   // log TTL calculations.
   const ttl = cacheCalcTTLAfterHour_(7);
   cacheLogTTL_(cacheKey, new Date, ttl);
-  cache.set(cacheKey, JSON.stringify(resp), ttl);
+  cache.set(cacheKey, JSON.stringify(resp), { expiry: ttl });
 
   return resp;
 }
 
 /**
- * This retrieves the unprocessed contents of a bank rate file.
- * This is here primarily to allow a file to be retrieved without knowledge of where or how the file is stored.
- * JSON structure is well defined though.
- *
- * @param {string} bank bank name.
- * @return JSON list of entries.
+ * Fetches raw Cash Optimizer bank-rate JSON text, without caching.
+ * Entries contain accountType, asOfDate, and decimal apy. Throws on retrieval failure.
+ * Example: =bankGetCurrentRateFileContents("Ally")
+ * @param {string} bank Bank source name.
+ * @return {string} JSON text, not parsed objects.
  * @customfunction
  */
 function bankGetCurrentRateFileContents(bank) {
+  if (typeof bank !== 'string' || !bank.trim()) throw new Error('Bank name is required');
   try {
     return cloudGetFileContents_('Banks/' + bank + '/' + bank + '-rate.json');
   } catch (err) {
-    throw 'failed: retrieve ' + bank + '-rate.json file: ' + err.message;
+    throw new Error('Failed to retrieve ' + bank + '-rate.json: ' + (err.message || String(err)));
   }
 }

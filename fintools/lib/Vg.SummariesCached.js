@@ -1,18 +1,19 @@
 // vg.SummariesCached.gs
-// v150 - split to just have the Summaries related APIs (these still use the older personal.vanguard.com APIs).
+// Cached public APIs backed by api.vanguard.com.
 
 /**
- * Returns the four digit fundId for a vanguard fund ticker as a string. Returns fundId.
- * 
- * @param {"VUSXX"} ticker Vanguard fund ticker.
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. True forces a new query, and do not use any available cache.
+ * Returns Vanguard's fund identifier from api.vanguard.com summaries, using the script cache.
+ * Identifier formatting is source-defined, not guaranteed to be four digits.
+ * Example: =vanguardGetCachedFundId("VUSXX")
+ * @param {string} ticker Vanguard ticker.
+ * @param {boolean} [forceRefresh=false] Refresh the underlying summaries.
+ * @return {string|number} Fund identifier. Throws for an unknown ticker.
  * @customfunction
  */
-// #S1
 function vanguardGetCachedFundId(ticker, forceRefresh = false) {
 
   const resp = vanguardGetCachedFundSummaries(forceRefresh);
-  for (let i = 0; i < resp.length; i++) {
+  for (let i = 1; i < resp.length; i++) {
     if (resp[i][0] == ticker) {
       return resp[i][3];
     }
@@ -21,11 +22,13 @@ function vanguardGetCachedFundId(ticker, forceRefresh = false) {
 }
 
 /**
- * Get get the requested parameter for a vanguard fund sticker stored in the Cache from the Fund Summaries Report.
- * Returns parameter requested.
- * 
- * @param {"VTSAX"} ticker Vanguard fund ticker.
- * @param {8} parameter parameter index from this list:
+ * Returns a field from api.vanguard.com fund summaries, using the script cache.
+ * Yield and expense ratio are decimals (0.04 = 4%); missing fields are empty strings.
+ * Names are shortened: removes " Fund"/"Vanguard ", changes Money Market to MM,
+ * Admiral Shares to Adm, and Investor Shares to Inv.
+ * Example: =vanguardGetCachedFundParameter("VTSAX", 8)
+ * @param {string} ticker Vanguard ticker.
+ * @param {number} parameter Integer column index:
  *  0 = Ticker,
  *  1 = Price,
  *  2 = SEC yield, 
@@ -38,15 +41,18 @@ function vanguardGetCachedFundId(ticker, forceRefresh = false) {
  *  9 = Share class,
  * 10 = Price as of date,
  * 11 = Yield as of date.
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. True forces a new query, and do not use any available cache.
+ * @param {boolean} [forceRefresh=false] Refresh the underlying summaries.
+ * @return {string|number|Date} Field value. Throws for an unknown ticker or invalid index.
  * @customfunction
  */
-// #S2
 function vanguardGetCachedFundParameter(ticker, parameter, forceRefresh = false) {
+  if (!Number.isInteger(parameter) || parameter < 0 || parameter > 11) {
+    throw new Error('Vanguard parameter must be an integer from 0 to 11');
+  }
 
   const resp = vanguardGetCachedFundSummaries(forceRefresh);
 
-  for (let i = 0; i < resp.length; i++) {
+  for (let i = 1; i < resp.length; i++) {
     if (resp[i][0] == ticker) {
       if (parameter == 4)
         return resp[i][parameter]
@@ -58,20 +64,23 @@ function vanguardGetCachedFundParameter(ticker, parameter, forceRefresh = false)
       else
         return resp[i][parameter];
     }
+    throw new Error('Invalid Vanguard ticker: ' + ticker);
   }
 }
 
 /**
- * Returns a table of all Vanguard funds with a large set of details about each fund including latest NAV,
- * SEC Yield, Duration and other details. Will pull from cache if available. Returns large table with a header row.
- * 
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
+ * Returns api.vanguard.com mutual-fund and ETF summaries, using the script cache.
+ * Header: Ticker, Price, SEC yield, ID, Name, Category high, Asset class, Category low,
+ * Expense Ratio, Share class, Price as of date, Yield as of date.
+ * Yields/expense ratios are decimals; missing values are empty strings.
+ * Rows preserve source order (mutual funds then ETFs). Example: =vanguardGetCachedFundSummaries()
+ * @param {boolean} [forceRefresh=false] Bypass the cached table.
+ * @return {Array<Array<string|number|Date>>} Twelve-column table with a header.
  * @customfunction
  */
-// #S3
 function vanguardGetCachedFundSummaries(forceRefresh = false) {
 
-  const cacheKey = "vanguardSummary";
+  const cacheKey = "vanguardSummary-v157";
   const cache = CacheService.getScriptCache();
 
   // retrieve a previously cached quote if it has not timed out or forced quote by caller.
@@ -93,6 +102,7 @@ function vanguardGetCachedFundSummaries(forceRefresh = false) {
   }
 
   const resp = vanguardGetPriceYieldAndAttributes_(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+  if (resp.length < 2) throw new Error('No Vanguard fund summaries');
   // log ttl calculations using date in first fund entry (second row).
   const tradeTime = resp[1][10];
   const ttl = cacheCalcTTL_(tradeTime);
@@ -103,16 +113,18 @@ function vanguardGetCachedFundSummaries(forceRefresh = false) {
 }
 
 /**
- * Retrieves bond attributes from Vanguard mutual funds AND ETF summary pages bond attributes view.
- * Will pull from cache if available. returns a large table with a header row.
- * 
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
+ * Returns api.vanguard.com bond fund/ETF attributes, using the script cache.
+ * Header: Ticker, Name, Duration, Average maturity, Yield to maturity, Average coupon,
+ * As of date, Asset class, Expense Ratio. Duration/maturity are years; rates are decimals.
+ * Missing fields are empty strings; rows preserve source order (mutual funds then ETFs).
+ * Example: =vanguardGetCachedBondAttributes()
+ * @param {boolean} [forceRefresh=false] Bypass the cached table.
+ * @return {Array<Array<string|number|Date>>} Nine-column table with a header.
  * @customfunction
  */
-// #S4
 function vanguardGetCachedBondAttributes(forceRefresh = false) {
 
-  const cacheKey = "vanguardBondAttributes";
+  const cacheKey = "vanguardBondAttributes-v157";
   const cache = CacheService.getScriptCache();
 
   // retrieve a previously cached quote if it has not timed out or forced quote by caller.
@@ -135,26 +147,27 @@ function vanguardGetCachedBondAttributes(forceRefresh = false) {
 
   const resp = vanguardGetBondAttributes_();
   // log ttl calculations.
-  const ttl = 24 * 60 * 60;
+  const ttl = cacheBoundTTL_(24 * 60 * 60);
   cacheLogTTL_(cacheKey, "", ttl);
   cache.put(cacheKey, JSON.stringify(resp), ttl);
   return resp;
 }
 
 /**
- * Retreived Bond Duration attribute, returns a float value.
- * 
- * @param {"VTSAX""} ticker Vanguard Bond fund/ETF ticker.
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
+ * Returns Vanguard bond-fund/ETF duration in years, using cached bond attributes.
+ * Example: =vanguardGetCachedBondDuration("BND")
+ * @param {string} ticker Vanguard bond ticker.
+ * @param {boolean} [forceRefresh=false] Refresh the underlying table.
+ * @return {number|string} Duration in years or "" if unavailable. Throws for an unknown ticker.
  * @customfunction
  */
-// #S5
 function vanguardGetCachedBondDuration(ticker, forceRefresh = false) {
   const resp = vanguardGetCachedBondAttributes(forceRefresh);
-  for (let i = 0; i < resp.length; i++) {
+  for (let i = 1; i < resp.length; i++) {
     if (resp[i][0] == ticker) {
       //Logger.log(resp[i][0] + '=' + resp[i][2]);
       return resp[i][2];
     }
+    throw new Error('Invalid Vanguard bond ticker: ' + ticker);
   }
 }

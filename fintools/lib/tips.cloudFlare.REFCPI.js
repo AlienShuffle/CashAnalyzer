@@ -50,7 +50,7 @@ function cloudGetCachedREFCPI_(forceRefresh = false) {
   const factors = cloudGetREFCPICsv_();
 
   // set ttl for 11AM as the CPI normally are not updated after 9AM. A user could force a refresh if necessary.
-  const ttl = Math.max(1, Math.min(cacheCalcTTLAfterHour_(11), 21600));
+  const ttl = cacheCalcTTLAfterHour_(11);
   cacheLogTTL_(cacheKey, new Date, ttl);
   const json = JSON.stringify(factors);
   cache.set(cacheKey, json, { expiry: ttl });

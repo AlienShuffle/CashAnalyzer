@@ -6,11 +6,12 @@
 // v148 - fixed date formatting error (appears to be new) and re-baseline.
 
 /**
- * Pull from cache if available and finds the T-bill coupon rates for the current month.
- * returns [[large_array sort by date]]
- * 
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
- * @returns [[large_array]]
+ * Returns treasury.gov current-month T-bill bank-discount rates, using the script cache.
+ * "Coupons" is a legacy name: bills do not pay coupons. Rates are decimals (0.04 = 4%).
+ * Header: Date, 4w, 8w, 13w, 17w, 26w, 52w. Rows preserve source order.
+ * Example: =treasuryGetCachedRecentTBillCoupons()
+ * @param {boolean} [forceRefresh=false] Bypass the cached table.
+ * @return {Array<Array<Date|number|string>>} Seven-column table including a header.
  * @customfunction
  */
 function treasuryGetCachedRecentTBillCoupons(forceRefresh = false) {
@@ -24,7 +25,7 @@ function treasuryGetCachedRecentTBillCoupons(forceRefresh = false) {
     // parse the stored JSON if it exists and return to the caller.
     if (cacheVal != null) {
       const cacheArray = JSON.parse(cacheVal);
-      for (i = 1; i < cacheArray.length; i++)
+      for (let i = 1; i < cacheArray.length; i++)
         cacheArray[i][0] = new Date(cacheArray[i][0]);
       return cacheArray;
     }
@@ -42,10 +43,11 @@ function treasuryGetCachedRecentTBillCoupons(forceRefresh = false) {
 }
 
 /**
- * Pull from cache if available and finds the T-bill investment yields for the current month.
- * returns [[large_array sort by date]]
- * 
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
+ * Returns treasury.gov current-month T-bill investment yields, using the script cache.
+ * Rates are decimals. Header: Date, 4w, 8w, 13w, 17w, 26w, 52w.
+ * Rows preserve source order. Example: =treasuryGetCachedRecentTBillYields()
+ * @param {boolean} [forceRefresh=false] Bypass the cached table.
+ * @return {Array<Array<Date|number|string>>} Seven-column table including a header.
  * @customfunction
  */
 function treasuryGetCachedRecentTBillYields(forceRefresh = false) {
@@ -59,7 +61,7 @@ function treasuryGetCachedRecentTBillYields(forceRefresh = false) {
     // parse the stored JSON if it exists and return to the caller.
     if (cacheVal != null) {
       const cacheArray = JSON.parse(cacheVal);
-      for (i = 1; i < cacheArray.length; i++)
+      for (let i = 1; i < cacheArray.length; i++)
         cacheArray[i][0] = new Date(cacheArray[i][0]);
       return cacheArray;
     }
@@ -148,16 +150,17 @@ function treasuryGetRecentTBillRates_(type = 'yield') {
 }
 
 /**
- * Retrieves a Treasury Bill Coupon Rate quotes over a period defined in the first parameter, pull from cache if available.
- * Retrieves Treasury rates from treasury.gov based upon a year or date input.
- * Note, this takes a month as input, but it appears that the Treasury site no longer supports months, only full years (except current month).
- * returns [[large_array sort by date]]
- * 
- * @param {"201906"} yearOrMonth [optional] YYYY for year, YYYYMM for month, or "all". Defaults to current year.
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.* 
+ * Returns treasury.gov T-bill bank-discount rates in ascending date order.
+ * "Coupons" is a legacy name; rates are decimals, not coupon payments. Uses the script cache.
+ * Header: Date, 4wk, 8wk, 13wk, 17wk, 26wk, 52wk.
+ * Example: =treasuryGetCachedTBillCoupons(2026)
+ * @param {string|number} [yearOrMonth] YYYY, YYYYMM, or "all"; omitted/blank uses current year.
+ * @param {boolean} [forceRefresh=false] Bypass the cached table.
+ * @return {Array<Array<Date|number|string>>} Seven-column table with a header; missing maturities blank.
  * @customfunction
  */
 function treasuryGetCachedTBillCoupons(yearOrMonth, forceRefresh = false) {
+  yearOrMonth = yearOrMonth || new Date().getFullYear();
 
   const cacheKey = "treasuryGetCachedTBillCoupons-v56" + "-" + yearOrMonth;
   const cache = CacheService.getScriptCache();
@@ -168,14 +171,14 @@ function treasuryGetCachedTBillCoupons(yearOrMonth, forceRefresh = false) {
     // parse the stored JSON if it exists and return to the caller.
     if (cacheVal != null) {
       const cacheArray = JSON.parse(cacheVal);
-      for (i = 0; i < cacheArray.length; i++)
+      for (let i = 0; i < cacheArray.length; i++)
         if (cacheArray[i][0] != 'Date')
           cacheArray[i][0] = new Date(cacheArray[i][0]);
       return cacheArray;
     }
   }
 
-  resp = treasuryGetCachedTBillRates_(yearOrMonth, 'coupon');
+  const resp = treasuryGetCachedTBillRates_(yearOrMonth, 'coupon');
 
   // log TTL calculations.
   const tradetime = new Date(Date.parse(resp[resp.length - 1][0]));
@@ -187,16 +190,17 @@ function treasuryGetCachedTBillCoupons(yearOrMonth, forceRefresh = false) {
 }
 
 /**
- * Retrieves a Treasury Bill quotes over a period defined in the first parameter, pull from cache if available.
- * Retrieves Treasury rates from treasury.gov based upon a year or date input.
- * Note, this takes a month as input, but it appears that the Treasury site no longer supports months, only full years (except current month).
- * returns [[large_array sort by date]]
- * 
- * @param {"201906"} yearOrMonth [optional] YYYY for year, YYYYMM for month, or "all". Defaults to current year (months are currently broken).
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.*
+ * Returns treasury.gov T-bill investment yields in ascending date order, using the script cache.
+ * Rates are decimals. Header: Date, 4wk, 8wk, 13wk, 17wk, 26wk, 52wk.
+ * YYYYMM requests the month-specific endpoint (unlike CMT's full-year fallback).
+ * Example: =treasuryGetCachedTBillYields(202610)
+ * @param {string|number} [yearOrMonth] YYYY, YYYYMM, or "all"; omitted/blank uses current year.
+ * @param {boolean} [forceRefresh=false] Bypass the cached table.
+ * @return {Array<Array<Date|number|string>>} Seven-column table with a header; missing maturities blank.
  * @customfunction
  */
 function treasuryGetCachedTBillYields(yearOrMonth, forceRefresh = false) {
+  yearOrMonth = yearOrMonth || new Date().getFullYear();
 
   const cacheKey = "treasuryGetCachedTBillYields-v148" + "-" + yearOrMonth;
   const cache = CacheService.getScriptCache();
@@ -207,14 +211,14 @@ function treasuryGetCachedTBillYields(yearOrMonth, forceRefresh = false) {
     // parse the stored JSON if it exists and return to the caller.
     if (cacheVal != null) {
       const cacheArray = JSON.parse(cacheVal);
-      for (i = 0; i < cacheArray.length; i++)
+      for (let i = 0; i < cacheArray.length; i++)
         if (cacheArray[i][0] != 'Date')
           cacheArray[i][0] = new Date(cacheArray[i][0]);
       return cacheArray;
     }
   }
 
-  resp = treasuryGetCachedTBillRates_(yearOrMonth, 'yield');
+  const resp = treasuryGetCachedTBillRates_(yearOrMonth, 'yield');
 
   // log TTL calculations.
   const tradetime = new Date(Date.parse(resp[resp.length - 1][0]));
@@ -331,7 +335,8 @@ function treasuryGetCachedTBillRates_(yearOrMonth, type = 'yield') {
         case 'ROUND_B1_YIELD_17WK_2':
         case 'ROUND_B1_YIELD_26WK_2':
         case 'ROUND_B1_YIELD_52WK_2':
-          index = columns.indexOf(name);
+          const index = columns.indexOf(name);
+          if (index < 0) break;
           row[index] = value / 100;
           break;
 
@@ -340,7 +345,7 @@ function treasuryGetCachedTBillRates_(yearOrMonth, type = 'yield') {
           break;
       }
     }
-    results.push(row);
+    results.push(Array.from({ length: headers.length }, (_, index) => row[index] === undefined ? '' : row[index]));
   }
   // sort the data rows, then pre-pend the header row before returning.
   results.sort(function (a, b) { return a[0] - b[0] });

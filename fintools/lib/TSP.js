@@ -4,14 +4,18 @@
 // v140 - verified.
 
 /**
- * Get asOfDateTime, and price from TSPtalk.com or cache for a fund letter. returns [asOf, price].
- * 
- * @param {"F"} fundLetter Fund ticker symbol.
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new quote.
- * 
+ * Returns a TSP fund's share price from TSPtalk.com, using the script cache.
+ * No header. Example: =TSPGetCachedPrice("F")
+ * @param {string} fundLetter Required fund letter: G, F, C, S, or I.
+ * @param {boolean} [forceRefresh=false] Bypass the cached quote.
+ * @return {Array<Array<Date|number>>} One row: [[asOfDate, price]]. Throws for invalid data.
  * @customfunction
  */
 function TSPGetCachedPrice(fundLetter, forceRefresh = false) {
+  if (typeof fundLetter !== 'string' || !/^[GFCSI]$/i.test(fundLetter)) {
+    throw new Error('TSP fund letter must be G, F, C, S, or I');
+  }
+  fundLetter = fundLetter.toUpperCase();
   const cacheKey = 'TSP-' + fundLetter;
   const cache = CacheService.getScriptCache();
 
@@ -54,6 +58,9 @@ function tspGetPrice_(fundLetter = 'F') {
   //Logger.log("responseCode = %s", resp.getResponseCode());
   const  dateAsOf = TSP_extractAsOf_(respText);
   const  price = TSP_extractPrice_(fundLetter, respText);
+  if (!Number.isFinite(dateAsOf.getTime()) || !Number.isFinite(price)) {
+    throw new Error('Invalid TSP quote for ' + fundLetter);
+  }
   return [[dateAsOf, price]];
 }
 

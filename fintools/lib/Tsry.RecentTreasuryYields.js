@@ -4,10 +4,11 @@
 // v148 - re-baseline.
 
 /**
- * Pull from cache if available and finds the TIPS rates for the current month.
- * returns [[large_array sort by date]]
- * 
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
+ * Returns treasury.gov current-month real CMT par yields, using the script cache.
+ * Rates are decimals (0.02 = 2%). Header: Date, 5 Year, 7 Year, 10 Year, 20 Year, 30 Year.
+ * Rows preserve source date order. Example: =treasuryGetCachedRecentRealYields()
+ * @param {boolean} [forceRefresh=false] Bypass the cached table.
+ * @return {Array<Array<Date|number|string>>} Six-column table including a header.
  * @customfunction
  */
 function treasuryGetCachedRecentRealYields(forceRefresh = false) {
@@ -21,7 +22,7 @@ function treasuryGetCachedRecentRealYields(forceRefresh = false) {
     // parse the stored JSON if it exists and return to the caller.
     if (cacheVal != null) {
       const cacheArray = JSON.parse(cacheVal);
-      for (i = 1; i < cacheArray.length; i++)
+      for (let i = 1; i < cacheArray.length; i++)
         cacheArray[i][0] = new Date(cacheArray[i][0]);
       return cacheArray;
     }
@@ -90,9 +91,12 @@ function treasuryGetRecentRealYields_() {
 }
 
 /**
- * Pull from cache if available and finds the nominal CMT rates for the current month.
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
- * @returns [[large_array]]
+ * Returns treasury.gov current-month nominal CMT par yields, using the script cache.
+ * Rates are decimals. Header starts with Date; maturities: 1,2,3,4,6 months and
+ * 1,2,3,5,7,10,20,30 years. Rows preserve source order.
+ * Example: =treasuryGetCachedRecentNominalYields()
+ * @param {boolean} [forceRefresh=false] Bypass the cached table.
+ * @return {Array<Array<Date|number|string>>} Fourteen-column table including a header.
  * @customfunction
  */
 function treasuryGetCachedRecentNominalYields(forceRefresh = false) {
@@ -106,7 +110,7 @@ function treasuryGetCachedRecentNominalYields(forceRefresh = false) {
     // parse the stored JSON if it exists and return to the caller.
     if (cacheVal != null) {
       const cacheArray = JSON.parse(cacheVal);
-      for (i = 1; i < cacheArray.length; i++)
+      for (let i = 1; i < cacheArray.length; i++)
         cacheArray[i][0] = new Date(cacheArray[i][0]);
       return cacheArray;
     }
@@ -184,7 +188,10 @@ function treasuryGetRecentNominalYields_() {
 
 // Calculate an age on the treasuries query and use that to estimate how long it may remain useful in the cache (in seconds).
 function treasuryCalcCacheTTL_(t) {
+  return cacheBoundTTL_(treasuryCalcCacheTTLUnbounded_(t));
+}
 
+function treasuryCalcCacheTTLUnbounded_(t) {
   // get the time and day of the most recent trade of the reference ticker symbol. Passed in as a parameter.
   var tradetime;
   if (t) {

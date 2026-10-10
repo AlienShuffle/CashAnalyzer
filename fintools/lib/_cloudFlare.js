@@ -9,9 +9,8 @@
  * retrieves the contents of the file in the Cash Optimizer cloudFlare respository named by the URL
  * sub-path provided.
  * 
- * @param  urlPath sub-path (after hostname) that references the resource file of interest.
- * @returns stringFileContents
- * @customfunction
+ * @param {string} urlSubPath Path after the hostname.
+ * @return {string} File contents.
  */
 function cloudGetFileContents_(urlSubPath) {
   const url = 'https://cashoptimizer.pages.dev/' + urlSubPath;
@@ -19,7 +18,7 @@ function cloudGetFileContents_(urlSubPath) {
   try {
     resp = UrlFetchApp.fetch(url);
   } catch (err) {
-    throw 'failed URL retreival =' + url;
+    throw new Error('Failed URL retrieval: ' + url + ': ' + (err.message || String(err)));
   }
   const content = resp.getContentText();
   if (content.length < 1) throw 'empty file: ' + url;

@@ -4,14 +4,11 @@
 // v68 - updated table processing as the site HTML changed a bit for the table.
 
 /**
- * Returns multpl.com's S&P500 CAPE most recently reported value. Found at https://www.multpl.com/shiller-pe/table/by-month
- * 
- * Caching improves user experience and spreadsheet performance, but does not update the quotes as often,
- * causing mild delays in data in some cases.
- * This particular query only changes once a day or less, so cache does not impose any significant delay.
- * Besides, this value is pretty slow moving. returns [asOf, CAPE]
- * 
- * @param {false} forceRefresh [optional, default = false]. true forces a new query, ignores the cache.
+ * Returns multpl.com's latest S&P 500 CAPE (a dimensionless ratio), using the script cache.
+ * Source: https://www.multpl.com/shiller-pe/table/by-month
+ * No header. Retrieval failures propagate. Example: =multplGetCachedCAPE()
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date|number>>} One row: [[reportDate, CAPE]].
  * @customfunction
  */
 function multplGetCachedCAPE(forceRefresh = false) {
@@ -29,7 +26,7 @@ function multplGetCachedCAPE(forceRefresh = false) {
   }
 
   const resp = multplGetCAPE_();
-  const tradetime = resp[1];
+  const tradetime = resp[0][0];
   const ttl = cacheCalcTTL_(tradetime);
   cacheLogTTL_(cacheKey, tradetime, ttl);
   cache.put(cacheKey, JSON.stringify(resp), ttl);

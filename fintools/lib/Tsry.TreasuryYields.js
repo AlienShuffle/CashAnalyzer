@@ -4,20 +4,21 @@
 // v148 re-baseline.
 
 /**
- * Retrieves a Treasury yields over a period defined in the first parameter, pull from cache if available.
- * Retrieves Treasury yields from treasury.gov based upon a year or date input.
- * Note, this takes a month as input, but it appears that the Treasury site no longer supports months, only full years.
- * returns [[large_array sort by date]]
- * 
- * @param {"201906"} yearOrMonth [optional] YYYY for year, YYYYMM for month, or "all". Defaults to current year (months are currently broken).
- * @param {"real"} type [optional, default = "nominal"] "real" for real yields, missing or any other value for nominal yields. 
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.* 
- * @returns [[large_array]]
+ * Returns treasury.gov CMT par yields, sorted by date, using the script cache.
+ * Decimal rates (0.04 = 4%). Header starts with Date; real maturities: 5,7,10,20,30 years;
+ * nominal: 1,2,3,4,6 months and 1,2,3,5,7,10,20,30 years.
+ * YYYYMM requests the full year, not a month. Example: =treasuryGetCachedGovYields(2026, "real")
+ * @param {string|number} [yearOrMonth] YYYY, YYYYMM, or "all"; omitted/blank uses the current year.
+ * @param {string} [type="nominal"] Case-insensitive "real"; other strings select nominal.
+ * @param {boolean} [forceRefresh=false] Bypass the cached table.
+ * @return {Array<Array<Date|number|string>>} Header plus ascending data rows; missing maturities blank.
  * @customfunction
  */
 function treasuryGetCachedGovYields(yearOrMonth, type = "nominal", forceRefresh = false) {
+  if (type != null && typeof type !== 'string') throw new Error('Treasury yield type must be a string');
+  yearOrMonth = yearOrMonth || new Date().getFullYear();
 
-  const cacheKey = "treasuryGovYields-v27" + type + "-" + yearOrMonth;
+  const cacheKey = "treasuryGovYields-v157-" + type + "-" + yearOrMonth;
   const cache = CacheService.getScriptCache();
 
   // retrieve a previously cached quote if it has not timed out or forced quote by caller.
@@ -26,14 +27,14 @@ function treasuryGetCachedGovYields(yearOrMonth, type = "nominal", forceRefresh 
     // parse the stored JSON if it exists and return to the caller.
     if (cacheVal != null) {
       const cacheArray = JSON.parse(cacheVal);
-      for (i = 0; i < cacheArray.length; i++)
+      for (let i = 0; i < cacheArray.length; i++)
         if (cacheArray[i][0] != 'Date')
           cacheArray[i][0] = new Date(cacheArray[i][0]);
       return cacheArray;
     }
   }
 
-  resp = treasuryGetCachedGovYields_(yearOrMonth, type);
+  const resp = treasuryGetCachedGovYields_(yearOrMonth, type);
 
   // log TTL calculations.
   const tradetime = new Date(Date.parse(resp[resp.length - 1][0]));
@@ -50,8 +51,9 @@ function treasuryGetCachedGovYields(yearOrMonth, type = "nominal", forceRefresh 
  * @param {201906} yearOrMonth [optional] YYYY for year, YYYYMM for month, or "all". Defaults to current year.
  * @param {"real"} type [optional] "real" for real yields, missing or any other value for nominal yields. 
  */
-function treasuryGetCachedGovYields_(yearOrMonth = "2023", type = "nominal") {
+function treasuryGetCachedGovYields_(yearOrMonth, type = "nominal") {
 
+  if (type != null && typeof type !== 'string') throw new Error('Treasury yield type must be a string');
   if (type)
     type = type.toLowerCase();
 
@@ -168,7 +170,8 @@ function treasuryGetCachedGovYields_(yearOrMonth = "2023", type = "nominal") {
         case 'TC_10YEAR':
         case 'TC_20YEAR':
         case 'TC_30YEAR':
-          index = columns.indexOf(name);
+          const index = columns.indexOf(name);
+          if (index < 0) break;
           row[index] = value/100;
           break;
 
@@ -177,7 +180,7 @@ function treasuryGetCachedGovYields_(yearOrMonth = "2023", type = "nominal") {
           break;
       }
     }
-    results.push(row);
+    results.push(Array.from({ length: headers.length }, (_, index) => row[index] === undefined ? '' : row[index]));
   }
   // sort the data rows, then pre-pend the header row before returning.
   results.sort(function (a, b) { return a[0] - b[0] });

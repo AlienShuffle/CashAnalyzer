@@ -157,7 +157,7 @@ class _Cacher {
       } , {}) 
       // we'll give the children a longer expiry in case the header disappears first
       const t = new Date().getTime()
-      this.cachePoint.putAll(bits, expiry + 10)
+      this.cachePoint.putAll(bits, Math.min(expiry + 10, 21600))
     }
     // write the header
     return this.cachePoint.put(digestedKey, JSON.stringify(parent), expiry)

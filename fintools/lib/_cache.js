@@ -9,7 +9,10 @@
  * @param {"1/2/2025 13:10"} tradetime used for quote aging calculations.
  */
 function cacheCalcTTL_(t) {
+  return cacheBoundTTL_(cacheCalcTTLUnbounded_(t));
+}
 
+function cacheCalcTTLUnbounded_(t) {
   // get the time as it is known for the markets.
   const nycDate = timeGetNYCTime_();
 
@@ -138,7 +141,12 @@ function cacheCalcTTLAfterHour_(hour) {
   // 8/7/23 - turned off, it actually seemed to make reloads worse. I think due to too many calls to the drive service.
   //delta = (delta > 4) ? 4 : delta;
   // convert to seconds and return;
-  return 60 * 60 * delta;
+  return cacheBoundTTL_(60 * 60 * delta);
+}
+
+function cacheBoundTTL_(seconds) {
+  if (!Number.isFinite(seconds)) throw new Error('Invalid cache expiry: ' + seconds);
+  return Math.max(1, Math.min(Math.floor(seconds), 21600));
 }
 
 function timeGetNYCTime_() {

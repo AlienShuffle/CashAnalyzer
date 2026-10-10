@@ -77,7 +77,13 @@ function mapTickerToFundId_(ticker) {
 //function howManyFidelityFunds() { const f = Object.keys(getFidelityFundIDs_()); Logger.log("# of Fidelity MM = " + f.length); }
 //function testMap() {Logger.log(mapTickerToFundId_('SPAXX'));}
 
-// this function pulls fund metadata for all the funds in the list above and returns a large matrix for reporting purposes.
+/**
+ * Builds a metadata table for supported Fidelity money-market funds, sorted by ticker.
+ * Header: Ticker, Fund #, CUSIP, Share Class, Short Name, Legal Name, Portfolio Name, Fiscal Year End.
+ * Script/menu use recommended: a cold user cache requires one fetch per fund and may exceed
+ * the worksheet execution limit. Example (script): buildFidelityFundListTable()
+ * @return {Array<Array<string|number>>} Eight-column table including a header.
+ */
 function buildFidelityFundListTable() {
   const fundIds = getFidelityFundIDs_();
   let list = [];
@@ -112,9 +118,9 @@ function buildFidelityFundListTable() {
 }
 
 /**
- * Returns current a list of support Fidelity MM Fund tickers.
- * returns [ticker]
- * 
+ * Returns supported Fidelity money-market tickers from the locally maintained ID map.
+ * Example: =fidelityGetFundTickerList()
+ * @return {Array<string>} Ticker list in map insertion order, without a header.
  * @customfunction
  */
 function fidelityGetFundTickerList() {
@@ -127,12 +133,13 @@ function fidelityGetFundTickerList() {
 }
 
 /**
- * Returns current 1-day, 7-day and 30-day yields for a Fidelity MM Fund.
- * It will use cached values if available.
- * returns [asOf, 1-day-yield, 7-day-yield, 30-day-yield]
- * 
- * @param {"FZDXX"} ticker Fund ticker symbol (only MM funds are supported).
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new quote, not use any available cache.
+ * Returns Fidelity Institutional's current money-market yields, using the user cache.
+ * No header; annualized, non-compounding yields are decimals (0.04 = 4%).
+ * Throws for an unsupported ticker or failed retrieval.
+ * Example: =fidelityGetCachedYields("FZDXX")
+ * @param {string} ticker Supported money-market ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date|number>>} One row: [[date, oneDay, sevenDay, thirtyDay]].
  * @customfunction
  */
 function fidelityGetCachedYields(ticker, forceRefresh = false) {
@@ -156,7 +163,7 @@ function fidelityGetCachedYields(ticker, forceRefresh = false) {
   const resp = fidelityGetYields_(fundId);
 
   // set ttl from asOf date.
-  const tradetime = safeObjectRef_(resp[0]);
+  const tradetime = resp[0][0];
   const ttl = cacheCalcTTL_(tradetime);
   cacheLogTTL_(cacheKey, tradetime, ttl);
   cache.put(cacheKey, JSON.stringify(resp), ttl);
@@ -164,12 +171,12 @@ function fidelityGetCachedYields(ticker, forceRefresh = false) {
 }
 
 /**
- * Returns current 1-day yield for a Fidelity MM Fund.
- * It will use cached values if available.
- * returns [asOf, 1-day-yield]
- * 
- * @param {"FDLXX"} ticker Fund ticker symbol (only MM funds are supported).
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new quote, not use any available cache.
+ * Returns Fidelity Institutional's current one-day decimal yield, using the user cache.
+ * No header. Throws for an unsupported ticker or failed retrieval.
+ * Example: =fidelityGetCached1DayYield("FDLXX")
+ * @param {string} ticker Supported money-market ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date|number>>} One row: [[date, oneDayYield]].
  * @customfunction
  */
 function fidelityGetCached1DayYield(ticker, forceRefresh = false) {
@@ -193,7 +200,7 @@ function fidelityGetCached1DayYield(ticker, forceRefresh = false) {
   const resp = fidelityGet1DayYield_(fundId);
 
   // set ttl from asOf date.
-  const tradetime = safeObjectRef_(resp[0]);
+  const tradetime = resp[0][0];
   const ttl = cacheCalcTTL_(tradetime);
   cacheLogTTL_(cacheKey, tradetime, ttl);
   cache.put(cacheKey, JSON.stringify(resp), ttl);
@@ -201,16 +208,16 @@ function fidelityGetCached1DayYield(ticker, forceRefresh = false) {
 }
 
 /**
- * Returns current a list of recent 1-day, 7-day and 30-day yields for a Fidelity MM Fund.
- * It will use cached values if available.
- * returns [[date, 1-day-yield, 7-day-yield, 30-day-yield]]
- * 
- * @param {"SPAXX"} ticker Fund ticker symbol (only MM funds are supported).
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new quote, not use any available cache.
+ * Returns Fidelity Institutional's recent decimal yields in ascending date order.
+ * Uses the user cache; no header or gap filling. Throws if no history is available.
+ * Example: =fidelityGetCachedRecentYieldHistory("SPAXX")
+ * @param {string} ticker Supported money-market ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date|number>>} Rows: [date, oneDay, sevenDay, thirtyDay].
  * @customfunction
  */
 function fidelityGetCachedRecentYieldHistory(ticker, forceRefresh = false) {
-  const cacheKey = "fidelityYieldHistory-" + ticker;
+  const cacheKey = "fidelityYieldHistory-v157-" + ticker;
   const cache = CacheService.getUserCache();
 
   // retrieve a previously cached report if it has not timed out or forced quote by caller.
@@ -219,7 +226,7 @@ function fidelityGetCachedRecentYieldHistory(ticker, forceRefresh = false) {
     // parse the stored JSON if it exists and return to the caller.
     if (cacheVal != null) {
       const cacheArray = JSON.parse(cacheVal);
-      for (i in cacheArray) {
+      for (const i in cacheArray) {
         if (cacheArray[i] != null && cacheArray[i][0])
           cacheArray[i][0] = new Date(cacheArray[i][0]);
       }
@@ -240,18 +247,18 @@ function fidelityGetCachedRecentYieldHistory(ticker, forceRefresh = false) {
 }
 
 /**
- * Returns current a list of recent 1-day yields for a Fidelity MM Fund.
- * It will use cached values if available.
- * returns [[date, 1-day-yield]]
- * 
- * @param {"FDRXX"} ticker Fund ticker symbol (only MM funds are supported).
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new quote, not use any available cache.
+ * Returns Fidelity Institutional's recent one-day decimal yields in ascending date order.
+ * Uses the user cache; no header or gap filling. Throws if no history is available.
+ * Example: =fidelityGetCachedRecent1DayYieldHistory("FDRXX")
+ * @param {string} ticker Supported money-market ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date|number>>} Rows: [date, oneDayYield].
  * @customfunction
  */
 function fidelityGetCachedRecent1DayYieldHistory(ticker, forceRefresh = false) {
   const resp = fidelityGetCachedRecentYieldHistory(ticker, forceRefresh);
   let result = [];
-  for (i in resp) {
+  for (const i in resp) {
     let row = [];
     row[0] = resp[i][0];
     row[1] = resp[i][1];
@@ -324,19 +331,13 @@ function fidelityGetRecentYieldHistory_(fundId) {
     row.push(data.historicalPricingYield[0].prices[i].milRateAndYields[0].thirtyDayYield / 100);
     results.push(row);
   }
-  return results;
+  if (!results.length) throw new Error('No recent Fidelity yield history for fund ' + fundId);
+  return results.sort((a, b) => a[0] - b[0]);
 }
 
-// ---- This is in developmnet, does not work at all!
-
-// Retrieves the fund data source from Fidelity's Institutional site.
+// Use the current fund data endpoint for both facts and history.
 function retrieveFidelityYieldHistoryJSON_(fundId = '55') {
-  const url = Utilities.formatString("https://institutional.fidelity.com/app/fund/data/%1u.json?filter=returns&returnsDate=01/31/2023", fundId);
-  const response = UrlFetchApp.fetch(url);
-  const contentText = response.getContentText();
-  if (contentText.length < 1)
-    throw 'No content found for' + url;
-  return jsonExtractAndParse_(contentText);
+  return fidelityRetrieveFundJSON_(fundId);
 }
 
 /**
@@ -374,7 +375,7 @@ function retrieveFidelityFundFacts_(fundId, forceRefresh = false) {
     "portfolioLegalName": data.overview.portfolioLegalName,
     "fiscalYearEndMonthName": data.overview.fiscalYearEndMonthName,
   };
-  cache.put(cacheKey, JSON.stringify(resp), 2 * 24 * 60 * 60);
+  cache.put(cacheKey, JSON.stringify(resp), cacheBoundTTL_(2 * 24 * 60 * 60));
   return resp;
 }
 
@@ -384,12 +385,11 @@ function retrieveFidelityFundFacts_(fundId, forceRefresh = false) {
  * Returns [[asOf, 1-day-yield, 7-day-yield, 30-day-yield]]
  * 
  * @param {"458"} fundId - the number of the Fidelity Fund, available at institutional.fidelity.com
- * @customfunction
  */
 function retrieveFidelityYieldHistory_(fundId) {
   const data = retrieveFidelityYieldHistoryJSON_(fundId);
   const results = [];
-  for (i in data.historicalPricingYield[0].prices) {
+  for (const i in data.historicalPricingYield[0].prices) {
     const row = [];
     row.push(new Date(data.historicalPricingYield[0].prices[i].date));
     row.push(data.historicalPricingYield[0].prices[i].milRateAndYields[0].oneDayYield / 100);
@@ -401,4 +401,3 @@ function retrieveFidelityYieldHistory_(fundId) {
 }
 // https://institutional.fidelity.com/app/funds/historicalFundPricing?fundNo=55&startDate=01/02/2023&endDate=02/28/2023
 // https://institutional.fidelity.com/app/fund/data/55.json?filter=returns&returnsDate=04/30/2023
-

@@ -4,7 +4,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { createHash, randomUUID } from "node:crypto";
 import { deflateSync, inflateSync } from "node:zlib";
 import vm from "node:vm";
-import { migratedFiles, publicFunctions, wrapperPlans, syncWrappers } from "../../fintools/sync-wrappers.mjs";
+import { migratedFiles, legacyWrappers, publicFunctions, wrapperPlans, syncWrappers } from "../../fintools/sync-wrappers.mjs";
 
 const libraryDir = new URL("../../fintools/lib/", import.meta.url);
 const toolkitDir = new URL("../toolkit-app-script-src/", import.meta.url);
@@ -48,14 +48,22 @@ test("merged fintools has no duplicate declarations and preserves existing and m
 test("canonical and toolkit wrappers are synchronized and forward arguments, defaults and errors", () => {
     assert.equal(syncWrappers(), 0);
     const canonicalPlans = wrapperPlans().filter(plan => plan.url.pathname.includes("/fintools/wrapper/"));
-    assert.equal(canonicalPlans.flatMap(plan => plan.functions).length, 39);
+    assert.equal(canonicalPlans.flatMap(plan => plan.functions).length, 79);
     const customFunctions = wrapperPlans().filter(plan => plan.url.pathname.includes("/toolkit-app-script-src/"))
         .flatMap(plan => plan.functions).filter(fn => fn.doc.includes("@customfunction"));
     assert.equal(customFunctions.length, 36);
-    for (const file of migratedFiles) {
+    for (const file of [...migratedFiles, ...legacyWrappers.flatMap(plan => plan.sources)]) {
         const source = readFileSync(new URL(file, libraryDir), "utf8");
         assert.equal(publicFunctions(source).filter(fn => fn.doc.includes("@customfunction")).length,
             (source.match(/@customfunction/g) ?? []).length, `All annotated APIs in ${file} need wrappers`);
+        if (migratedFiles.includes(file)) continue;
+        for (const fn of publicFunctions(source)) {
+            assert.ok(fn.doc.includes("@return"), `${fn.name} needs a return contract`);
+            for (const name of fn.names) {
+                assert.ok(new RegExp(`@param \\{[^}]+\\} (?:\\[)?${name}(?:[=\\] ]|$)`).test(fn.doc),
+                    `${fn.name} needs documentation for ${name}`);
+            }
+        }
     }
     for (const { url, content, functions } of wrapperPlans()) {
         assert.equal(readFileSync(url, "utf8"), content);

@@ -116,13 +116,11 @@ function duGetISOString_(date) {
 
 /**
  * Converts a epoch seconds date number and returns date object.
- * @param {12354} secs secondssince epoch.
+ * @param {number} secs Seconds since the UTC epoch.
  * @return {Date}
  */
 function duDateTimeFromSecs_(secs) {
-  const t = new Date(1970, 0, 1); // Epoch
-  t.setSeconds(secs);
-  return t;
+  return new Date(secs * 1000);
 }
 
 // extract the actual JSON string from a messy pre-amble/appendix.
@@ -165,7 +163,6 @@ function jsonParse_(jsonText) {
  * defensive parsing of a JSON string, cleans crud off the ends of the string.
  * @param {string} jsonText JSON string.
  * @return {array} returns parsed array from the JSON string.
- * @customfunction
  */
 function jsonExtractAndParse_(s) {
   return jsonParse_(jsonExtractString_(s));

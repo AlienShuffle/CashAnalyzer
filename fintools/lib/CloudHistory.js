@@ -2,33 +2,39 @@
 // v135 - migrate from mmHistory to cloudFlare version.
 
 /**
- * Retrieve the most recent yield values for an stored money market fund. This will use cached values if available.
- * Caching improves user experience and spreadsheet performance, but does not update the quotes as often,
- * causing mild delays in data in some cases. Not an issues with Price Yield History.
- * Returns a matrix with each row including
- * {[date, float, float, float]} [date, 1-day yield, 7-day Yield, 30-day Yield]
- * as an array returned from the fintools archive database.
- * Note, 1 day and 30 day yields may not be available, the columns will be empty.
- * They are currently only available for Fidelity funds.
- *
- * @param {string} ticker ticker of the fund.
- * @param {boolean=} forceRefresh [optional, default = false]. true forces a new query, ignores the cache.
- * @return [[asOfDate, 1-day, 7-day, 30-day]].
+ * Returns the latest Cash Optimizer money-market yields found in the last five days.
+ * Uses the document cache when available, otherwise the script cache. No header.
+ * Yields are decimals (0.04 = 4%); unavailable yield columns are empty strings.
+ * Throws if the search window has no data or retrieval fails.
+ * Example: =cloudGetCachedYieldFromHistory("SPAXX")
+ * @param {string} ticker Fund ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date|number|string>>} One row: [[date, oneDay, sevenDay, thirtyDay]].
  * @customfunction
  */
 function cloudGetCachedYieldFromHistory(ticker, forceRefresh = false) {
   const eDate = new Date;
   const sDate = duGetDateDelta_(eDate, -5);
   const yields = cloudGetCachedYieldHistory(ticker, sDate, eDate, false, forceRefresh);
-  if (yields) {
+  if (yields.length) {
     const index = yields.length - 1;
     return [[yields[index][0], yields[index][1], yields[index][2], yields[index][3]]];
   } else {
-    return;
-    //throw ticker + "failed retrieval.";
+    throw new Error('No yield history for ' + ticker + ' in the last five days');
   }
 }
 
+/**
+ * Returns Cash Optimizer one-day decimal yields in ascending date order, without a header.
+ * Gaps between observations carry the previous yield; unavailable yields are empty strings.
+ * Example: =cloudGetCachedOneDayYieldHistory("SPAXX", DATE(2026,1,1), DATE(2026,10,10))
+ * @param {string} ticker Fund ticker.
+ * @param {Date|string} start_date Inclusive first date.
+ * @param {Date|string} end_date Inclusive last date.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date|number|string>>} Rows: [date, oneDayYield]. Throws if no data.
+ * @customfunction
+ */
 function cloudGetCachedOneDayYieldHistory(ticker, start_date, end_date, forceRefresh = false) {
   const yields = cloudGetCachedYieldHistory(ticker, start_date, end_date, false, forceRefresh);
   if (yields) {
@@ -39,6 +45,17 @@ function cloudGetCachedOneDayYieldHistory(ticker, start_date, end_date, forceRef
   }
 }
 
+/**
+ * Returns Cash Optimizer seven-day decimal yields in ascending date order, without a header.
+ * Gaps between observations carry the previous yield; unavailable yields are empty strings.
+ * Example: =cloudGetCachedSevenDayYieldHistory("SPAXX", DATE(2026,1,1), DATE(2026,10,10))
+ * @param {string} ticker Fund ticker.
+ * @param {Date|string} start_date Inclusive first date.
+ * @param {Date|string} end_date Inclusive last date.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date|number|string>>} Rows: [date, sevenDayYield]. Throws if no data.
+ * @customfunction
+ */
 function cloudGetCachedSevenDayYieldHistory(ticker, start_date, end_date, forceRefresh = false) {
   const yields = cloudGetCachedYieldHistory(ticker, start_date, end_date, false, forceRefresh);
   if (yields) {
@@ -51,31 +68,25 @@ function cloudGetCachedSevenDayYieldHistory(ticker, start_date, end_date, forceR
 
 
 /**
- * Retrieve yield history date range available for an money market fund from moneymarket.fun. This will use cached values if available.
- * Caching improves user experience and spreadsheet performance, but does not update the quotes as often,
- * causing mild delays in data in some cases. Not an issues with Price Yield History.
- * Returns a the start and end dates
- * {[[date, date]]} [[startDate, endDate]]
- * as an array returned from the fintools archive database.
- *
- * @param {string} ticker ticker of the fund.
- * @param {boolean=} forceRefresh [optional, default = false]. true forces a new query, ignores the cache.
- * @return [[startDate, endDate]]
+ * Returns the available Cash Optimizer yield history date range, without a header.
+ * Uses the document cache when available, otherwise the script cache.
+ * Retrieval/parse failures propagate; missing history throws rather than returning error text.
+ * Example: =cloudGetCachedYieldHistoryRange("SPAXX")
+ * @param {string} ticker Fund ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date>>} One row: [[oldestDate, newestDate]].
  * @customfunction
  */
 function cloudGetCachedYieldHistoryRange(ticker, forceRefresh = false) {
-  const cacheKey = "cloudGetYieldHistoryRange-v136" + ticker;
+  const cacheKey = "cloudGetYieldHistoryRange-v157-" + ticker;
   const cache = new Cacher({
-    cachePoint: CacheService.getDocumentCache()
+    cachePoint: CacheService.getDocumentCache() || CacheService.getScriptCache()
   })
 
   // retrieve a previously cached report if it has not timed out or forced quote by caller.
   if (!forceRefresh) {
     const cacheVal = cache.get(cacheKey);
     // parse the stored JSON if it exists and return to the caller.
-    if (cacheVal != null && cacheVal != '' && (cacheVal.substring(0, 7) == 'failed:' || cacheVal.indexOf('check ticker') > -1)) {
-      return 'check ticker symbol, not found';
-    }
     if (cacheVal != null) {
       const cacheArray = JSON.parse(cacheVal);
       if (cacheArray[0] != null && cacheArray[0][0])
@@ -86,23 +97,17 @@ function cloudGetCachedYieldHistoryRange(ticker, forceRefresh = false) {
     }
   }
 
-  try {
-    const resp = cloudGetYieldHistoryRange_(ticker);
+  const resp = cloudGetYieldHistoryRange_(ticker);
 
-    // set ttl for 6AM as the tickers normally are not updated after 6AM. A user could force a refresh if necessary.
-    const ttl = cacheCalcTTLAfterHour_(6);
-    cacheLogTTL_(cacheKey, new Date, ttl);
-    cache.set(cacheKey, JSON.stringify(resp), ttl);
-    return resp;
-  } catch (err) {
-    cache.set(cacheKey, 'failed: ' + err.message, 120);
-    return 'check ticker symbol, not found';
-  }
+  const ttl = cacheCalcTTLAfterHour_(6);
+  cacheLogTTL_(cacheKey, new Date, ttl);
+  cache.set(cacheKey, JSON.stringify(resp), { expiry: ttl });
+  return resp;
 }
 
 // internal function that does the query and retrieval.
 function cloudGetYieldHistoryRange_(ticker) {
-  const json = cloudGetYieldHistoryJson_(ticker);
+  const json = cloudGetSortedYieldHistory_(ticker);
   return [[
     duGetDateFromYYYYMMDD_(json[0].asOfDate),
     duGetDateFromYYYYMMDD_(json[json.length - 1].asOfDate)
@@ -110,25 +115,23 @@ function cloudGetYieldHistoryRange_(ticker) {
 }
 
 /**
- * Retrieve yield history for an money market fund from moneymarket.fun. This will use cached values if available.
- * Caching improves user experience and spreadsheet performance, but does not update the quotes as often,
- * causing mild delays in data in some cases. Not an issues with Price Yield History.
- * Returns a matrix with each row including
- * {[date, float]} [date, 7-day Yield]
- * as an array returned from the fintools archive database.
- *
- * @param {string} ticker ticker of the fund.
- * @param {date} start_date First date for which to retrieve price and yield.
- * @param {date} end_date Last date for which to retrieve price and yield.
- * @param {boolean=} includeHeader [optional, default = true]. adds a header row to result.
- * @param {boolean=} forceRefresh [optional, default = false]. true forces a new query, ignores the cache.
- * @return [[asOfDate, 1,day, 7-day, 30-day]].
+ * Returns Cash Optimizer yield history in ascending date order.
+ * Gaps between observations within the requested range carry previous yields;
+ * filled rows are not independent observations. Yields are decimals, missing values empty strings.
+ * Uses the document cache when available, otherwise the script cache. Throws if no data.
+ * Example: =cloudGetCachedYieldHistory("SPAXX", DATE(2026,1,1), DATE(2026,10,10))
+ * @param {string} ticker Fund ticker.
+ * @param {Date|string} start_date Inclusive first date.
+ * @param {Date|string} end_date Inclusive last date.
+ * @param {boolean} [includeHeader=true] Prepend As Of Date, 1-day Yield, 7-day Yield, 30-day Yield.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {Array<Array<Date|number|string>>} Rows: [date, oneDay, sevenDay, thirtyDay].
  * @customfunction
  */
 function cloudGetCachedYieldHistory(ticker, start_date, end_date, includeHeader = true, forceRefresh = false) {
-  const cacheKey = "cloudGetYieldHistory-v147-" + ticker + '-' + start_date + '-' + end_date + '-' + includeHeader;
+  const cacheKey = "cloudGetYieldHistory-v157-" + ticker + '-' + start_date + '-' + end_date + '-' + includeHeader;
   const cache = new Cacher({
-    cachePoint: CacheService.getDocumentCache()
+    cachePoint: CacheService.getDocumentCache() || CacheService.getScriptCache()
   })
 
   // retrieve a previously cached report if it has not timed out or forced quote by caller.
@@ -137,7 +140,7 @@ function cloudGetCachedYieldHistory(ticker, start_date, end_date, includeHeader 
     // parse the stored JSON if it exists and return to the caller.
     if (cacheVal != null && cacheVal.substring(0, 7) != 'failed:') {
       const cacheArray = JSON.parse(cacheVal);
-      for (i in cacheArray) {
+      for (const i in cacheArray) {
         if (i == 0 && includeHeader) continue;
         if (cacheArray[i] != null && cacheArray[i][0])
           cacheArray[i][0] = new Date(cacheArray[i][0]);
@@ -151,14 +154,13 @@ function cloudGetCachedYieldHistory(ticker, start_date, end_date, includeHeader 
   // set ttl for 6AM as the tickers normally are not updated after 6AM. A user could force a refresh if necessary.
   const ttl = cacheCalcTTLAfterHour_(6);
   cacheLogTTL_(cacheKey, new Date, ttl);
-  cache.set(cacheKey, JSON.stringify(resp), ttl);
+  cache.set(cacheKey, JSON.stringify(resp), { expiry: ttl });
   return resp;
 }
 
 function cloudGetFullYieldHistory_(ticker, forceRefresh = false) {
   if (!ticker) {
-    Logger.log('missing ticker symbol');
-    return;
+    throw new Error('Fund ticker is required');
   }
   const dates = cloudGetCachedYieldHistoryRange(ticker, forceRefresh);
   const earliest_date = new Date("2020-01-01");
@@ -173,7 +175,10 @@ function cloudGetYieldHistory_(ticker, start_date, end_date, includeHeader = tru
   const sDate = new Date(start_date);
   const eDate = new Date(end_date);
   //Logger.log('start=' + sDate + '  end =' + eDate);
-  const json = cloudGetYieldHistoryJson_(ticker);
+  if (!Number.isFinite(sDate.getTime()) || !Number.isFinite(eDate.getTime()) || sDate > eDate) {
+    throw new Error('Invalid yield history date range');
+  }
+  const json = cloudGetSortedYieldHistory_(ticker);
 
   let lastSaveDate = 0;
   let lastSaveOneDayRate = '';
@@ -182,9 +187,9 @@ function cloudGetYieldHistory_(ticker, start_date, end_date, includeHeader = tru
   let result = [];
   for (let r in json) {
     const jsonDate = duGetDateFromYYYYMMDD_(json[r].asOfDate);
-    const jsonOneDayRate = safeObjectRef_(json[r].oneDayYield) ? json[r].oneDayYield * 1 : '';
-    const jsonSevenDayRate = safeObjectRef_(json[r].sevenDayYield) ? json[r].sevenDayYield * 1 : '';
-    const jsonThirtyDayRate = safeObjectRef_(json[r].thirtyDayYield) ? json[r].thirtyDayYield * 1 : '';
+    const jsonOneDayRate = json[r].oneDayYield != null && json[r].oneDayYield !== '' ? json[r].oneDayYield * 1 : '';
+    const jsonSevenDayRate = json[r].sevenDayYield != null && json[r].sevenDayYield !== '' ? json[r].sevenDayYield * 1 : '';
+    const jsonThirtyDayRate = json[r].thirtyDayYield != null && json[r].thirtyDayYield !== '' ? json[r].thirtyDayYield * 1 : '';
 
     if (jsonDate.getTime() >= sDate.getTime() && jsonDate.getTime() <= eDate.getTime()) {
       // fill in gap dates from last recorded date missing in source dataset.
@@ -204,9 +209,21 @@ function cloudGetYieldHistory_(ticker, start_date, end_date, includeHeader = tru
       result.push([lastSaveDate, lastSaveOneDayRate, lastSaveSevenDayRate, lastSaveThirtyDayRate]);
     }
   }
+  if (!result.length) throw new Error('No yield history for ' + ticker + ' in the requested date range');
   // stick the header in if data was found and caller wants header.
   if (result.length && includeHeader) {
     result.unshift(['As Of Date', '1-day Yield', '7-day Yield', '30-day Yield']);
   }
   return result;
+}
+
+function cloudGetSortedYieldHistory_(ticker) {
+  if (typeof ticker !== 'string' || !ticker.trim()) throw new Error('Fund ticker is required');
+  const rows = cloudGetYieldHistoryJson_(ticker);
+  if (!Array.isArray(rows) || !rows.length) throw new Error('No yield history for ' + ticker);
+  for (const row of rows) {
+    const date = row && duGetDateFromYYYYMMDD_(row.asOfDate);
+    if (!date || !Number.isFinite(date.getTime())) throw new Error('Invalid yield history date for ' + ticker);
+  }
+  return rows.slice().sort((a, b) => duGetDateFromYYYYMMDD_(a.asOfDate) - duGetDateFromYYYYMMDD_(b.asOfDate));
 }

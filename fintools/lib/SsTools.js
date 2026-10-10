@@ -1,14 +1,13 @@
 // ssTools.gs - this is a set of generic Google Sheets functions that are useful to interact with the spreadsheet.
-// this should eventually get moved into fintools.
 // v15 - 4/13/23 - used in version 9 of MM Optimizer.
 // v25 - added trackRangeUses function.
 // v50 baseline.
 
 /**
- * Retrieves the current sheet name from the Google Sheets App. This cannot be done in a
- * direct call in a cell, thus this small function. Note, this is a VERY expensive call. do not use lightly.
- *
- * @return string
+ * Returns the active sheet's name, not necessarily the sheet containing a formula.
+ * Renaming or selecting a sheet is not a formula dependency; re-enter the formula to refresh.
+ * Example: =ssGetSheetName()
+ * @return {string} Active sheet name.
  * @customfunction
  */
 function ssGetSheetName() {
@@ -16,12 +15,11 @@ function ssGetSheetName() {
 }
 
 /**
- * Search the Named Ranges defined the spread sheet and return the value of the one requested.
- * For Apps Script use only, not needed in a sheet!  Returns string value of the Named Range provided.
- * Returns string value value of the Named Range provided.
- * 
- * @param {string} namedRange name of a range in the spreadsheet (only compares on the part after the ! if a sheetname is referenced).
- * 
+ * Returns the top-left cell value of a named range. Throws if the range is not found.
+ * Prefer direct named-range references in formulas so Sheets tracks dependencies.
+ * Example (script): ssGetNamedRangeValue("TitleRange")
+ * @param {string} namedRange Name, matched after any sheet-name prefix.
+ * @return {string|number|boolean|Date} Top-left cell value.
  * @customfunction
  */
 function ssGetNamedRangeValue(namedRange) {
@@ -33,16 +31,15 @@ function ssGetNamedRangeValue(namedRange) {
       return namedRanges[i].getRange().getValue();
     }
   }
-  return "";
+  throw new Error('Named range not found: ' + namedRange);
 }
 
 /**
- * Search the Named Ranges defined the spread sheet and set the value of the one requested.
- * For Apps Script use only, not needed in a sheet! 
- * 
- * @param {"TitleRange"} namedRange name of a range in the spreadsheet (only compares on the part after the ! if a sheetname is referenced).
- * @param {string} value value to set.
- * @customfunction
+ * Sets a named range's cell value(s). Script/menu use only; not a worksheet custom function.
+ * Throws if the range is not found. Example (script): ssSetNamedRangeValue("TitleRange", "Title")
+ * @param {string} namedRange Name, matched after any sheet-name prefix.
+ * @param {string|number|boolean|Date} value Value applied to the range.
+ * @return {string} Empty string on success.
  */
 function ssSetNamedRangeValue(namedRange, value) {
   const namedRanges = SpreadsheetApp.getActiveSpreadsheet().getNamedRanges();
@@ -54,39 +51,43 @@ function ssSetNamedRangeValue(namedRange, value) {
       return "";
     }
   }
-  return "";
+  throw new Error('Named range not found: ' + namedRange);
 }
 
 /**
- * Find all references to a specific namedRange in the supplied worksheet. 
- * 
- * @param {string} sheetName to search.
- * @param {string} namedRange namedRange defined in the spreadsheet.
- * @return [string] cellReference an array of cell references containing the namedRange.
+ * Finds exact named-range tokens in formulas in a sheet's used range.
+ * Ignores quoted strings/sheet names, function names, and longer identifiers.
+ * This is lexical matching, not a formula parser; INDIRECT strings are not references.
+ * Example: =ssTrackRangeUses("Sheet1", "MyRange")
+ * @param {string} sheetName Sheet to search.
+ * @param {string} namedRange Named-range token to match.
+ * @return {Array<Array<string>>|string} A1 references in row order, one per row; "" if none.
  * @customfunction
  */
 function ssTrackRangeUses(sheetName, namedRange) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
   if (!sheet) throw "invalid sheet name";
+  if (typeof namedRange !== 'string' || !namedRange.trim()) throw new Error('Named range is required');
 
   function ssIndexToColumnLetter_(index) {
-    var map = ["zero",
-      "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-      "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-      "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM",
-      "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"];
-    return map[index + 1];
+    let column = '';
+    for (let n = index + 1; n > 0; n = Math.floor((n - 1) / 26)) {
+      column = String.fromCharCode(65 + (n - 1) % 26) + column;
+    }
+    return column;
   }
 
   let out = [];
-  const rows = sheet.getMaxRows();
-  const columns = sheet.getMaxColumns();
-  for (let row = 1; row <= rows; row++) {
-    const rowData = sheet.getRange(row, 1, 1, columns).getFormulas();
-    for (let cell = 0; cell < rowData[0].length; cell++) {
-      let index = rowData[0][cell].indexOf(namedRange);
-      if (index >= 0) {
-        out.push([ssIndexToColumnLetter_(cell) + row.toString()]);
+  const range = sheet.getDataRange();
+  const formulas = range.getFormulas();
+  const escaped = namedRange.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const reference = new RegExp('(^|[^\\w.\\u0080-\\uFFFF])' + escaped +
+    '(?![\\w.\\u0080-\\uFFFF]|\\s*[!(])', 'i');
+  for (let row = 0; row < formulas.length; row++) {
+    for (let cell = 0; cell < formulas[row].length; cell++) {
+      const formula = formulas[row][cell].replace(/"(?:[^"]|"")*"|'(?:[^']|'')*'/g, ' ');
+      if (reference.test(formula)) {
+        out.push([ssIndexToColumnLetter_(range.getColumn() - 1 + cell) + (range.getRow() + row)]);
       }
     }
   }

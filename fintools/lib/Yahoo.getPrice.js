@@ -2,21 +2,20 @@
 // v152 baseline.
 
 /**
- * Returns market price for common stocks and ETFs, and NAV for mutual funds.
- * Returns asOfDateTime, Price, and optionally the Change % from finance.yahoo.com stock market ticker
- * It will use cached values if available.
- * Caching improves user experience and spreadsheet performance, but does not update the quotes as often,
- * causing mild delays in data in some cases.
- * returns [asOf, price] or [asOf, price, change %]
- * 
- * @param {"VTSAX"} ticker Fund ticker symbol.
- * @param {true} includeChangePct [optional, default = false]. true includes change % column to return array.
- * @param {false} forceRefresh [optional, default = false]. true forces a new quote, ignores the cache.
+ * Returns Yahoo's market price (stocks/ETFs) or NAV (mutual funds), without a header.
+ * Uses the document cache when available, otherwise the script cache.
+ * Date preserves the source epoch instant; Sheets controls its displayed timezone.
+ * Change is a decimal (0.01 = 1%), or "" if previous close is unavailable.
+ * Throws for missing/invalid quote data. Example: =yahooGetCachedPrice("VTI", TRUE)
+ * @param {string} ticker Yahoo ticker.
+ * @param {boolean} [includeChangePct=false] Include the third column.
+ * @param {boolean} [forceRefresh=false] Bypass the cached quote.
+ * @return {Array<Array<Date|number|string>>} [[asOf, price]] or [[asOf, price, change]].
  * @customfunction
  */
 function yahooGetCachedPrice(ticker, includeChangePct = false, forceRefresh = false) {
-  const cacheKey = `yahoo-v152-${ticker}`;
-  const cache = CacheService.getDocumentCache();
+  const cacheKey = `yahoo-v157-${ticker}`;
+  const cache = CacheService.getDocumentCache() || CacheService.getScriptCache();
 
   // retrieve a previously cached quote if it has not timed out or forced quote by caller.
   if (!forceRefresh) {
@@ -38,13 +37,10 @@ function yahooGetCachedPrice(ticker, includeChangePct = false, forceRefresh = fa
   // Don't have a cached quote, so go out and get one.
 
   /**
-   * Returns market price for common stocks and ETFs, and NAV for mutual funds.
-   * Returns asOfDateTime, Price, and optionally the Change % from finance.yahoo.com stock market ticker feed.
-   * returns [asOf, price] or [asOf, price, change %]
-   * 
-   * @param {"VMFXX"} ticker Fund ticker symbol.
-   * @param {false} [includeChangePct] optional, default = false. true includes change % column to return array.
-   * @return {date, number, number=} array [asOf, price] or [asOf, price, change %].
+   * Fetches a Yahoo quote with its original epoch timestamp.
+   * @param {string} ticker Yahoo ticker.
+   * @param {boolean} [includeChangePct=false] Include decimal change from previous close.
+   * @return {Array<Array<Date|number|string>>} One quote row, without a header.
    */
   function yahooGetPrice_(ticker, includeChangePct = false) {
 
@@ -64,24 +60,29 @@ function yahooGetCachedPrice(ticker, includeChangePct = false, forceRefresh = fa
 
     // parse price.
     const data = JSON.parse(contentText);
-    const price = data.chart.result[0].meta.regularMarketPrice;
+    if (!data.chart || !data.chart.result || !data.chart.result.length) {
+      throw new Error('No Yahoo quote for ' + ticker);
+    }
+    const meta = data.chart.result[0].meta;
+    const price = meta.regularMarketPrice;
 
-    if (isNaN(price)) {
-      throw 'Element ' + element + ' found in price position is not a number.';
+    if (!Number.isFinite(price)) {
+      throw new Error('Invalid Yahoo price for ' + ticker + ': ' + price);
     } else {
       // Blank NAV will get converted to 0.
       if (price == 0) throw 'No price found for ticker ' + ticker + '.';
     }
 
     // Get price as of date/time reported by yahoo in epoch seconds.
-    const asOf = data.chart.result[0].meta.regularMarketTime + data.chart.result[0].meta.gmtoffset;
+    const asOf = meta.regularMarketTime;
+    if (!Number.isFinite(asOf)) throw new Error('Invalid Yahoo quote timestamp for ' + ticker);
     const dateTime = duDateTimeFromSecs_(asOf);
 
     if (!includeChangePct) {
       return [[dateTime, price]];
     } else {
       // get change percentage
-      const previousClose = data.chart.result[0].meta.chartPreviousClose;
+      const previousClose = meta.chartPreviousClose;
       const changeCalc = previousClose ? (price / previousClose - 1) : "";
       return [[dateTime, price, changeCalc]];
     }

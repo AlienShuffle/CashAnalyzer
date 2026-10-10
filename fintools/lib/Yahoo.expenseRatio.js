@@ -2,13 +2,12 @@
 // v152 - refactoring.
 
 /**
- * Get expense ratio from yahoo or cache for a fund ticker.
- * It will use cached values if available.
- * Caching improves user experience and spreadsheet performance, but does not update the quotes as often.
- * returns [expenseRatio]
- * 
- * @param {"VTI"} ticker Fund ticker symbol.
- * @param {false} forceRefresh [OPTIONAL, default = FALSE]. true forces a new quote, not use any available cache.
+ * Returns Yahoo's fund expense ratio as a decimal (0.0003 = 0.03%), using the user cache.
+ * Missing/not-applicable expense ratios return "n/a"; malformed values throw.
+ * Example: =yahooGetCachedExpenseRatio("VTI")
+ * @param {string} ticker Fund ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached result.
+ * @return {number|string} Scalar decimal ratio or "n/a", not an array.
  * @customfunction
  */
 function yahooGetCachedExpenseRatio(ticker, forceRefresh = false) {
@@ -27,20 +26,16 @@ function yahooGetCachedExpenseRatio(ticker, forceRefresh = false) {
   }
 
   const resp = yahooGetExpenseRatio_(ticker);
-  // set ttl to 30 days, ER doesn't change often.
-  const ttl = 30 * 24 * 60 * 60;
+  const ttl = cacheBoundTTL_(30 * 24 * 60 * 60);
   cacheLogTTL_(cacheKey, "", ttl);
   cache.put(cacheKey, resp, ttl);
   return resp;
 }
 
 /**
- * Get expense ratio for fund ticker from yahoo.
- * Returns market price for ETFs, and NAV for mutual funds.
- * @param {"VTI"} ticker Fund ticker symbol.
- * @param {false} [includeChangePct] [OPTIONAL, default = FALSE]. 1 or true = return change % column; 0, false or missing = do not.
- * @returns [asOf, price] or [asOf, price, change %].
- * @customfunction
+ * Fetches a scalar decimal expense ratio from Yahoo, or "n/a" if unavailable.
+ * @param {string} ticker Fund ticker.
+ * @return {number|string} Decimal ratio or "n/a".
  */
 function yahooGetExpenseRatio_(ticker) {
   // Fetch HTML from URL.
@@ -52,12 +47,15 @@ function yahooGetExpenseRatio_(ticker) {
 
   const resp = UrlFetchApp.fetch(url).getContentText();
   const stringER = Yahoo_extractExpenseRatio_(resp);
-  if (stringER == "" || stringER == "N/A")
+  if (stringER == "" || stringER.toUpperCase() == "N/A")
     return "n/a";
-  return stringER / 100;
+  const ratio = Number(stringER) / 100;
+  if (!Number.isFinite(ratio)) throw new Error('Invalid Yahoo expense ratio for ' + ticker + ': ' + stringER);
+  return ratio;
 }
 
 function Yahoo_extractExpenseRatio_(inputMarkup) {
+  if (inputMarkup.indexOf(">Expense Ratio") < 0) return "";
   inputMarkup = inputMarkup.substring(inputMarkup.indexOf(">Expense Ratio"));
   inputMarkup = inputMarkup.substring(inputMarkup.indexOf("<span "));
   inputMarkup = inputMarkup.substring(inputMarkup.indexOf(">"));
