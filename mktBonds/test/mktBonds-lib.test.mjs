@@ -97,11 +97,11 @@ test("xirr solves a simple two-flow case and validates input", () => {
     assert.throws(() => xirr([-100], ["2026-01-01", "2027-01-01"]), /same length/);
 });
 
-// Parity against the original Apps Script sources, run unmodified in a vm sandbox.
+// Parity against the maintained toolkit sources, run unmodified in a vm sandbox.
 function loadAppsScript() {
-    const dir = new URL("../appscript-src/", import.meta.url);
-    const files = ["mybond.dates.js", "mybond.utils.js", "mybond.yieldFromPrice.js",
-        "mybond.priceFromYield.js", "duration.js", "mybond.xirr.js"];
+    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+    const files = ["mybond._dates.js", "mybond._utils.js", "mybond.accrued.js", "mybond.yieldFromPrice.js",
+        "mybond.priceFromYield.js", "mybond.duration.js", "mybond.xirr.js"];
     const context = vm.createContext({ Logger: { log() { } }, Math, Date });
     for (const file of files) {
         vm.runInContext(readFileSync(new URL(file, dir), "utf8"), context, { filename: file });
@@ -109,7 +109,7 @@ function loadAppsScript() {
     return context;
 }
 
-test("parity with the original Apps Script implementation", () => {
+test("parity with the toolkit Apps Script implementation", () => {
     const gs = loadAppsScript();
     const settles = ["2026-10-05", "2026-12-31", "2027-03-01"];
     const maturities = ["2027-02-15", "2027-10-05", "2028-02-29", "2029-05-31", "2031-11-15", "2036-08-15", "2056-02-15"];
@@ -128,9 +128,9 @@ test("parity with the original Apps Script implementation", () => {
                     const y = yieldFromPrice(s, m, coupon, price);
                     assert.equal(priceFromYield(s, m, coupon, y), gs.myPriceFromYield(s, m, coupon, y),
                         `price ${settle} ${maturity} ${coupon} ${y}`);
-                    assert.equal(macaulayDuration(s, m, coupon, y), gs.calculateDuration(s, m, coupon, y),
+                    assert.equal(macaulayDuration(s, m, coupon, y), gs.mybondCalcDuration(s, m, coupon, y),
                         `duration ${settle} ${maturity} ${coupon} ${y}`);
-                    assert.equal(modifiedDuration(s, m, coupon, y), gs.calculateMDuration(s, m, coupon, y),
+                    assert.equal(modifiedDuration(s, m, coupon, y), gs.mybondCalcMDuration(s, m, coupon, y),
                         `mduration ${settle} ${maturity} ${coupon} ${y}`);
                     assert.equal(accruedInterest(s, m, coupon), gs.mybondAccruedInterest(s, m, coupon));
                     compared++;

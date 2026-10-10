@@ -42,9 +42,10 @@ test("tbill rates: bracketing and same-maturity average", () => {
 });
 
 function loadAppsScript() {
-    const dir = new URL("../appscript-src/", import.meta.url);
-    const files = ["mybond.dates.js", "mybond.utils.js", "mybond.yieldFromPrice.js", "mybond.forwards.js",
-        "mybond.calcForwardCP.js", "mybond.fwd.nom.calcFwdCP.js", "discount.js", "fwd.tbill.calc.simple.js"];
+    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+    const files = ["mybond._dates.js", "mybond._utils.js", "mybond.accrued.js",
+        "mybond.fwd.rates.js", "mybond.fwd.tips.calcFwd.js", "mybond.fwd.nom.calcFwd.js",
+        "tbill.fwd.discount.js", "tbill.fwd.simple.js"];
     const context = vm.createContext({ Logger: { log() { } }, Math, Date, Array, Number });
     context.base = base;
     vm.runInContext(`
@@ -54,7 +55,7 @@ function loadAppsScript() {
     return context;
 }
 
-test("parity with Apps Script: forwards and bills", () => {
+test("parity with toolkit Apps Script: forwards and bills", () => {
     const gs = loadAppsScript();
     let count = 0;
     for (const maturity of ["2027-04-15", "2029-07-15", "2031-04-15", "2036-01-15"]) {
@@ -86,7 +87,7 @@ test("parity with Apps Script: forwards and bills", () => {
     assert.equal(gs.mybondEasyForward("2026-10-05", "2027-03-01", "2027-03-01", 0.04, 0.045), "");
 
     assert.equal(tbillDiscountFactor("2026-10-05", "2026-12-20", "2026-12-01", 99.1, "2027-03-01", 98.2),
-        gs.myTbillDiscountFactor_("2026-10-05", "2026-12-20", "2026-12-01", 99.1, "2027-03-01", 98.2));
+        gs.myTbillDiscountFactor("2026-10-05", "2026-12-20", "2026-12-01", 99.1, "2027-03-01", 98.2));
     assert.equal(tbillSimpleRate("2026-10-05", "2026-12-20", "2026-12-01", 99.1, "2027-03-01", 98.2),
         gs.myTbillSimpleRate("2026-10-05", "2026-12-20", "2026-12-01", 99.1, "2027-03-01", 98.2));
     assert.equal(tbillSimpleRate("2026-10-05", "2026-12-01", "2026-12-01", 99.1, "2026-12-01", 99.2),

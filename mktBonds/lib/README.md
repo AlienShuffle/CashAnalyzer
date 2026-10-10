@@ -3,22 +3,27 @@
 For published file naming conventions and the CSV column glossary, see the
 [market Treasury report reference](../README.md).
 
-Node ESM port of the Google Apps Script code kept for reference in [../appscript-src/](../appscript-src).
+Node ESM implementation baselined against the maintained Google Apps Script
+[toolkit](../toolkit-app-script-src/). The [original sources](../appscript-src/)
+are historical reference only; tests no longer load them.
 Import from `./index.mjs`. Dates are `Date` objects or `YYYY-MM-DD` strings, rates are decimals (4% = `0.04`),
 prices are per $100 par.
 
 | Module | Exports | Ported from |
 |---|---|---|
-| `dates.mjs` | `normalizeDate(s)`, `daysBetween`, `daysInYearFrom`, `yearsBetween`, `dateEquals`, `dateLessThan` | `mybond.dates` |
-| `rounding.mjs` | `roundTo`, `roundYield`, `roundPrice`, `roundRefCpi`, `roundCpi`, `roundSeasonal` | `mybond.utils` |
-| `coupons.mjs` | `couponSchedule`, `bondFacts`, `lastCoupon`, `nextCoupon`, `accruedInterest`, `addSemiannualPeriods` | `mybond.utils` |
+| `dates.mjs` | `normalizeDate(s)`, `daysBetween`, `daysInYearFrom`, `yearsBetween`, `dateEquals`, `dateLessThan` | `mybond._dates` |
+| `rounding.mjs` | `roundTo`, `roundYield`, `roundPrice`, `roundRefCpi`, `roundCpi`, `roundSeasonal` | `mybond._utils` |
+| `coupons.mjs` | `couponSchedule`, `bondFacts`, `lastCoupon`, `nextCoupon`, `accruedInterest`, `addSemiannualPeriods` | `mybond._utils`, `mybond.accrued` |
 | `yield.mjs` | `yieldFromPrice` | `mybond.yieldFromPrice` |
 | `price.mjs` | `priceFromYield` | `mybond.priceFromYield` |
-| `duration.mjs` | `macaulayDuration`, `modifiedDuration` | `duration` |
+| `duration.mjs` | `macaulayDuration`, `modifiedDuration` | `mybond.duration` |
 | `xirr.mjs` | `xirr` | `mybond.xirr` |
 
-Tests: `node --test mktBonds/test/mktBonds-lib.test.mjs`. They include a parity check that runs the original
-Apps Script sources in a `vm` sandbox and compares results.
+Tests: `node --test mktBonds/test/mktBonds-lib.test.mjs`. Parity checks run the
+toolkit sources unmodified in a `vm` sandbox. Core math, forwards, returns,
+seasonal adjustments, and Svensson fitting use that baseline while retaining
+independent expected-value, round-trip, and fit-quality tests.
+Run `node --test mktBonds/test/*.test.mjs` for the complete mktBonds suite.
 
 Known behavior carried over from the original: `priceFromYield` has no bill investment-rate special case, so it is
 not the exact inverse of `yieldFromPrice` for zero-coupon securities under six months.
