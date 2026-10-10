@@ -3,7 +3,7 @@
 // for TIPS. He likely adapted it from somewhere else too (Claude?).
 // a key change is that I allow empty/null entries to be ignored through the entire pipeline and returned empty.
 // source: https://github.com/aerokam/Treasuries/blob/main/shared/src/spot-curve.js
-// This version does not include the tweak on the very shortest to maturity to lock into a 6 mos. yield.
+// By default, hold the short end flat below the shortest maturity used in the fit.
 
 // SAO "O" step — a SMOOTH-CURVE FIT, not Canty's inflation-shock outlier factor.
 // See knowledge/2.0_SAO_Adjustment.md and 2.2_SAO_Residual_Analysis.md.
@@ -47,10 +47,11 @@ const SAO_BLEND_END_YRS = 6.0;  // aerokam had 6.0
  * @param {Date[]} settles settlement dates
  * @param {Date} matures maturity dates
  * @param {number[]} yields seasonally adjusted yields
- * @return {number[]}
+ * @param {boolean} shortEndTweak [OPTIONAL, default = TRUE] hold the curve flat below its shortest fitted maturity.
+ * @return {number[][]}
  * @customfunction
  */
-function getSaoCurve(settles, matures, yields) {
+function getSaoCurve(settles, matures, yields, shortEndTweak = true) {
 
   if (settles.length != matures.length) throw Error(`settles[${settles.length}] and matures[${matures.length}] are different lengths`);
   if (settles.length != yields.length) throw Error(`settles[${settles.length}] and yields[${yields.length}] are different lengths`);
@@ -82,13 +83,13 @@ function getSaoCurve(settles, matures, yields) {
       })
     }
   }
-  const sao = calculateSAO_(bonds);
+  const sao = calculateSAO_(bonds, shortEndTweak);
   const result = sao.map(n => [n === null ? "" : mybondRoundYield_(n)]);
   return result;
 }
 
 // This calculates and returns a fitted curve using the NSS algorithm  using provided seasonally adjusted TIPS.
-function calculateSAO_(bonds) {
+function calculateSAO_(bonds, shortEndTweak = true) {
   const n = bonds.length;
   const sao = new Array(n);
   if (n === 0) return sao;
@@ -101,13 +102,15 @@ function calculateSAO_(bonds) {
   const fitIdx = [];
   for (let i = 0; i < n; i++) if (yrs[i] >= SAO_NOISE_YRS) fitIdx.push(i);
   const curve = fitNSS_(fitIdx.map(i => yrs[i]), fitIdx.map(i => bonds[i].saYield));
+  const tMin = fitIdx.length ? Math.min(...fitIdx.map(i => yrs[i])) : 0;
 
   for (let i = 0; i < n; i++) {
     const b = bonds[i];
     if (yrs[i] === null) {
       sao[i] = null;
     } else {
-      const fit = curve ? curve(yrs[i]) : b.saYield;
+      const fitYears = shortEndTweak ? Math.max(yrs[i], tMin) : yrs[i];
+      const fit = curve ? curve(fitYears) : b.saYield;
       const weight = yrs[i] < SAO_NOISE_YRS
         ? 1
         : Math.min(1, Math.max(0, (SAO_BLEND_END_YRS - yrs[i]) / (SAO_BLEND_END_YRS - SAO_BLEND_START_YRS)));

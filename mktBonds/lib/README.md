@@ -109,6 +109,12 @@ columns use `settle_sa_decay_ytm` and settlement dates; forward columns use
 `forward_sa_decay_ytm` and forward dates. Both variants preserve SAO's
 fitted/raw yield blending, including raw yields beyond six years. The
 `getSaoCurve` option `shortEndTweak` defaults to `true` for existing callers.
+The toolkit spreadsheet `getSaoCurve(settles, matures, yields, shortEndTweak)`
+now has the same default: points below the shortest reliable fitted maturity
+use the curve value at that maturity, not an extrapolated curve value.
+Its optional fourth boolean argument can be `FALSE` to retain the untweaked
+curve. Worksheet output remains a single column, with blank input rows blank
+and insufficient fitting data falling back to the supplied yields.
 
 ## Backlog
 

@@ -110,8 +110,8 @@ test("sao: short-end tweak is optional and defaults on", () => {
 });
 
 function loadAppsScript() {
-    const dir = new URL("../appscript-src/", import.meta.url);
-    const files = ["mybond.dates.js", "mybond.utils.js", "mybond.yieldFromPrice.js", "mybond.priceFromYield.js",
+    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+    const files = ["mybond._dates.js", "mybond._utils.js", "mybond.accrued.js", "mybond.yieldFromPrice.js", "mybond.priceFromYield.js",
         "mybond.Canty.js", "aerokam.credibility.js", "aerokam.calcSao.js"];
     const context = vm.createContext({ Logger: { log() { } }, Math, Date });
     for (const file of files) vm.runInContext(readFileSync(new URL(file, dir), "utf8"), context, { filename: file });
@@ -188,7 +188,7 @@ test("toolkit maximum REFCPI date returns date-only text for fresh and cached va
     assert.throws(() => context.tipsGetMaxRefCpiDate(), /REFCPI fetch failed/);
 });
 
-test("parity with Apps Script: Canty, credibility and SAO", () => {
+test("parity with toolkit Apps Script: Canty, credibility and SAO", () => {
     const gs = loadAppsScript();
     const maturities = ["2027-01-15", "2029-07-15", "2031-04-15", "2036-01-15", "2046-02-15"];
     let n = 0;
@@ -214,13 +214,41 @@ test("parity with Apps Script: Canty, credibility and SAO", () => {
     }
     assert.equal(
         applyCredibilityFactor(1.0031, "2026-03-10", "2041-09-15"),
-        gs.applyCredibilityFactor(1.0031, "2026-03-10", "2041-09-15"),
+        gs.tipsApplyCredibilityFactor(1.0031, "2026-03-10", "2041-09-15"),
     );
 
     const settles = Array(9).fill("2026-03-10");
     const matures = ["2026-04-15", "2027-01-15", "2028-04-15", "2029-07-15", "2031-04-15", "2033-01-15", "2036-01-15", "2041-02-15", "2046-02-15"];
     const ys = [0.015, 0.0175, 0.0182, 0.0191, 0.0203, 0.0211, 0.0224, 0.0231, 0.0242];
-    const ours = getSaoCurve(settles, matures, ys, { shortEndTweak: false });
+    const ours = getSaoCurve(settles, matures, ys);
     const theirs = Array.from(gs.getSaoCurve(settles, matures, ys), r => r[0]);
     assert.deepEqual(ours, Array.from(theirs));
+});
+
+test("toolkit SAO holds the short end flat and supports the untweaked curve", () => {
+    const gs = loadAppsScript();
+    const matures = ["2026-04-15", "2026-06-15", "2027-01-15", "2028-04-15",
+        "2029-07-15", "2031-09-15", "2036-01-15", ""];
+    const yields = [0.015, 0.016, 0.0175, 0.0182, 0.0191, 0.0203, 0.0224, 0.02];
+    const settles = matures.map(() => "2026-03-10");
+    const sheetValues = result => Array.from(result, row => row[0]);
+    const expected = result => result.map(value => value === null ? "" : value);
+    const defaultResult = sheetValues(gs.getSaoCurve(settles, matures, yields));
+    assert.deepEqual(defaultResult, expected(getSaoCurve(settles, matures, yields)));
+    assert.equal(defaultResult[0], defaultResult[2]);
+    assert.equal(defaultResult[1], defaultResult[2]);
+    assert.equal(defaultResult[7], "");
+    for (const tweak of [true, false]) {
+        const result = gs.getSaoCurve(settles, matures, yields, tweak);
+        assert.ok(result.every(row => row.length === 1));
+        assert.deepEqual(sheetValues(result),
+            expected(getSaoCurve(settles, matures, yields, { shortEndTweak: tweak })));
+    }
+    assert.notEqual(defaultResult[0], sheetValues(gs.getSaoCurve(settles, matures, yields, false))[0]);
+    const nested = values => values.map(value => [value]);
+    assert.deepEqual(sheetValues(gs.getSaoCurve(nested(settles), nested(matures), nested(yields))), defaultResult);
+    assert.deepEqual(sheetValues(gs.getSaoCurve(settles.slice(0, 2), matures.slice(0, 2), yields.slice(0, 2))),
+        yields.slice(0, 2));
+    assert.deepEqual(sheetValues(gs.getSaoCurve([], [], [])), []);
+    assert.throws(() => gs.getSaoCurve(settles, [], yields), /different lengths/);
 });
