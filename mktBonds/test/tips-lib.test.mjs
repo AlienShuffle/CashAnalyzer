@@ -156,6 +156,72 @@ test("toolkit REFCPI worksheet output preserves types on fresh, cached and force
     assert.equal(internal[0].refCpiNSA, 330);
     assert.equal(internal[0].saFactor, 1.003);
     assert.equal(Array.isArray(internal[0]), false);
+    assert.ok(internal[0].date instanceof Date);
+    assert.ok(internal[0].maxRefCpi instanceof Date);
+});
+
+test("toolkit REFCPI fresh and cached lookups retain the final CSV row and restore dates", () => {
+    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+    const year = new Date().getFullYear();
+    const header = "Date,REFCPINSA,REFCPISA,SAFactor,MMDD,maxREFCPI";
+    const data = [
+        `${year}-03-02,330.1,329.9,1.00061,M0302,${year}-04-01`,
+        `${year}-03-01,330,329.7,1.00091,M0301,${year}-04-01`,
+        `${year - 11}-03-01,300,299,1.003,M0301,${year - 11}-04-01`,
+    ];
+    const cases = [data.slice(0, 2), data].flatMap(csvRows =>
+        ["\n", "\r\n"].map(newline => ({ csvRows, newline })));
+    for (const { csvRows, newline } of cases) {
+        for (const suffix of ["", newline, newline + newline]) {
+            const store = new Map();
+            let fetches = 0;
+            const context = vm.createContext({
+                Date,
+                CacheService: { getDocumentCache() { return store; } },
+                Cacher: class {
+                    get(key) { return store.get(key); }
+                    set(key, value) { store.set(key, value); }
+                },
+                UrlFetchApp: { fetch() {
+                    fetches++;
+                    return { getContentText() { return [header, ...csvRows].join(newline) + suffix; } };
+                } },
+                cacheCalcTTLAfterHour_() { return 3600; },
+                cacheLogTTL_() { },
+            });
+            for (const file of ["mybond._dates.js", "tips.cloudFlare.REFCPI.js", "tips.utils.js"]) {
+                vm.runInContext(readFileSync(new URL(file, dir), "utf8"), context, { filename: file });
+            }
+            for (const force of [false, false, true]) {
+                const rows = context.cloudGetCachedREFCPI_(force);
+                assert.equal(rows.length, 2);
+                for (const row of rows) {
+                    assert.ok(row.date instanceof Date);
+                    assert.ok(row.maxRefCpi instanceof Date);
+                    assert.equal(row.maxRefCpi.getTime(), new Date(year, 3, 1).getTime());
+                }
+                assert.equal(context.tipsGetRefCpi(`${year}-03-01`), 330);
+                assert.equal(context.tipsGetFactor(`${year}-03-01`), 1.00091);
+                assert.equal(context.tipsGetFactor(`${year + 5}-03-01`), 1.00091);
+                assert.equal(context.tipsGetRefCpi(`${year + 5}-03-01`), null);
+                assert.equal(context.tipsGetFactor(`${year + 5}-07-04`), null);
+                assert.equal(context.tipsGetMaxRefCpiDate(), `${year}-03-02`);
+            }
+            assert.equal(fetches, 2);
+        }
+    }
+});
+
+test("toolkit REFCPI single-row data supports exact and projected cached lookups", () => {
+    const context = loadAppsScript();
+    const file = new URL("../toolkit-app-script-src/tips.utils.js", import.meta.url);
+    vm.runInContext(readFileSync(file, "utf8"), context);
+    context.cloudGetCachedREFCPI_ = () => [{
+        date: new Date(2026, 2, 1), refCpiNSA: 330, saFactor: 1.00091,
+    }];
+    assert.equal(context.tipsGetRefCpi("2026-03-01"), 330);
+    assert.equal(context.tipsGetFactor("2026-03-01"), 1.00091);
+    assert.equal(context.tipsGetFactor("2030-03-01"), 1.00091);
 });
 
 test("toolkit REFCPI worksheet wrapper handles no rows and propagates loader errors", () => {

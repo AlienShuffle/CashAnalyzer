@@ -28,7 +28,7 @@ function tipsGetCachedREFCPI(forceRefresh = false) {
  * @param {boolean} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
  */
 function cloudGetCachedREFCPI_(forceRefresh = false) {
-  const cacheKey = "cloudGetCachedREFCPI-v3aa-";
+  const cacheKey = "cloudGetCachedREFCPI-v4-";
   const cache = new Cacher({
     cachePoint: CacheService.getDocumentCache()
   });
@@ -39,12 +39,9 @@ function cloudGetCachedREFCPI_(forceRefresh = false) {
     // parse the stored JSON if it exists and return to the caller.
     if (cacheVal != null && cacheVal.substring(0, 7) != 'failed:') {
       const cacheArray = JSON.parse(cacheVal);
-      // header included.
-      for (i in cacheArray.length) {
-        if (cacheArray[i].date != null && cacheArray[i].date)
-          cacheArray[i].date = mydateNormalize_(cacheArray[i].date);
-        if (cacheArray[i].maxRefCpi != null && cacheArray[i].maxRefCpi)
-          cacheArray[i].maxRefCpi = mydateNormalize_(cacheArray[i].maxRefCpi);
+      for (const row of cacheArray) {
+        row.date = mydateNormalize_(row.date);
+        row.maxRefCpi = mydateNormalize_(row.maxRefCpi);
       }
       //Logger.log("cached:" + cacheArray)
       return cacheArray;
@@ -79,17 +76,15 @@ function cloudGetCachedREFCPI_(forceRefresh = false) {
     // slices up the .CVS file contents stored in str and creates a matrix that is n rows long and y columns wide.
     const delimiter = ',';
     // use split to create an array of each csv value row
-    const rows = text.slice().split("\n");
-
-    function isoToNormal(ds) { return ds.substring(5, 7) + '/' + ds.substring(8, 10) + '/' + ds.substring(0, 4); }
+    const rows = text.trimEnd().split("\n");
 
     // Map the rows, split values from each row into an array
     const today = new Date;
     // limit to the last 10 years for performance reasons. (it may not always be longer)
     const oldestDate = new Date(today.getFullYear() - 10, today.getMonth(), 1);
     const result = [];
-    for (let i = 1; i < rows.length - 1; i++) {
-      const vals = rows[i].split(delimiter);
+    for (let i = 1; i < rows.length; i++) {
+      const vals = rows[i].trim().split(delimiter);
       if (vals.length != 6) throw `row length = ${vals.length}, text=${rows[i]}, aborting.`
       const date = mydateNormalize_(vals[0]);
       if (mydateLessThan_(date, oldestDate)) continue;
@@ -99,7 +94,7 @@ function cloudGetCachedREFCPI_(forceRefresh = false) {
         refCpiSa: Number(vals[2]),
         saFactor: Number(vals[3]),
         mmdd: vals[4],
-        maxRefCpi: isoToNormal(vals[5]),
+        maxRefCpi: mydateNormalize_(vals[5]),
       });
     }
     return result;

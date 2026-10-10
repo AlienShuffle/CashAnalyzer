@@ -23,7 +23,7 @@ function tipsGetFactor(searchDate) {
   const dateMMDD = makeMMDD(date);
 
   const rows = cloudGetCachedREFCPI_();
-  for (let i = 0; i < rows.length - 1; i++) {
+  for (let i = 0; i < rows.length; i++) {
     const rd = rows[i].date;
     if (mydateIsEqual_(rd, date))
       return rows[i].saFactor;
@@ -31,7 +31,7 @@ function tipsGetFactor(searchDate) {
       break;
   }
   // find the most recent MMDD that matches the search date.
-  for (let i = 0; i < rows.length - 1; i++) {
+  for (let i = 0; i < rows.length; i++) {
     const mmdd = makeMMDD(rows[i].date);
     if (mmdd === dateMMDD)
       return rows[i].saFactor;
@@ -54,7 +54,7 @@ function tipsGetRefCpi(searchDate) {
   const date = mydateNormalize_(searchDate);
   const rows = cloudGetCachedREFCPI_();
 
-  for (let i = 0; i < rows.length - 1; i++) {
+  for (let i = 0; i < rows.length; i++) {
     const rd = mydateNormalize_(rows[i].date);
     if (mydateIsEqual_(rd, date))
       return rows[i].refCpiNSA;

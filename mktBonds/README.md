@@ -14,6 +14,9 @@ It includes the header row `Date`, `REFCPINSA`, `REFCPISA`, `SAFactor`, `MMDD`,
 columns as dates in Sheets. CPI values and seasonal factors are numeric.
 Leave the six-column output area empty so the array can expand.
 Use `=tipsGetCachedREFCPI(TRUE)` to bypass (and refresh) the cache.
+Fresh and cached toolkit rows both retain date values. CSV input may use LF
+or CRLF line endings, with or without a trailing newline; the final retained
+row is included in both exact-date and seasonal-factor projection lookups.
 
 Use `=tipsGetMaxRefCpiDate()` from
 [tips.utils.js](./toolkit-app-script-src/tips.utils.js) to return the maximum
