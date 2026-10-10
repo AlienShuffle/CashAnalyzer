@@ -65,8 +65,12 @@ Intentional corrections to previously broken or misleading behavior:
 - `bankGetCurrentRateHistoryFileContents(bank, account)` requires the account;
   its old wrapper incorrectly treated argument two as a refresh boolean.
   Both raw bank-file APIs always fetch and have no refresh parameter.
-- `treasuryGetCachedRecentTBillCoupons()` now uses the cache by default.
-  "Coupons" remains a compatibility name for bank-discount rates.
+- `treasuryGetCachedRecentTBillDiscounts()` (renamed from
+  `treasuryGetCachedRecentTBillCoupons()`, which remains as an alias; bills pay
+  no coupons) now uses the cache by default.
+- `treasuryGetCachedTBillDiscounts(yearOrMonth)` replaces
+  `treasuryGetCachedTBillCoupons(yearOrMonth)`, which remains as an alias
+  returning the same bank-discount rates.
 - Omitting the CMT year now selects the current year, not 2023. CMT `YYYYMM`
   selects the full year; T-bill `YYYYMM` uses the month-specific endpoint.
 - Unknown Vanguard tickers/invalid column indices and missing named ranges

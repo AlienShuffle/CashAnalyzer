@@ -41,16 +41,26 @@ function treasuryGetCachedRecentNominalYields(forceRefresh = false) {
 }
 
 /**
- * Returns treasury.gov current-month T-bill bank-discount rates, using the script cache.
- * "Coupons" is a legacy name: bills do not pay coupons. Rates are decimals (0.04 = 4%).
- * Header: Date, 4w, 8w, 13w, 17w, 26w, 52w. Rows preserve source order.
- * Example: =treasuryGetCachedRecentTBillCoupons()
+ * Compatibility alias for treasuryGetCachedRecentTBillDiscounts; bills do not pay coupons.
  * @param {boolean} [forceRefresh=false] Bypass the cached table.
  * @return {Array<Array<Date|number|string>>} Seven-column table including a header.
  * @customfunction
  */
 function treasuryGetCachedRecentTBillCoupons(forceRefresh = false) {
   return fintools.treasuryGetCachedRecentTBillCoupons(forceRefresh);
+}
+
+/**
+ * Returns treasury.gov current-month T-bill bank-discount rates, using the script cache.
+ * Rates are decimals (0.04 = 4%).
+ * Header: Date, 4w, 8w, 13w, 17w, 26w, 52w. Rows preserve source order.
+ * Example: =treasuryGetCachedRecentTBillDiscounts()
+ * @param {boolean} [forceRefresh=false] Bypass the cached table.
+ * @return {Array<Array<Date|number|string>>} Seven-column table including a header.
+ * @customfunction
+ */
+function treasuryGetCachedRecentTBillDiscounts(forceRefresh = false) {
+  return fintools.treasuryGetCachedRecentTBillDiscounts(forceRefresh);
 }
 
 /**
@@ -66,10 +76,7 @@ function treasuryGetCachedRecentTBillYields(forceRefresh = false) {
 }
 
 /**
- * Returns treasury.gov T-bill bank-discount rates in ascending date order.
- * "Coupons" is a legacy name; rates are decimals, not coupon payments. Uses the script cache.
- * Header: Date, 4wk, 8wk, 13wk, 17wk, 26wk, 52wk.
- * Example: =treasuryGetCachedTBillCoupons(2026)
+ * Compatibility alias for treasuryGetCachedTBillDiscounts; bills do not pay coupons.
  * @param {string|number} [yearOrMonth] YYYY, YYYYMM, or "all"; omitted/blank uses current year.
  * @param {boolean} [forceRefresh=false] Bypass the cached table.
  * @return {Array<Array<Date|number|string>>} Seven-column table with a header; missing maturities blank.
@@ -77,6 +84,20 @@ function treasuryGetCachedRecentTBillYields(forceRefresh = false) {
  */
 function treasuryGetCachedTBillCoupons(yearOrMonth, forceRefresh = false) {
   return fintools.treasuryGetCachedTBillCoupons(yearOrMonth, forceRefresh);
+}
+
+/**
+ * Returns treasury.gov T-bill bank-discount rates in ascending date order.
+ * Rates are decimals (0.04 = 4%). Uses the script cache.
+ * Header: Date, 4wk, 8wk, 13wk, 17wk, 26wk, 52wk.
+ * Example: =treasuryGetCachedTBillDiscounts(2026)
+ * @param {string|number} [yearOrMonth] YYYY, YYYYMM, or "all"; omitted/blank uses current year.
+ * @param {boolean} [forceRefresh=false] Bypass the cached table.
+ * @return {Array<Array<Date|number|string>>} Seven-column table with a header; missing maturities blank.
+ * @customfunction
+ */
+function treasuryGetCachedTBillDiscounts(yearOrMonth, forceRefresh = false) {
+  return fintools.treasuryGetCachedTBillDiscounts(yearOrMonth, forceRefresh);
 }
 
 /**

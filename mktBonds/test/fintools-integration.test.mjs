@@ -48,7 +48,7 @@ test("merged fintools has no duplicate declarations and preserves existing and m
 test("canonical and toolkit wrappers are synchronized and forward arguments, defaults and errors", () => {
     assert.equal(syncWrappers(), 0);
     const canonicalPlans = wrapperPlans().filter(plan => plan.url.pathname.includes("/fintools/wrapper/"));
-    assert.equal(canonicalPlans.flatMap(plan => plan.functions).length, 79);
+    assert.equal(canonicalPlans.flatMap(plan => plan.functions).length, 81);
     const customFunctions = wrapperPlans().filter(plan => plan.url.pathname.includes("/toolkit-app-script-src/"))
         .flatMap(plan => plan.functions).filter(fn => fn.doc.includes("@customfunction"));
     assert.equal(customFunctions.length, 36);

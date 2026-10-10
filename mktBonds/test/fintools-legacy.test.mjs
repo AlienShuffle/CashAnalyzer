@@ -67,14 +67,14 @@ function setup() {
 test("all legacy APIs have library-derived wrappers, typed contracts, examples and correct exposure", () => {
     const { core } = setup();
     const plans = wrapperPlans().filter(plan => plan.url.pathname.includes("/fintools/wrapper/fintools."));
-    assert.equal(plans.flatMap(plan => plan.functions).length, 40);
+    assert.equal(plans.flatMap(plan => plan.functions).length, 42);
     for (const plan of plans) {
         for (const fn of plan.functions) {
             assert.equal(typeof core[fn.name], "function", fn.name);
             const signature = core[fn.name].toString().match(/^function \w+\(([^)]*)\)/)[1];
             assert.deepEqual(signature.split(",").map(value => value.trim()).filter(Boolean), fn.parameters);
             assert.match(fn.doc, /@return \{[^}]+\}/, fn.name);
-            if (fn.name !== "bankGetCachedAccounTypes") assert.match(fn.doc, /Example/i, fn.name);
+            if (!["bankGetCachedAccounTypes", "treasuryGetCachedRecentTBillCoupons", "treasuryGetCachedTBillCoupons"].includes(fn.name)) assert.match(fn.doc, /Example/i, fn.name);
             assert.equal(fn.doc.includes("@customfunction"),
                 !["ssSetNamedRangeValue", "buildFidelityFundListTable"].includes(fn.name), fn.name);
         }
@@ -252,8 +252,9 @@ test("Treasury uses the current year, honors period semantics, and preserves rec
     assert.ok(Math.abs(bills[1][1] - 0.041) < 1e-12);
     assert.equal(bills[1].length, 7);
     assert.equal(bills[1][2], "");
-    const discounts = sheet.treasuryGetCachedTBillCoupons(2026);
+    const discounts = sheet.treasuryGetCachedTBillDiscounts(2026);
     assert.equal(discounts[1][1], 0.04);
+    assert.deepEqual(plain(sheet.treasuryGetCachedTBillCoupons(2026)), plain(discounts));
     assert.throws(() => sheet.treasuryGetCachedGovYields(2026, 123), /type must be a string/);
     assert.throws(() => sheet.treasuryGetCachedGovYields("bad"), /Invalid argument/);
 });
@@ -266,10 +267,11 @@ test("recent T-bill coupons default to cached behavior, with explicit refresh st
         assert.equal(type, "coupon");
         return [["Date", "4w"], [new Date(2026, 9, 9), 0.04]];
     };
-    const fresh = sheet.treasuryGetCachedRecentTBillCoupons();
+    const fresh = sheet.treasuryGetCachedRecentTBillDiscounts();
+    assert.deepEqual(plain(sheet.treasuryGetCachedRecentTBillDiscounts()), plain(fresh));
     assert.deepEqual(plain(sheet.treasuryGetCachedRecentTBillCoupons()), plain(fresh));
     assert.equal(fetches, 1);
-    sheet.treasuryGetCachedRecentTBillCoupons(true);
+    sheet.treasuryGetCachedRecentTBillDiscounts(true);
     assert.equal(fetches, 2);
 });
 
