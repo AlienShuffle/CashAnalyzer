@@ -47,22 +47,29 @@ propagation, and library-to-worksheet calculation/cache boundaries.
 
 ## Development and deployment
 
-Both the generic wrapper and worksheet manifests currently use the `fintools`
-dependency in **development mode** with version `"0"`, as selected for testing.
+- The generic [wrapper manifest](./wrapper/appsscript.json) uses version `"0"`
+  with `developmentMode: true`. It is the same-account smoke-test consumer and
+  tests the library's saved HEAD.
+- The [worksheet manifest](../mktBonds/toolkit-app-script-src/appsscript.json)
+  pins published version `"156"` with development mode disabled (omitting
+  `developmentMode` also defaults to disabled). It supports regression testing
+  from the worksheet's separate Google account with access to the library.
+
 Development mode uses the library's saved HEAD and requires editor access to
-the library; it is not a published version for general consumers.
+the library; published-library access alone is insufficient.
 
 Deployment order:
 
 1. Upload/save [lib/](./lib/) into the existing fintools library project.
-2. Upload the worksheet's wrapper-only
+2. Smoke-test the saved library HEAD with the same-account generic wrapper.
+   Then publish a new library version for cross-account regression testing.
+   Pin the worksheet manifest to that version with development mode disabled;
+   leave the generic wrapper in development mode.
+3. Upload the worksheet's wrapper-only
    [toolkit-app-script-src/](../mktBonds/toolkit-app-script-src/) source,
    removing the old implementation/helper files from that Apps Script project.
    Ensure the dependency is named `fintools` and test representative worksheet
    formulas, cache refreshes, and the TIPS Controls menu.
-3. After testing, publish a new library version. Set the dependency version in
-   each consumer manifest to that version and set `developmentMode` to `false`.
-   Update the generic wrapper manifest and worksheet manifest together.
 
 This repository migration does not itself upload, publish, or deploy either
 Apps Script project. Local VM tests cannot certify Google Sheets authorization,
