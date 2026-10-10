@@ -286,3 +286,4 @@ SAFACTOR/*.orig
 
 */debug/
 VanguardAdvisorsETF/downloads/*/*.json
+mktBonds/toolkit-app-script-src/.clasp.auth
