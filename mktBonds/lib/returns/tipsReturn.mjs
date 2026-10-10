@@ -29,7 +29,8 @@ import { xirr } from "../xirr.mjs";
  * @param {(d:Date)=>number|null} [p.getRefCpi] published REFCPI lookup (needed for pre-forward coupons)
  * @param {(d:Date)=>number|null} [p.getFactor] seasonal factor lookup (needed when seasonal)
  * @return {null|{rate:number, settleYtm:number, settleSaYtm:number, forwardSaYtm:number|null,
- *   settleSaRatio:number, forwardSaRatio:number, totals:object, rows:object[], cashFlows:number[], dates:Date[]}}
+ *   settleSaRatio:number, forwardSaRatio:number, totals:object, settlementRow:object,
+ *   rows:object[], cashFlows:number[], dates:Date[]}}
  */
 export function tipsNominalReturnTable({
     settle, forward, maturity, coupon, settleRealCP, forwardRealCP,
@@ -62,7 +63,7 @@ export function tipsNominalReturnTable({
     if (schedule.length === 0) return null;
 
     const settleAccruedReal = accruedInterest(settleDate, maturityDate, rate, schedule);
-    const settleAccruedNominal = settleIR * settleAccruedReal;
+    const settleAccruedNominal = roundPrice(settleIR * settleAccruedReal);
     const settleNominalDirty = settleIR * (settleRealCP + settleAccruedReal);
 
     const dailyRealDiscount = (100 - settleRealCP) / daysToMaturity;
@@ -78,7 +79,7 @@ export function tipsNominalReturnTable({
     let cumKnownInflation = 0;
     let cumFutureInflation = 0;
     let lastCouponREFCPI = settleREFCPI;
-    let cumCoupon = 0;
+    let cumCoupon = -settleAccruedNominal;
     let cumDiscount = 0;
     let cumKnownDiscount = 0;
     let lastDiscountDate = settleDate;
@@ -116,7 +117,7 @@ export function tipsNominalReturnTable({
         const currFutureInflation = preFwdCoupon ? 0 : currTrendInflation - currKnownInflation;
         cumFutureInflation += currFutureInflation;
 
-        const currCoupon = couponIR * semiRealCoupon - (i === 0 ? settleAccruedNominal : 0);
+        const currCoupon = couponIR * semiRealCoupon;
         cumCoupon += currCoupon;
 
         const accrualDays = daysBetween(lastDiscountDate, couponDate);
@@ -154,7 +155,13 @@ export function tipsNominalReturnTable({
         });
     }
 
-    const cashFlows = [roundPrice(-settleNominalDirty), ...rows.map(r => r.cashflow)];
+    const settlementRow = {
+        date: settleDate,
+        cashflow: roundPrice(-settleNominalDirty),
+        cumCoupon: -settleAccruedNominal,
+        currCoupon: -settleAccruedNominal,
+    };
+    const cashFlows = [settlementRow.cashflow, ...rows.map(r => r.cashflow)];
     const dates = [settleDate, ...rows.map(r => r.date)];
 
     return {
@@ -174,6 +181,7 @@ export function tipsNominalReturnTable({
             cumSA: roundPrice(cumSA),
             cumTrendInflation: roundPrice(cumTrendInflation),
         },
+        settlementRow,
         rows,
         cashFlows,
         dates,

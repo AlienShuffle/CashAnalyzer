@@ -269,7 +269,7 @@ function mybondGraphTipsNominalReturn(
   }
 
   // maturity cashflow reported with last coupon entry in coupon loop.
-  // prepend the purchase cash flow (no returns)
+  // Attribute purchased accrued interest at settlement, not against the first coupon.
   results.unshift([
     settleDate,
     mybondRoundPrice_(-settleNominalDirtyPrice),

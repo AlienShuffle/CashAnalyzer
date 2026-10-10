@@ -2,6 +2,8 @@
  * Calculates the nominal treasury bill/note/bond yield to maturity for a cash flow starting at the settlement date 
  * Uses an Google app script (javascript) XIRR implementation.
  * Years are calculated on a strict 365 day fraction consistent with my understanding of XIRR conventions.
+ * Purchased accrued interest is negative coupon attribution at settlement;
+ * later coupons are reported in full, with cumulative coupons net of that purchase.
  *
  * @param {Date} settle settlement date
  * @param {Date} maturity Maturity date

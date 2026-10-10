@@ -23,6 +23,21 @@ Apps Script sources in a `vm` sandbox and compares results.
 Known behavior carried over from the original: `priceFromYield` has no bill investment-rate special case, so it is
 not the exact inverse of `yieldFromPrice` for zero-coupon securities under six months.
 
+### Return attribution
+
+The toolkit Nominal and TIPS graphs attribute purchased accrued interest as
+negative `currCoupon` and `cumCoupon` at settlement. Later coupon rows report
+full coupons; cumulative coupon return starts net of purchased accrued interest.
+TIPS attribution uses nominal accrued interest (real accrued interest multiplied
+by the settlement index ratio), rounded to six decimal places.
+
+Node's `tipsNominalReturnTable` follows the same convention and exposes
+`settlementRow` with `date`, `cashflow`, `currCoupon`, and `cumCoupon`. Its existing
+`rows` array still contains only subsequent coupon/redemption rows.
+Actual cash flows and XIRR are unchanged. Seasonal return components now use
+the full coupon, consistent with the toolkit, rather than netting purchased
+accrued interest against the first coupon's seasonal attribution.
+
 ## Migration status
 
 ### Historical REFCPI availability

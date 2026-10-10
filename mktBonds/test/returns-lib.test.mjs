@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
 import {
-    daysBetween, normalizeDate, tipsNominalReturn, tipsNominalReturnTable,
+    accruedInterest, daysBetween, normalizeDate, roundPrice, tipsNominalReturn, tipsNominalReturnTable,
     tipsPriceFromXirr, xirr,
 } from "../lib/index.mjs";
 
@@ -47,10 +47,13 @@ test("tipsPriceFromXirr inverts the nominal XIRR (within rounding)", () => {
     assert.throws(() => tipsPriceFromXirr(p.settle, p.maturity, p.coupon, 0.02, 1, []), /No TIPS/);
 });
 
-function loadAppsScript() {
-    const dir = new URL("../appscript-src/", import.meta.url);
-    const files = ["mybond.dates.js", "mybond.utils.js", "mybond.yieldFromPrice.js", "mybond.priceFromYield.js",
-        "mybond.xirr.js", "mybond.xirr.Tips.js", "mybond.xirr.price.js"];
+function loadAppsScript(toolkit = false) {
+    const dir = new URL(toolkit ? "../toolkit-app-script-src/" : "../appscript-src/", import.meta.url);
+    const files = toolkit
+        ? ["mybond._dates.js", "mybond._utils.js", "mybond.accrued.js", "mybond.yieldFromPrice.js",
+            "mybond.xirr.js", "mybond.xirr.Tips.js", "mybond.xirr.Nominal.js"]
+        : ["mybond.dates.js", "mybond.utils.js", "mybond.yieldFromPrice.js", "mybond.priceFromYield.js",
+            "mybond.xirr.js", "mybond.xirr.Tips.js", "mybond.xirr.price.js"];
     const context = vm.createContext({ Logger: { log() { } }, Math, Date, Array, Number });
     context.base = base;
     vm.runInContext(`
@@ -60,6 +63,75 @@ function loadAppsScript() {
     for (const file of files) vm.runInContext(readFileSync(new URL(file, dir), "utf8"), context, { filename: file });
     return context;
 }
+
+test("TIPS settlement and coupon attribution matches toolkit without changing cash flows", () => {
+    const gs = loadAppsScript(true);
+    const original = loadAppsScript();
+    const fields = ["cashflow", "cumKnownInflation", "cumFutureInflation", "cumCoupon",
+        "cumDiscount", "cumSA", "currKnownInflation", "currFutureInflation",
+        "currCoupon", "currDiscount", "currSA"];
+    for (const settle of ["2026-10-05", "2026-10-15"]) {
+        for (const coupon of [0, 0.0125]) {
+            for (const forward of ["2026-09-01", "2027-06-01"]) {
+                for (const seasonal of [false, true]) {
+                    const p = params({ settle, coupon, forward, seasonal,
+                        settleREFCPI: refCpi(normalizeDate(settle)),
+                        forwardREFCPI: refCpi(normalizeDate(forward)) });
+                    const t = tipsNominalReturnTable({ ...p, ...lookups });
+                    const args = [p.settle, p.forward, p.maturity, p.coupon, p.settleRealCP,
+                        p.forwardRealCP, p.datedREFCPI, p.settleREFCPI, p.forwardREFCPI, p.inflator, seasonal];
+                    const graph = gs.mybondGraphTipsNominalReturn(...args);
+                    const dated = graph.filter(row => row[0] instanceof Date);
+                    const originalDated = original.mybondGraphTipsNominalReturn(...args)
+                        .filter(row => row[0] instanceof Date);
+                    const accrued = roundPrice(p.settleREFCPI / p.datedREFCPI *
+                        accruedInterest(p.settle, p.maturity, coupon));
+                    assert.equal(t.settlementRow.currCoupon, -accrued);
+                    assert.equal(t.settlementRow.cumCoupon, -accrued);
+                    assert.equal(t.settlementRow.date.getTime(), dated[0][0].getTime());
+                    assert.equal(t.settlementRow.cashflow, dated[0][1]);
+                    assert.equal(t.settlementRow.cumCoupon, dated[0][4]);
+                    assert.equal(t.settlementRow.currCoupon, dated[0][9]);
+                    assert.equal(t.rows.length, dated.length - 1);
+                    for (let i = 0; i < t.rows.length; i++) {
+                        assert.equal(t.rows[i].date.getTime(), dated[i + 1][0].getTime());
+                        for (const [column, field] of fields.entries()) {
+                            assert.equal(t.rows[i][field], dated[i + 1][column + 1], `${field}, row ${i}`);
+                        }
+                    }
+                    const totals = graph.find(row => row[0] === "irr/totals");
+                    for (const [i, field] of fields.slice(1, 6).entries()) {
+                        assert.equal(t.totals[field], totals[i + 2], field);
+                    }
+                    assert.deepEqual(t.cashFlows, Array.from(originalDated, row => row[1]));
+                    assert.equal(t.rate, original.mybondTipsNominalReturn(...args));
+                }
+            }
+        }
+    }
+});
+
+test("toolkit Nominal and TIPS use the same settlement attribution at unit index ratio", () => {
+    const gs = loadAppsScript(true);
+    gs.tipsGetRefCpi = () => 100;
+    for (const settle of ["2026-10-05", "2026-10-15"]) {
+        for (const coupon of [0, 0.0125]) {
+            const nominal = gs.mybondGraphTreasuryReturn(settle, "2031-04-15", coupon, 97.5);
+            const tips = gs.mybondGraphTipsNominalReturn(settle, "2026-09-01", "2031-04-15",
+                coupon, 97.5, 97.5, 100, 100, 100, 0, false);
+            const nominalRows = nominal.filter(row => row[0] instanceof Date);
+            const tipsRows = tips.filter(row => row[0] instanceof Date);
+            assert.equal(nominalRows.length, tipsRows.length);
+            for (let i = 0; i < nominalRows.length; i++) {
+                assert.equal(nominalRows[i][1], tipsRows[i][1]);
+                assert.equal(nominalRows[i][2], tipsRows[i][4]);
+                assert.equal(nominalRows[i][4], tipsRows[i][9]);
+            }
+            assert.equal(nominal.find(row => row[0] === "irr/totals")[1],
+                tips.find(row => row[0] === "irr/totals")[1]);
+        }
+    }
+});
 
 test("parity with Apps Script: tips nominal return and price from xirr", () => {
     const gs = loadAppsScript();
