@@ -48,7 +48,7 @@ test("tipsPriceFromXirr inverts the nominal XIRR (within rounding)", () => {
 });
 
 function loadAppsScript() {
-    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+    const dir = new URL("../../fintools/lib/", import.meta.url);
     const files = ["mybond._dates.js", "mybond._utils.js", "mybond.accrued.js", "mybond.yieldFromPrice.js",
         "mybond.xirr.js", "mybond.xirr.Tips.js", "mybond.xirr.Nominal.js", "mybond.xirr.price.js"];
     const context = vm.createContext({ Logger: { log() { } }, Math, Date, Array, Number });
@@ -61,7 +61,7 @@ function loadAppsScript() {
     return context;
 }
 
-test("TIPS settlement, coupon attribution and cash flows match toolkit", () => {
+test("TIPS settlement, coupon attribution and cash flows match fintools", () => {
     const gs = loadAppsScript();
     const fields = ["cashflow", "cumKnownInflation", "cumFutureInflation", "cumCoupon",
         "cumDiscount", "cumSA", "currKnownInflation", "currFutureInflation",
@@ -105,7 +105,7 @@ test("TIPS settlement, coupon attribution and cash flows match toolkit", () => {
     }
 });
 
-test("toolkit Nominal and TIPS use the same settlement attribution at unit index ratio", () => {
+test("fintools Nominal and TIPS use the same settlement attribution at unit index ratio", () => {
     const gs = loadAppsScript();
     gs.tipsGetRefCpi = () => 100;
     for (const settle of ["2026-10-05", "2026-10-15"]) {
@@ -127,7 +127,7 @@ test("toolkit Nominal and TIPS use the same settlement attribution at unit index
     }
 });
 
-test("parity with toolkit Apps Script: tips nominal return and price from xirr", () => {
+test("parity with fintools Apps Script: tips nominal return and price from xirr", () => {
     const gs = loadAppsScript();
     let n = 0;
     for (const maturity of ["2027-02-15", "2029-07-15", "2031-04-15", "2036-01-15", "2056-02-15"]) {

@@ -42,7 +42,7 @@ test("tbill rates: bracketing and same-maturity average", () => {
 });
 
 function loadAppsScript() {
-    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+    const dir = new URL("../../fintools/lib/", import.meta.url);
     const files = ["mybond._dates.js", "mybond._utils.js", "mybond.accrued.js",
         "mybond.fwd.rates.js", "mybond.fwd.tips.calcFwd.js", "mybond.fwd.nom.calcFwd.js",
         "tbill.fwd.discount.js", "tbill.fwd.simple.js"];
@@ -55,7 +55,7 @@ function loadAppsScript() {
     return context;
 }
 
-test("parity with toolkit Apps Script: forwards and bills", () => {
+test("parity with fintools Apps Script: forwards and bills", () => {
     const gs = loadAppsScript();
     let count = 0;
     for (const maturity of ["2027-04-15", "2029-07-15", "2031-04-15", "2036-01-15"]) {

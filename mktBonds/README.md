@@ -6,6 +6,11 @@ and historical REFCPI configuration, see [lib/README.md](./lib/README.md).
 
 ## REFCPI in Google Sheets
 
+The [toolkit deployment source](./toolkit-app-script-src/) now delegates financial
+functions to the [fintools library](../fintools/lib/). See the
+[migration and deployment guide](../fintools/README.md) for wrapper synchronization,
+development-mode dependencies, and publication steps.
+
 The toolkit custom function in
 [tips.cloudFlare.REFCPI.js](./toolkit-app-script-src/tips.cloudFlare.REFCPI.js)
 can be used as `=tipsGetCachedREFCPI()` to spill a table into a worksheet.
@@ -22,7 +27,9 @@ Use `=tipsGetMaxRefCpiDate()` from
 [tips.utils.js](./toolkit-app-script-src/tips.utils.js) to return the maximum
 REFCPI date as `YYYY-MM-DD` text, without a time or timezone.
 
-The underlying `cloudGetCachedREFCPI` continues returning row objects for the toolkit's calculation helpers.
+The private `cloudGetCachedREFCPI_` in the
+[fintools implementation](../fintools/lib/tips.cloudFlare.REFCPI.js) continues
+returning row objects for the library's calculation helpers.
 
 ## Locations and file types
 

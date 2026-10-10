@@ -110,7 +110,7 @@ test("sao: short-end tweak is optional and defaults on", () => {
 });
 
 function loadAppsScript() {
-    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+    const dir = new URL("../../fintools/lib/", import.meta.url);
     const files = ["mybond._dates.js", "mybond._utils.js", "mybond.accrued.js", "mybond.yieldFromPrice.js", "mybond.priceFromYield.js",
         "mybond.Canty.js", "aerokam.credibility.js", "aerokam.calcSao.js"];
     const context = vm.createContext({ Logger: { log() { } }, Math, Date });
@@ -118,8 +118,8 @@ function loadAppsScript() {
     return context;
 }
 
-test("toolkit REFCPI worksheet output preserves types on fresh, cached and forced reads", () => {
-    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+test("fintools REFCPI worksheet output preserves types on fresh, cached and forced reads", () => {
+    const dir = new URL("../../fintools/lib/", import.meta.url);
     const today = new Date();
     const iso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
     const csv = `Date,REFCPINSA,REFCPISA,SAFactor,MMDD,maxREFCPI\n${iso},330,329,1.003,M0101,${iso}\n`;
@@ -160,8 +160,8 @@ test("toolkit REFCPI worksheet output preserves types on fresh, cached and force
     assert.ok(internal[0].maxRefCpi instanceof Date);
 });
 
-test("toolkit REFCPI fresh and cached lookups retain the final CSV row and restore dates", () => {
-    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+test("fintools REFCPI fresh and cached lookups retain the final CSV row and restore dates", () => {
+    const dir = new URL("../../fintools/lib/", import.meta.url);
     const year = new Date().getFullYear();
     const header = "Date,REFCPINSA,REFCPISA,SAFactor,MMDD,maxREFCPI";
     const data = [
@@ -212,9 +212,9 @@ test("toolkit REFCPI fresh and cached lookups retain the final CSV row and resto
     }
 });
 
-test("toolkit REFCPI single-row data supports exact and projected cached lookups", () => {
+test("fintools REFCPI single-row data supports exact and projected cached lookups", () => {
     const context = loadAppsScript();
-    const file = new URL("../toolkit-app-script-src/tips.utils.js", import.meta.url);
+    const file = new URL("../../fintools/lib/tips.utils.js", import.meta.url);
     vm.runInContext(readFileSync(file, "utf8"), context);
     context.cloudGetCachedREFCPI_ = () => [{
         date: new Date(2026, 2, 1), refCpiNSA: 330, saFactor: 1.00091,
@@ -224,8 +224,8 @@ test("toolkit REFCPI single-row data supports exact and projected cached lookups
     assert.equal(context.tipsGetFactor("2030-03-01"), 1.00091);
 });
 
-test("toolkit REFCPI worksheet wrapper handles no rows and propagates loader errors", () => {
-    const file = new URL("../toolkit-app-script-src/tips.cloudFlare.REFCPI.js", import.meta.url);
+test("fintools REFCPI worksheet output handles no rows and propagates loader errors", () => {
+    const file = new URL("../../fintools/lib/tips.cloudFlare.REFCPI.js", import.meta.url);
     const context = vm.createContext({});
     vm.runInContext(readFileSync(file, "utf8"), context);
     context.cloudGetCachedREFCPI_ = () => [];
@@ -235,8 +235,8 @@ test("toolkit REFCPI worksheet wrapper handles no rows and propagates loader err
     assert.throws(() => context.tipsGetCachedREFCPI(), /REFCPI fetch failed/);
 });
 
-test("toolkit maximum REFCPI date returns date-only text for fresh and cached values", () => {
-    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+test("fintools maximum REFCPI date returns date-only text for fresh and cached values", () => {
+    const dir = new URL("../../fintools/lib/", import.meta.url);
     const context = vm.createContext({ Date });
     for (const file of ["mybond._dates.js", "tips.utils.js"]) {
         vm.runInContext(readFileSync(new URL(file, dir), "utf8"), context, { filename: file });
@@ -254,7 +254,7 @@ test("toolkit maximum REFCPI date returns date-only text for fresh and cached va
     assert.throws(() => context.tipsGetMaxRefCpiDate(), /REFCPI fetch failed/);
 });
 
-test("parity with toolkit Apps Script: Canty, credibility and SAO", () => {
+test("parity with fintools Apps Script: Canty, credibility and SAO", () => {
     const gs = loadAppsScript();
     const maturities = ["2027-01-15", "2029-07-15", "2031-04-15", "2036-01-15", "2046-02-15"];
     let n = 0;
@@ -291,7 +291,7 @@ test("parity with toolkit Apps Script: Canty, credibility and SAO", () => {
     assert.deepEqual(ours, Array.from(theirs));
 });
 
-test("toolkit SAO holds the short end flat and supports the untweaked curve", () => {
+test("fintools SAO holds the short end flat and supports the untweaked curve", () => {
     const gs = loadAppsScript();
     const matures = ["2026-04-15", "2026-06-15", "2027-01-15", "2028-04-15",
         "2029-07-15", "2031-09-15", "2036-01-15", ""];

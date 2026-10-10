@@ -81,8 +81,8 @@ test("optimized Svensson fit reprices a synthetic curve", () => {
     assert.ok(fit.objective < 1e-8, `${fit.objective}`);
 });
 
-function loadToolkit() {
-    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+function loadFintools() {
+    const dir = new URL("../../fintools/lib/", import.meta.url);
     const context = vm.createContext({ Date, Math, Logger: { log() { } } });
     for (const file of ["mybond._dates.js", "mybond._utils.js", "mybond.accrued.js",
         "mybond.yieldFromPrice.js", "mybond.duration.js", "mybond.zero-coupon.js"]) {
@@ -102,8 +102,8 @@ function assertFitParity(actual, expected) {
     assert.ok(actual.params[5] >= actual.params[4] * 1.05);
 }
 
-test("toolkit Svensson matches Node parameters, objective and forward-fit threshold", () => {
-    const gs = loadToolkit();
+test("fintools Svensson matches Node parameters, objective and forward-fit threshold", () => {
+    const gs = loadFintools();
     const fixture = JSON.parse(readFileSync(new URL("./fixtures-tips-forward-curve.json", import.meta.url), "utf8"));
     const market = fixture.bonds.map(([maturity, coupon, cleanPrice]) => ({ maturity, coupon, cleanPrice }));
     const expected = fitTipsSvensson(fixture.settle, market);
@@ -117,8 +117,8 @@ test("toolkit Svensson matches Node parameters, objective and forward-fit thresh
     }
 });
 
-test("toolkit Svensson reprices a synthetic curve with Node fit quality", () => {
-    const gs = loadToolkit();
+test("fintools Svensson reprices a synthetic curve with Node fit quality", () => {
+    const gs = loadFintools();
     const truth = [0.021, -0.006, 0.01, 0.015, 1.8, 9];
     const synthetic = bonds.map(bond => ({
         ...bond,
@@ -130,8 +130,8 @@ test("toolkit Svensson reprices a synthetic curve with Node fit quality", () => 
     assert.ok(fit.objective < 1e-8, `${fit.objective}`);
 });
 
-test("toolkit Svensson preserves usable-bond validation and excludes matured bonds", () => {
-    const gs = loadToolkit();
+test("fintools Svensson preserves usable-bond validation and excludes matured bonds", () => {
+    const gs = loadFintools();
     for (const input of [null, [], bonds.slice(0, 3)]) {
         assert.throws(() => gs.fitTipsSvensson_(settle, input), /at least 6 bonds/);
     }
@@ -146,8 +146,8 @@ test("toolkit Svensson preserves usable-bond validation and excludes matured bon
     assertFitParity(gs.fitTipsSvensson_(settle, mixed), fitTipsSvensson(settle, bonds));
 });
 
-test("toolkit spreadsheet zero analysis retains table shape and reprices the Node fit", () => {
-    const gs = loadToolkit();
+test("fintools spreadsheet zero analysis retains table shape and reprices the Node fit", () => {
+    const gs = loadFintools();
     const result = gs.mybondsZeroAnalyze(settle, bonds.map(b => [b.maturity]),
         bonds.map(b => [b.coupon]), bonds.map(b => [b.cleanPrice]));
     const expected = analyzeTipsZero(settle, bonds);
