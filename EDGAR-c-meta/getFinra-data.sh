@@ -81,7 +81,12 @@ if [ ! -s "$finraFile" ]; then
     cat "$tmpFile" >"$finraFile"
     echo $finraFile created.
 else
-    node ../lib/node-mergeFinra.js "$tmpFile" <"$finraFile" | jq . >finra.merge.json
+    if ! node ../lib/node-mergeFinra.js "$tmpFile" --input "$finraFile" --output finra.merge.json ||
+        ! jq -e 'type == "array" and length > 0' finra.merge.json >/dev/null; then
+        echo "failed to merge $tmpFile into $finraFile."
+        rm -f "$tmpFile" finra.merge.json
+        exit 1
+    fi
     if ../bin/jsonDifferent.sh finra.merge.json "$finraFile"; then
         cat finra.merge.json >"$finraFile"
         echo $finraFile updated.

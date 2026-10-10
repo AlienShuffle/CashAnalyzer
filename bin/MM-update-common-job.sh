@@ -86,6 +86,7 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 
 # this allows the script to overwrite existing files if the --forceOverwrite flag is set.
 if [ -n "$forceOverwrite" ]; then
@@ -131,12 +132,6 @@ fileInfo() {
         echo "missing"
     fi
 }
-isJsonArray() {
-    [ -s "$1" ] && jq -e 'type == "array" and length > 0' "$1" >/dev/null 2>&1
-}
-isEmptyJsonArray() {
-    [ -s "$1" ] && jq -e 'type == "array" and length == 0' "$1" >/dev/null 2>&1
-}
 # usage: stepFailed <step> <ticker> <pipeStatuses> <outputFile> [inputFiles...]
 stepFailed() {
     local step="$1" ticker="$2" statuses="$3" output="$4" f dir
@@ -154,10 +149,11 @@ stepFailed() {
     fi
     logDebug "    debug copies saved in $(pwd)/$dir"
 }
-# true if every element of the given PIPESTATUS list is zero.
-pipeOk() {
-    local s
-    for s in "$@"; do [ "$s" -eq 0 ] || return 1; done
+# usage: mmSortBest <inFile> <outFile> [latest]  - sets statuses=(nodeStatus)
+mmSortBest() {
+    node ../lib/node-MM-sortBest.js ${3:+"$3"} --input "$1" --output "$2" 2>>"$errFile"
+    statuses=("$?")
+    pipeOk "${statuses[@]}"
 }
 # atomically replace a published json file (and its csv), refusing to publish empty or invalid json.
 publishJson() {
@@ -238,11 +234,9 @@ else
         fi
         #echo "running node $processScript"
         : >"$errFile"
-        cat "$tmpCollect" | node $processScript "$nodeArg" 2>>"$errFile" | jq . >"$jsonRateNew" 2>>"$errFile"
-        statuses=("${PIPESTATUS[@]}")
-        if ! pipeOk "${statuses[@]}"; then
-            stepFailed "process" "" "${statuses[*]}" "$jsonRateNew" "$tmpCollect"
-            rm -f "$tmpCollect"
+        if ! runNode "$jsonRateNew" "$tmpCollect" $processScript "$nodeArg"; then
+            stepFailed "process" "" "${statuses[*]}" "$jsonRateNew" "$tmpCollect" "$jsonRateNew.raw"
+            rm -f "$tmpCollect" "$jsonRateNew.raw"
             echo "$sourceName rate retrieval failed, exiting."
             exit 1
         fi
@@ -250,10 +244,9 @@ else
     else
         #echo "node $processScript $nodeArg | jq . >$jsonRateNew"; exit 1
         : >"$errFile"
-        node $processScript "$nodeArg" 2>>"$errFile" | jq . >"$jsonRateNew" 2>>"$errFile"
-        statuses=("${PIPESTATUS[@]}")
-        if ! pipeOk "${statuses[@]}"; then
-            stepFailed "process" "" "${statuses[*]}" "$jsonRateNew"
+        if ! runNode "$jsonRateNew" - $processScript "$nodeArg"; then
+            stepFailed "process" "" "${statuses[*]}" "$jsonRateNew" "$jsonRateNew.raw"
+            rm -f "$jsonRateNew.raw"
             echo "$sourceName rate retrieval failed, exiting."
             exit 1
         fi
@@ -341,9 +334,7 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
             rm -f "$jsonHistoryTemp"
             continue
         fi
-        node ../lib/node-MM-sortBest.js <"$jsonHistoryTemp" 2>>"$errFile" | jq . >"$jsonHistoryUnique.new" 2>>"$errFile"
-        statuses=("${PIPESTATUS[@]}")
-        if ! pipeOk "${statuses[@]}" || ! isJsonArray "$jsonHistoryUnique.new"; then
+        if ! mmSortBest "$jsonHistoryTemp" "$jsonHistoryUnique.new" || ! isJsonArray "$jsonHistoryUnique.new"; then
             stepFailed "unique-sortBest" "$ticker" "${statuses[*]}" "$jsonHistoryUnique.new" "$jsonHistoryTemp" "$jsonHistoryUnique"
             rm -f "$jsonHistoryTemp" "$jsonHistoryUnique.new"
             continue
@@ -360,10 +351,7 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
                 echo "skipping merge as $sourceName $ticker cloudFlare history file does not exist."
                 [ -e "$jsonHistoryFlare" ] && logDebug "$jsonHistoryFlare exists but is EMPTY: $(fileInfo "$jsonHistoryFlare")"
             else
-                node ../lib/node-MM-sortBest.js <"$jsonHistoryUnique" 2>>"$errFile" |
-                    jq . >"$jsonHistoryFlareTemp" 2>>"$errFile"
-                statuses=("${PIPESTATUS[@]}")
-                if ! pipeOk "${statuses[@]}" || ! isJsonArray "$jsonHistoryFlareTemp"; then
+                if ! mmSortBest "$jsonHistoryUnique" "$jsonHistoryFlareTemp" || ! isJsonArray "$jsonHistoryFlareTemp"; then
                     stepFailed "flare-new" "$ticker" "${statuses[*]}" "$jsonHistoryFlareTemp" "$jsonHistoryUnique"
                     rm -f "$jsonHistoryFlareTemp"
                 fi
@@ -374,15 +362,15 @@ grep ticker "$jsonRateNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -e
         else
             # snapshot the shared file first so the debug copy is exactly what was merged.
             cp -p "$jsonHistoryFlare" "$jsonHistoryFlareTemp.in"
-            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonHistoryUnique" "$jsonHistoryFlareTemp.in" 2>>"$errFile" |
-                node ../lib/node-MM-sortBest.js 2>>"$errFile" |
-                jq . >"$jsonHistoryFlareTemp" 2>>"$errFile"
-            statuses=("${PIPESTATUS[@]}")
-            if ! pipeOk "${statuses[@]}" || ! isJsonArray "$jsonHistoryFlareTemp"; then
-                stepFailed "flare-merge" "$ticker" "${statuses[*]}" "$jsonHistoryFlareTemp" "$jsonHistoryUnique" "$jsonHistoryFlareTemp.in"
+            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonHistoryUnique" "$jsonHistoryFlareTemp.in" >"$jsonHistoryFlareTemp.combined" 2>>"$errFile"
+            stepStatus=$?
+            if [ "$stepStatus" -ne 0 ] || ! isJsonArray "$jsonHistoryFlareTemp.combined"; then
+                stepFailed "flare-combine" "$ticker" "$stepStatus" "$jsonHistoryFlareTemp.combined" "$jsonHistoryUnique" "$jsonHistoryFlareTemp.in"
+            elif ! mmSortBest "$jsonHistoryFlareTemp.combined" "$jsonHistoryFlareTemp" || ! isJsonArray "$jsonHistoryFlareTemp"; then
+                stepFailed "flare-merge" "$ticker" "${statuses[*]}" "$jsonHistoryFlareTemp" "$jsonHistoryUnique" "$jsonHistoryFlareTemp.in" "$jsonHistoryFlareTemp.combined"
                 rm -f "$jsonHistoryFlareTemp"
             fi
-            rm -f "$jsonHistoryFlareTemp.in"
+            rm -f "$jsonHistoryFlareTemp.in" "$jsonHistoryFlareTemp.combined"
         fi
         #
         # process cloudFlare history files for this data source.
@@ -422,25 +410,22 @@ rm -f tmp-all-flare.json
 : >"$errFile"
 if [ -s "$jsonRateAllFlare" ]; then
     cp -p "$jsonRateAllFlare" tmp-all-flare-in.json
-    jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateNew" tmp-all-flare-in.json 2>>"$errFile" |
-        node ../lib/node-MM-sortBest.js latest 2>>"$errFile" |
-        jq . >tmp-all-flare.json 2>>"$errFile"
-    statuses=("${PIPESTATUS[@]}")
-    if ! pipeOk "${statuses[@]}" || ! isJsonArray tmp-all-flare.json; then
-        stepFailed "all-rates-merge" "" "${statuses[*]}" tmp-all-flare.json "$jsonRateNew" tmp-all-flare-in.json
+    jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonRateNew" tmp-all-flare-in.json >tmp-all-flare-combined.json 2>>"$errFile"
+    stepStatus=$?
+    if [ "$stepStatus" -ne 0 ] || ! isJsonArray tmp-all-flare-combined.json; then
+        stepFailed "all-rates-combine" "" "$stepStatus" tmp-all-flare-combined.json "$jsonRateNew" tmp-all-flare-in.json
+    elif ! mmSortBest tmp-all-flare-combined.json tmp-all-flare.json latest || ! isJsonArray tmp-all-flare.json; then
+        stepFailed "all-rates-merge" "" "${statuses[*]}" tmp-all-flare.json "$jsonRateNew" tmp-all-flare-in.json tmp-all-flare-combined.json
         rm -f tmp-all-flare.json
     fi
-    rm -f tmp-all-flare-in.json
+    rm -f tmp-all-flare-in.json tmp-all-flare-combined.json
 else
     echo "$jsonRateAllFlare cloudFlare file has not been published."
     [ -e "$jsonRateAllFlare" ] && logDebug "$jsonRateAllFlare exists but is EMPTY: $(fileInfo "$jsonRateAllFlare")"
     if [ "$protectOverwrite" = "true" ]; then
         echo "skipping merge as $jsonRateAllFlare does not exist."
     else
-        node ../lib/node-MM-sortBest.js latest <"$jsonRateNew" 2>>"$errFile" |
-            jq . >tmp-all-flare.json 2>>"$errFile"
-        statuses=("${PIPESTATUS[@]}")
-        if ! pipeOk "${statuses[@]}" || ! isJsonArray tmp-all-flare.json; then
+        if ! mmSortBest "$jsonRateNew" tmp-all-flare.json latest || ! isJsonArray tmp-all-flare.json; then
             stepFailed "all-rates-new" "" "${statuses[*]}" tmp-all-flare.json "$jsonRateNew"
             rm -f tmp-all-flare.json
         fi

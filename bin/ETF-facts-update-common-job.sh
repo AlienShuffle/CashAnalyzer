@@ -85,6 +85,27 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
+# usage: sortBest <inFile> <outFile> [latest]  - true if outFile is a valid non-empty array.
+sortBest() {
+    node ../lib/node-sortBest.js ${3:+"$3"} --input "$1" --output "$2" && isJsonArray "$2"
+}
+# usage: publishFacts <srcFile> <jsonDest> <csvDest>  - atomically publish json and csv, refusing empty or invalid json.
+publishFacts() {
+    if ! isJsonArray "$1"; then
+        echo "REFUSED to publish $2 from invalid or empty $1."
+        return 1
+    fi
+    publishFile "$1" "$2" || return 1
+    {
+        echo "$csvHeader"
+        jq -r "$csvElements" "$2"
+    } >"$3.tmp.$$" && mv -f "$3.tmp.$$" "$3" || {
+        echo "failed to write $3"
+        rm -f "$3.tmp.$$"
+        return 1
+    }
+}
 
 # if a sourceName is not specified, use the current directory name.
 if [ -z "$sourceName" ]; then
@@ -143,24 +164,19 @@ else
             echo "Empty collection File $tmpCollect."
             exit 1
         fi
-        #echo "running: < $tmpCollect | node $processScript $nodeArg"
-        node <"$tmpCollect" $processScript "$nodeArg" | jq . >"$jsonFactsNew"
-        statuses=("${PIPESTATUS[@]}")
+        runNode "$jsonFactsNew" "$tmpCollect" $processScript "$nodeArg"
         [ "$debug" = "true" ] || rm -f "$tmpCollect"
-        if [ "${statuses[1]}" -ne 0 ]; then
-            echo "$sourceName Facts retrieval failed, exiting."
+        if ! pipeOk "${statuses[@]}"; then
+            echo "$sourceName Facts retrieval failed (status ${statuses[*]}), raw output kept in $jsonFactsNew.raw, exiting."
             exit 1
         fi
     else
-        #echo "running: node $processScript $nodeArg | jq . >$jsonFactsNew"
-        node $processScript "$nodeArg" | jq . >"$jsonFactsNew"
-        statuses=("${PIPESTATUS[@]}")
-        if [ "${statuses[0]}" -ne 0 ]; then
-            echo "$sourceName Facts processScript failed, exiting."
+        if ! runNode "$jsonFactsNew" - $processScript "$nodeArg"; then
+            echo "$sourceName Facts processScript failed (status ${statuses[*]}), raw output kept in $jsonFactsNew.raw, exiting."
             exit 1
         fi
     fi
-    if [ ! -s "$jsonFactsNew" ]; then
+    if ! isJsonArray "$jsonFactsNew"; then
         echo "Empty $sourceName Facts file."
         exit 1
     fi
@@ -171,7 +187,10 @@ else
     fi
 fi
 # sort/normalize the file now.
-jq 'sort_by(.asOfDate)' "$jsonFactsNew" >tmp.sort.json
+if ! jq 'sort_by(.asOfDate)' "$jsonFactsNew" >tmp.sort.json || ! isJsonArray tmp.sort.json; then
+    echo "$sourceName failed to sort $jsonFactsNew, exiting."
+    exit 1
+fi
 cat tmp.sort.json >"$jsonFactsNew"
 [ "$debug" = "true" ] || rm -f tmp.sort.json
 #
@@ -201,7 +220,10 @@ grep ticker "$jsonFactsNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -
         csvHistoryFlare="$cloudFlareHome/$accountClass/$dirname/$dirname-facts-history.csv"
 
         # I need to pull ONLY those items that are appropriate for this line from jsonFactsNew and process from here.
-        cat "$jsonFactsNew" | jq "[.[] | select(.ticker==\"$ticker\")]" >"$jsonFactsTicker"
+        if ! jq "[.[] | select(.ticker==\"$ticker\")]" "$jsonFactsNew" >"$jsonFactsTicker" || ! isJsonArray "$jsonFactsTicker"; then
+            echo "$sourceName $ticker failed to extract facts, skipping."
+            continue
+        fi
 
         # sort/filter/gap fill the combined history and current date's Factss using only this tool's data.
         if [ -f "$jsonHistoryUnique" ]; then
@@ -209,31 +231,33 @@ grep ticker "$jsonFactsNew" | sed 's/^.*ticker": "//' | sed -e 's/",$//' | sed -
         else
             cat "$jsonFactsTicker" >"$jsonHistoryTemp"
         fi
-        cat "$jsonHistoryTemp" | node ../lib/node-sortBest.js | jq . >"$jsonHistoryUnique"
+        if [ $? -ne 0 ] || ! sortBest "$jsonHistoryTemp" "$jsonHistoryUnique.new"; then
+            echo "$sourceName $ticker failed to merge facts history, skipping."
+            rm -f "$jsonHistoryUnique.new"
+            continue
+        fi
+        mv -f "$jsonHistoryUnique.new" "$jsonHistoryUnique"
         [ "$debug" = "true" ] || rm -f "$jsonHistoryTemp"
 
         # sort/filter/gapfill this combined history with data from all sources in cloudflare repository.
+        rm -f "$jsonHistoryFlareTemp"
         if [ ! -s "$jsonHistoryFlare" ]; then
-            cat "$jsonHistoryUnique" |
-                node ../lib/node-sortBest.js |
-                jq . >"$jsonHistoryFlareTemp"
+            sortBest "$jsonHistoryUnique" "$jsonHistoryFlareTemp"
             echo "$sourceName $ticker cloudFlare history file has not been published."
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         else
-            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonHistoryUnique" "$jsonHistoryFlare" |
-                node ../lib/node-sortBest.js |
-                jq . >"$jsonHistoryFlareTemp"
+            jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonHistoryUnique" "$jsonHistoryFlare" >"$jsonHistoryFlareTemp.combined" &&
+                sortBest "$jsonHistoryFlareTemp.combined" "$jsonHistoryFlareTemp"
+            [ "$debug" = "true" ] || rm -f "$jsonHistoryFlareTemp.combined"
         fi
         #
         # process cloudFlare history files for this data source.
         #
-        if ../bin/jsonDifferent.sh "$jsonHistoryFlareTemp" "$jsonHistoryFlare"; then
-            cat "$jsonHistoryFlareTemp" >"$jsonHistoryFlare"
-            (
-                echo "$csvHeader"
-                jq -r "$csvElements" "$jsonHistoryFlare"
-            ) >"$csvHistoryFlare"
+        if ! isJsonArray "$jsonHistoryFlareTemp"; then
+            echo "$sourceName $ticker failed to merge cloudFlare facts history, skipping."
+        elif ../bin/jsonDifferent.sh "$jsonHistoryFlareTemp" "$jsonHistoryFlare" &&
+            publishFacts "$jsonHistoryFlareTemp" "$jsonHistoryFlare" "$csvHistoryFlare"; then
             [ "$quiet" = "true" ] || echo "published updated $sourceName $ticker cloudFlare facts-history files."
         fi
     done
@@ -249,36 +273,29 @@ if [ ! -s "$jsonFactsFlare" ]; then
     dir=$(dirname "$jsonFactsFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-if ../bin/jsonDifferent.sh "$jsonFactsNew" "$jsonFactsFlare"; then
-    cat "$jsonFactsNew" >"$jsonFactsFlare"
-    (
-        echo "$csvHeader"
-        jq -r "$csvElements" "$jsonFactsFlare"
-    ) >"$csvFactsFlare"
+if ../bin/jsonDifferent.sh "$jsonFactsNew" "$jsonFactsFlare" &&
+    publishFacts "$jsonFactsNew" "$jsonFactsFlare" "$csvFactsFlare"; then
     [ "$quiet" = "true" ] || echo "published updated cloudflare $sourceName-facts files."
 fi
 #
 # Merge current tool's current Facts into the All tools Facts file (keeping only best, most recent reported values)
 #
+rm -f tmp-all-flare.json
 if [ -s "$jsonFactsAllFlare" ]; then
-    jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonFactsNew" "$jsonFactsAllFlare" |
-        node ../lib/node-sortBest.js latest |
-        jq . >tmp-all-flare.json
+    jq -s 'flatten | sort_by([.ticker,.asOfDate])' "$jsonFactsNew" "$jsonFactsAllFlare" >tmp-all-flare-combined.json &&
+        sortBest tmp-all-flare-combined.json tmp-all-flare.json latest
+    [ "$debug" = "true" ] || rm -f tmp-all-flare-combined.json
 else
     echo "$jsonFactsAllFlare cloudFlare file has not been published."
     dir=$(dirname "$jsonFactsAllFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
-    cat "$jsonFactsNew" |
-        node ../lib/node-sortBest.js latest |
-        jq . >tmp-all-flare.json
+    sortBest "$jsonFactsNew" tmp-all-flare.json latest
 fi
 # if the new merged file is different, then publish it.
-if ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonFactsAllFlare"; then
-    cat tmp-all-flare.json >"$jsonFactsAllFlare"
-    (
-        echo "$csvHeader"
-        jq -r "$csvElements" "$jsonFactsAllFlare"
-    ) >"$csvFactsAllFlare"
+if ! isJsonArray tmp-all-flare.json; then
+    echo "$sourceName failed to merge $jsonFactsAllFlare, not published."
+elif ../bin/jsonDifferent.sh tmp-all-flare.json "$jsonFactsAllFlare" &&
+    publishFacts tmp-all-flare.json "$jsonFactsAllFlare" "$csvFactsAllFlare"; then
     [ "$quiet" = "true" ] || echo "published updated cloudflare all-facts files."
 fi
 [ "$debug" = "true" ] || rm -f tmp-all-flare.json

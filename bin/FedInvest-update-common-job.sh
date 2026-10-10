@@ -78,6 +78,7 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 # if a sourceName is not specified, use the current directory name.
 if [ -z "$sourceName" ]; then
     sourceName=$(basename $(pwd))
@@ -142,18 +143,22 @@ else
         else
             $collectionScript >"$tmpCollect"
         fi
+        if [ $? -ne 0 ] || [ ! -s "$tmpCollect" ]; then
+            rm -f "$tmpCollect"
+            echo "$sourceName rate collection failed, exiting."
+            exit 1
+        fi
         #echo "running node $processScript"
-        cat "$tmpCollect" | node $processScript "$nodeArg" | jq . >"$jsonRateNew"
+        runNode "$jsonRateNew" "$tmpCollect" $processScript "$nodeArg"
         rm -f "$tmpCollect"
     else
-        #echo "node $processScript $nodeArg | jq . >$jsonRateNew"; exit 1
-        node $processScript "$nodeArg" | jq . >"$jsonRateNew"
+        runNode "$jsonRateNew" - $processScript "$nodeArg"
     fi
-    if [ ! $? ]; then
-        echo "$sourceName rate retrieval failed, exiting."
+    if ! pipeOk "${statuses[@]}"; then
+        echo "$sourceName rate retrieval failed (status ${statuses[*]}), raw output kept in $jsonRateNew.raw, exiting."
         exit 1
     fi
-    if [ ! -s "$jsonRateNew" ]; then
+    if ! isJsonArray "$jsonRateNew"; then
         echo "Empty $sourceName rate file."
         exit 1
     fi
@@ -222,18 +227,28 @@ if [ ! -s "$jsonRateFlare" ]; then
 fi
 dailyFolder="$cloudFlareHome/Treasuries/$sourceName/daily"
 [ -d "$dailyFolder" ] || mkdir -p "$dailyFolder"
+if ! isJsonArray "$jsonRateNew"; then
+    echo "REFUSED to publish $jsonRateFlare from invalid or empty $jsonRateNew."
+    exit 1
+fi
 if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
-    cat "$jsonRateNew" >"$jsonRateFlare"
     # save the data file as a .csv as well.
-    (
+    tmpCsv="tmp-rate.csv"
+    if ! {
         echo "$csvHeader"
         jq -r ".[] | [$csvJq] | @csv" "$jsonRateNew"
-    ) >"$csvRateFlare"
-    asOfDate=$(jq -r '.[] | .asOfDate' "$jsonRateFlare" | sort -u)
+    } >"$tmpCsv"; then
+        rm -f "$tmpCsv"
+        echo "$sourceName failed to build $csvRateFlare, exiting."
+        exit 1
+    fi
+    asOfDate=$(jq -r '.[] | .asOfDate' "$jsonRateNew" | sort -u)
     dailyRateFile="$dailyFolder/$asOfDate-$dailyName.json"
     dailyRateCSV="$dailyFolder/$asOfDate-$dailyName.csv"
-    cat "$jsonRateFlare" >"$dailyRateFile"
-    cat "$csvRateFlare" >"$dailyRateCSV"
-    echo "published updated $sourceName cloudFlare daily rate files."
+    if publishFile "$jsonRateNew" "$jsonRateFlare" && publishFile "$tmpCsv" "$csvRateFlare" &&
+        publishFile "$jsonRateNew" "$dailyRateFile" && publishFile "$tmpCsv" "$dailyRateCSV"; then
+        echo "published updated $sourceName cloudFlare daily rate files."
+    fi
+    rm -f "$tmpCsv"
 fi
 exit 0

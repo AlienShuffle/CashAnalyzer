@@ -73,6 +73,7 @@ while [ -n "$1" ]; do
 done
 # computer-specific configurations.
 source ../meta.common.sh
+source ../bin/nodeJobUtils.sh
 # if a sourceName is not specified, use the current directory name.
 if [ -z "$sourceName" ]; then
     sourceName=$(basename $(pwd))
@@ -81,6 +82,15 @@ fi
 if [ -z "$processScript" ]; then
     processScript="./node-$sourceName-update.js"
 fi
+# usage: bankGapFill <inFile> <outFile>  - gap fill and sort an account history, true if outFile is a valid non-empty array.
+bankGapFill() {
+    node ../lib/node-bank-gapFiller.js --input "$1" --output "$2.gap" &&
+        jq 'sort_by([.accountType,.asOfDate])' "$2.gap" >"$2" &&
+        isJsonArray "$2"
+    local status=$?
+    rm -f "$2.gap"
+    return $status
+}
 # create data source file paths.
 jsonRateNew="$sourceName-rate-new.json"
 jsonRateFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-rate.json"
@@ -111,19 +121,23 @@ else
         fi
         tmpCollect="tmpCollect.txt"
         #echo "running $collectionScript"
-        $collectionScript >"$tmpCollect"
-        cat "$tmpCollect" | node $processScript $nodeArg | jq . >"$jsonRateNew"
+        if ! $collectionScript >"$tmpCollect"; then
+            rm -f "$tmpCollect"
+            echo "$sourceName rate collection failed, exiting."
+            exit 1
+        fi
+        runNode "$jsonRateNew" "$tmpCollect" $processScript $nodeArg
         rm -f "$tmpCollect"
     elif [ -s "$stdInFile" ]; then
-        node $processScript "$nodeArg" <"$stdInFile" | jq . >"$jsonRateNew"
+        runNode "$jsonRateNew" "$stdInFile" $processScript "$nodeArg"
     else
-        node $processScript "$nodeArg" | jq . >"$jsonRateNew"
+        runNode "$jsonRateNew" - $processScript "$nodeArg"
     fi
-    if [ ! $? ]; then
-        echo "$sourceName rate retrieval failed, exiting."
+    if ! pipeOk "${statuses[@]}"; then
+        echo "$sourceName rate retrieval failed (status ${statuses[*]}), raw output kept in $jsonRateNew.raw, exiting."
         exit 1
     fi
-    if [ ! -s "$jsonRateNew" ]; then
+    if ! isJsonArray "$jsonRateNew"; then
         echo "Empty $sourceName rate file."
         exit 1
     fi
@@ -134,7 +148,11 @@ else
     fi
 fi
 # sort/normalize the file now.
-jq 'sort_by([.accountType,.asOfDate])' "$jsonRateNew" >tmp.sort.json
+if ! jq 'sort_by([.accountType,.asOfDate])' "$jsonRateNew" >tmp.sort.json || ! isJsonArray tmp.sort.json; then
+    rm -f tmp.sort.json
+    echo "$sourceName failed to sort $jsonRateNew, exiting."
+    exit 1
+fi
 cat tmp.sort.json >"$jsonRateNew"
 rm -f tmp.sort.json
 #
@@ -152,26 +170,37 @@ grep accountType "$jsonRateNew" | sed 's/^.*Type": "//' | sed 's/",$//' | sort -
         jsonHistoryFlare="$cloudFlareHome/$accountClass/$sourceName/$dirname/rate-history.json"
 
         # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
-        cat "$jsonRateNew" | jq "[.[] | select(.accountType==\"$accountType\")]" >"$jsonRateAccountType"
+        if ! jq "[.[] | select(.accountType==\"$accountType\")]" "$jsonRateNew" >"$jsonRateAccountType" ||
+            ! isJsonArray "$jsonRateAccountType"; then
+            echo "$sourceName $accountType failed to extract rates, skipping."
+            continue
+        fi
 
         if [ -s "$jsonHistoryFlare" ]; then
-            jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateAccountType" "$jsonHistoryFlare" >tmp-flatten.json
-            cat tmp-flatten.json | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
-            rm tmp-flatten.json
+            gapFillerInput=tmp-flatten.json
+            if ! jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateAccountType" "$jsonHistoryFlare" >"$gapFillerInput"; then
+                rm -f "$gapFillerInput"
+                echo "$sourceName $accountType failed to merge with cloudFlare history, skipping."
+                continue
+            fi
         else
-            cat "$jsonRateAccountType" | node ../lib/node-bank-gapFiller.js | jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
+            gapFillerInput="$jsonRateAccountType"
             echo "$sourceName $accountType cloudFlare history file has not been published."
             dir=$(dirname "$jsonHistoryFlare")
             [ -d "$dir" ] || mkdir -p "$dir"
         fi
-
-        #
-        # process cloudFlare account specific history files
-        #
-        if ../bin/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
-            cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
-            echo "published updated $sourceName $accountType cloudFlare history file."
+        if bankGapFill "$gapFillerInput" "$jsonHistoryUnique"; then
+            #
+            # process cloudFlare account specific history files
+            #
+            if ../bin/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare" &&
+                publishFile "$jsonHistoryUnique" "$jsonHistoryFlare"; then
+                echo "published updated $sourceName $accountType cloudFlare history file."
+            fi
+        else
+            echo "$sourceName $accountType gap filling failed, skipping."
         fi
+        rm -f tmp-flatten.json
     done
 #
 # process the cloudFlare rate file.
@@ -185,14 +214,14 @@ if [ ! -s "$jsonRateFlare" ]; then
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare"; then
-    cat "$jsonRateNew" >"$jsonRateFlare"
+if ../bin/jsonDifferent.sh "$jsonRateNew" "$jsonRateFlare" && publishFile "$jsonRateNew" "$jsonRateFlare"; then
     echo "published updated $sourceName cloudFlare .json rate file."
-    (
+    {
         echo 'asOfDate,accountType,apy'
         jq -r '.[] | [.asOfDate, .accountType, .apy] | @csv' "$jsonRateFlare"
-    ) >"$csvRateFlare"
-    echo "published updated $sourceName cloudFlare .csv rate file."
+    } >"$csvRateFlare.tmp.$$" && mv -f "$csvRateFlare.tmp.$$" "$csvRateFlare" &&
+        echo "published updated $sourceName cloudFlare .csv rate file."
+    rm -f "$csvRateFlare.tmp.$$"
 fi
 #
 # XXXXX This section is transitional until I can upgrade all users to a version that does not depend on the merged history file.
@@ -204,13 +233,14 @@ jsonHistoryUnique="$sourceName-history-unique.json"
 jsonHistoryFlare="$cloudFlareHome/$accountClass/$sourceName/$sourceName-history.json"
 
 if [ -s "$jsonHistoryFlare" ]; then
-    jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateNew" "$jsonHistoryFlare" |
-        node ../lib/node-bank-gapFiller.js |
-        jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
+    gapFillerInput=tmp-flatten.json
+    if ! jq -s 'flatten | unique_by([.accountType,.asOfDate]) | sort_by([.accountType,.asOfDate])' "$jsonRateNew" "$jsonHistoryFlare" >"$gapFillerInput"; then
+        rm -f "$gapFillerInput"
+        echo "$sourceName failed to merge with cloudFlare history, exiting."
+        exit 1
+    fi
 else
-    cat "$jsonRateNew" |
-        node ../lib/node-bank-gapFiller.js |
-        jq 'sort_by([.accountType,.asOfDate])' >"$jsonHistoryUnique"
+    gapFillerInput="$jsonRateNew"
     echo "$sourceName cloudFlare history file has not been published."
     dir=$(dirname "$jsonHistoryFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
@@ -218,8 +248,13 @@ fi
 #
 # process cloudFlare history files
 #
-if ../bin/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
-    cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
-    echo "published updated $sourceName cloudFlare history file."
+if bankGapFill "$gapFillerInput" "$jsonHistoryUnique"; then
+    if ../bin/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare" &&
+        publishFile "$jsonHistoryUnique" "$jsonHistoryFlare"; then
+        echo "published updated $sourceName cloudFlare history file."
+    fi
+else
+    echo "$sourceName gap filling failed, history not published."
 fi
+rm -f tmp-flatten.json
 exit 0

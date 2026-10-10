@@ -8,9 +8,12 @@ for i in $(cut -f1 -d, $(basename $PWD)-funds.csv); do
             while IFS= read -r file; do
                 cat "$file"
             done |
-            jq -s 'flatten ' |
-            node ../lib/node-convert-old-fido.js $i |
-            jq . >"$newFile"
-        ../bin/MM-update-common-job.sh --injectProcessedJson "$newFile"
+            jq -s 'flatten ' >"$newFile.in"
+        if node ../lib/node-convert-old-fido.js "$i" --input "$newFile.in" --output "$newFile"; then
+            ../bin/MM-update-common-job.sh --injectProcessedJson "$newFile"
+        else
+            echo "failed to convert $i old fido history."
+        fi
+        rm -f "$newFile.in"
     fi
 done
