@@ -158,6 +158,34 @@ and the worksheet can use different Google accounts. The steps are:
 `.clasp.auth` files are git-ignored and must never be committed. The script
 lives outside the clasp project directories so it is never uploaded.
 
+### Updating other consumer sheets
+
+Other sheets that use fintools are not touched by the release script. Update
+them on demand with [update-consumer.sh](./update-consumer.sh), pointing it at
+any local clasp project directory (inside or outside this repository):
+
+```bash
+fintools/update-consumer.sh --dry-run optimizer-sheet   # show the plan
+fintools/update-consumer.sh optimizer-sheet             # confirm, then apply
+fintools/update-consumer.sh -V 160 --push /path/to/sheet   # pin 160 and push
+fintools/update-consumer.sh --list                         # wrapper file names
+```
+
+- Only generated wrapper files from [wrapper/](./wrapper/) that already exist
+  in the target are replaced, with added/removed functions listed per file.
+  Use `--add <file>` to bring in another wrapper file. Sheet-specific files,
+  including `onOpen.js`, are never changed.
+- The `fintools` pin in the target's `appsscript.json` is set to `--version`
+  or, by default, the latest library version (read with
+  `lib/.clasp.auth`), and `developmentMode` is removed unless
+  `--keep-dev-mode` is given.
+- It warns when `lib/` or `wrapper/` changed since the commit recorded in that
+  version's description, since the wrappers might then call functions the
+  pinned version lacks.
+- Changes require confirmation (`--yes` skips it), originals are backed up to
+  a temporary directory outside the project, and nothing is pushed without
+  `--push` (which uses the target's `.clasp.auth` when present).
+
 ## REFCPI caching
 
 The migrated loader reuses fintools' existing `Cacher` and `Compress` helpers.
