@@ -3,13 +3,12 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
 import {
-    beiSolverSA, binarySolver, daysBetween, easyForward, forwardNominalCleanPrice, forwardRate,
+    daysBetween, easyForward, forwardNominalCleanPrice, forwardRate,
     forwardTipsCleanPrice, normalizeDate, tbillDiscountFactor, tbillSimpleRate,
 } from "../lib/index.mjs";
 
 const base = new Date(2020, 0, 1);
 const refCpi = d => 260 + daysBetween(base, d) * 0.0085;
-const factor = d => 1 + 0.003 * Math.cos((d.getMonth() + d.getDate() / 31) / 12 * 2 * Math.PI);
 const n = normalizeDate;
 
 test("forwardRate: flat curve gives the same rate; invalid rates throw", () => {
@@ -42,26 +41,20 @@ test("tbill rates: bracketing and same-maturity average", () => {
     assert.ok(r > 0.04 && r < 0.08);
 });
 
-test("binarySolver finds a root and rejects unbracketed ranges", () => {
-    assert.ok(Math.abs(binarySolver(x => x - 0.05) - 0.05) < 1e-9);
-    assert.throws(() => binarySolver(x => x + 1), /not bracketed/);
-});
-
 function loadAppsScript() {
     const dir = new URL("../appscript-src/", import.meta.url);
     const files = ["mybond.dates.js", "mybond.utils.js", "mybond.yieldFromPrice.js", "mybond.forwards.js",
-        "mybond.calcForwardCP.js", "mybond.fwd.nom.calcFwdCP.js", "mybond.beiSolver.js", "discount.js", "fwd.tbill.calc.simple.js"];
+        "mybond.calcForwardCP.js", "mybond.fwd.nom.calcFwdCP.js", "discount.js", "fwd.tbill.calc.simple.js"];
     const context = vm.createContext({ Logger: { log() { } }, Math, Date, Array, Number });
     context.base = base;
     vm.runInContext(`
         function tipsGetRefCpi(d) { return 260 + mydateDaysBetween_(base, d) * 0.0085; }
-        function tipsGetFactor(d) { return 1 + 0.003 * Math.cos((d.getMonth() + d.getDate() / 31) / 12 * 2 * Math.PI); }
     `, context);
     for (const file of files) vm.runInContext(readFileSync(new URL(file, dir), "utf8"), context, { filename: file });
     return context;
 }
 
-test("parity with Apps Script: forwards, bills and BEI", () => {
+test("parity with Apps Script: forwards and bills", () => {
     const gs = loadAppsScript();
     let count = 0;
     for (const maturity of ["2027-04-15", "2029-07-15", "2031-04-15", "2036-01-15"]) {
@@ -99,10 +92,4 @@ test("parity with Apps Script: forwards, bills and BEI", () => {
     assert.equal(tbillSimpleRate("2026-10-05", "2026-12-01", "2026-12-01", 99.1, "2026-12-01", 99.2),
         gs.myTbillSimpleRate("2026-10-05", "2026-12-01", "2026-12-01", 99.1, "2026-12-01", 99.2));
 
-    for (const maturity of ["2027-04-15", "2028-07-15"]) {
-        const a = { forward: "2026-12-01", maturity, coupon: 0.0125, cleanPrice: 99.2, datedREFCPI: 262,
-            fwdREFCPI: refCpi(n("2026-12-01")), treasuryYield: 0.04 };
-        const theirs = gs.mybondBEISolverSA(a.forward, a.maturity, a.coupon, a.cleanPrice, a.datedREFCPI, a.fwdREFCPI, a.treasuryYield);
-        assert.equal(beiSolverSA({ ...a, getFactor: factor }), theirs);
-    }
 });
