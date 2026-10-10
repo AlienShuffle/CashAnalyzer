@@ -2,7 +2,7 @@
 // on 13-SEP-26 @ 8PM EDT.
 // changes made:
 // - rewrote the core MaturityFactor routine to work in my ecosystem. factor is retrieved elsewhere.
-// - now called: applyCredibilityFactor()
+// - now called: tipsApplyCredibilityFactor()
 
 // ─── Credibility factor for a projected maturity SA factor ──────────────────
 // The maturity-date SA factor of nearly every outstanding TIPS is a
@@ -61,7 +61,6 @@ function seasonalDriftSigma_(month, h) {
  * @param {number} h horizon in years for date under test.
  * 
  * @returns {number}
- * @customfunction
  */
 function credibilityFactor_(month, h) {
   if (!(h > 0)) return 1;
@@ -85,7 +84,7 @@ function credibilityFactor_(month, h) {
  * @returns {number}
  * @customfunction
  */
-function applyCredibilityFactor(factor, asOf, maturity) {
+function tipsApplyCredibilityFactor(factor, asOf, maturity) {
   if (factor == null) return null;
 
   const asOfDate = mydateNormalize_(asOf);

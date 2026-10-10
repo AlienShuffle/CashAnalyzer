@@ -5,12 +5,11 @@
  * return the BLS defined ratio. If after the max REFCPI, then lookup the most recent month/day reported and use that value.
  *
  * @param {Date} searchDate date
- * @param {boolean} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
  * 
  * @return {number}
  * @customfunction
  */
-function tipsGetFactor(searchDate, forceRefresh = false) {
+function tipsGetFactor(searchDate) {
   if (
     typeof searchDate === 'undefined' ||
     searchDate === null ||
@@ -23,7 +22,7 @@ function tipsGetFactor(searchDate, forceRefresh = false) {
     (d.getDate() + '').padStart(2, '0');
   const dateMMDD = makeMMDD(date);
 
-  const rows = cloudGetCachedREFCPI(forceRefresh);
+  const rows = cloudGetCachedREFCPI_();
   for (let i = 0; i < rows.length - 1; i++) {
     const rd = rows[i].date;
     if (mydateIsEqual_(rd, date))
@@ -47,14 +46,13 @@ function tipsGetFactor(searchDate, forceRefresh = false) {
  * This may have a limited history to improve performance so dated date REFCPI may not be found here.
  *
  * @param {Date} searchDate date
- * @param {boolean} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
  * 
  * @return {number}
  * @customfunction
  */
-function tipsGetRefCpi(searchDate, forceRefresh = false) {
+function tipsGetRefCpi(searchDate) {
   const date = mydateNormalize_(searchDate);
-  const rows = cloudGetCachedREFCPI(forceRefresh);
+  const rows = cloudGetCachedREFCPI_();
 
   for (let i = 0; i < rows.length - 1; i++) {
     const rd = mydateNormalize_(rows[i].date);
@@ -67,14 +65,17 @@ function tipsGetRefCpi(searchDate, forceRefresh = false) {
 }
 
 /**
- * Return that maximum REFCPI date that exists in the cached table.
+ * Return the maximum REFCPI date in the cached table as YYYY-MM-DD text.
  *
- * @param {boolean} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
- * 
- * @return {Date}
+ * @return {string} Date only, without a time or timezone.
  * @customfunction
  */
-function tipsGetMaxRefCpiDate(forceRefresh = false) {
-  const rows = cloudGetCachedREFCPI(forceRefresh);
-  return rows[0].date;
+function tipsGetMaxRefCpiDate() {
+  const rows = cloudGetCachedREFCPI_();
+  const date = mydateNormalize_(rows[0].date);
+  if (date === null || Number.isNaN(date.getTime()))
+    throw new Error('Invalid maximum REFCPI date');
+  return date.getFullYear() + '-' +
+    String(date.getMonth() + 1).padStart(2, '0') + '-' +
+    String(date.getDate()).padStart(2, '0');
 }

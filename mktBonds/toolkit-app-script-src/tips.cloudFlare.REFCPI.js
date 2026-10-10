@@ -1,11 +1,33 @@
 // cloudFlare.gs
 
+
+/**
+ * Returns REFCPI.csv as a worksheet table with a header row and six columns.
+ * Dates are returned as Date values; CPI values and factors are numbers.
+ * @param {boolean} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
+ * @return {Array<Array<Date|number|string>>} Date, REFCPINSA, REFCPISA, SAFactor, MMDD, maxREFCPI.
+ * @customfunction
+ */
+function tipsGetCachedREFCPI(forceRefresh = false) {
+  const rows = cloudGetCachedREFCPI_(forceRefresh);
+  return [
+    ['Date', 'REFCPINSA', 'REFCPISA', 'SAFactor', 'MMDD', 'maxREFCPI'],
+    ...rows.map(row => [
+      mydateNormalize_(row.date),
+      row.refCpiNSA,
+      row.refCpiSa,
+      row.saFactor,
+      row.mmdd,
+      mydateNormalize_(row.maxRefCpi),
+    ]),
+  ];
+}
+
 /**
  * Returns an array transformed of my REFCPI.csv
  * @param {boolean} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
- * @customfunction
  */
-function cloudGetCachedREFCPI(forceRefresh = false) {
+function cloudGetCachedREFCPI_(forceRefresh = false) {
   const cacheKey = "cloudGetCachedREFCPI-v3aa-";
   const cache = new Cacher({
     cachePoint: CacheService.getDocumentCache()
@@ -63,7 +85,8 @@ function cloudGetCachedREFCPI(forceRefresh = false) {
 
     // Map the rows, split values from each row into an array
     const today = new Date;
-    const oldestDate = new Date(today.getFullYear() - 3, today.getMonth(), 1);
+    // limit to the last 10 years for performance reasons. (it may not always be longer)
+    const oldestDate = new Date(today.getFullYear() - 10, today.getMonth(), 1);
     const result = [];
     for (let i = 1; i < rows.length - 1; i++) {
       const vals = rows[i].split(delimiter);

@@ -54,7 +54,6 @@ function mybondTipsNominalReturnFromTrendInflation(
  * @param {number} forwardREFCPI date REFCPI on forward date
  * @param {number} inflator trend inflation rate (decimal)
  * @param {boolean} seasonal [default = false] include seasonal adjustments if true, otherwise straight trend inflation. 
- * @param {boolean} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
  *
  * @return {number} yield
  * @customfunction
@@ -66,7 +65,7 @@ function mybondTipsNominalReturn(
   datedREFCPI, settleREFCPI, forwardREFCPI,
   inflator,
   seasonal = false,
-  forceRefresh = false
+  
 ) {
 
   // to ensure re-use and consistency, use the Graph table function below to produce the XIRR Results
@@ -78,7 +77,7 @@ function mybondTipsNominalReturn(
     datedREFCPI, settleREFCPI, forwardREFCPI,
     inflator,
     seasonal,
-    forceRefresh
+    
   );
   if (result === null) return null;
   for (let i = 0; i < result.length - 1; i++) {
@@ -107,7 +106,6 @@ function mybondTipsNominalReturn(
  * @param {number} forwardREFCPI date REFCPI on forward date (t1)
  * @param {number} inflator trend inflation rate (decimal) (from t1 to t2)
  * @param {boolean} seasonal [default = false] include seasonal adjustments if true, otherwise straight trend inflation. 
- * @param {boolean} forceRefresh [OPTIONAL, default = FALSE]. true forces a new table, not use any available cache.
  *
  * @return {[[date,cashflow,cumCouponReturn,cumDiscountReturn,currCoupon,currDiscountReturn]]} yield
  * @customfunction
@@ -120,7 +118,7 @@ function mybondGraphTipsNominalReturn(
   datedREFCPI, settleREFCPI, forwardREFCPI,
   inflator,
   seasonal = false,
-  forceRefresh = false
+  
 ) {
   // XXXX - factors needed: settle, maturity, forward, 1st coupon date (maturity - 6 mos.)
   // XXXX - the pre-fwd Coupon creates the need to look up REFCPI directly....
@@ -137,9 +135,8 @@ function mybondGraphTipsNominalReturn(
   const settleIR = settleREFCPI / datedREFCPI;
   //const forwardIR = forwardREFCPI / datedREFCPI;
 
-  // only call the REFCPI/Factor with forceRefresh once, all other calls assume to be already refreshed.
   // XXXX - consider parameterizing these Factor values to the function.
-  const maturitySaFactor = seasonal ? tipsGetFactor(maturityDate, forceRefresh) : 1;
+  const maturitySaFactor = seasonal ? tipsGetFactor(maturityDate) : 1;
   const settleSaFactor = seasonal ? tipsGetFactor(settleDate) : 1;
   const settleSaRatio = seasonal ? settleSaFactor / maturitySaFactor : 1;
   const forwardSaFactor = seasonal ? tipsGetFactor(forwardDate) : 1;

@@ -4,6 +4,23 @@ Reference for the files produced by [job-mktBonds-update.sh](./job-mktBonds-upda
 and [job-mktTips-update.sh](./job-mktTips-update.sh). For calculation-library details
 and historical REFCPI configuration, see [lib/README.md](./lib/README.md).
 
+## REFCPI in Google Sheets
+
+The toolkit custom function in
+[tips.cloudFlare.REFCPI.js](./toolkit-app-script-src/tips.cloudFlare.REFCPI.js)
+can be used as `=tipsGetCachedREFCPI()` to spill a table into a worksheet.
+It includes the header row `Date`, `REFCPINSA`, `REFCPISA`, `SAFactor`, `MMDD`,
+`maxREFCPI`. The first and last columns contain date values; format those
+columns as dates in Sheets. CPI values and seasonal factors are numeric.
+Leave the six-column output area empty so the array can expand.
+Use `=tipsGetCachedREFCPI(TRUE)` to bypass (and refresh) the cache.
+
+Use `=tipsGetMaxRefCpiDate()` from
+[tips.utils.js](./toolkit-app-script-src/tips.utils.js) to return the maximum
+REFCPI date as `YYYY-MM-DD` text, without a time or timezone.
+
+The underlying `cloudGetCachedREFCPI` continues returning row objects for the toolkit's calculation helpers.
+
 ## Locations and file types
 
 The publication directory is `$cloudFlareHome/Treasuries/mktBonds`, typically

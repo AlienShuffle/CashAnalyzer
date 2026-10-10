@@ -118,6 +118,76 @@ function loadAppsScript() {
     return context;
 }
 
+test("toolkit REFCPI worksheet output preserves types on fresh, cached and forced reads", () => {
+    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+    const today = new Date();
+    const iso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    const csv = `Date,REFCPINSA,REFCPISA,SAFactor,MMDD,maxREFCPI\n${iso},330,329,1.003,M0101,${iso}\n`;
+    const store = new Map();
+    let fetches = 0;
+    const context = vm.createContext({
+        Date,
+        CacheService: { getDocumentCache() { return store; } },
+        Cacher: class {
+            get(key) { return store.get(key); }
+            set(key, value) { store.set(key, value); }
+        },
+        UrlFetchApp: { fetch() { fetches++; return { getContentText() { return csv; } }; } },
+        cacheCalcTTLAfterHour_() { return 3600; },
+        cacheLogTTL_() { },
+    });
+    for (const file of ["mybond._dates.js", "tips.cloudFlare.REFCPI.js"]) {
+        vm.runInContext(readFileSync(new URL(file, dir), "utf8"), context, { filename: file });
+    }
+    const expectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const expected = [
+        ["Date", "REFCPINSA", "REFCPISA", "SAFactor", "MMDD", "maxREFCPI"],
+        [expectedDate, 330, 329, 1.003, "M0101", expectedDate],
+    ];
+    for (const [forceRefresh, expectedFetches] of [[false, 1], [false, 1], [true, 2]]) {
+        const table = context.tipsGetCachedREFCPI(forceRefresh);
+        assert.deepEqual(Array.from(table, row => Array.from(row)), expected);
+        assert.ok(table.every(row => row.length === 6));
+        assert.ok(table[1][0] instanceof Date);
+        assert.ok(table[1][5] instanceof Date);
+        assert.equal(fetches, expectedFetches);
+    }
+    const internal = context.cloudGetCachedREFCPI_();
+    assert.equal(internal[0].refCpiNSA, 330);
+    assert.equal(internal[0].saFactor, 1.003);
+    assert.equal(Array.isArray(internal[0]), false);
+});
+
+test("toolkit REFCPI worksheet wrapper handles no rows and propagates loader errors", () => {
+    const file = new URL("../toolkit-app-script-src/tips.cloudFlare.REFCPI.js", import.meta.url);
+    const context = vm.createContext({});
+    vm.runInContext(readFileSync(file, "utf8"), context);
+    context.cloudGetCachedREFCPI_ = () => [];
+    assert.deepEqual(Array.from(context.tipsGetCachedREFCPI(), row => Array.from(row)),
+        [["Date", "REFCPINSA", "REFCPISA", "SAFactor", "MMDD", "maxREFCPI"]]);
+    context.cloudGetCachedREFCPI_ = () => { throw new Error("REFCPI fetch failed"); };
+    assert.throws(() => context.tipsGetCachedREFCPI(), /REFCPI fetch failed/);
+});
+
+test("toolkit maximum REFCPI date returns date-only text for fresh and cached values", () => {
+    const dir = new URL("../toolkit-app-script-src/", import.meta.url);
+    const context = vm.createContext({ Date });
+    for (const file of ["mybond._dates.js", "tips.utils.js"]) {
+        vm.runInContext(readFileSync(new URL(file, dir), "utf8"), context, { filename: file });
+    }
+    const date = new Date(2026, 0, 5, 14, 30);
+    for (const value of [date, date.toISOString(), "2026-01-05"]) {
+        context.cloudGetCachedREFCPI_ = () => [{ date: value }];
+        assert.equal(context.tipsGetMaxRefCpiDate(), "2026-01-05");
+    }
+    for (const value of [null, "invalid"]) {
+        context.cloudGetCachedREFCPI_ = () => [{ date: value }];
+        assert.throws(() => context.tipsGetMaxRefCpiDate(), /Invalid maximum REFCPI date/);
+    }
+    context.cloudGetCachedREFCPI_ = () => { throw new Error("REFCPI fetch failed"); };
+    assert.throws(() => context.tipsGetMaxRefCpiDate(), /REFCPI fetch failed/);
+});
+
 test("parity with Apps Script: Canty, credibility and SAO", () => {
     const gs = loadAppsScript();
     const maturities = ["2027-01-15", "2029-07-15", "2031-04-15", "2036-01-15", "2046-02-15"];
