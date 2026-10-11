@@ -18,11 +18,11 @@ fi
 
 factsFile="history/bloxx-facts-new.json"
 if [ -f "$factsFile" ]; then
-    cat $factsFile |
-        ../bin/MM-update-common-job.sh \
-            --accountClass Funds \
-            --processScript ../lib/node-filter-yield-attrs.js \
-            -f "$@"
+    ../bin/MM-update-common-job.sh \
+        --accountClass Funds \
+        --processScript ../lib/node-filter-yield-attrs.js \
+        --inputFile "$factsFile" \
+        -f "$@"
 else
     echo $factsFile: missing
 fi

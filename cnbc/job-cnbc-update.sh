@@ -1,5 +1,6 @@
 #!/usr/bin/bash
-cat "$(basename $(pwd))-funds.csv" | ../bin/MM-update-common-job.sh \
+../bin/MM-update-common-job.sh \
     --collectionScript ../cnbc/cnbcCollectionScript.sh \
+    --collectionArg "$(basename "$(pwd)")-funds.csv" \
     --processScript ../lib/node-echo.js \
     --pubDelay 20 --runDelay 4 --nightDelayHour 3 "$@"

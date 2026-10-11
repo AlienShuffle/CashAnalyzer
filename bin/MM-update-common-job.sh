@@ -4,6 +4,8 @@
 # better model for handling history.
 # This one is intended to put each ticker in its own history file to reduce size and processing overhead on
 # on the read side. More effort on the update side due to separate files to process.
+# --inputFile supplies processScript input when no collectionScript is used.
+# --collectionArg supplies an argument to collectionScript; --injectProcessedJson bypasses processing.
 #
 # process the command argument list.
 pubDelayHours=16
@@ -37,6 +39,11 @@ while [ -n "$1" ]; do
     "--injectProcessedJson")
         injectProcessedJson="$2"
         #echo "injectProcessedJson=$injectProcessedJson"
+        shift
+        ;;
+    "--inputFile")
+        inputFile="$2"
+        #echo "inputFile=$inputFile"
         shift
         ;;
     "--nightDelayHour")
@@ -244,7 +251,7 @@ else
     else
         #echo "node $processScript $nodeArg | jq . >$jsonRateNew"; exit 1
         : >"$errFile"
-        if ! runNode "$jsonRateNew" - $processScript "$nodeArg"; then
+        if ! runNode "$jsonRateNew" "${inputFile:--}" $processScript "$nodeArg"; then
             stepFailed "process" "" "${statuses[*]}" "$jsonRateNew" "$jsonRateNew.raw"
             rm -f "$jsonRateNew.raw"
             echo "$sourceName rate retrieval failed, exiting."
