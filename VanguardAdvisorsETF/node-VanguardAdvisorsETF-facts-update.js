@@ -1,5 +1,6 @@
 import { readText } from "../lib/jsonIO.mjs";
 import puppeteer from "puppeteer";
+import { parseFundamentals, parsePercent } from "./factsParsing.mjs";
 import {
   readFileSync,
   writeFileSync,
@@ -230,6 +231,19 @@ for (const ticker of tickers) {
     return null;
   }
 
+  async function waitForElementText(selector, pattern, timeout = 15000) {
+    try {
+      await page.waitForFunction((selector, pattern) => {
+        const text = document.querySelector(selector)?.textContent?.trim() || "";
+        return new RegExp(pattern).test(text);
+      }, { timeout }, selector, pattern);
+      return true;
+    } catch (err) {
+      if (err?.name === "TimeoutError") return false;
+      throw err;
+    }
+  }
+
   async function waitForAnySelector(selectors, timeout = 60000) {
     if (debug) console.error(`Waiting for any selector: ${selectors.join(', ')}`);
     try {
@@ -257,27 +271,43 @@ for (const ticker of tickers) {
     }, patterns);
   }
 
-  function normalizeFundamentalsText(text) {
-    return (text || "")
-      .replace(/\s+/g, " ")
-      .replace(/\b(Yield to maturity|Yield to worst|Average duration|Average effective maturity|Average coupon)\b/gi, "\n$1")
-      .trim();
-  }
-
   //if (debug) console.error("Opening Vanguard page...");
   await page.goto(
     url,
     { waitUntil: "domcontentloaded", timeout: 60000 }
   );
   await sleep(2000);
+  if (!await waitForElementText(
+    'span[data-rpa-tag-id="hero-ff-secYield-pct"]',
+    '^\\d+(?:\\.\\d+)?\\s*%$',
+    60000
+  )) {
+    console.error(`No numeric 30-day SEC yield loaded for ticker '${ticker}'`);
+    break;
+  }
+  const rawSecYield = await selectElement('span[data-rpa-tag-id="hero-ff-secYield-pct"]', false);
+  const secYieldValue = parsePercent(rawSecYield);
+  if (secYieldValue === null) {
+    console.error(`Invalid 30-day SEC yield '${rawSecYield}' for ticker '${ticker}'`);
+    break;
+  }
+  if (!await waitForElementText(
+    'span[data-rpa-tag-id="hero-ff-secYield-asOfDate"]',
+    '^\\d{1,2}/\\d{1,2}/\\d{4}$'
+  )) {
+    console.error(`No 30-day SEC yield date loaded for ticker '${ticker}'`);
+    break;
+  }
+  const rawSecYieldAsOfDate = await selectElement(
+    'span[data-rpa-tag-id="hero-ff-secYield-asOfDate"]',
+    false
+  );
+  const secYieldAsOfDate = new Date(rawSecYieldAsOfDate).toISOString().split("T")[0];
+  rowData.thirtyDayYield = Number(secYieldValue.toFixed(4));
+  rowData.asOfDate = secYieldAsOfDate;
   await waitForAnySelector([
     '.distributions',
     'span[data-rpa-tag-id="hero-ff-secYield-pct"]',
-    'span[data-rpa-tag-id*="secYield"]',
-    'span[data-rpa-tag-id*="yield"]',
-    'span[data-rpa-tag-id*="asOfDate"]',
-    'div[data-rpa-tag-id*="secYield"]',
-    'div[data-rpa-tag-id*="yield"]'
   ], 60000);
 
   // download distributions data
@@ -299,34 +329,7 @@ for (const ticker of tickers) {
   // class = .
   // id = #
 
-  // now get thirty day yield and as of date
-  const rawSecYield = await selectFirst([
-    'span[data-rpa-tag-id="hero-ff-secYield-pct"]',
-    'span[data-rpa-tag-id*="secYield"]',
-    'span[data-rpa-tag-id*="yield"]',
-    'div[data-rpa-tag-id*="secYield"]',
-    'div[data-rpa-tag-id*="yield"]'
-  ], false);
-  if (!rawSecYield) {
-    console.error(`No thirtyDayYield found for ticker '${ticker}'`);
-    break; // minimum requirement is to get the yield, if not found, skip the rest of processing for this ticker since it's likely the page structure has changed and other data points may also be missing or incorrect.
-  }
-  const secYield = (rawSecYield.replace("%", "").trim() / 100).toFixed(4) * 1;
-  if (debug) console.error(`rawSecYield= '${rawSecYield}'=${secYield}`);
-  const rawSecYieldAsOfDate = await selectFirst([
-    'span[data-rpa-tag-id="hero-ff-secYield-asOfDate"]',
-    'span[data-rpa-tag-id*="asOfDate"]',
-    'div[data-rpa-tag-id*="asOfDate"]'
-  ], false);
-  if (!rawSecYieldAsOfDate) {
-    console.error(`No asOfDate found for ticker '${ticker}'`);
-    break;
-  } else {
-    const secYieldAsOfDate = new Date(rawSecYieldAsOfDate.replace(/as of /i, "")).toISOString().split("T")[0];
-    if (debug) console.error(`rawSecYieldAsOfDate='${rawSecYieldAsOfDate}'='${secYieldAsOfDate}'`);
-    rowData.thirtyDayYield = secYield.toFixed(4) * 1;
-    rowData.asOfDate = secYieldAsOfDate;
-  }
+  if (debug) console.error(`rawSecYield='${rawSecYield}', asOfDate='${rawSecYieldAsOfDate}'`);
 
   // NAV
   let rawNAV = await selectElement('div[data-rpa-tag-id="pd-cp-nav-price"]', false);
@@ -352,6 +355,10 @@ for (const ticker of tickers) {
   }
 
   // Expense Ratio
+  await waitForElementText(
+    'span[data-rpa-tag-id="dashboard-expenseRatio"]',
+    '^\\d+(?:\\.\\d+)?\\s*%$'
+  );
   const rawExpenseRatio = await selectElement('span[data-rpa-tag-id="dashboard-expenseRatio"]', false);
   if (!rawExpenseRatio) {
     console.error(`No rawExpenseRatio found for ticker '${ticker}'`);
@@ -427,53 +434,18 @@ for (const ticker of tickers) {
   if (!rawFundamentals) {
     console.error(`No rawFundamentals found for ticker '${ticker}'`);
   } else {
-    rawFundamentals = normalizeFundamentalsText(rawFundamentals);
-    const lines = rawFundamentals.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
-    if (debug) console.error(`rawFundamentals lines: ${lines.join(" | ")}`);
-
-    const durationLineNum = lines.findIndex(l => l.toLowerCase().includes("average duration"));
-    if (durationLineNum >= 0) {
-      const durationLine = lines[durationLineNum].replace(/Average duration/i, "").replace("(years)", "").trim();
-      const durationYears = durationLine.match(/([0-9]*\.?[0-9]+)/);
-      if (durationYears) rowData.durationYears = parseFloat(durationYears[1]).toFixed(2) * 1;
-    } else {
-      console.error(`No duration line found in rawFundamentals for ticker '${ticker}'`);
-    }
-
-    const ytmLineNum = lines.findIndex(l => l.toLowerCase().includes("yield to maturity"));
-    if (ytmLineNum >= 0) {
-      const ytmLine = lines[ytmLineNum].replace(/Yield to maturity/i, "").trim();
-      const yieldToMaturity = parseFloat(ytmLine.replace("%", "")) / 100;
-      if (!Number.isNaN(yieldToMaturity)) rowData.yieldToMaturity = yieldToMaturity.toFixed(4) * 1;
-    } else {
-      console.error(`No yield to maturity line found in rawFundamentals for ticker '${ticker}'`);
-    }
-
-    const ytwLineNum = lines.findIndex(l => l.toLowerCase().includes("yield to worst"));
-    if (ytwLineNum >= 0) {
-      const ytwLine = lines[ytwLineNum].replace(/Yield to worst/i, "").trim();
-      const yieldToWorst = parseFloat(ytwLine.replace("%", "")) / 100;
-      if (!Number.isNaN(yieldToWorst)) rowData.yieldToWorst = yieldToWorst.toFixed(4) * 1;
-    } else {
-      console.error(`No yield to worst line found in rawFundamentals for ticker '${ticker}'`);
-    }
-
-    const maturityLineNum = lines.findIndex(l => l.toLowerCase().includes("average effective maturity"));
-    if (maturityLineNum >= 0) {
-      const maturityLine = lines[maturityLineNum].replace(/Average effective maturity/i, "").replace("(years)", "").trim();
-      const maturityYears = maturityLine.match(/([0-9]*\.?[0-9]+)/);
-      if (maturityYears) rowData.maturityYears = parseFloat(maturityYears[1]).toFixed(2) * 1;
-    } else {
-      console.error(`No effective maturity line found in rawFundamentals for ticker '${ticker}'`);
-    }
-
-    const wacLineNum = lines.findIndex(l => l.toLowerCase().includes("average coupon"));
-    if (wacLineNum >= 0) {
-      const wacLine = lines[wacLineNum].replace(/Average coupon/i, "").trim();
-      const weightedAverageCoupon = parseFloat(wacLine.replace("%", "")) / 100;
-      if (!Number.isNaN(weightedAverageCoupon)) rowData.weightedAverageCoupon = weightedAverageCoupon.toFixed(5) * 1;
-    } else {
-      console.error(`No average coupon line found in rawFundamentals for ticker '${ticker}'`);
+    const { values, missing } = parseFundamentals(rawFundamentals);
+    Object.assign(rowData, values);
+    if (debug) console.error(`Parsed fundamentals: ${JSON.stringify(values)}`);
+    const missingMessages = {
+      "Average duration": "duration line",
+      "Yield to maturity": "yield to maturity line",
+      "Yield to worst": "yield to worst line",
+      "Average effective maturity": "effective maturity line",
+      "Average coupon": "average coupon line"
+    };
+    for (const label of missing) {
+      console.error(`No ${missingMessages[label]} found in rawFundamentals for ticker '${ticker}'`);
     }
   }
 

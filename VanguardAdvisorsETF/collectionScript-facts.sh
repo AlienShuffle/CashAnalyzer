@@ -10,16 +10,16 @@ cat ./VanguardETF-funds.txt |
     while read -r ticker; do
         [ ! -z "$ticker" ] || continue
         [ -d "./downloads/$ticker" ] || mkdir -p "./downloads/$ticker"
-        # only process if not downloaded in last 12 hours - -mmin -720 finds files modified in last 12 hours.
-        recent=$(find "./downloads/$ticker" -type f -name "*.csv" -mmin -720 -print | wc -l)
+        # only process if not downloaded in last 1 hour - -mmin -60 finds files modified in last 1 hour.
+        recent=$(find "./downloads/$ticker" -type f -name "*.csv" -mmin -60 -print | wc -l)
         if [ $recent -gt 0 ]; then
-            #echo "$ticker, $recent files downloaded < 12 hours ago, skipping." 1>&2
+            echo "$ticker, $recent files downloaded < 1 hour ago, skipping." 1>&2
             continue
         fi
         if [ -f "./history/$ticker/facts-new.json" ]; then
-            echo "$(date -r history/$ticker/facts-new.json "+%m-%d-%Y %H:%M:%S"),$ticker"
+            echo "$(date -r history/$ticker/facts-new.json "+%Y-%m-%d %H:%M:%S"),$ticker"
         else
-            echo "01-01-2020 02:00:00,$ticker"
+            echo "2020-01-01 02:00:00,$ticker"
         fi
     done |
     sort | tee dated-list.txt |
