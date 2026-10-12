@@ -1,6 +1,12 @@
 // onOpen.gs - this is a basic template for any sheet that uses Caching.
 // v0.01 - 4/8/2023 - stripped down version for reference.
 // 9/6/2025 - mild refactoring/best practices.
+// 10/10/26 - fixed var -> const -> let
+
+// Scope SpreadsheetApp Class to only the current document.
+/**
+ * @OnlyCurrentDoc
+ */
 
 // Creates a menu item on the Google Sheets menubar for manual execution.
 function onOpen() {
@@ -20,7 +26,7 @@ function onOpen() {
 function forceCacheUpdate() {
   const namedRanges = SpreadsheetApp.getActiveSpreadsheet().getNamedRanges();
   for (let i = 0; i < namedRanges.length; i++) {
-    const rangeName = namedRanges[i].getName();
+    let rangeName = namedRanges[i].getName();
     rangeName = rangeName.substring(rangeName.indexOf('!') + 1);
     if (rangeName == "forceRefresh") {
       namedRanges[i].getRange().setValue(true);
@@ -34,9 +40,9 @@ function forceCacheUpdate() {
 function forceCustomFunctionReload() {
   const namedRanges = SpreadsheetApp.getActiveSpreadsheet().getNamedRanges();
   for (let i = 0; i < namedRanges.length; i++) {
-    const rangeName = namedRanges[i].getName();
+    let rangeName = namedRanges[i].getName();
     rangeName = rangeName.substring(rangeName.indexOf('!') + 1);
-    if (rangeName == "reloadCount") {
+    if (rangeName === "reloadCount") {
       const counter = namedRanges[i].getRange().getValue();
       Logger.log('reload counter = ' + counter);
       namedRanges[i].getRange().setValue(counter + 1);

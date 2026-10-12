@@ -18,7 +18,7 @@
 #   -V, --version <n>  Pin fintools to version n (default: latest library version,
 #                      read with fintools/lib/.clasp.auth).
 #   --add <file>       Also add a wrapper file not yet in the project (repeatable),
-#                      e.g. --add fintools.Yahoo.js
+#                      e.g. --add fin.Yahoo.js
 #   --list             List available wrapper files and exit.
 #   --keep-dev-mode    Leave an existing developmentMode setting unchanged
 #                      (default removes it so the pinned version is used).

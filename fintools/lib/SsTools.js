@@ -3,6 +3,11 @@
 // v25 - added trackRangeUses function.
 // v50 baseline.
 
+// Scope SpreadsheetApp Class to only the current document.
+/**
+ * @OnlyCurrentDoc
+ */
+
 /**
  * Returns the active sheet's name, not necessarily the sheet containing a formula.
  * Renaming or selecting a sheet is not a formula dependency; re-enter the formula to refresh.

@@ -66,8 +66,10 @@ function setup() {
 
 test("all legacy APIs have library-derived wrappers, typed contracts, examples and correct exposure", () => {
     const { core } = setup();
-    const plans = wrapperPlans().filter(plan => plan.url.pathname.includes("/fintools/wrapper/fintools."));
-    assert.equal(plans.flatMap(plan => plan.functions).length, 42);
+    const legacyNames = new Set(legacyWrappers.map(w => w.file));
+    const plans = wrapperPlans().filter(plan => plan.url.pathname.includes("/fintools/wrapper/") &&
+        legacyNames.has(plan.url.pathname.split("/").pop()));
+    assert.equal(plans.flatMap(plan => plan.functions).length, 48);
     for (const plan of plans) {
         for (const fn of plan.functions) {
             assert.equal(typeof core[fn.name], "function", fn.name);
@@ -445,4 +447,112 @@ test("TSP public fund letter is required and validated without fetching invalid 
     assert.equal(received, "F");
     assert.throws(() => sheet.TSPGetCachedPrice(), /fund letter must be/);
     assert.throws(() => sheet.TSPGetCachedPrice("BAD"), /fund letter must be/);
+});
+
+test("Vanguard Advisors price and yield APIs fetch, normalize dates, cache, and report errors", () => {
+    const { core, sheet } = setup();
+    let fetches = 0;
+    core.UrlFetchApp = {
+        fetch(url) {
+            fetches++;
+            if (url.includes("/investments/products/vti")) {
+                return { getContentText: () => '<script>window.__INITIAL_FUND_DATA__ = {"portId": "0585"};</script>' };
+            }
+            if (url.includes("/pricing/daily")) {
+                return { getContentText: () => JSON.stringify([
+                    { effectiveDate: "2026-10-08", price: 270.0 },
+                    { effectiveDate: "2026-10-09", price: 275.5 },
+                ]) };
+            }
+            if (url.includes("/analytics/yields")) {
+                return { getContentText: () => JSON.stringify({
+                    secYield: { effectiveDate: "2026-10-09", percent: "3.5" },
+                }) };
+            }
+            throw new Error("Unexpected URL: " + url);
+        },
+    };
+
+    const priceById = sheet.vanguardGetCachedPriceId("0585");
+    assert.ok(priceById[0][0] instanceof Date);
+    assert.equal(priceById[0][1], 275.5);
+    const cachedPriceById = sheet.vanguardGetCachedPriceId("0585");
+    assert.ok(cachedPriceById[0][0] instanceof Date);
+    assert.deepEqual(plain(cachedPriceById), plain(priceById));
+
+    const price = sheet.vanguardGetCachedPrice("VTI");
+    assert.ok(price[0][0] instanceof Date);
+    assert.equal(price[0][1], 275.5);
+
+    const yieldById = sheet.vanguardGetCachedYieldId("0585");
+    assert.ok(yieldById[0][0] instanceof Date);
+    assert.equal(yieldById[0][1], 0.035);
+    const cachedYieldById = sheet.vanguardGetCachedYieldId("0585");
+    assert.ok(cachedYieldById[0][0] instanceof Date);
+    assert.deepEqual(plain(cachedYieldById), plain(yieldById));
+
+    const yieldByTicker = sheet.vanguardGetCachedYield("VTI");
+    assert.ok(yieldByTicker[0][0] instanceof Date);
+    assert.equal(yieldByTicker[0][1], 0.035);
+
+    // Error handling
+    core.UrlFetchApp = { fetch: () => ({ getContentText: () => "<html>no fund data</html>" }) };
+    assert.throws(() => sheet.vanguardGetCachedPrice("INVALID", true), /Could not find __INITIAL_FUND_DATA__/);
+    core.UrlFetchApp = { fetch: () => ({ getContentText: () => "[]" }) };
+    assert.throws(() => sheet.vanguardGetCachedPriceId("9999", true), /lookup failure id:9999/);
+    core.UrlFetchApp = { fetch: () => ({ getContentText: () => "{}" }) };
+    assert.throws(() => sheet.vanguardGetCachedYieldId("9999", true), /No SEC yield found/);
+});
+
+test("CNBC price API fetches, converts timestamps to dates, caches, and handles missing data", () => {
+    const { core, sheet } = setup();
+    let fetches = 0;
+    const requestedUrls = [];
+    core.UrlFetchApp = {
+        fetch(url) {
+            fetches++;
+            requestedUrls.push(url);
+            if (url.includes("webql-redesign.cnbcfm.com")) {
+                return { getContentText: () => JSON.stringify({
+                    data: {
+                        chartData: {
+                            priceBars: [
+                                { tradeTime: "20261008160000", close: 270.0 },
+                                { tradeTime: "20261009160000", close: 275.5 },
+                            ],
+                        },
+                    },
+                }) };
+            }
+            throw new Error("Unexpected URL: " + url);
+        },
+    };
+
+    const price = sheet.cnbcGetCachedPrice("VTI");
+    assert.ok(price[0][0] instanceof Date);
+    assert.equal(price[0][1], 275.5);
+    assert.equal(fetches, 1);
+    assert.ok(requestedUrls[0].includes(encodeURIComponent(JSON.stringify({ symbol: "VTI", timeRange: "5D" }))));
+
+    const cached = sheet.cnbcGetCachedPrice("VTI");
+    assert.ok(cached[0][0] instanceof Date);
+    assert.deepEqual(plain(cached), plain(price));
+    assert.equal(fetches, 1);
+
+    // Mutual fund entry point uses 1M period and independent cache
+    const mfPrice = sheet.cnbcGetCachedPriceMutualFund("VTSAX");
+    assert.ok(mfPrice[0][0] instanceof Date);
+    assert.equal(mfPrice[0][1], 275.5);
+    assert.equal(fetches, 2);
+    assert.ok(requestedUrls[1].includes(encodeURIComponent(JSON.stringify({ symbol: "VTSAX", timeRange: "1M" }))));
+
+    const cachedMf = sheet.cnbcGetCachedPriceMutualFund("VTSAX");
+    assert.ok(cachedMf[0][0] instanceof Date);
+    assert.deepEqual(plain(cachedMf), plain(mfPrice));
+    assert.equal(fetches, 2);
+
+    // Error cases
+    core.UrlFetchApp = { fetch: () => ({ getContentText: () => JSON.stringify({ data: { chartData: { priceBars: [] } } }) }) };
+    assert.throws(() => sheet.cnbcGetCachedPrice("BAD", true), /No CNBC quote for BAD/);
+    assert.throws(() => sheet.cnbcGetCachedPriceMutualFund("BAD", true), /No CNBC quote for BAD/);
 });

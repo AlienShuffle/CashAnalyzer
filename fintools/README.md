@@ -33,8 +33,9 @@ node fintools/sync-wrappers.mjs --check
 node --test mktBonds/test/*.test.mjs
 ```
 
-[sync-wrappers.mjs](./sync-wrappers.mjs) generates all nine legacy `fintools.*`
-wrapper families and the migrated financial wrappers from library sources.
+[sync-wrappers.mjs](./sync-wrappers.mjs) generates all ten domain `fin.*`
+wrapper families and the migrated financial wrappers from library sources (all
+named uniformly with the `fin.*` prefix).
 It maintains identical financial worksheet copies and the worksheet's three
 Treasury adapters. Other legacy families are not copied into the toolkit.
 Do not edit generated

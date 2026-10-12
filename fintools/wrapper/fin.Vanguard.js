@@ -80,3 +80,55 @@ function vanguardGetCachedBondAttributes(forceRefresh = false) {
 function vanguardGetCachedBondDuration(ticker, forceRefresh = false) {
   return fintools.vanguardGetCachedBondDuration(ticker, forceRefresh);
 }
+
+/**
+ * Returns Vanguard Advisors website's market price (stocks/ETFs) or NAV (mutual funds).
+ * Uses the document cache when available, otherwise the script cache.
+ * Throws for missing/invalid quote data. Example: =vanguardGetCachedPrice("VTI", TRUE)
+ * @param {string} ticker Vanguard's fund/ETF ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached quote.
+ * @return {Array<Array<Date|number|string>>} [[asOf, price]]
+ * @customfunction
+ */
+function vanguardGetCachedPrice(ticker, forceRefresh = false) {
+  return fintools.vanguardGetCachedPrice(ticker, forceRefresh);
+}
+
+/**
+ * Returns Vanguard Advisors website's market price (stocks/ETFs) or NAV (mutual funds).
+ * Uses the document cache when available, otherwise the script cache.
+ * Throws for missing/invalid quote data. Example: =vanguardGetCachedPriceId("0585", TRUE)
+ * @param {string} fundId Vanguard's fund/ETF fundId, not the ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached quote.
+ * @return {Array<Array<Date|number|string>>} [[asOf, price]]
+ * @customfunction
+ */
+function vanguardGetCachedPriceId(fundId, forceRefresh = false) {
+  return fintools.vanguardGetCachedPriceId(fundId, forceRefresh);
+}
+
+/**
+ * Returns Vanguard Advisors website's current SEC Yield (ETFs) or NAV (mutual funds).
+ * Uses the document cache when available, otherwise the script cache.
+ * Throws for missing/invalid quote data. Example: =vanguardGetCachedYield("VTI", TRUE)
+ * @param {string} ticker Vanguard's fund/ETF ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached quote.
+ * @return {Array<Array<Date|number|string>>} [[asOf, yield]]
+ * @customfunction
+ */
+function vanguardGetCachedYield(ticker, forceRefresh = false) {
+  return fintools.vanguardGetCachedYield(ticker, forceRefresh);
+}
+
+/**
+ * Returns Vanguard Advisors website's current SEC Yield (ETFs) or NAV (mutual funds).
+ * Uses the document cache when available, otherwise the script cache.
+ * Throws for missing/invalid quote data. Example: =vanguardGetCachedYieldId("0585", TRUE)
+ * @param {string} fundId Vanguard's fund/ETF fundId, not the ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached quote.
+ * @return {Array<Array<Date|number|string>>} [[asOf, yield]]
+ * @customfunction
+ */
+function vanguardGetCachedYieldId(fundId, forceRefresh = false) {
+  return fintools.vanguardGetCachedYieldId(fundId, forceRefresh);
+}

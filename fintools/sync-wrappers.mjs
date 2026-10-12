@@ -17,15 +17,16 @@ export const migratedFiles = [
 ];
 
 export const legacyWrappers = [
-    { file: "fintools.Banks.js", sources: ["Banks.getRate.js", "Banks.getRateHistory.js"] },
-    { file: "fintools.cloudHistory.js", sources: ["CloudHistory.js"] },
-    { file: "fintools.Fidelity.js", sources: ["Fidelity.js"] },
-    { file: "fintools.multpl.js", sources: ["Multpl.com.js"] },
-    { file: "fintools.ssTools.js", sources: ["SsTools.js"] },
-    { file: "fintools.TSP.js", sources: ["TSP.js"] },
-    { file: "fintools.Treasury.js", sources: ["Tsry.TreasuryYields.js", "Tsry.RecentTreasuryYields.js", "Tsry.RecentTBillsYields.js"] },
-    { file: "fintools.Vanguard.js", sources: ["Vg.SummariesCached.js"] },
-    { file: "fintools.Yahoo.js", sources: ["Yahoo.getPrice.js", "Yahoo.expenseRatio.js"] },
+    { file: "fin.Banks.js", sources: ["Banks.getRate.js", "Banks.getRateHistory.js"] },
+    { file: "fin.cloudHistory.js", sources: ["CloudHistory.js"] },
+    { file: "fin.cnbc.js", sources: ["cnbc.getPrice.js"] },
+    { file: "fin.Fidelity.js", sources: ["Fidelity.js"] },
+    { file: "fin.multpl.js", sources: ["Multpl.com.js"] },
+    { file: "fin.ssTools.js", sources: ["SsTools.js"] },
+    { file: "fin.TSP.js", sources: ["TSP.js"] },
+    { file: "fin.Treasury.js", sources: ["Tsry.TreasuryYields.js", "Tsry.RecentTreasuryYields.js", "Tsry.RecentTBillsYields.js"] },
+    { file: "fin.Vanguard.js", sources: ["Vg.SummariesCached.js", "Vg.advisors.getPrice.js", "Vg.advisors.getYield.js"] },
+    { file: "fin.Yahoo.js", sources: ["Yahoo.getPrice.js", "Yahoo.expenseRatio.js"] },
 ];
 
 // Public APIs use simple named parameters with literal defaults, not destructuring.
@@ -54,20 +55,21 @@ export function wrapperPlans() {
         const functions = publicFunctions(readFileSync(new URL(file, library), "utf8"));
         if (!functions.length) continue;
         const content = render(functions);
-        plans.push({ url: new URL(file, wrappers), content, functions });
-        plans.push({ url: new URL(file, toolkit), content, functions });
+        const targetFile = `fin.${file}`;
+        plans.push({ url: new URL(targetFile, wrappers), content, functions });
+        plans.push({ url: new URL(targetFile, toolkit), content, functions });
     }
     for (const { file, sources } of legacyWrappers) {
         const functions = sources.flatMap(source => publicFunctions(readFileSync(new URL(source, library), "utf8")));
         if (!functions.length) throw new Error(`Missing public APIs for ${file}`);
         plans.push({ url: new URL(file, wrappers), content: render(functions), functions });
     }
-    const treasury = plans.find(plan => plan.url.href === new URL("fintools.Treasury.js", wrappers).href);
+    const treasury = plans.find(plan => plan.url.href === new URL("fin.Treasury.js", wrappers).href);
     const treasuryNames = ["treasuryGetCachedGovYields", "treasuryGetCachedRecentRealYields",
         "treasuryGetCachedRecentNominalYields"];
     const functions = treasury.functions.filter(fn => treasuryNames.includes(fn.name));
     if (functions.length !== treasuryNames.length) throw new Error("Missing canonical Treasury wrappers");
-    plans.push({ url: new URL("fintools.Treasury.js", toolkit), content: render(functions), functions });
+    plans.push({ url: new URL("fin.Treasury.js", toolkit), content: render(functions), functions });
     return plans;
 }
 

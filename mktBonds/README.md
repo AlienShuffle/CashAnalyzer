@@ -12,7 +12,7 @@ functions to the [fintools library](../fintools/lib/). See the
 development-mode dependencies, and publication steps.
 
 The toolkit custom function in
-[tips.cloudFlare.REFCPI.js](./toolkit-app-script-src/tips.cloudFlare.REFCPI.js)
+[fin.tips.cloudFlare.REFCPI.js](./toolkit-app-script-src/fin.tips.cloudFlare.REFCPI.js)
 can be used as `=tipsGetCachedREFCPI()` to spill a table into a worksheet.
 It includes the header row `Date`, `REFCPINSA`, `REFCPISA`, `SAFactor`, `MMDD`,
 `maxREFCPI`. The first and last columns contain date values; format those
@@ -24,7 +24,7 @@ or CRLF line endings, with or without a trailing newline; the final retained
 row is included in both exact-date and seasonal-factor projection lookups.
 
 Use `=tipsGetMaxRefCpiDate()` from
-[tips.utils.js](./toolkit-app-script-src/tips.utils.js) to return the maximum
+[fin.tips.utils.js](./toolkit-app-script-src/fin.tips.utils.js) to return the maximum
 REFCPI date as `YYYY-MM-DD` text, without a time or timezone.
 
 The private `cloudGetCachedREFCPI_` in the

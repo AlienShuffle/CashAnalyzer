@@ -64,8 +64,8 @@ function vanguardGetCachedFundParameter(ticker, parameter, forceRefresh = false)
       else
         return resp[i][parameter];
     }
-    throw new Error('Invalid Vanguard ticker: ' + ticker);
   }
+  throw new Error('Invalid Vanguard ticker: ' + ticker);
 }
 
 /**
@@ -164,10 +164,10 @@ function vanguardGetCachedBondAttributes(forceRefresh = false) {
 function vanguardGetCachedBondDuration(ticker, forceRefresh = false) {
   const resp = vanguardGetCachedBondAttributes(forceRefresh);
   for (let i = 1; i < resp.length; i++) {
-    if (resp[i][0] == ticker) {
+    if (resp[i][0] === ticker) {
       //Logger.log(resp[i][0] + '=' + resp[i][2]);
       return resp[i][2];
     }
-    throw new Error('Invalid Vanguard bond ticker: ' + ticker);
   }
+  throw new Error('Invalid Vanguard bond ticker: ' + ticker);
 }
