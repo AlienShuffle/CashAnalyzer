@@ -143,7 +143,14 @@ else
         else
             $collectionScript >"$tmpCollect"
         fi
-        if [ $? -ne 0 ] || [ ! -s "$tmpCollect" ]; then
+        collectStatus=$?
+        # status 3: source reports no prices published (e.g., before release time or a federal holiday)
+        if [ $collectStatus -eq 3 ]; then
+            rm -f "$tmpCollect"
+            echo "$sourceName prices not published yet (before release time or federal holiday), skipping."
+            exit 0
+        fi
+        if [ $collectStatus -ne 0 ] || [ ! -s "$tmpCollect" ]; then
             rm -f "$tmpCollect"
             echo "$sourceName rate collection failed, exiting."
             exit 1

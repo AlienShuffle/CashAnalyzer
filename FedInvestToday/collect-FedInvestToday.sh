@@ -9,6 +9,10 @@ trap 'rm -f "$cookieJar" "$sourceFile" "$csvFile"' EXIT
 curl -fsSL -A 'Mozilla/5.0' -c "$cookieJar" -b "$cookieJar" \
     "$baseUrl/todaySecurityPriceDetail" >"$sourceFile" || exit 1
 
+# Exit 3 tells the common job that prices are simply not published (before
+# 1:00 p.m. ET, or all day on a federal holiday when the same notice remains).
+grep -qi 'Current day prices are not available' "$sourceFile" && exit 3
+
 reportText=$(sed -n 's/.*<h2>Prices For:\s*\(.*\)<\/h2>.*/\1/p' "$sourceFile")
 [ -n "$reportText" ] || exit 1
 reportDate=$(date +'%m/%d/%Y' -d "$reportText") || exit 1
