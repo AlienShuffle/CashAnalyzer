@@ -289,3 +289,5 @@ VanguardAdvisorsETF/downloads/*/*.json
 mktBonds/toolkit-app-script-src/.clasp.auth
 */*/.clasp.auth
 */.clasp.auth
+VanguardAdvisorsETF/history/hybrid-job.lock
+VanguardAdvisorsETF/history/hybrid-control/
