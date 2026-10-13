@@ -6,8 +6,12 @@ import puppeteer from "puppeteer";
 const maxRetries = 3;
 const retryDelayMs = 5000;
 
+const debug = process.env.DEBUG === 'true';
+
 function log(message) {
-    console.error(new Date().toISOString() + ' - ' + message);
+    if (debug) {
+        console.error(new Date().toISOString() + ' - ' + message);
+    }
 }
 
 function sleep(ms) {
