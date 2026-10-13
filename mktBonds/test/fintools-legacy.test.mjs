@@ -656,6 +656,11 @@ test("CNBC header quotes validate required data and tolerate unavailable changes
         return { getContentText: () => JSON.stringify({ FormattedQuoteResult: { FormattedQuote: [quote] } }) };
     } };
     assert.equal(core.cnbcPriceByQuote_("A&B")[0][2], 0);
+    for (const [last, expected] of [["1,234.56", 1234.56], ["1,234,567.89", 1234567.89], ["275.50", 275.5], [275.5, 275.5]]) {
+        quote.last = last;
+        assert.equal(core.cnbcPriceByQuote_("A&B")[0][1], expected);
+    }
+    quote.last = "275.50";
     for (const change of [undefined, null, "N/A", ""]) {
         quote.change_pct = change;
         const result = core.cnbcPriceByQuote_("A&B");

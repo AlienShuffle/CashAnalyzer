@@ -124,7 +124,7 @@ function cnbcPriceByQuote_(ticker) {
   const lastPrice = quote?.last;
   const effectiveDate = quote?.last_time;
   const changePctStr = quote?.change_pct;
-  const price = Number(lastPrice);
+  const price = Number(typeof lastPrice === "string" ? lastPrice.replace(/,/g, "") : lastPrice);
   if (lastPrice == null || !Number.isFinite(price) || price <= 0 || typeof effectiveDate !== "string" || !effectiveDate.trim()) {
     Logger.log(`No valid price or effective date for ${ticker}`);
     return;
