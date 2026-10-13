@@ -14,6 +14,13 @@ cat history/BlackRockETF-rate-new.json |
             ../bin/ETF-distro-update-common-job.sh --ticker "$ticker" "$@"
     done
 
-cat history/BlackRockETF-rate-new.json |
-    jq -r '.[] | [.ticker,.baseUrl,.asOfDate,.thirtyDayYield] | @csv' | tr -d '"' | tee tickerAndUrls.csv |
-    ../bin/ETF-facts-update-common-job.sh "$@"
+if ! jq -r '.[] | [.ticker,.baseUrl,.asOfDate,.thirtyDayYield] | join(",")' \
+    history/BlackRockETF-rate-new.json >tickerAndUrls.csv; then
+    echo "BlackRockETF failed to prepare facts input, exiting." >&2
+    exit 1
+fi
+if [ ! -s tickerAndUrls.csv ]; then
+    echo "Empty BlackRockETF facts input tickerAndUrls.csv, exiting." >&2
+    exit 1
+fi
+../bin/ETF-facts-update-common-job.sh --inputFile tickerAndUrls.csv "$@"

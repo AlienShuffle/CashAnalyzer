@@ -3,6 +3,7 @@
 # This a generic version of the ETF updates (distributions, facts, yields)
 # This one is intended to put each ticker in its own history file to reduce size and processing overhead on
 # on the read side. More effort on the update side due to separate files to process.
+# --inputFile supplies processScript input when no collectionScript is used.
 #
 # process the command argument list.
 pubDelayHours=8
@@ -36,6 +37,10 @@ while [ -n "$1" ]; do
     "--injectProcessedJson")
         injectProcessedJson="$2"
         #echo "injectProcessedJson=$injectProcessedJson"
+        shift
+        ;;
+    "--inputFile")
+        inputFile="$2"
         shift
         ;;
     "--nightDelayHour")
@@ -171,7 +176,7 @@ else
             exit 1
         fi
     else
-        if ! runNode "$jsonFactsNew" - $processScript "$nodeArg"; then
+        if ! runNode "$jsonFactsNew" "${inputFile:--}" $processScript "$nodeArg"; then
             echo "$sourceName Facts processScript failed (status ${statuses[*]}), raw output kept in $jsonFactsNew.raw, exiting."
             exit 1
         fi

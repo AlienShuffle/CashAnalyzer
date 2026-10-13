@@ -6,6 +6,10 @@ import { extractFundFactsFromText } from "./lib/blackrockFactsParser.mjs";
 
 const debug = false;
 
+const rawFunds = await readText();
+const funds = rawFunds.split('\n').filter(line => line.trim().length > 0);
+if (funds.length === 0) throw new Error('Empty BlackRockETF facts input: expected ticker,URL,date,yield rows');
+
 const browserPromise = puppeteer.launch({
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
     //headless: false,    // true for production, false for debugging to see the browser.
@@ -16,8 +20,6 @@ const browser = await browserPromise;
 
 // this is the main function
 // get a list of tickers with site URL (ticker,url) from stdin, scrape each one, and output facts as JSON to stdout
-const rawFunds = await readText();
-const funds = rawFunds.split('\n').filter(line => line.trim().length > 0);
 if (debug) console.error(`Scraping: '${funds.join(", ")}'`);
 
 let results = [];
