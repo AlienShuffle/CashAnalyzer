@@ -61,6 +61,15 @@ tables; Yahoo expense ratio is a scalar number or `"n/a"`. Source dates are
 Date values on both fresh and cached reads. Yahoo quote dates preserve the
 epoch instant; the worksheet controls the displayed timezone.
 
+CNBC stock/ETF prices try the header quote first, then the 5D and 1M charts.
+Header quotes return `[[asOf, price, changePct]]`, with decimal `changePct` or
+`""` when unavailable; chart fallbacks retain `[[asOf, price]]`. Only the stock/
+ETF 1M fallback adjusts the Date to 16:00 in the runtime's local timezone.
+Mutual funds try the header quote then the 1M chart and always return
+`[[asOf, price]]`. Both APIs use the cache by default and accept explicit refresh.
+Missing or invalid price/date data is logged before trying the next source;
+retrieval and JSON parsing failures propagate rather than being hidden.
+
 Intentional corrections to previously broken or misleading behavior:
 
 - `bankGetCurrentRateHistoryFileContents(bank, account)` requires the account;

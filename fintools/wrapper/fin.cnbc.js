@@ -4,10 +4,12 @@
  * Returns CNBC's market price for stocks/ETFs, Do Not use for mutual funds.
  * Uses the document cache when available, otherwise the script cache.
  * Date preserves the source epoch instant; Sheets controls its displayed timezone.
+ * Tries header quote, then 5D and 1M charts. Header changePct is decimal or "" if unavailable;
+ * chart fallbacks return only [[asOf, price]]. The 1M fallback uses 16:00 local time.
  * Throws for missing/invalid quote data. Example: =cnbcGetCachedPrice("VTI", false)
  * @param {string} ticker Cnbc ticker.
  * @param {boolean} [forceRefresh=false] Bypass the cached quote.
- * @return {Array<Array<Date|number|string>>} [[asOf, price]]
+ * @return {Array<Array<Date|number|string>>} [[asOf, price, changePct]]
  * @customfunction
  */
 function cnbcGetCachedPrice(ticker, forceRefresh = false) {

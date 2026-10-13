@@ -504,6 +504,40 @@ test("Vanguard Advisors price and yield APIs fetch, normalize dates, cache, and 
     assert.throws(() => sheet.vanguardGetCachedYieldId("9999", true), /No SEC yield found/);
 });
 
+test("CNBC stock lookup prefers byQuote, then 5D, then 1M", () => {
+    for (const source of ["byQuote", "5D", "1M", "missing"]) {
+        const { core } = setup();
+        const calls = [];
+        const quote = [[new Date(2026, 9, 12, 12, 30), 275.5, 0.01]];
+        core.cnbcPriceByQuote_ = ticker => {
+            assert.equal(ticker, "VTI");
+            calls.push("byQuote");
+            return source === "byQuote" ? quote : undefined;
+        };
+        core.cnbcPriceFromChart_ = (ticker, period) => {
+            assert.equal(ticker, "VTI");
+            calls.push(period);
+            return source === period ? quote : [];
+        };
+
+        if (source === "missing") {
+            assert.throws(() => core.cnbcGetCachedPrice("VTI", true), /No CNBC 1M quote for VTI/);
+        } else {
+            const result = core.cnbcGetCachedPrice("VTI", true);
+            assert.equal(result, quote);
+            assert.ok(result[0][0] instanceof Date);
+            assert.equal(result[0][0].getHours(), source === "1M" ? 16 : 12);
+            assert.equal(result[0][0].getMinutes(), source === "1M" ? 0 : 30);
+            const cached = core.cnbcGetCachedPrice("VTI", false);
+            assert.ok(cached[0][0] instanceof Date);
+            assert.deepEqual(plain(cached), plain(result));
+        }
+
+        assert.deepEqual(calls, source === "byQuote" ? ["byQuote"] :
+            source === "5D" ? ["byQuote", "5D"] : ["byQuote", "5D", "1M"]);
+    }
+});
+
 test("CNBC price API fetches, converts timestamps to dates, caches, and handles missing data", () => {
     const { core, sheet } = setup();
     let fetches = 0;
@@ -512,6 +546,15 @@ test("CNBC price API fetches, converts timestamps to dates, caches, and handles 
         fetch(url) {
             fetches++;
             requestedUrls.push(url);
+            if (url.includes("quote.cnbc.com")) {
+                return { getContentText: () => JSON.stringify({
+                    FormattedQuoteResult: { FormattedQuote: [{
+                        last: "275.50",
+                        last_time: url.includes("VTSAX") ? "2026-10-09" : "2026-10-09T16:00:00.000-0400",
+                        change_pct: "-1.25%"
+                    }] }
+                }) };
+            }
             if (url.includes("webql-redesign.cnbcfm.com")) {
                 return { getContentText: () => JSON.stringify({
                     data: {
@@ -531,28 +574,101 @@ test("CNBC price API fetches, converts timestamps to dates, caches, and handles 
     const price = sheet.cnbcGetCachedPrice("VTI");
     assert.ok(price[0][0] instanceof Date);
     assert.equal(price[0][1], 275.5);
+    assert.equal(price[0][2], -0.0125);
+    assert.equal(price[0][0].toISOString(), "2026-10-09T20:00:00.000Z");
     assert.equal(fetches, 1);
-    assert.ok(requestedUrls[0].includes(encodeURIComponent(JSON.stringify({ symbol: "VTI", timeRange: "5D" }))));
+    assert.ok(requestedUrls[0].includes("quote.cnbc.com"));
 
     const cached = sheet.cnbcGetCachedPrice("VTI");
     assert.ok(cached[0][0] instanceof Date);
     assert.deepEqual(plain(cached), plain(price));
     assert.equal(fetches, 1);
 
-    // Mutual fund entry point uses 1M period and independent cache
+    // Mutual funds omit changePct and use an independent cache.
     const mfPrice = sheet.cnbcGetCachedPriceMutualFund("VTSAX");
     assert.ok(mfPrice[0][0] instanceof Date);
     assert.equal(mfPrice[0][1], 275.5);
+    assert.equal(mfPrice[0].length, 2);
+    assert.equal(mfPrice[0][0].getFullYear(), 2026);
+    assert.equal(mfPrice[0][0].getMonth(), 9);
+    assert.equal(mfPrice[0][0].getDate(), 9);
     assert.equal(fetches, 2);
-    assert.ok(requestedUrls[1].includes(encodeURIComponent(JSON.stringify({ symbol: "VTSAX", timeRange: "1M" }))));
+    assert.ok(requestedUrls[1].includes("symbols=VTSAX"));
 
     const cachedMf = sheet.cnbcGetCachedPriceMutualFund("VTSAX");
     assert.ok(cachedMf[0][0] instanceof Date);
     assert.deepEqual(plain(cachedMf), plain(mfPrice));
     assert.equal(fetches, 2);
+    const forced = sheet.cnbcGetCachedPrice("VTI", true);
+    assert.deepEqual(plain(forced), plain(price));
+    assert.equal(fetches, 3);
 
     // Error cases
     core.UrlFetchApp = { fetch: () => ({ getContentText: () => JSON.stringify({ data: { chartData: { priceBars: [] } } }) }) };
-    assert.throws(() => sheet.cnbcGetCachedPrice("BAD", true), /No CNBC quote for BAD/);
-    assert.throws(() => sheet.cnbcGetCachedPriceMutualFund("BAD", true), /No CNBC quote for BAD/);
+    assert.throws(() => sheet.cnbcGetCachedPrice("BAD", true), /No CNBC 1M quote for BAD/);
+    assert.throws(() => sheet.cnbcGetCachedPriceMutualFund("BAD", true), /No CNBC 1M quote for BAD/);
+});
+
+test("CNBC real parsers fall back through missing headers and filtered chart bars", () => {
+    for (const mode of ["5D", "1M", "missing", "mutual"]) {
+        const { core, sheet, writes } = setup();
+        const requests = [];
+        core.UrlFetchApp = { fetch(url) {
+            if (url.includes("quote.cnbc.com")) {
+                requests.push("quote");
+                return { getContentText: () => JSON.stringify({ FormattedQuoteResult: { FormattedQuote: [] } }) };
+            }
+            const period = JSON.parse(new URL(url).searchParams.get("variables")).timeRange;
+            requests.push(period);
+            const bars = mode === "missing" || (mode === "1M" && period === "5D") ?
+                [
+                    { tradeTime: "20261009000000", close: "275.5", low: "0.00", volume: null },
+                    { tradeTime: null, close: "275.5" },
+                    { tradeTime: "invalid", close: "275.5" },
+                    { tradeTime: "20261009000000", close: "not a price" }
+                ] :
+                [{ tradeTime: period === "1M" ? "20261009000000" : "20261009153000", close: "275.5" }];
+            return { getContentText: () => JSON.stringify({ data: { chartData: { priceBars: bars } } }) };
+        } };
+        const api = mode === "mutual" ? sheet.cnbcGetCachedPriceMutualFund : sheet.cnbcGetCachedPrice;
+        if (mode === "missing") {
+            assert.throws(() => api("BAD", true), /No CNBC 1M quote for BAD/);
+            assert.equal(writes.length, 0);
+        } else {
+            const result = api("VTI");
+            assert.ok(result[0][0] instanceof Date);
+            assert.equal(result[0].length, 2);
+            assert.equal(result[0][1], 275.5);
+            assert.equal(result[0][0].getHours(), mode === "1M" ? 16 : mode === "mutual" ? 0 : 15);
+            assert.deepEqual(plain(api("VTI")), plain(result));
+            assert.equal(writes.length, 1);
+        }
+        assert.deepEqual(requests, mode === "5D" ? ["quote", "5D"] :
+            mode === "mutual" ? ["quote", "1M"] : ["quote", "5D", "1M"]);
+    }
+});
+
+test("CNBC header quotes validate required data and tolerate unavailable changes", () => {
+    const { core } = setup();
+    let quote = { last: "275.50", last_time: "2026-10-09T16:00:00.000-0400", change_pct: "0.00%" };
+    core.UrlFetchApp = { fetch(url) {
+        assert.ok(url.includes("symbols=A%26B"));
+        return { getContentText: () => JSON.stringify({ FormattedQuoteResult: { FormattedQuote: [quote] } }) };
+    } };
+    assert.equal(core.cnbcPriceByQuote_("A&B")[0][2], 0);
+    for (const change of [undefined, null, "N/A", ""]) {
+        quote.change_pct = change;
+        const result = core.cnbcPriceByQuote_("A&B");
+        assert.equal(result[0][2], "");
+        assert.equal(result[0][1], 275.5);
+    }
+    for (const last of ["bad", "0", "-1", "Infinity", null]) {
+        quote.last = last;
+        assert.equal(core.cnbcPriceByQuote_("A&B"), undefined);
+    }
+    quote.last = "275.50";
+    quote.last_time = "invalid";
+    assert.equal(core.cnbcPriceByQuote_("A&B"), undefined);
+    core.UrlFetchApp = { fetch: () => { throw new Error("network unavailable"); } };
+    assert.throws(() => core.cnbcGetCachedPrice("VTI", true), /network unavailable/);
 });
