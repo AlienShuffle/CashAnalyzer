@@ -567,6 +567,11 @@ function fitPreparedSvensson_(prepared) {
       let pv = 0;
       for (let k = 0; k < bond.times.length; k++) {
         const t = bond.times[k];
+        // Settlement-date cash flows have DF=1 and no parameter sensitivity.
+        if (t === 0) {
+          pv += bond.cashFlows[k];
+          continue;
+        }
         const x1 = t / tau1;
         const e1 = Math.exp(-x1);
         const a1 = (1 - e1) / x1;
@@ -671,6 +676,6 @@ function fitPreparedSvensson_(prepared) {
     const fit = levenbergMarquardt(prepared, candidate.p, [0, 1, 2, 3, 4, 5], 200);
     if (!best || fit.sse < best.sse) best = fit;
   }
-  if (!best) throw new Error("Svensson fit failed to converge");
+  if (!best || !Number.isFinite(best.sse)) throw new Error("Svensson fit failed to converge to a finite objective");
   return { params: best.p, objective: best.sse };
 }

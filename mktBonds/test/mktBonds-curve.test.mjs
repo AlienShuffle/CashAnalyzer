@@ -59,3 +59,19 @@ test("nominal curve options are validated", () => {
     assert.throws(() => parseOptions("--basis=x"), /basis/);
     assert.throws(() => parseOptions("--nope=1"), /Unknown option/);
 });
+
+test("nominal curve remains finite when settlement is a coupon payment date", () => {
+    const couponSettle = "2026-10-15";
+    const market = quotes.map(q => ({
+        ...q, maturity_date: q.maturity_date.replace("-02-", "-04-").replace("-08-", "-10-"),
+    })).map(q => ({
+        ...q,
+        ask: tipsZeroModelPrice(couponSettle, q.maturity_date, Number(q.interest_rate), params) -
+            accruedInterest(couponSettle, q.maturity_date, Number(q.interest_rate)),
+    }));
+    const result = buildNominalCurveAnalysis(market, { ...context, settleDate: couponSettle });
+    assert.ok(Number.isFinite(result.objective));
+    assert.equal(result.bondsUsed, market.length);
+    assert.equal(result.excluded.length, 0);
+    assert.ok(result.points.every(p => Number.isFinite(p.zeroCc) && Number.isFinite(p.discountFactor)));
+});

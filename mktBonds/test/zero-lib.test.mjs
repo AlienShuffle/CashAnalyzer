@@ -102,6 +102,24 @@ function assertFitParity(actual, expected) {
     assert.ok(actual.params[5] >= actual.params[4] * 1.05);
 }
 
+test("Svensson fits coupon-date settlement with finite objectives and Node/Apps Script parity", () => {
+    const couponSettle = "2026-10-15";
+    const truth = [0.05, -0.01, 0.01, 0.01, 2, 8];
+    const synthetic = Array.from({ length: 12 }, (_, i) => {
+        const maturity = `${2027 + i}-04-15`;
+        const coupon = 0.04;
+        return {
+            maturity, coupon,
+            cleanPrice: tipsZeroModelPrice(couponSettle, maturity, coupon, truth) -
+                accruedInterest(couponSettle, maturity, coupon),
+        };
+    });
+    const fit = fitTipsSvensson(couponSettle, synthetic);
+    assert.ok(Number.isFinite(fit.objective), `objective: ${fit.objective}`);
+    assert.ok(fit.objective < 1e-8, `objective: ${fit.objective}`);
+    assertFitParity(loadFintools().fitTipsSvensson_(couponSettle, synthetic), fit);
+});
+
 test("fintools Svensson matches Node parameters, objective and forward-fit threshold", () => {
     const gs = loadFintools();
     const fixture = JSON.parse(readFileSync(new URL("./fixtures-tips-forward-curve.json", import.meta.url), "utf8"));
