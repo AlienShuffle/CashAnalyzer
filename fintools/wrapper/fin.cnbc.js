@@ -30,3 +30,18 @@ function cnbcGetCachedPrice(ticker, forceRefresh = false) {
 function cnbcGetCachedPriceMutualFund(ticker, forceRefresh = false) {
   return fintools.cnbcGetCachedPriceMutualFund(ticker, forceRefresh);
 }
+
+/**
+ * Returns CNBC's market 52w High/Low values for the ticker symbol: stocks,ETF, indexes, or mutual funds.
+ * Uses the document cache when available, otherwise the script cache.
+ * Slash dates (M/D/YY or M/D/YYYY) and YYYY-MM-DD use local midnight.
+ * Two-digit years mean 2000-2099; timestamp dates preserve the source instant.
+ * Throws for missing/invalid quote data. Example: =cnbcGetCached52wHighLow("VTSAX", false)
+ * @param {string} ticker CNBC ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached quote.
+ * @return {Array<Array<Date|number|string>>} [[highDateObj, priceHigh, lowDateObj, priceLow]]
+ * @customfunction
+ */
+function cnbcGetCached52wHighLow(ticker, forceRefresh = false) {
+  return fintools.cnbcGetCached52wHighLow(ticker, forceRefresh);
+}

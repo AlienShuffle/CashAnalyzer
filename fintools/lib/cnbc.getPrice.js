@@ -102,25 +102,60 @@ function cnbcGetCachedPriceMutualFund(ticker, forceRefresh = false) {
   return resp;
 }
 
+/**
+ * Returns CNBC's market 52w High/Low values for the ticker symbol: stocks,ETF, indexes, or mutual funds.
+ * Uses the document cache when available, otherwise the script cache.
+ * Slash dates (M/D/YY or M/D/YYYY) and YYYY-MM-DD use local midnight.
+ * Two-digit years mean 2000-2099; timestamp dates preserve the source instant.
+ * Throws for missing/invalid quote data. Example: =cnbcGetCached52wHighLow("VTSAX", false)
+ * @param {string} ticker CNBC ticker.
+ * @param {boolean} [forceRefresh=false] Bypass the cached quote.
+ * @return {Array<Array<Date|number|string>>} [[highDateObj, priceHigh, lowDateObj, priceLow]]
+ * @customfunction
+ */
+function cnbcGetCached52wHighLow(ticker, forceRefresh = false) {
+  const cacheKey = `cnbcGetCached52wHighLow-v163-b-${ticker}`;
+  const cache = CacheService.getDocumentCache() || CacheService.getScriptCache();
+
+  // retrieve a previously cached quote if it has not timed out or forced quote by caller.
+  if (!forceRefresh) {
+    const cacheVal = cache.get(cacheKey);
+    // parse the stored JSON if it exists and return to the caller.
+    if (cacheVal != null) {
+      const cacheArray = JSON.parse(cacheVal);
+      // convert JSON string date back to a javascript date. Man, dates are annoying.
+      if (cacheArray[0][0]) {
+        cacheArray[0][0] = new Date(cacheArray[0][0]);
+      }
+      if (cacheArray[0][2]) {
+        cacheArray[0][2] = new Date(cacheArray[0][2]);
+      }
+      return cacheArray;
+    }
+  }
+
+  // lookup header quote.
+  const resp = cnbcHighLowByQuote_(ticker);
+  if (!resp || resp.length === 0) throw new Error(`No valid CNBC 52w high/low quote for ${ticker}`);
+
+  // log TTL calculations use current time as there is not trade time on these.
+  const tradetime = new Date;
+  const ttl = cacheCalcTTL_(tradetime);
+  cacheLogTTL_(cacheKey, tradetime, ttl);
+
+  // store the price quote for future use.
+  cache.put(cacheKey, JSON.stringify(resp), ttl);
+  return resp;
+}
+
+function testQuote() {
+  cnbcHighLowByQuote_(".SPX");
+}
+
 // internal retrieval function to find a Ticker's price by using the top level quote service.
 function cnbcPriceByQuote_(ticker) {
 
-  const url = `https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols=${encodeURIComponent(ticker)}&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json&events=1`;
-  const USER_AGENT =
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
-    "(KHTML, like Gecko) Chrome/118.0.5993.117 Safari/537.36";
-
-  const options = {
-    headers: {
-      'Referer': 'https://quote.cnbc.com/',
-      "User-Agent": USER_AGENT
-    }
-  };
-
-  const responseRaw = UrlFetchApp.fetch(url, options);
-  const responseText = responseRaw.getContentText();
-  const json = JSON.parse(responseText);
-  const quote = json?.FormattedQuoteResult?.FormattedQuote?.[0];
+  const quote = cnbcQuoteJson_(ticker);
   const lastPrice = quote?.last;
   const effectiveDate = quote?.last_time;
   const changePctStr = quote?.change_pct;
@@ -149,7 +184,100 @@ function cnbcPriceByQuote_(ticker) {
 
   return [[dateObj, price, changePct]];
 }
+// internal retrieval function to find a Ticker's price by using the top level quote service.
+function cnbcHighLowByQuote_(ticker) {
 
+  const quote = cnbcQuoteJson_(ticker);
+
+  const highPrice = quote?.yrhiprice;
+  const highDate = quote?.yrhidate;
+  const priceHighVal = Number(typeof highPrice === "string" ? highPrice.replace(/,/g, "") : highPrice);
+  if (
+    highPrice == null ||
+    !Number.isFinite(priceHighVal) ||
+    priceHighVal <= 0 ||
+    typeof highDate !== "string" ||
+    !highDate.trim()
+  ) {
+    Logger.log(`No valid 52w high price or effective date for ${ticker}`);
+    return;
+  }
+  const highDateObj = cnbcHighLowDate_(highDate);
+  if (
+    !(highDateObj instanceof Date) ||
+    !Number.isFinite(highDateObj.getTime())
+  ) {
+    Logger.log(`Invalid CNBC 52w high quote date for ${ticker}: ${highDate}`);
+    return;
+  }
+
+  const lowPrice = quote?.yrloprice;
+  const lowDate = quote?.yrlodate;
+  const priceLowVal = Number(typeof lowPrice === "string" ? lowPrice.replace(/,/g, "") : lowPrice);
+  if (
+    lowPrice == null ||
+    !Number.isFinite(priceLowVal) ||
+    priceLowVal <= 0 ||
+    typeof lowDate !== "string" ||
+    !lowDate.trim()
+  ) {
+    Logger.log(`No valid 52w low price or effective date for ${ticker}`);
+    return;
+  }
+  const lowDateObj = cnbcHighLowDate_(lowDate);
+  if (
+    !(lowDateObj instanceof Date) ||
+    !Number.isFinite(lowDateObj.getTime())
+  ) {
+    Logger.log(`Invalid CNBC 52w low quote date for ${ticker}: ${lowDate}`);
+    return;
+  }
+
+  return [[highDateObj, priceHighVal * 1, lowDateObj, priceLowVal * 1]];
+}
+
+function cnbcHighLowDate_(value) {
+  const text = value.trim();
+  const slash = /^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/.exec(text);
+  const iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text);
+  if (slash || iso) {
+    const year = slash ?
+      Number(slash[3]) + (slash[3].length === 2 ? 2000 : 0) : Number(iso[1]);
+    const month = Number(slash ? slash[1] : iso[2]);
+    const day = Number(slash ? slash[2] : iso[3]);
+    const date = new Date(0);
+    date.setFullYear(year, month - 1, day);
+    date.setHours(0, 0, 0, 0);
+    if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+      return new Date(NaN);
+    }
+    return date;
+  }
+  // Do not let runtime-dependent slash parsing reinterpret malformed calendar dates.
+  return text.includes("/") ? new Date(NaN) : new Date(text);
+}
+
+// internal retrieval function to find a Ticker's price by using the top level quote service.
+function cnbcQuoteJson_(ticker) {
+
+  const url = `https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols=${encodeURIComponent(ticker)}&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json&events=1`;
+  const USER_AGENT =
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+    "(KHTML, like Gecko) Chrome/118.0.5993.117 Safari/537.36";
+
+  const options = {
+    headers: {
+      'Referer': 'https://quote.cnbc.com/',
+      "User-Agent": USER_AGENT
+    }
+  };
+
+  const responseRaw = UrlFetchApp.fetch(url, options);
+  const responseText = responseRaw.getContentText();
+  const json = JSON.parse(responseText);
+  const quote = json?.FormattedQuoteResult?.FormattedQuote?.[0];
+  return quote;
+}
 
 // internal retrieval function using the chart service.
 function cnbcPriceFromChart_(ticker, period) {

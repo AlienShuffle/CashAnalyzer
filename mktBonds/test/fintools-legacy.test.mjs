@@ -69,7 +69,7 @@ test("all legacy APIs have library-derived wrappers, typed contracts, examples a
     const legacyNames = new Set(legacyWrappers.map(w => w.file));
     const plans = wrapperPlans().filter(plan => plan.url.pathname.includes("/fintools/wrapper/") &&
         legacyNames.has(plan.url.pathname.split("/").pop()));
-    assert.equal(plans.flatMap(plan => plan.functions).length, 48);
+    assert.equal(plans.flatMap(plan => plan.functions).length, 49);
     for (const plan of plans) {
         for (const fn of plan.functions) {
             assert.equal(typeof core[fn.name], "function", fn.name);
@@ -607,6 +607,95 @@ test("CNBC price API fetches, converts timestamps to dates, caches, and handles 
     core.UrlFetchApp = { fetch: () => ({ getContentText: () => JSON.stringify({ data: { chartData: { priceBars: [] } } }) }) };
     assert.throws(() => sheet.cnbcGetCachedPrice("BAD", true), /No CNBC 1M quote for BAD/);
     assert.throws(() => sheet.cnbcGetCachedPriceMutualFund("BAD", true), /No CNBC 1M quote for BAD/);
+});
+
+test("CNBC 52-week high/low API parses, caches, refreshes and rejects invalid quotes", () => {
+    const { core, sheet, writes, store } = setup();
+    let fetches = 0;
+    let quote = {
+        yrhiprice: "300.25",
+        yrhidate: "2026-10-08",
+        yrloprice: "210.50",
+        yrlodate: "2025-12-03T16:00:00.000-0500",
+    };
+    core.UrlFetchApp = { fetch(url) {
+        fetches++;
+        assert.ok(url.includes("symbols=VTI"));
+        return { getContentText: () => JSON.stringify({
+            FormattedQuoteResult: { FormattedQuote: [quote] },
+        }) };
+    } };
+
+    const fresh = sheet.cnbcGetCached52wHighLow("VTI");
+    assert.equal(fresh.length, 1);
+    assert.ok(fresh[0][0] instanceof Date);
+    assert.equal(fresh[0][0].getFullYear(), 2026);
+    assert.equal(fresh[0][0].getMonth(), 9);
+    assert.equal(fresh[0][0].getDate(), 8);
+    assert.equal(fresh[0][1], 300.25);
+    assert.ok(fresh[0][2] instanceof Date);
+    assert.equal(fresh[0][2].toISOString(), "2025-12-03T21:00:00.000Z");
+    assert.equal(fresh[0][3], 210.5);
+    assert.equal(fetches, 1);
+
+    const cacheKey = "cnbcGetCached52wHighLow-v163-b-VTI";
+    assert.ok(store.has(cacheKey));
+    const cached = sheet.cnbcGetCached52wHighLow("VTI");
+    assert.deepEqual(plain(cached), plain(fresh));
+    assert.ok(cached[0][0] instanceof Date);
+    assert.ok(cached[0][2] instanceof Date);
+    assert.equal(fetches, 1);
+
+    quote = { ...quote, yrhiprice: "301.00" };
+    const forced = sheet.cnbcGetCached52wHighLow("VTI", true);
+    assert.equal(forced[0][1], 301);
+    assert.equal(fetches, 2);
+    assert.equal(writes.filter(write => write.key === cacheKey).length, 2);
+
+    quote = { ...quote, yrhidate: "not-a-date" };
+    assert.throws(() => sheet.cnbcGetCached52wHighLow("VTI", true),
+        error => error.message === "No valid CNBC 52w high/low quote for VTI");
+    assert.equal(writes.filter(write => write.key === cacheKey).length, 2);
+});
+
+test("CNBC high/low dates explicitly parse slash dates and validate calendar days", () => {
+    const { core, sheet, writes, store } = setup();
+    let quote;
+    core.UrlFetchApp = { fetch: () => ({ getContentText: () => JSON.stringify({
+        FormattedQuoteResult: { FormattedQuote: [quote] },
+    }) }) };
+    store.set("cnbcGetCached52wHighLow-v163-a-VTI", JSON.stringify([["bad", 1, "bad", 1]]));
+    for (const [text, year, month, day] of [
+        ["10/1/26", 2026, 10, 1],
+        ["1/9/26", 2026, 1, 9],
+        ["10/14/26", 2026, 10, 14],
+        ["10/01/2026", 2026, 10, 1],
+        [" 10/1/26 ", 2026, 10, 1],
+        ["2/29/24", 2024, 2, 29],
+        ["2026-10-01", 2026, 10, 1],
+    ]) {
+        quote = { yrhiprice: "300", yrhidate: text, yrloprice: "200", yrlodate: text };
+        const result = sheet.cnbcGetCached52wHighLow("VTI", writes.length > 0);
+        for (const index of [0, 2]) {
+            const date = result[0][index];
+            assert.equal(date.getFullYear(), year, text);
+            assert.equal(date.getMonth() + 1, month, text);
+            assert.equal(date.getDate(), day, text);
+            assert.equal(date.getHours(), 0, text);
+        }
+        assert.deepEqual(plain(sheet.cnbcGetCached52wHighLow("VTI")), plain(result));
+    }
+    const successfulWrites = writes.length;
+    for (const field of ["yrhidate", "yrlodate"]) {
+        for (const text of ["2/29/26", "2/30/26", "13/1/26", "0/1/26", "1/0/26",
+            "4/31/2026", "10/1/2", "2026-02-30", "not-a-date"]) {
+            quote = { yrhiprice: "300", yrhidate: "10/1/26", yrloprice: "200", yrlodate: "1/9/26",
+                [field]: text };
+            assert.throws(() => sheet.cnbcGetCached52wHighLow("VTI", true),
+                error => error.message === "No valid CNBC 52w high/low quote for VTI", `${field}: ${text}`);
+        }
+    }
+    assert.equal(writes.length, successfulWrites);
 });
 
 test("CNBC real parsers fall back through missing headers and filtered chart bars", () => {
