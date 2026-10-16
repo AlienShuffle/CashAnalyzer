@@ -64,12 +64,168 @@ function setup() {
     return { core, sheet, store, writes, calls, cache };
 }
 
+test("CNBC dated chart lookup matches calendar dates and preserves the chart return shape", () => {
+    const { core } = setup();
+    const bar = (tradeTime, close, extra = {}) => ({ tradeTime, close, low: "90.00", volume: "100", ...extra });
+    let bars = [
+        bar("20261002160000", "120.00"),
+        bar("20261001160000", "110.50"),
+        bar("20261001093000", "100.00"),
+        bar("20260930160000", "99.00"),
+        bar("20261001170000", "115.00"),
+        bar("20261001160100", "0.01"),
+        bar("20261001160200", "125.00", { volume: null }),
+        bar("20261001160300", "126.00", { low: "0.00" }),
+        bar("20261001160400", "invalid"),
+        bar("bad-date", "130.00"),
+    ];
+    let requested;
+    core.UrlFetchApp = { fetch(url) {
+        requested = new URL(url);
+        return { getContentText: () => JSON.stringify({ data: { chartData: { priceBars: bars } } }) };
+    } };
+    for (const priceDate of ["10/01/2026", "2026-10-01", new Date(2026, 9, 1, 23, 59),
+        46296, 46296.75, vm.runInNewContext("new Date(2026, 9, 1)")]) {
+        const result = core.cnbcDatedPriceFromChart_("A&B", "5D", priceDate);
+        assert.deepEqual(plain(result), [[new Date(2026, 9, 1, 16), 110.5]]);
+        assert.deepEqual(JSON.parse(requested.searchParams.get("variables")), { symbol: "A&B", timeRange: "5D" });
+    }
+    assert.deepEqual(plain(core.cnbcDatedPriceFromChart_("A&B")), [[new Date(2026, 9, 1, 16), 110.5]]);
+    assert.equal(JSON.parse(requested.searchParams.get("variables")).timeRange, "1Y");
+    assert.deepEqual(plain(core.cnbcDatedPriceFromChart_("A&B", "1Y", "10/03/2026")),
+        [[new Date(2026, 9, 2, 16), 120]]);
+    assert.equal(core.cnbcDatedPriceFromChart_("A&B", "1Y", "09/29/2026"), undefined);
+    bars = [bar("20261001000000", "105.00")];
+    assert.deepEqual(plain(core.cnbcDatedPriceFromChart_("A&B")), [[new Date(2026, 9, 1), 105]]);
+    assert.deepEqual(plain(core.cnbcPriceFromChart_("A&B", "1Y")), [[new Date(2026, 9, 1), 105]]);
+    for (const invalidBars of [[], [bar("20261001170000", "110")], [bar("20261001160000", "0")]]) {
+        bars = invalidBars;
+        assert.equal(core.cnbcDatedPriceFromChart_("A&B"), undefined);
+    }
+});
+
+test("CNBC as-of prices fall back to the latest valid earlier bar and cache its actual date", () => {
+    const { core, sheet, store, writes } = setup();
+    const bar = (tradeTime, close, extra = {}) => ({ tradeTime, close, low: "90.00", volume: "100", ...extra });
+    let bars = [
+        bar("20261005160000", "125"),
+        bar("20261002160000", "120"),
+        bar("20261001160000", "110"),
+        bar("20261002170000", "130"),
+        bar("20261002160100", "140", { volume: null }),
+    ];
+    let fetches = 0;
+    core.UrlFetchApp = { fetch() {
+        fetches++;
+        return { getContentText: () => JSON.stringify({ data: { chartData: { priceBars: bars } } }) };
+    } };
+    store.set("cnbcGetCachedDatedPrice-v1-VTI-1Y-2026-10-04",
+        JSON.stringify([[new Date(2026, 9, 4), 999]]));
+    const expected = [[new Date(2026, 9, 2, 16), 120]];
+    assert.deepEqual(plain(sheet.cnbcGetCachedDatedPrice("VTI", "2026-10-04")), expected);
+    assert.deepEqual(plain(sheet.cnbcGetCachedDatedPrice("VTI", new Date(2026, 9, 4))), expected);
+    assert.equal(fetches, 1);
+    assert.equal(writes[0].key, "cnbcGetCachedDatedPrice-v2-VTI-1Y-2026-10-04");
+    bars = [
+        bar("20261005160000", "125"),
+        bar("20261002160000", "0.01"),
+        bar("20260930000000", "100"),
+        bar("20261001160000", "110"),
+    ];
+    assert.deepEqual(plain(sheet.cnbcGetCachedDatedPrice("VTI", "2026-10-04", "1Y", true)),
+        [[new Date(2026, 9, 1, 16), 110]]);
+    assert.deepEqual(plain(core.cnbcDatedPriceFromChart_("VTI", "1Y", "2026-12-31")),
+        [[new Date(2026, 9, 5, 16), 125]]);
+    assert.equal(core.cnbcDatedPriceFromChart_("VTI", "1Y", "2026-09-29"), undefined);
+    bars = [bar("20261005160000", "125")];
+    assert.throws(() => sheet.cnbcGetCachedDatedPrice("VTI", "2026-10-04", "1Y", true),
+        /No valid CNBC 1Y price for VTI on or before 2026-10-04/);
+    assert.equal(writes.length, 2);
+});
+
+test("CNBC dated chart lookup rejects invalid dates before fetching and propagates retrieval failures", () => {
+    const { core, calls } = setup();
+    for (const priceDate of ["02/30/2026", "2026-02-30", "bad", "", null, NaN, Infinity,
+        -1, 0, 60, 60.5, 2958466, new Date(NaN), vm.runInNewContext("new Date(NaN)")]) {
+        assert.throws(() => core.cnbcDatedPriceFromChart_("VTI", "1Y", priceDate), /Invalid CNBC priceDate/);
+    }
+    assert.equal(calls.length, 0);
+    assert.throws(() => core.cnbcDatedPriceFromChart_("VTI"), /Unexpected URL/);
+    core.UrlFetchApp = { fetch: () => ({ getContentText: () => "invalid JSON" }) };
+    assert.throws(() => core.cnbcDatedPriceFromChart_("VTI"), { name: "SyntaxError" });
+});
+
+test("CNBC cached dated prices normalize keys, restore Dates, refresh and isolate lookup inputs", () => {
+    for (const useDocumentCache of [false, true]) {
+        const { core, sheet, cache, writes } = setup();
+        if (useDocumentCache) {
+            core.CacheService.getDocumentCache = () => cache;
+            core.CacheService.getScriptCache = () => { throw new Error("Unexpected script cache"); };
+        }
+        const lookups = [];
+        core.cnbcDatedPriceFromChart_ = (ticker, period, priceDate) => {
+            lookups.push({ ticker, period, priceDate });
+            return [[new Date(2026, 9, 1, 16), 100 + lookups.length]];
+        };
+        const fresh = sheet.cnbcGetCachedDatedPrice("VTI", "10/01/2026");
+        assert.deepEqual(plain(fresh), [[new Date(2026, 9, 1, 16), 101]]);
+        assert.deepEqual(lookups, [{ ticker: "VTI", period: "1Y", priceDate: "2026-10-01" }]);
+        for (const date of ["2026-10-01", new Date(2026, 9, 1, 23), 46296, 46296.75,
+            vm.runInNewContext("new Date(2026, 9, 1)")]) {
+            const cached = sheet.cnbcGetCachedDatedPrice("VTI", date);
+            assert.ok(cached[0][0] instanceof Date);
+            assert.deepEqual(plain(cached), plain(fresh));
+        }
+        assert.equal(lookups.length, 1);
+        assert.equal(writes.length, 1);
+        assert.equal(sheet.cnbcGetCachedDatedPrice("VTI", "2026-10-01", "1Y", true)[0][1], 102);
+        assert.equal(sheet.cnbcGetCachedDatedPrice("VTI", "2026-10-01")[0][1], 102);
+        sheet.cnbcGetCachedDatedPrice("VTI", "2026-10-02");
+        sheet.cnbcGetCachedDatedPrice("VTI", "2026-10-01", "1M");
+        sheet.cnbcGetCachedDatedPrice("VOO", "2026-10-01");
+        assert.equal(lookups.length, 5);
+        assert.equal(new Set(writes.map(write => write.key)).size, 4);
+    }
+});
+
+test("CNBC Excel serial dates use calendar days without timezone shifts or leap-year rollover", () => {
+    const { core } = setup();
+    for (const [serial, expected] of [[1, "1900-01-01"], [59, "1900-02-28"], [61, "1900-03-01"],
+        [46296, "2026-10-01"], [46296.999, "2026-10-01"], [2958465, "9999-12-31"]]) {
+        assert.equal(core.cnbcPriceDateKey_("VTI", serial), expected);
+    }
+});
+
+test("CNBC cached dated prices reject invalid dates and never cache missing or failed lookups", () => {
+    const { core, sheet, writes } = setup();
+    let fetches = 0;
+    let text = '{"data":{"chartData":{"priceBars":[]}}}';
+    core.UrlFetchApp = { fetch() {
+        fetches++;
+        return { getContentText: () => text };
+    } };
+    for (const date of [undefined, null, "", "2026-02-30", new Date(NaN)]) {
+        assert.throws(() => sheet.cnbcGetCachedDatedPrice("VTI", date), /Invalid CNBC priceDate/);
+    }
+    assert.equal(fetches, 0);
+    for (let i = 0; i < 2; i++) {
+        assert.throws(() => sheet.cnbcGetCachedDatedPrice("VTI", "2026-10-01"),
+            /No valid CNBC 1Y price for VTI on or before 2026-10-01/);
+    }
+    assert.equal(fetches, 2);
+    text = "invalid JSON";
+    assert.throws(() => sheet.cnbcGetCachedDatedPrice("VTI", "2026-10-01"), { name: "SyntaxError" });
+    core.UrlFetchApp.fetch = () => { throw new Error("Network unavailable"); };
+    assert.throws(() => sheet.cnbcGetCachedDatedPrice("VTI", "2026-10-01"), /Network unavailable/);
+    assert.equal(writes.length, 0);
+});
+
 test("all legacy APIs have library-derived wrappers, typed contracts, examples and correct exposure", () => {
     const { core } = setup();
     const legacyNames = new Set(legacyWrappers.map(w => w.file));
     const plans = wrapperPlans().filter(plan => plan.url.pathname.includes("/fintools/wrapper/") &&
         legacyNames.has(plan.url.pathname.split("/").pop()));
-    assert.equal(plans.flatMap(plan => plan.functions).length, 49);
+    assert.equal(plans.flatMap(plan => plan.functions).length, 50);
     for (const plan of plans) {
         for (const fn of plan.functions) {
             assert.equal(typeof core[fn.name], "function", fn.name);

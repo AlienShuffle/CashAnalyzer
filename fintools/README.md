@@ -70,6 +70,33 @@ Mutual funds try the header quote then the 1M chart and always return
 Missing or invalid price/date data is logged before trying the next source;
 retrieval and JSON parsing failures propagate rather than being hidden.
 
+The internal `cnbcDatedPriceFromChart_(ticker, period, priceDate)` helper returns
+`[[asOf, price]]` for the latest valid trading bar on or before the requested
+calendar day. The returned `asOf` is the actual trade date, not the requested
+date. `period` defaults to `"1Y"`; `priceDate` accepts
+a Date, `M/D/YYYY`, or `YYYY-MM-DD` in the runtime's local timezone (and retains
+the copied default `"10/01/2026"`). Midnight daily bars are valid; intraday bars
+must be within 09:30 inclusive to 16:05 exclusive. Weekends, holidays and days
+without valid bars use the latest earlier valid bar within the selected period.
+No later date is used and the chart period is not automatically expanded.
+If no qualifying bar exists, the helper logs and returns `undefined`.
+Invalid dates throw before fetching.
+
+Use the public custom function
+`=cnbcGetCachedDatedPrice("VTI", "2026-10-01", "1Y", false)` for cached dated
+prices. The date is required; the chart period defaults to `"1Y"` and the final
+`forceRefresh` argument defaults to `false`. A Sheets date cell can replace the
+date string. Numeric Excel dates in the standard 1900 date system are also
+accepted (for example, `46296` means October 1, 2026). Fractional times are
+ignored without timezone shifts. Serial 60 (Excel's fictitious February 29,
+1900), nonpositive serials and dates beyond year 9999 are rejected; the Excel
+1904 date system is not supported. Dates passed across library boundaries are
+accepted as well. Cache keys include the ticker, period and normalized calendar date;
+equivalent date formats share a cache entry. Like the other CNBC price APIs,
+this uses document cache with script-cache fallback, the shared bounded TTL
+calculator, and restores Date values on cache reads. Missing prices throw
+without being cached; retrieval and parsing failures propagate.
+
 Intentional corrections to previously broken or misleading behavior:
 
 - `bankGetCurrentRateHistoryFileContents(bank, account)` requires the account;

@@ -17,6 +17,23 @@ function cnbcGetCachedPrice(ticker, forceRefresh = false) {
 }
 
 /**
+ * Returns CNBC's chart price on or before the requested calendar day.
+ * Uses the document cache when available, otherwise the script cache.
+ * Selects the latest valid trading bar on or before that day, preserving its actual local Date.
+ * Throws for invalid dates or when the selected range has no qualifying price.
+ * Example: =cnbcGetCachedDatedPrice("VTI", "2026-10-01", "1Y", false)
+ * @param {string} ticker CNBC ticker.
+ * @param {Date|string|number} priceDate Date, M/D/YYYY, YYYY-MM-DD or Excel 1900-system serial.
+ * @param {string} [period="1Y"] CNBC chart range to search for a price on or before the day.
+ * @param {boolean} [forceRefresh=false] Bypass the cached quote.
+ * @return {Array<Array<Date|number>>} [[asOf, price]]
+ * @customfunction
+ */
+function cnbcGetCachedDatedPrice(ticker, priceDate, period = "1Y", forceRefresh = false) {
+  return fintools.cnbcGetCachedDatedPrice(ticker, priceDate, period, forceRefresh);
+}
+
+/**
  * Returns CNBC's market price NAV for mutual funds.
  * Only provides daily updates not intraday for ETF/stocks.
  * Uses the document cache when available, otherwise the script cache.

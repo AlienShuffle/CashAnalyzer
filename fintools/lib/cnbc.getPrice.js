@@ -54,6 +54,43 @@ function cnbcGetCachedPrice(ticker, forceRefresh = false) {
 }
 
 /**
+ * Returns CNBC's chart price on or before the requested calendar day.
+ * Uses the document cache when available, otherwise the script cache.
+ * Selects the latest valid trading bar on or before that day, preserving its actual local Date.
+ * Throws for invalid dates or when the selected range has no qualifying price.
+ * Example: =cnbcGetCachedDatedPrice("VTI", "2026-10-01", "1Y", false)
+ * @param {string} ticker CNBC ticker.
+ * @param {Date|string|number} priceDate Date, M/D/YYYY, YYYY-MM-DD or Excel 1900-system serial.
+ * @param {string} [period="1Y"] CNBC chart range to search for a price on or before the day.
+ * @param {boolean} [forceRefresh=false] Bypass the cached quote.
+ * @return {Array<Array<Date|number>>} [[asOf, price]]
+ * @customfunction
+ */
+function cnbcGetCachedDatedPrice(ticker, priceDate, period = "1Y", forceRefresh = false) {
+  const priceDateKey = cnbcPriceDateKey_(ticker, priceDate);
+  const cacheKey = `cnbcGetCachedDatedPrice-v2-${ticker}-${period}-${priceDateKey}`;
+  const cache = CacheService.getDocumentCache() || CacheService.getScriptCache();
+  if (!forceRefresh) {
+    const cacheVal = cache.get(cacheKey);
+    if (cacheVal != null) {
+      const cacheArray = JSON.parse(cacheVal);
+      cacheArray[0][0] = new Date(cacheArray[0][0]);
+      return cacheArray;
+    }
+  }
+
+  const resp = cnbcDatedPriceFromChart_(ticker, period, priceDateKey);
+  if (!resp || resp.length === 0) {
+    throw new Error(`No valid CNBC ${period} price for ${ticker} on or before ${priceDateKey}`);
+  }
+  const tradetime = resp[0][0];
+  const ttl = cacheCalcTTL_(tradetime);
+  cacheLogTTL_(cacheKey, tradetime, ttl);
+  cache.put(cacheKey, JSON.stringify(resp), ttl);
+  return resp;
+}
+
+/**
  * Returns CNBC's market price NAV for mutual funds.
  * Only provides daily updates not intraday for ETF/stocks.
  * Uses the document cache when available, otherwise the script cache.
@@ -149,7 +186,7 @@ function cnbcGetCached52wHighLow(ticker, forceRefresh = false) {
 }
 
 function testQuote() {
-  cnbcHighLowByQuote_(".SPX");
+  cnbcPriceFromChart_(".SPX","1Y");
 }
 
 // internal retrieval function to find a Ticker's price by using the top level quote service.
@@ -281,6 +318,10 @@ function cnbcQuoteJson_(ticker) {
 
 // internal retrieval function using the chart service.
 function cnbcPriceFromChart_(ticker, period) {
+  return cnbcChartPrice_(ticker, period);
+}
+
+function cnbcChartPrice_(ticker, period, priceDateKey) {
 
   // Function to convert a string like "20250430000000" to ISO date "YYYY-MM-DD"
   const convertToISODate = (dateStr) => `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`;
@@ -338,6 +379,7 @@ function cnbcPriceFromChart_(ticker, period) {
 
   const priceBars = json.data?.chartData?.priceBars;
   if (!priceBars || priceBars.length == 0) {
+    Logger.log(`No CNBC ${period} price bars for ${ticker}`);
     return;
   }
   const dateList = priceBars.map(bar => bar.tradeTime);
@@ -355,6 +397,11 @@ function cnbcPriceFromChart_(ticker, period) {
     }
     if (typeof dateList[i] !== "string" || !/^\d{14}$/.test(dateList[i])) {
       Logger.log(`Invalid trade date for ticker ${ticker}: ${dateList[i]}`);
+      continue;
+    }
+    if (priceDateKey && convertToISODate(dateList[i]) > priceDateKey) continue;
+    if (priceDateKey && isTimeOutsideTradingDay(dateList[i])) {
+      Logger.log(`Trade time outside trading day for ticker ${ticker} on ${dateList[i]}`);
       continue;
     }
     const asOfDate = convertToDateTime(dateList[i]);
@@ -382,7 +429,7 @@ function cnbcPriceFromChart_(ticker, period) {
     });
   }
   if (resp.length === 0) {
-    Logger.log(`No valid CNBC ${period} price bars for ${ticker}`);
+    Logger.log(`No valid CNBC ${period} price bars for ${ticker}${priceDateKey ? ` on or before ${priceDateKey}` : ""}`);
     return;
   }
   if (isTimeOutsideTradingDay(resp[resp.length - 1].originalDate)) {
@@ -393,4 +440,32 @@ function cnbcPriceFromChart_(ticker, period) {
     return new Date(current.date) > new Date(latest.date) ? current : latest;
   });
   return [[latestItem.date, latestItem.close]];
+}
+/**
+ * Returns [[asOf, price]] for the latest valid trading bar on or before priceDate.
+ * Accepts a Date, date string or Excel 1900-system serial, using local calendar dates.
+ * Logs and returns undefined when period has no valid bar on or before priceDate.
+ */
+function cnbcDatedPriceFromChart_(ticker, period = "1Y", priceDate = "10/01/2026") {
+  return cnbcChartPrice_(ticker, period, cnbcPriceDateKey_(ticker, priceDate));
+}
+
+function cnbcPriceDateKey_(ticker, priceDate) {
+  let date = new Date(NaN);
+  // Library callers can supply Dates from a different JavaScript realm.
+  if (Object.prototype.toString.call(priceDate) === "[object Date]") {
+    date = new Date(priceDate.getTime());
+  } else if (typeof priceDate === "string") {
+    date = cnbcHighLowDate_(priceDate);
+  } else if (typeof priceDate === "number" && Number.isFinite(priceDate) &&
+    priceDate >= 1 && priceDate < 2958466 && Math.floor(priceDate) !== 60) {
+    const day = Math.floor(priceDate);
+    // Excel includes a fictitious 1900-02-29 at serial 60; ignore fractional time.
+    const serialDate = new Date(Date.UTC(1899, 11, 31) + (day - (day > 60 ? 1 : 0)) * 86400000);
+    date = new Date(serialDate.getUTCFullYear(), serialDate.getUTCMonth(), serialDate.getUTCDate());
+  }
+  if (!Number.isFinite(date.getTime())) {
+    throw new Error(`Invalid CNBC priceDate for ${ticker}: ${priceDate}`);
+  }
+  return `${String(date.getFullYear()).padStart(4, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
