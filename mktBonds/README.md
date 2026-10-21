@@ -39,6 +39,17 @@ The publication directory is `$cloudFlareHome/Treasuries/mktBonds`, typically
 Public report location:
 [cashoptimizer.pages.dev/Treasuries/mktBonds/](https://cashoptimizer.pages.dev/Treasuries/mktBonds/).
 
+### Market-bond input
+
+The collector reads `Treasuries/MarketQuotes.csv`. It uses the file's leading
+`YYYY-MM-DD HH:MM` timestamp as Pacific time and converts it to New York time
+for `asOfDate`. It uses the unadjusted `askPrice` and `bidPrice` columns. The feed does not include descriptions,
+payment frequency, or a Bill/STRIP subtype. Descriptions are generated from
+the available fields, frequency is left blank, and zero-coupon Treasury rows
+in the `912797` CUSIP family are classified as Bills; other zero-coupon
+Treasury rows are classified as STRIPS. The `adjAskPrice` and `adjBidPrice`
+fields are not used in the combined market quote report.
+
 | Location / extension | Contents |
 |---|---|
 | `<name>-rate.csv` | Latest published tabular report, with a header row. |
