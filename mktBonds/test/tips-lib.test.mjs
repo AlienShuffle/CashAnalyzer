@@ -205,7 +205,8 @@ test("fintools REFCPI fresh and cached lookups retain the final CSV row and rest
                 assert.equal(context.tipsGetFactor(`${year + 5}-03-01`), 1.00091);
                 assert.equal(context.tipsGetRefCpi(`${year + 5}-03-01`), null);
                 assert.equal(context.tipsGetFactor(`${year + 5}-07-04`), null);
-                assert.equal(context.tipsGetMaxRefCpiDate(), `${year}-03-02`);
+                assert.equal(context.tipsGetMaxRefCpiDate(), `${year}-04-01`);
+                assert.equal(context.tipsGetMaxRefCpiDate(`${year}-03-01`), `${year}-04-01`);
             }
             assert.equal(fetches, 2);
         }
@@ -243,11 +244,12 @@ test("fintools maximum REFCPI date returns date-only text for fresh and cached v
     }
     const date = new Date(2026, 0, 5, 14, 30);
     for (const value of [date, date.toISOString(), "2026-01-05"]) {
-        context.cloudGetCachedREFCPI_ = () => [{ date: value }];
+        context.cloudGetCachedREFCPI_ = () => [{ date: "2026-01-01", maxRefCpi: value }];
         assert.equal(context.tipsGetMaxRefCpiDate(), "2026-01-05");
+        assert.equal(context.tipsGetMaxRefCpiDate("2026-01-01"), "2026-01-05");
     }
     for (const value of [null, "invalid"]) {
-        context.cloudGetCachedREFCPI_ = () => [{ date: value }];
+        context.cloudGetCachedREFCPI_ = () => [{ date: "2026-01-01", maxRefCpi: value }];
         assert.throws(() => context.tipsGetMaxRefCpiDate(), /Invalid maximum REFCPI date/);
     }
     context.cloudGetCachedREFCPI_ = () => { throw new Error("REFCPI fetch failed"); };
