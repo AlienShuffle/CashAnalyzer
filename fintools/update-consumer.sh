@@ -89,6 +89,7 @@ MANIFEST="$TARGET/appsscript.json"
 [[ -f "$TARGET/.clasp.json" ]] || die "$TARGET is not a clasp project (no .clasp.json)"
 [[ -f "$MANIFEST" ]] || die "missing $MANIFEST"
 [[ "$TARGET" != "$WRAPPER_DIR" ]] || die "target is the canonical wrapper directory"
+[[ "$TARGET" != "$REPO_ROOT/fintools/wrapper-tips" ]] || die "target is the maintained TIPS wrapper directory; use clasp-release.sh wrapper-tips"
 [[ -z "$VERSION" || "$VERSION" =~ ^[1-9][0-9]*$ ]] || die "--version must be a positive integer"
 for f in "${ADD_FILES[@]+"${ADD_FILES[@]}"}"; do
     is_wrapper "$f" || die "--add $f is not a generated wrapper file (see --list)"

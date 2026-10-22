@@ -65,16 +65,41 @@ function tipsGetRefCpi(searchDate) {
 }
 
 /**
- * Return the maximum REFCPI date in the cached table as YYYY-MM-DD text.
+ * Return the maximum known REFCPI date as YYYY-MM-DD text.
+ * With an as-of date, use that exact historical row; otherwise use the latest row.
+ * Throws if the requested row is missing or its maximum REFCPI date is invalid.
  *
+ * @param {Date|string} asOfDate Optional historical date; defaults to the latest row.
  * @return {string} Date only, without a time or timezone.
  * @customfunction
  */
-function tipsGetMaxRefCpiDate() {
+function tipsGetMaxRefCpiDate(asOfDate = null) {
   const rows = cloudGetCachedREFCPI_();
-  const date = mydateNormalize_(rows[0].date);
+  let row = rows[0];
+  if (asOfDate !== null) {
+    const asOf = mydateNormalize_(asOfDate);
+    if (asOf === null || Number.isNaN(asOf.getTime()))
+      throw new Error('Invalid REFCPI as-of date');
+
+    row = undefined;
+    for (let i = 0; i < rows.length; i++) {
+      const date = mydateNormalize_(rows[i].date);
+      if (mydateIsEqual_(date, asOf)) {
+        row = rows[i];
+        break;
+      }
+      if (mydateLessThan_(date, asOf))
+        break;
+    }
+    if (!row)
+      throw new Error(`No REFCPI data for as-of date: ${asOfDate}`);
+  }
+  if (!row)
+    throw new Error('No REFCPI data available');
+  const date = mydateNormalize_(row.maxRefCpi);
   if (date === null || Number.isNaN(date.getTime()))
     throw new Error('Invalid maximum REFCPI date');
+
   return date.getFullYear() + '-' +
     String(date.getMonth() + 1).padStart(2, '0') + '-' +
     String(date.getDate()).padStart(2, '0');

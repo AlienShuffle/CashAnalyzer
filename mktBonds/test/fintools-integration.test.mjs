@@ -9,6 +9,7 @@ import { migratedFiles, legacyWrappers, publicFunctions, wrapperPlans, syncWrapp
 const libraryDir = new URL("../../fintools/lib/", import.meta.url);
 const toolkitDir = new URL("../toolkit-app-script-src/", import.meta.url);
 const canonicalDir = new URL("../../fintools/wrapper/", import.meta.url);
+const tipsWrapperDir = new URL("../../fintools/wrapper-tips/", import.meta.url);
 
 function loadDirectory(dir, globals = {}) {
     const context = vm.createContext({ Date, Math, Logger: { log() { } }, ...globals });
@@ -45,13 +46,18 @@ test("merged fintools has no duplicate declarations and preserves existing and m
     assert.equal(context.fintools, undefined, "Library must not delegate back into itself");
 });
 
-test("canonical and toolkit wrappers are synchronized and forward arguments, defaults and errors", () => {
+test("canonical, TIPS and toolkit wrappers are synchronized and forward arguments, defaults and errors", () => {
     assert.equal(syncWrappers(), 0);
     const canonicalPlans = wrapperPlans().filter(plan => plan.url.pathname.includes("/fintools/wrapper/"));
-    assert.equal(canonicalPlans.flatMap(plan => plan.functions).length, 89);
+    const expectedCanonicalFunctions = [...migratedFiles, ...legacyWrappers.flatMap(plan => plan.sources)]
+        .flatMap(file => publicFunctions(readFileSync(new URL(file, libraryDir), "utf8")));
+    assert.equal(canonicalPlans.flatMap(plan => plan.functions).length, expectedCanonicalFunctions.length);
     const customFunctions = wrapperPlans().filter(plan => plan.url.pathname.includes("/toolkit-app-script-src/"))
         .flatMap(plan => plan.functions).filter(fn => fn.doc.includes("@customfunction"));
-    assert.equal(customFunctions.length, 36);
+    const expectedCustomFunctions = migratedFiles
+        .flatMap(file => publicFunctions(readFileSync(new URL(file, libraryDir), "utf8")))
+        .filter(fn => fn.doc.includes("@customfunction"));
+    assert.equal(customFunctions.length, expectedCustomFunctions.length + 3);
     for (const file of [...migratedFiles, ...legacyWrappers.flatMap(plan => plan.sources)]) {
         const source = readFileSync(new URL(file, libraryDir), "utf8");
         assert.equal(publicFunctions(source).filter(fn => fn.doc.includes("@customfunction")).length,
@@ -87,6 +93,23 @@ test("canonical and toolkit wrappers are synchronized and forward arguments, def
             assert.throws(() => context[fn.name](...args), value => value === error);
         }
     }
+});
+
+test("TIPS wrapper project mirrors financial toolkit APIs and uses library HEAD", () => {
+    const plans = wrapperPlans();
+    const toolkitPlans = plans.filter(plan => plan.url.href.startsWith(toolkitDir.href));
+    const tipsPlans = plans.filter(plan => plan.url.href.startsWith(tipsWrapperDir.href));
+    assert.deepEqual(tipsPlans.map(plan => plan.url.pathname.split("/").pop()),
+        toolkitPlans.map(plan => plan.url.pathname.split("/").pop()));
+    assert.deepEqual(tipsPlans.map(plan => plan.content), toolkitPlans.map(plan => plan.content));
+    const context = loadDirectory(tipsWrapperDir, { fintools: publicApi(loadDirectory(libraryDir)) });
+    assert.equal(context.myYieldFromPrice("2026-10-15", "2030-10-15", 0.05, 100), 0.05);
+    assert.equal(typeof context.mybondGraphTipsNominalHistory, "function");
+    assert.equal(context.bankGetCachedRate, undefined);
+    const manifest = JSON.parse(readFileSync(new URL("appsscript.json", tipsWrapperDir), "utf8"));
+    const dependency = manifest.dependencies.libraries.find(lib => lib.userSymbol === "fintools");
+    assert.equal(dependency.version, "0");
+    assert.equal(dependency.developmentMode, true);
 });
 
 test("worksheet deployment contains only wrappers and its existing menu, not private implementations", () => {
@@ -160,7 +183,9 @@ test("REFCPI works through worksheet wrappers with fintools Cacher and document/
         assert.ok(cached[1][5] instanceof Date);
         assert.equal(sheet.tipsGetFactor(`${year + 5}-03-01`), 1.00091);
         assert.equal(sheet.tipsGetRefCpi(`${year}-03-01`), 330);
-        assert.equal(sheet.tipsGetMaxRefCpiDate(), `${year}-03-02`);
+        assert.equal(sheet.tipsGetMaxRefCpiDate(), `${year}-04-01`);
+        assert.equal(sheet.tipsGetMaxRefCpiDate(`${year}-03-01`), `${year}-04-01`);
+        assert.throws(() => sheet.tipsGetMaxRefCpiDate(`${year}-02-28`), /No REFCPI data for as-of date/);
         assert.equal(fetches, 1);
         sheet.tipsGetCachedREFCPI(true);
         assert.equal(fetches, 2);
@@ -173,6 +198,32 @@ test("REFCPI works through worksheet wrappers with fintools Cacher and document/
         assert.equal(expiries.at(-1), 1, "An update-hour call must not write with a zero TTL");
         assert.equal(scriptCaches > 0, !documentBound);
     }
+});
+
+test("maximum known REFCPI dates use exact rows and reject missing or invalid dates", () => {
+    const core = loadDirectory(libraryDir);
+    const sheet = loadDirectory(toolkitDir, { fintools: publicApi(core) });
+    let rows = [
+        { date: "2026-03-02", maxRefCpi: new Date(2026, 3, 1) },
+        { date: "2026-02-28", maxRefCpi: "2026-03-01" }
+    ];
+    core.cloudGetCachedREFCPI_ = () => rows;
+    assert.equal(sheet.tipsGetMaxRefCpiDate(), "2026-04-01");
+    assert.equal(sheet.tipsGetMaxRefCpiDate(new Date(2026, 1, 28)), "2026-03-01");
+    for (const date of ["2026-03-03", "2026-03-01", "2026-02-27"]) {
+        assert.throws(() => sheet.tipsGetMaxRefCpiDate(date), /No REFCPI data for as-of date/);
+    }
+    for (const date of ["", "not-a-date", new Date(NaN)]) {
+        assert.throws(() => sheet.tipsGetMaxRefCpiDate(date), /Invalid REFCPI as-of date/);
+    }
+    for (const maxRefCpi of [null, "", undefined, "not-a-date"]) {
+        rows = [{ date: "2026-03-02", maxRefCpi }];
+        assert.throws(() => sheet.tipsGetMaxRefCpiDate(), /Invalid maximum REFCPI date/);
+        assert.throws(() => sheet.tipsGetMaxRefCpiDate("2026-03-02"), /Invalid maximum REFCPI date/);
+    }
+    rows = [];
+    assert.throws(() => sheet.tipsGetMaxRefCpiDate(), /No REFCPI data available/);
+    assert.throws(() => sheet.tipsGetMaxRefCpiDate("2026-03-02"), /No REFCPI data for as-of date/);
 });
 
 test("Svensson analysis works through a worksheet wrapper using only public library APIs", () => {

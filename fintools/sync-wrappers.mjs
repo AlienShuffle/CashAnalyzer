@@ -3,6 +3,7 @@ import { pathToFileURL } from "node:url";
 
 const library = new URL("./lib/", import.meta.url);
 const wrappers = new URL("./wrapper/", import.meta.url);
+const tipsWrappers = new URL("./wrapper-tips/", import.meta.url);
 const toolkit = new URL("../mktBonds/toolkit-app-script-src/", import.meta.url);
 
 export const migratedFiles = [
@@ -10,7 +11,7 @@ export const migratedFiles = [
     "mybond._dates.js", "mybond._utils.js", "mybond.accrued.js", "mybond.Canty.js",
     "mybond.duration.js", "mybond.fwd.nom.calcFwd.js", "mybond.fwd.rates.js",
     "mybond.fwd.tips.calcFwd.js", "mybond.priceFromYield.js", "mybond.xirr.js",
-    "mybond.xirr.Nominal.js", "mybond.xirr.Tips.js", "mybond.xirr.price.js",
+    "mybond.xirr.Nominal.js", "mybond.xirr.Tips.js", "mybond.xirr.TipsInt.js", "mybond.xirr.price.js",
     "mybond.yieldFromPrice.js", "mybond.zero-coupon.js",
     "tbill.fwd.discount.js", "tbill.fwd.simple.js", "tips.cloudFlare.REFCPI.js",
     "tips.utils.js", "zero.conversions.js",
@@ -70,6 +71,9 @@ export function wrapperPlans() {
     const functions = treasury.functions.filter(fn => treasuryNames.includes(fn.name));
     if (functions.length !== treasuryNames.length) throw new Error("Missing canonical Treasury wrappers");
     plans.push({ url: new URL("fin.Treasury.js", toolkit), content: render(functions), functions });
+    for (const plan of plans.filter(plan => plan.url.href.startsWith(toolkit.href))) {
+        plans.push({ ...plan, url: new URL(plan.url.pathname.split("/").pop(), tipsWrappers) });
+    }
     return plans;
 }
 

@@ -8,6 +8,9 @@
 - [wrapper/](./wrapper/) contains public adapters for consuming scripts. Each
   adapter forwards to the library identifier `fintools`. Copy the required
   wrapper files into a consumer project, not into the library itself.
+- [wrapper-tips/](./wrapper-tips/) is a parallel development-mode worksheet
+  containing all migrated financial wrappers and the three Treasury adapters,
+  without the generic market-data wrapper families.
 - [toolkit-app-script-src/](../mktBonds/toolkit-app-script-src/) remains the
   existing worksheet's deployment source. It contains synchronized financial
   wrappers, its manifest, and the existing TIPS Controls menu. It no longer
@@ -37,7 +40,8 @@ node --test mktBonds/test/*.test.mjs
 wrapper families and the migrated financial wrappers from library sources (all
 named uniformly with the `fin.*` prefix).
 It maintains identical financial worksheet copies and the worksheet's three
-Treasury adapters. Other legacy families are not copied into the toolkit.
+Treasury adapters in both the toolkit and [wrapper-tips/](./wrapper-tips/).
+Other legacy families are not copied into these financial projects.
 Do not edit generated
 files directly. The generator supports the migrated APIs' simple named
 parameters and literal defaults; new signatures must remain compatible or
@@ -142,6 +146,8 @@ published and pinned (see [Release script](#release-script)).
 - The generic [wrapper manifest](./wrapper/appsscript.json) uses version `"0"`
   with `developmentMode: true`. It is the same-account smoke-test consumer and
   tests the library's saved HEAD.
+- The [TIPS wrapper manifest](./wrapper-tips/appsscript.json) also uses version
+  `"0"` with `developmentMode: true`, independently of the generic worksheet.
 - The [worksheet manifest](../mktBonds/toolkit-app-script-src/appsscript.json)
   pins a published library version with development mode disabled (omitting
   `developmentMode` also defaults to disabled). It supports regression testing
@@ -173,8 +179,9 @@ the repository:
 
 ```bash
 fintools/clasp-release.sh --dry-run   # preview every step
-fintools/clasp-release.sh             # lib, wrapper, toolkit
-fintools/clasp-release.sh wrapper     # any subset of lib|wrapper|toolkit
+fintools/clasp-release.sh             # lib, wrapper, wrapper-tips, toolkit
+fintools/clasp-release.sh wrapper     # any subset of lib|wrapper|wrapper-tips|toolkit
+fintools/clasp-release.sh wrapper-tips # push only the TIPS development worksheet
 ```
 
 Each project uses `clasp -A .clasp.auth` from its own directory, so the library
@@ -187,7 +194,9 @@ and the worksheet can use different Google accounts. The steps are:
    latest versioned library deployment to the new version (or create one when
    none exists; skip with `--no-deploy`).
 3. `wrapper`: `push --force` only; it stays in development mode.
-4. `toolkit`: set the `fintools` pin in its manifest to the version just
+4. `wrapper-tips`: `push --force` only, using its own project credentials;
+   it also stays in development mode.
+5. `toolkit`: set the `fintools` pin in its manifest to the version just
    created (or `--pin <n>`), `push --force`, then commit only the manifest as
    "Pin toolkit to fintools library version N" (skip with `--no-commit`).
    Without `lib` or `--pin`, the current pin is pushed unchanged.
@@ -200,6 +209,10 @@ lives outside the clasp project directories so it is never uploaded.
 Other sheets that use fintools are not touched by the release script. Update
 them on demand with [update-consumer.sh](./update-consumer.sh), pointing it at
 any local clasp project directory (inside or outside this repository):
+
+The maintained [wrapper/](./wrapper/) and [wrapper-tips/](./wrapper-tips/)
+projects are excluded from consumer updates; use the sync and release scripts
+for them so their development-mode dependencies are preserved.
 
 ```bash
 fintools/update-consumer.sh --dry-run optimizer-sheet   # show the plan
@@ -237,3 +250,7 @@ as an ignored numeric argument. It targets the existing 11 AM New York update
 hour, bounded to Apps Script's permitted 1-21,600 seconds. Fresh and cached
 worksheet output preserves date values and numeric columns; the maximum-date
 helper still returns `YYYY-MM-DD` text.
+`tipsGetMaxRefCpiDate()` returns the latest row's maximum known REFCPI date.
+Pass an optional historical as-of date to return that exact row's maximum
+known date. Missing historical rows, an empty dataset, and missing or invalid
+maximum-date values throw errors rather than falling back to a different date.

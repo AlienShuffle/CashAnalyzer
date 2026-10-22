@@ -29,11 +29,14 @@ function tipsGetRefCpi(searchDate) {
 }
 
 /**
- * Return the maximum REFCPI date in the cached table as YYYY-MM-DD text.
+ * Return the maximum known REFCPI date as YYYY-MM-DD text.
+ * With an as-of date, use that exact historical row; otherwise use the latest row.
+ * Throws if the requested row is missing or its maximum REFCPI date is invalid.
  *
+ * @param {Date|string} asOfDate Optional historical date; defaults to the latest row.
  * @return {string} Date only, without a time or timezone.
  * @customfunction
  */
-function tipsGetMaxRefCpiDate() {
-  return fintools.tipsGetMaxRefCpiDate();
+function tipsGetMaxRefCpiDate(asOfDate = null) {
+  return fintools.tipsGetMaxRefCpiDate(asOfDate);
 }

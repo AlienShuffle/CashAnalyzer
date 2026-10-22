@@ -4,12 +4,13 @@
 #
 #   lib      fintools/lib                      push -> create version -> update library deployment
 #   wrapper  fintools/wrapper                  push (stays on developmentMode / HEAD)
+#   wrapper-tips fintools/wrapper-tips         push (stays on developmentMode / HEAD)
 #   toolkit  mktBonds/toolkit-app-script-src   pin fintools version -> push -> commit pin
 #
 # Each project authenticates with the .clasp.auth file in its own directory.
 #
-# Usage: fintools/clasp-release.sh [options] [lib] [wrapper] [toolkit]
-#   (no targets = all three, in that order)
+# Usage: fintools/clasp-release.sh [options] [lib] [wrapper] [wrapper-tips] [toolkit]
+#   (no targets = all four, in that order)
 #
 # Options:
 #   -n, --dry-run     Show what would run; make no remote or local changes.
@@ -25,6 +26,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LIB_DIR="$REPO_ROOT/fintools/lib"
 WRAPPER_DIR="$REPO_ROOT/fintools/wrapper"
+TIPS_WRAPPER_DIR="$REPO_ROOT/fintools/wrapper-tips"
 TOOLKIT_DIR="$REPO_ROOT/mktBonds/toolkit-app-script-src"
 TOOLKIT_MANIFEST="$TOOLKIT_DIR/appsscript.json"
 FINTOOLS_LIBRARY_ID="1M2LjvkaLTyGVMIu2BgQB1KVPUKBP1Aydv8WL4PQSyFZQybXWkOAPzAhn"
@@ -48,13 +50,13 @@ while [[ $# -gt 0 ]]; do
         --no-commit) COMMIT_PIN=0 ;;
         --pin) [[ $# -ge 2 ]] || die "--pin needs a version number"; PIN_VERSION="$2"; shift ;;
         -h|--help) usage; exit 0 ;;
-        lib|wrapper|toolkit) TARGETS+=("$1") ;;
-        all) TARGETS+=(lib wrapper toolkit) ;;
+        lib|wrapper|wrapper-tips|toolkit) TARGETS+=("$1") ;;
+        all) TARGETS+=(lib wrapper wrapper-tips toolkit) ;;
         *) die "unknown argument: $1 (see --help)" ;;
     esac
     shift
 done
-[[ ${#TARGETS[@]} -gt 0 ]] || TARGETS=(lib wrapper toolkit)
+[[ ${#TARGETS[@]} -gt 0 ]] || TARGETS=(lib wrapper wrapper-tips toolkit)
 [[ -z "$PIN_VERSION" || "$PIN_VERSION" =~ ^[1-9][0-9]*$ ]] || die "--pin must be a positive integer"
 
 has_target() { local t; for t in "${TARGETS[@]}"; do [[ "$t" == "$1" ]] && return 0; done; return 1; }
@@ -156,6 +158,11 @@ fi
 if has_target wrapper; then
     step "fintools/wrapper: push (developmentMode, no version pin)"
     clasp_in "$WRAPPER_DIR" push --force
+fi
+
+if has_target wrapper-tips; then
+    step "fintools/wrapper-tips: push (developmentMode, no version pin)"
+    clasp_in "$TIPS_WRAPPER_DIR" push --force
 fi
 
 if has_target toolkit; then
