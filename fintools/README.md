@@ -182,6 +182,8 @@ fintools/clasp-release.sh --dry-run   # preview every step
 fintools/clasp-release.sh             # lib, wrapper, wrapper-tips, toolkit
 fintools/clasp-release.sh wrapper     # any subset of lib|wrapper|wrapper-tips|toolkit
 fintools/clasp-release.sh wrapper-tips # push only the TIPS development worksheet
+# it is generally a good idea to version the wrapper sheets after updating the fintools release.
+(cd wrapper; clasp-version.sh 'updated to fintools vXXX, feature A.')
 ```
 
 Each project uses `clasp -A .clasp.auth` from its own directory, so the library
@@ -215,10 +217,12 @@ projects are excluded from consumer updates; use the sync and release scripts
 for them so their development-mode dependencies are preserved.
 
 ```bash
-fintools/update-consumer.sh --dry-run optimizer-sheet   # show the plan
-fintools/update-consumer.sh optimizer-sheet             # confirm, then apply
-fintools/update-consumer.sh -V 160 --push /path/to/sheet   # pin 160 and push
-fintools/update-consumer.sh --list                         # wrapper file names
+fintools/update-consumer.sh --dry-run /path/to/sheet      # show the plan
+fintools/update-consumer.sh /path/to/sheet                # confirm, then apply
+fintools/update-consumer.sh -V XXX --push /path/to/sheet  # pin 160 and push
+fintools/update-consumer.sh --list                        # wrapper file names
+# run the suggested push script and version the script as well.
+(cd optimizer-sheet ; clasp-version.sh 'updated to fintools XXX, feature A.')
 ```
 
 - Only generated wrapper files from [wrapper/](./wrapper/) that already exist
