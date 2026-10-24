@@ -9,7 +9,7 @@ import { roundYield } from "./lib/rounding.mjs";
 import { yieldFromPrice } from "./lib/yield.mjs";
 import { parseOptions, REPORT_SOURCE } from "./node-mktTips-update.mjs";
 
-export function buildNominalRows(quotes, forwardDate, { repoRate = "auto", priceSide = "ask", holidays = [] } = {}) {
+export function buildNominalRows(quotes, forwardDate, { repoRate = "auto", priceSide = "ask", holidays = [], reportSource = REPORT_SOURCE, settlementDays = 1 } = {}) {
     if (!["ask", "bid"].includes(priceSide)) throw new Error("priceSide must be ask or bid");
     if (repoRate !== "auto" && !Number.isFinite(repoRate)) throw new Error("repoRate must be auto or a number");
     const dates = new Set(quotes.map(q => q.asOfDate));
@@ -17,7 +17,7 @@ export function buildNominalRows(quotes, forwardDate, { repoRate = "auto", price
     if (dates.size !== 1 || typeof asOfDate !== "string" || !asOfDate) {
         throw new Error("mktBonds quotes must have one common asOfDate");
     }
-    const settle = getSettlementDate(asOfDate.slice(0, 10), holidays);
+    const settle = getSettlementDate(asOfDate.slice(0, 10), holidays, settlementDays);
     const forward = normalizeDate(forwardDate);
     if (!forward || !Number.isFinite(forward.getTime()) || forward < settle) {
         throw new Error("Forward date must be valid and cannot precede settlement");
@@ -43,7 +43,7 @@ export function buildNominalRows(quotes, forwardDate, { repoRate = "auto", price
             security_type: quote.securitytype,
             description: quote.description,
             maturity_date: quote.maturity_date,
-            report_source: `${REPORT_SOURCE} ${priceSide}`,
+            report_source: `${reportSource} ${priceSide}`,
             asOfDate: quote.asOfDate,
             settle_date: toIso(settle),
             fwd_date: toIso(forward),

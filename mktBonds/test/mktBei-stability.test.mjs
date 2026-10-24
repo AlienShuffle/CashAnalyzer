@@ -99,7 +99,9 @@ test("leave-one-out barely moves a curve fitted to exact prices", () => {
 });
 
 test("stability options are validated", () => {
-    assert.deepEqual(parseOptions(["--daily=/x", "--cache=/c", "--minDays=5"]), { daily: "/x", cache: "/c", shortYears: 3, minDays: 5 });
+    assert.deepEqual(parseOptions(["--daily=/x", "--cache=/c", "--minDays=5"]), { daily: "/x", cache: "/c", shortYears: 3, minDays: 5, prefix: "mkt" });
+    assert.equal(parseOptions(["--daily=/x", "--prefix=fed"]).prefix, "fed");
+    assert.throws(() => parseOptions(["--daily=/x", "--prefix=other"]), /prefix/);
     assert.throws(() => parseOptions([]), /--daily/);
     assert.throws(() => parseOptions(["--daily=/x", "--minDays=1"]), /minDays/);
     assert.throws(() => parseOptions(["--x=1"]), /Unknown option/);

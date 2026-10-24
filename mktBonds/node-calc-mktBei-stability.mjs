@@ -3,7 +3,7 @@
 // short tenors, how far dropping any one short TIPS moves it (leave-one-out), how well the short bonds
 // fit, and the settle BEI with the known (REFCPI) inflation to the forward date removed. Across days,
 // it reports how much each BEI series moves, and summarises settle against forward.
-// Options: --daily=<archive dir> --cache=<leave-one-out cache file> --shortYears=<years> --minDays=<n>
+// Options: --daily=<archive dir> --prefix=mkt|fed --cache=<leave-one-out cache file> --shortYears=<years> --minDays=<n>
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -15,7 +15,7 @@ export const TENORS = [0.5, 1, 2, 5];
 const SIDES = ["ask", "bid"];
 const ADJUSTMENTS = ["sa", "sa-decay"];
 const VALUATIONS = ["settle", "forward"];
-const SNAPSHOT_PATTERN = /^(\d{4}-\d{2}-\d{2}T\d{4})-mktTips-curve-/;
+const SNAPSHOT_PATTERN = /^(\d{4}-\d{2}-\d{2}(?:T\d{4})?)-(mkt|fed)Tips-curve-/;
 // Relative difference below which settle and forward are called similar.
 const SIMILAR = 0.1;
 
@@ -29,12 +29,12 @@ function yearsBetween(from, to) {
     return daysBetween(normalizeDate(from), normalizeDate(to)) / 365;
 }
 
-function curveName(adjustment, valuation, side) {
-    return `mktTips-curve-${valuation === "forward" ? "fwd-" : ""}${adjustment}-${side}`;
+function curveName(adjustment, valuation, side, prefix) {
+    return `${prefix}Tips-curve-${valuation === "forward" ? "fwd-" : ""}${adjustment}-${side}`;
 }
 
-function nominalName(valuation, side) {
-    return `mktNominal-grid-${valuation === "forward" ? "fwd-" : ""}${side}`;
+function nominalName(valuation, side, prefix) {
+    return `${prefix}Nominal-grid-${valuation === "forward" ? "fwd-" : ""}${side}`;
 }
 
 /**
@@ -89,17 +89,20 @@ function shortFit(curve, shortYears) {
  * Last snapshot of each calendar date that has every input for a side, read from the archive.
  * @return {Array<{asOfDate:string, side:string, tipsRows:object[], curves:object, nominals:object}>}
  */
-export function loadSnapshots(dailyDir) {
+export function loadSnapshots(dailyDir, prefix = "mkt") {
     const files = new Set(fs.readdirSync(dailyDir));
-    const asOfDates = [...new Set([...files].map(file => SNAPSHOT_PATTERN.exec(file)?.[1]).filter(Boolean))].sort();
+    const asOfDates = [...new Set([...files].map(file => {
+        const match = SNAPSHOT_PATTERN.exec(file);
+        return match?.[2] === prefix ? match[1] : null;
+    }).filter(Boolean))].sort();
     const read = name => JSON.parse(fs.readFileSync(path.join(dailyDir, name), "utf-8"));
     const latestByDay = new Map();
     for (const side of SIDES) {
         for (const asOfDate of asOfDates) {
             const needed = [
-                `mktTips-${side}`,
-                ...VALUATIONS.map(v => nominalName(v, side)),
-                ...ADJUSTMENTS.flatMap(a => VALUATIONS.map(v => curveName(a, v, side))),
+                `${prefix}Tips-${side}`,
+                ...VALUATIONS.map(v => nominalName(v, side, prefix)),
+                ...ADJUSTMENTS.flatMap(a => VALUATIONS.map(v => curveName(a, v, side, prefix))),
             ];
             if (!needed.every(name => files.has(`${asOfDate}-${name}.json`))) continue;
             latestByDay.set(`${side}|${asOfDate.slice(0, 10)}`, { asOfDate, side });
@@ -108,9 +111,9 @@ export function loadSnapshots(dailyDir) {
     return [...latestByDay.values()].map(({ asOfDate, side }) => ({
         asOfDate,
         side,
-        tipsRows: read(`${asOfDate}-mktTips-${side}.json`),
-        nominals: Object.fromEntries(VALUATIONS.map(v => [v, read(`${asOfDate}-${nominalName(v, side)}.json`)])),
-        curves: Object.fromEntries(ADJUSTMENTS.map(a => [a, Object.fromEntries(VALUATIONS.map(v => [v, read(`${asOfDate}-${curveName(a, v, side)}.json`)]))])),
+        tipsRows: read(`${asOfDate}-${prefix}Tips-${side}.json`),
+        nominals: Object.fromEntries(VALUATIONS.map(v => [v, read(`${asOfDate}-${nominalName(v, side, prefix)}.json`)])),
+        curves: Object.fromEntries(ADJUSTMENTS.map(a => [a, Object.fromEntries(VALUATIONS.map(v => [v, read(`${asOfDate}-${curveName(a, v, side, prefix)}.json`)]))])),
     }));
 }
 
@@ -246,13 +249,14 @@ function summarize(rows, minDays) {
 }
 
 export function parseOptions(args) {
-    const options = { daily: null, cache: null, shortYears: 3, minDays: 10 };
+    const options = { daily: null, cache: null, shortYears: 3, minDays: 10, prefix: "mkt" };
     for (const arg of args) {
-        const match = /^--(daily|cache|shortYears|minDays)=(.+)$/.exec(arg);
+        const match = /^--(daily|cache|shortYears|minDays|prefix)=(.+)$/.exec(arg);
         if (!match) throw new Error(`Unknown option: ${arg}`);
-        options[match[1]] = ["daily", "cache"].includes(match[1]) ? match[2] : Number(match[2]);
+        options[match[1]] = ["daily", "cache", "prefix"].includes(match[1]) ? match[2] : Number(match[2]);
     }
     if (!options.daily) throw new Error("--daily is required");
+    if (!["mkt", "fed"].includes(options.prefix)) throw new Error("prefix must be mkt or fed");
     if (!(options.shortYears > 0)) throw new Error("shortYears must be positive");
     if (!(Number.isInteger(options.minDays) && options.minDays > 1)) throw new Error("minDays must be an integer above 1");
     return options;
@@ -260,10 +264,10 @@ export function parseOptions(args) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const options = parseOptions(process.argv.slice(2));
-    const snapshots = loadSnapshots(options.daily);
+    const snapshots = loadSnapshots(options.daily, options.prefix);
     if (snapshots.length === 0) throw new Error(`No complete archived snapshots in ${options.daily}`);
     const saved = options.cache && fs.existsSync(options.cache) ? JSON.parse(fs.readFileSync(options.cache, "utf-8")) : {};
-    const cacheKey = `shortYears=${options.shortYears};v2`;
+    const cacheKey = `shortYears=${options.shortYears};${options.prefix === "fed" ? "v3-t0" : "v2"}`;
     const cache = saved.key === cacheKey ? saved.entries : {};
     const result = buildBeiStability(snapshots, { ...options, cache });
     if (options.cache) {

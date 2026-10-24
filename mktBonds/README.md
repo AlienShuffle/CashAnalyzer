@@ -4,6 +4,11 @@ Reference for the files produced by [job-mktBonds-update.sh](./job-mktBonds-upda
 and [job-mktTips-update.sh](./job-mktTips-update.sh). For calculation-library details
 and historical REFCPI configuration, see [lib/README.md](./lib/README.md).
 
+For the parallel FedInvest daily-price stream, with `fedBonds`, `fedNominal`,
+`fedTips`, and `fedBei` reports published in a separate sibling directory, see
+[fedBonds/README.md](../fedBonds/README.md). Both streams share these calculation
+and publication scripts; the default market filenames and inputs are unchanged.
+
 ## REFCPI in Google Sheets
 
 The [toolkit deployment source](./toolkit-app-script-src/) now delegates financial

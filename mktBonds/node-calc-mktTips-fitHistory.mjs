@@ -1,7 +1,7 @@
 // Seasonal-adjustment fit history: scans the archived mktTips-curve-* fits under daily/ and reports, for
 // every snapshot, side and valuation date, how well the unadjusted (none), seasonally adjusted (sa) and
 // credibility-decayed (sa-decay) TIPS curves fit, plus a summary of sa-decay against sa across history.
-// Options: --daily=<archive dir> --shortYears=<years> --minDays=<n>
+// Options: --daily=<archive dir> --prefix=mkt|fed --shortYears=<years> --minDays=<n>
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -13,7 +13,7 @@ const SIDES = ["ask", "bid"];
 const VALUATIONS = { settle: "", forward: "fwd-" };
 const ADJUSTMENTS = { none: "", sa: "sa-", "sa-decay": "sa-decay-" };
 const ZERO_TENORS = [1, 2];
-const FILE_PATTERN = /^(\d{4}-\d{2}-\d{2}T\d{4})-mktTips-curve-(.+)\.json$/;
+const FILE_PATTERN = /^(\d{4}-\d{2}-\d{2}(?:T\d{4})?)-(mkt|fed)Tips-curve-(.+)\.json$/;
 
 const bp = value => roundTo(value, 3);
 const mean = values => values.reduce((s, v) => s + v, 0) / values.length;
@@ -52,12 +52,12 @@ export function curveFitStats(curve, { shortYears = 3 } = {}) {
 }
 
 /** Reads the archive and groups curves by snapshot, side and valuation. */
-export function loadArchivedCurves(dailyDir) {
+export function loadArchivedCurves(dailyDir, prefix = "mkt") {
     const curves = new Map();
     for (const file of fs.readdirSync(dailyDir).sort()) {
         const match = FILE_PATTERN.exec(file);
-        if (!match) continue;
-        const [, asOfDate, qualifiers] = match;
+        if (!match || match[2] !== prefix) continue;
+        const [, asOfDate, , qualifiers] = match;
         for (const side of SIDES) {
             for (const [valuation, valuationPrefix] of Object.entries(VALUATIONS)) {
                 for (const [adjustment, adjustmentPrefix] of Object.entries(ADJUSTMENTS)) {
@@ -134,13 +134,14 @@ export function buildFitHistory(groups, { shortYears = 3, minDays = 10 } = {}) {
 }
 
 export function parseOptions(args) {
-    const options = { daily: null, shortYears: 3, minDays: 10 };
+    const options = { daily: null, shortYears: 3, minDays: 10, prefix: "mkt" };
     for (const arg of args) {
-        const match = /^--(daily|shortYears|minDays)=(.+)$/.exec(arg);
+        const match = /^--(daily|shortYears|minDays|prefix)=(.+)$/.exec(arg);
         if (!match) throw new Error(`Unknown option: ${arg}`);
-        options[match[1]] = match[1] === "daily" ? match[2] : Number(match[2]);
+        options[match[1]] = ["daily", "prefix"].includes(match[1]) ? match[2] : Number(match[2]);
     }
     if (!options.daily) throw new Error("--daily is required");
+    if (!["mkt", "fed"].includes(options.prefix)) throw new Error("prefix must be mkt or fed");
     if (!(options.shortYears > 0)) throw new Error("shortYears must be positive");
     if (!(Number.isInteger(options.minDays) && options.minDays > 0)) throw new Error("minDays must be a positive integer");
     return options;
@@ -148,7 +149,7 @@ export function parseOptions(args) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const options = parseOptions(process.argv.slice(2));
-    const groups = loadArchivedCurves(options.daily);
-    if (groups.length === 0) throw new Error(`No archived mktTips-curve fits in ${options.daily}`);
+    const groups = loadArchivedCurves(options.daily, options.prefix);
+    if (groups.length === 0) throw new Error(`No archived ${options.prefix}Tips-curve fits in ${options.daily}`);
     console.log(JSON.stringify(buildFitHistory(groups, options)));
 }

@@ -72,7 +72,9 @@ test("archived curves are grouped by snapshot, side and valuation; other files a
 });
 
 test("fit history options are validated", () => {
-    assert.deepEqual(parseOptions(["--daily=/x", "--shortYears=2", "--minDays=5"]), { daily: "/x", shortYears: 2, minDays: 5 });
+    assert.deepEqual(parseOptions(["--daily=/x", "--shortYears=2", "--minDays=5"]), { daily: "/x", shortYears: 2, minDays: 5, prefix: "mkt" });
+    assert.equal(parseOptions(["--daily=/x", "--prefix=fed"]).prefix, "fed");
+    assert.throws(() => parseOptions(["--daily=/x", "--prefix=other"]), /prefix/);
     assert.throws(() => parseOptions([]), /--daily/);
     assert.throws(() => parseOptions(["--daily=/x", "--minDays=0"]), /minDays/);
     assert.throws(() => parseOptions(["--bogus=1"]), /Unknown option/);

@@ -24,3 +24,12 @@ test("getSettlementDate skips weekends and holidays", () => {
     assert.equal(iso(getSettlementDate("2026-10-09", ["2026-10-12"])), "2026-10-13");
     assert.equal(iso(getSettlementDate("2026-12-31", new Set(["2027-01-01"]))), "2027-01-04");
 });
+
+test("T+0 retains the report date without rolling weekends or holidays", () => {
+    for (const date of ["2026-10-02", "2026-10-03", "2026-10-12"]) {
+        assert.equal(iso(getSettlementDate(date, ["2026-10-12"], 0)), date);
+    }
+    for (const lag of [-1, 2, NaN, "0"]) {
+        assert.throws(() => getSettlementDate("2026-10-02", [], lag), /settlementDays/);
+    }
+});

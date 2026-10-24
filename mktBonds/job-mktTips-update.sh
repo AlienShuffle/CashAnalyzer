@@ -1,5 +1,9 @@
 set -o pipefail
 
+sourceName="${BOND_SOURCE_NAME:-mktBonds}"
+reportPrefix="${BOND_REPORT_PREFIX:-mkt}"
+reportSource="${BOND_REPORT_SOURCE:-Market}"
+scriptDir=../mktBonds
 asOfArg=""
 jobArgs=()
 for arg in "$@"; do
@@ -11,7 +15,8 @@ done
 set -- "${jobArgs[@]}"
 
 source ../meta.common.sh
-curveCloudflareDir="$cloudFlareHome/Treasuries/mktBonds"
+curveCloudflareDir="$cloudFlareHome/Treasuries/$sourceName"
+quoteFile="$curveCloudflareDir/$sourceName-rate.json"
 curveDailyDir="$curveCloudflareDir/daily"
 mkdir -p "$curveDailyDir"
 
@@ -25,9 +30,9 @@ publishCurve() {
     local tmpCurveOutput="$curveOutput.tmp.$$"
     local curveJsonFlare="$curveCloudflareDir/$name-rate.json"
     local curveCsvFlare="$curveCloudflareDir/$name-rate.csv"
-    local nominalName="mktNominal-grid-$priceSide"
-    [[ "$basis" == forward* ]] && nominalName="mktNominal-grid-fwd-$priceSide"
-    if ! node ./node-calc-mktTips-curve.mjs "--basis=$basis" "--nominalCurve=history/$nominalName-rate-new.json" <"$curveInput" | jq --arg basis "$sourceBasis" '.basis = $basis' >"$tmpCurveOutput"; then
+    local nominalName="${reportPrefix}Nominal-grid-$priceSide"
+    [[ "$basis" == forward* ]] && nominalName="${reportPrefix}Nominal-grid-fwd-$priceSide"
+    if ! node "$scriptDir/node-calc-mktTips-curve.mjs" "--basis=$basis" "--nominalCurve=history/$nominalName-rate-new.json" <"$curveInput" | jq --arg basis "$sourceBasis" '.basis = $basis' >"$tmpCurveOutput"; then
         rm -f "$tmpCurveOutput"
         return 1
     fi
@@ -59,7 +64,7 @@ publishNominalCurve() {
     local tmpCurveOutput="$curveOutput.tmp.$$"
     local curveJsonFlare="$curveCloudflareDir/$name-rate.json"
     local curveCsvFlare="$curveCloudflareDir/$name-rate.csv"
-    if ! node ./node-calc-mktBonds-curve.mjs "--basis=$basis" "--priceSide=$priceSide" "--mktBonds=$curveCloudflareDir/mktBonds-rate.json" <"$curveInput" | jq --arg basis "$sourceBasis" '.basis = $basis' >"$tmpCurveOutput"; then
+    if ! node "$scriptDir/node-calc-mktBonds-curve.mjs" "--basis=$basis" "--priceSide=$priceSide" "--mktBonds=$quoteFile" <"$curveInput" | jq --arg basis "$sourceBasis" '.basis = $basis' >"$tmpCurveOutput"; then
         rm -f "$tmpCurveOutput"
         return 1
     fi
@@ -88,13 +93,13 @@ publishNominalCurve() {
 publishBeiGrid() {
     local tipsName="$1" name="$2"
     local tipsCurve="history/$tipsName-rate-new.json"
-    local nominalName="mktNominal-grid-$priceSide"
-    [[ "$tipsName" == mktTips-curve-fwd* ]] && nominalName="mktNominal-grid-fwd-$priceSide"
+    local nominalName="${reportPrefix}Nominal-grid-$priceSide"
+    [[ "$tipsName" == "${reportPrefix}Tips-curve-fwd"* ]] && nominalName="${reportPrefix}Nominal-grid-fwd-$priceSide"
     local gridOutput="history/$name-rate-new.json"
     local tmpGridOutput="$gridOutput.tmp.$$"
     local gridJsonFlare="$curveCloudflareDir/$name-rate.json"
     local gridCsvFlare="$curveCloudflareDir/$name-rate.csv"
-    if ! node ./node-calc-mktBei-grid.mjs "--tipsCurve=$tipsCurve" "--nominalCurve=history/$nominalName-rate-new.json" >"$tmpGridOutput"; then
+    if ! node "$scriptDir/node-calc-mktBei-grid.mjs" "--tipsCurve=$tipsCurve" "--nominalCurve=history/$nominalName-rate-new.json" >"$tmpGridOutput"; then
         rm -f "$tmpGridOutput"
         return 1
     fi
@@ -121,18 +126,19 @@ runTipsSide() {
     local side="$1"
     shift
     ../bin/FedInvest-update-common-job.sh \
-        --sourceName mktBonds \
-        --outputName "mktTips-$side" \
-        --collectionScript ./collect-mktTips.sh \
-        --processScript ./node-mktTips-update.mjs \
+        --sourceName "$sourceName" \
+        --outputName "${reportPrefix}Tips-$side" \
+        --collectionScript "$scriptDir/collect-mktTips.sh" \
+        --collectionArg "${BOND_TIPS_META_FILE:-}" \
+        --processScript "$scriptDir/node-mktTips-update.mjs" \
         --csvFields "$csvFields" \
-        -nodeArg "--priceSide=$side$asOfArg" \
+        -nodeArg "--priceSide=$side --mktBonds=$quoteFile --reportSource=$reportSource --settlementDays=${BOND_SETTLEMENT_DAYS:-1}$asOfArg" \
         --nightDelayHour 8 \
         --pubDelay 3 \
         "$@" || return $?
 
     priceSide="$side"
-    curveInput="$curveCloudflareDir/mktTips-$side-rate.json"
+    curveInput="$curveCloudflareDir/${reportPrefix}Tips-$side-rate.json"
     if [ ! -s "$curveInput" ]; then
         echo "Missing published mktTips input: $curveInput" >&2
         return 1
@@ -143,18 +149,18 @@ runTipsSide() {
     nominalSource=${nominalSource// /-}
 
     # The TIPS curves need the nominal curve of the same date and quote side.
-    publishNominalCurve settle "mktNominal-grid-$side" || return $?
-    publishNominalCurve forward "mktNominal-grid-fwd-$side" || return $?
-    publishCurve settle "mktTips-curve-$side" || return $?
-    publishCurve settle-sa "mktTips-curve-sa-$side" || return $?
-    publishCurve settle-sa-decay "mktTips-curve-sa-decay-$side" || return $?
-    publishCurve forward "mktTips-curve-fwd-$side" || return $?
-    publishCurve forward-sa "mktTips-curve-fwd-sa-$side" || return $?
-    publishCurve forward-sa-decay "mktTips-curve-fwd-sa-decay-$side" || return $?
+    publishNominalCurve settle "${reportPrefix}Nominal-grid-$side" || return $?
+    publishNominalCurve forward "${reportPrefix}Nominal-grid-fwd-$side" || return $?
+    publishCurve settle "${reportPrefix}Tips-curve-$side" || return $?
+    publishCurve settle-sa "${reportPrefix}Tips-curve-sa-$side" || return $?
+    publishCurve settle-sa-decay "${reportPrefix}Tips-curve-sa-decay-$side" || return $?
+    publishCurve forward "${reportPrefix}Tips-curve-fwd-$side" || return $?
+    publishCurve forward-sa "${reportPrefix}Tips-curve-fwd-sa-$side" || return $?
+    publishCurve forward-sa-decay "${reportPrefix}Tips-curve-fwd-sa-decay-$side" || return $?
 
     local qualifier
     for qualifier in "" sa- sa-decay- fwd- fwd-sa- fwd-sa-decay-; do
-        publishBeiGrid "mktTips-curve-$qualifier$side" "mktBei-grid-$qualifier$side" || return $?
+        publishBeiGrid "${reportPrefix}Tips-curve-$qualifier$side" "${reportPrefix}Bei-grid-$qualifier$side" || return $?
     done
 }
 
@@ -165,11 +171,11 @@ done
 # publishFitHistory: none/sa/sa-decay fit statistics for every archived TIPS curve snapshot, plus the
 # sa-decay vs sa summary. Cumulative over the archive, so it is published without daily snapshots.
 publishFitHistory() {
-    local name="mktTips-fitHistory"
+    local name="${reportPrefix}Tips-fitHistory"
     local output="history/$name-rate-new.json"
     local tmpOutput="$output.tmp.$$"
     local jsonFlare="$curveCloudflareDir/$name-rate.json"
-    if ! node ./node-calc-mktTips-fitHistory.mjs "--daily=$curveDailyDir" >"$tmpOutput"; then
+    if ! node "$scriptDir/node-calc-mktTips-fitHistory.mjs" "--daily=$curveDailyDir" "--prefix=$reportPrefix" >"$tmpOutput"; then
         rm -f "$tmpOutput"
         return 1
     fi
@@ -196,11 +202,11 @@ publishFitHistory || exit $?
 # publishBeiStability: settle against forward BEI stability, leave-one-out sensitivity and short-end fit
 # across the archive. Leave-one-out refits are cached in history/ so each run only fits new snapshots.
 publishBeiStability() {
-    local name="mktBei-stability"
+    local name="${reportPrefix}Bei-stability"
     local output="history/$name-rate-new.json"
     local tmpOutput="$output.tmp.$$"
     local jsonFlare="$curveCloudflareDir/$name-rate.json"
-    if ! node ./node-calc-mktBei-stability.mjs "--daily=$curveDailyDir" "--cache=history/$name-cache.json" >"$tmpOutput"; then
+    if ! node "$scriptDir/node-calc-mktBei-stability.mjs" "--daily=$curveDailyDir" "--prefix=$reportPrefix" "--cache=history/$name-cache.json" >"$tmpOutput"; then
         rm -f "$tmpOutput"
         return 1
     fi
@@ -233,9 +239,7 @@ writeCsvManifest() {
     mv "$tmpManifest" "$directory/$manifest"
 }
 
-writeCsvManifest "$curveCloudflareDir" 'mktTips-*.csv' mktTips-manifest.txt || exit $?
-writeCsvManifest "$curveCloudflareDir" 'mktNominal-*.csv' mktNominal-manifest.txt || exit $?
-writeCsvManifest "$curveCloudflareDir" 'mktBei-*.csv' mktBei-manifest.txt || exit $?
-writeCsvManifest "$curveDailyDir" '*-mktTips-*.csv' mktTips-manifest.txt || exit $?
-writeCsvManifest "$curveDailyDir" '*-mktNominal-*.csv' mktNominal-manifest.txt || exit $?
-writeCsvManifest "$curveDailyDir" '*-mktBei-*.csv' mktBei-manifest.txt || exit $?
+for family in Tips Nominal Bei; do
+    writeCsvManifest "$curveCloudflareDir" "${reportPrefix}$family-*.csv" "${reportPrefix}$family-manifest.txt" || exit $?
+    writeCsvManifest "$curveDailyDir" "*-${reportPrefix}$family-*.csv" "${reportPrefix}$family-manifest.txt" || exit $?
+done

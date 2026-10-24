@@ -1,6 +1,8 @@
 // Joins TIPS reference data (TIPSmeta.csv format on stdin) with the latest published mktBonds
 // quotes and adds settlement/forward REFCPI, seasonal ratios and the forward clean price.
 // Options: --repoRate=auto|<decimal> --priceSide=ask|bid --mktBonds=<path> --asOfDate=YYYY-MM-DD
+// --reportSource=Market|FedInvest labels the source without changing pricing calculations.
+// --settlementDays=0|1 selects same-day or next-trading-day settlement (default 1).
 // repoRate=auto derives the financing rate from the T-bills bracketing the forward date.
 import { readText } from "../lib/jsonIO.mjs";
 import fs from "node:fs";
@@ -19,14 +21,16 @@ export const REPORT_SOURCE = "Market";
 const defaultMktBonds = path.join(os.homedir(), "cloudflare/public/Treasuries/mktBonds/mktBonds-rate.json");
 
 export function parseOptions(text = "") {
-    const options = { repoRate: "auto", priceSide: "ask", mktBonds: defaultMktBonds, asOfDate: undefined };
+    const options = { repoRate: "auto", priceSide: "ask", mktBonds: defaultMktBonds, asOfDate: undefined, reportSource: REPORT_SOURCE, settlementDays: 1 };
     for (const token of text.split(/\s+/).filter(Boolean)) {
         const [key, value] = token.replace(/^--/, "").split("=");
         if (!(key in options) || value === undefined) throw new Error(`Unknown option: ${token}`);
-        options[key] = key === "repoRate" && value !== "auto" ? Number(value) : value;
+        if (key === "settlementDays" && !["0", "1"].includes(value)) throw new Error("settlementDays must be 0 or 1");
+        options[key] = key === "settlementDays" || (key === "repoRate" && value !== "auto") ? Number(value) : value;
     }
     if (options.repoRate !== "auto" && !Number.isFinite(options.repoRate)) throw new Error("repoRate must be auto or a number");
     if (!["ask", "bid"].includes(options.priceSide)) throw new Error("priceSide must be ask or bid");
+    if (!options.reportSource.trim()) throw new Error("reportSource must not be empty");
     return options;
 }
 
@@ -41,7 +45,8 @@ export function parseMeta(csvText) {
  * @param {{getRefCpi:Function,getFactor:Function,maxDate:Date}} table REFCPI lookups
  * holidays: YYYY-MM-DD bond-market holidays used for the settlement date
  */
-export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holidays = [] }) {
+export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holidays = [], reportSource = REPORT_SOURCE, settlementDays = 1 }) {
+    if (![0, 1].includes(settlementDays)) throw new Error("settlementDays must be 0 or 1");
     const quoteByCusip = new Map(quotes.filter(q => q.securitytype === "TIPS").map(q => [q.cusip, q]));
     const t1 = table.maxDate;
     const rows = [];
@@ -51,7 +56,7 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holida
     if (repo === "auto") {
         const bills = quotes.filter(q => q.securitytype === "Bill" && Number(q[priceSide]) > 0);
         if (bills.length === 0) throw new Error("No T-bill quotes available to derive the repo rate");
-        const billSettle = getSettlementDate(bills[0].asOfDate.slice(0, 10), holidays);
+        const billSettle = getSettlementDate(bills[0].asOfDate.slice(0, 10), holidays, settlementDays);
         repo = roundYield(tbillRepoRate(billSettle, t1, bills.map(b => ({ maturity: b.maturity_date, price: b[priceSide] }))).rate);
     }
 
@@ -61,7 +66,7 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holida
         if (!quote || !(price > 0)) continue;
 
         const reportDate = quote.asOfDate.slice(0, 10);
-        const t0 = getSettlementDate(reportDate, holidays);
+        const t0 = getSettlementDate(reportDate, holidays, settlementDays);
         const maturity = normalizeDate(m.maturity_date);
         if (!(t0 < maturity)) continue;
 
@@ -98,7 +103,7 @@ export function buildTipsRows(meta, quotes, table, { repoRate, priceSide, holida
             series: m.series,
             maturity_date: m.maturity_date,
             dated_date: m.dated_date,
-            report_source: `${REPORT_SOURCE} ${priceSide}`,
+            report_source: `${reportSource} ${priceSide}`,
             asOfDate: quote.asOfDate,
             settle_date: toIso(t0),
             fwd_date: toIso(t1),

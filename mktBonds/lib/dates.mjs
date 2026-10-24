@@ -101,12 +101,15 @@ function isoLocal(d) {
 }
 
 /**
- * Next bond-market trading day strictly after a date: skips weekends and the given holidays.
+ * Settlement on the report date (T+0) or the next bond-market trading day (T+1).
  * @param {Date|string} value trade (report) date
  * @param {Iterable<string>} [holidays] YYYY-MM-DD holiday dates (see lib/holidays.mjs)
+ * @param {number} [settlementDays=1] 0 for same-day settlement, 1 for next trading day
  * @return {Date}
  */
-export function getSettlementDate(value, holidays = []) {
+export function getSettlementDate(value, holidays = [], settlementDays = 1) {
+    if (settlementDays !== 0 && settlementDays !== 1) throw new Error("settlementDays must be 0 or 1");
+    if (settlementDays === 0) return normalizeDate(value);
     const closed = new Set(holidays);
     let next = nextWeekday(value);
     while (closed.has(isoLocal(next))) next = nextWeekday(next);
