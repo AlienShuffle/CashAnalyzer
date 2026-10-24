@@ -79,8 +79,103 @@ cd ~/CashAnalyzer/fedBonds
 
 The shared delay/weekend flags remain supported. `--asOfDate=YYYY-MM-DD`
 selects the historical REFCPI horizon, as in the market stream; it does not
-retrieve a different FedInvest snapshot. To replay historical prices, first
-prepare the matching FedInvest input.
+retrieve a different FedInvest snapshot. Use the historical command below to
+select historical quotes and publish only their daily archive.
+
+## Generate a historical daily entry
+
+From the repository root, run:
+
+```bash
+node fedBonds/report-history.mjs 2026-10-08
+```
+
+[report-history.mjs](./report-history.mjs) first looks for processed FedInvest
+JSON in these locations, in order:
+
+1. `FedInvest/history/YYYY-MM-DD-rate.json`
+2. `FedInvest/daily/YYYY-MM-DD-rate.json`
+3. `$HOME/cloudflare/public/Treasuries/FedInvest/daily/YYYY-MM-DD-rate.json`
+4. `FedInvest/history/FedInvest-rate-new.json`, only when all its rows match
+   the requested date.
+
+If no saved snapshot is available, it calls the existing
+[FedInvest collector](../FedInvest/collect-FedInvest.sh) with the requested date
+and processes the downloaded CSV. A successfully used download is saved as
+`Treasuries/FedInvest/daily/YYYY-MM-DD-rate.json` for future replays.
+
+To use a specific processed JSON file, or force a fresh TreasuryDirect query:
+
+```bash
+node fedBonds/report-history.mjs 2026-10-08 --input=/path/to/saved-quotes.json
+node fedBonds/report-history.mjs 2026-10-08 --fetch
+```
+
+The explicit input must have the original processed FedInvest schema
+(`asOfDate`, `securitytype`, `rate`, `maturitydate`, `buy`, `sell`, etc.),
+not the adapted `fedBonds` schema. Invalid data or a mismatched date fails
+explicitly; it is not silently replaced by a download.
+
+The command runs the shared pipeline in a temporary isolated workspace, using
+T+0 settlement, the historical REFCPI horizon selected by the requested date,
+and the currently published TIPS metadata and seasonal-factor data. REFCPI
+must include the requested date's `maxREFCPI` mapping; unavailable quotes,
+missing CPI coverage or missing metadata cause failure rather than substituting
+current quotes. It is a historical-price replay, not a point-in-time reconstruction
+of every later metadata/seasonal-factor revision.
+
+Only after the full calculation succeeds does it publish **33 JSON and 33 CSV
+files** for that date under `Treasuries/fedBonds/daily/`, replacing entries for
+the same date if present. It refreshes the three daily CSV manifests.
+**Latest reports, latest manifests, normal working files, and original input
+snapshots remain unchanged.** Cumulative fit-history and BEI-stability reports
+are refreshed on the next normal daily job, when it reads the expanded archive.
+No Cloudflare commit or push is performed. Avoid running a backfill concurrently
+with the normal publisher; individual files are atomically replaced, but the
+entire daily report set is not a filesystem transaction.
+
+### Incorporating backfills into fit and stability analysis
+
+Historical dates enter the published cumulative analyses on the **next normal
+FedInvest report-job run**, not immediately when the backfill finishes.
+The backfill calculates fits in its isolated workspace but publishes only the
+requested date's daily reports and updates the daily manifests.
+
+[job-fedBonds-update.sh](./job-fedBonds-update.sh) invokes the shared
+[TIPS publication job](../mktBonds/job-mktTips-update.sh), which rescans the full
+`Treasuries/fedBonds/daily/` archive with `--prefix=fed`:
+
+- **Fit history:** [loadArchivedCurves](../mktBonds/node-calc-mktTips-fitHistory.mjs)
+  reads the archived Fed TIPS curves, including date-only filenames, and groups
+  them by report date, quote side, and settlement/forward valuation. It rebuilds
+  fit statistics for unadjusted, SA, and SA-decay curves, plus the SA-versus-SA-decay
+  summaries, using all available observations.
+- **BEI stability:** [loadSnapshots](../mktBonds/node-calc-mktBei-stability.mjs)
+  includes dates with the complete supporting TIPS rows, nominal curves, and
+  SA/SA-decay TIPS curves. Added dates enter the chronological stability
+  comparisons; missing leave-one-out sensitivity results are calculated and
+  cached. Incomplete snapshots are skipped.
+
+The job republishes `fedTips-fitHistory-rate.json` / `.csv` and
+`fedBei-stability-rate.json` / `.csv`, along with their
+`fedTips-fitHistory-summary-rate.csv` and `fedBei-stability-summary-rate.csv`
+summaries. Historical observations contribute toward the default **10-day
+minimum** for history-dependent verdicts. FedInvest and market observations
+remain separate.
+
+To refresh the cumulative analyses immediately after completing one or more
+backfills:
+
+```bash
+cd ~/CashAnalyzer/fedBonds
+./job-fedBonds-update.sh -f --runWeekends
+```
+
+This runs the normal reporting flow, including current reports, rather than an
+analysis-only refresh. Downloading historical quotes with
+[pull-history.sh](../FedInvest/pull-history.sh) alone does **not** create a fit
+observation: also run [report-history.mjs](./report-history.mjs) for that date to
+generate the fitted curves and supporting daily reports.
 
 Run the offline adapter and full publication integration tests from the
 repository root:

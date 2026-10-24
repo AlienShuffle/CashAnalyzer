@@ -15,6 +15,7 @@ import { accruedInterest } from "../../mktBonds/lib/coupons.mjs";
 import { tbillRepoRate, forwardNominalCleanPrice, forwardTipsCleanPrice } from "../../mktBonds/lib/forwards/index.mjs";
 import { roundYield } from "../../mktBonds/lib/rounding.mjs";
 import { yieldFromPrice } from "../../mktBonds/lib/yield.mjs";
+import { parseOptions as parseHistoryOptions } from "../report-history.mjs";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const record = {
@@ -22,6 +23,15 @@ const record = {
     rate: "0.01625", maturitydate: "2030-10-31", buy: "99.123456", sell: "99.062500",
     endofday: "0.00000", calldate: "",
 };
+
+test("historical command validates dates and mutually exclusive quote sources", () => {
+    assert.deepEqual(parseHistoryOptions(["2026-10-01"]), { date: "2026-10-01", input: null, fetch: false });
+    assert.equal(parseHistoryOptions(["2026-10-01", "--fetch"]).fetch, true);
+    for (const args of [[], ["2026-02-30"], ["2026-10-01", "--unknown"], ["2026-10-01", "--input="],
+        ["2026-10-01", "--fetch", "--input=quotes.json"]]) {
+        assert.throws(() => parseHistoryOptions(args));
+    }
+});
 
 test("FedInvest adapter preserves decimal coupons, date-only dates and agency quote sides", () => {
     const [row] = toPublishedRows([record]);
@@ -149,7 +159,7 @@ test("parallel job publishes every Fed family, daily archive, summary and manife
     for (const name of fs.readdirSync(path.join(root, "mktBonds")).filter(name => /\.(mjs|sh)$/.test(name))) {
         fs.copyFileSync(path.join(root, "mktBonds", name), path.join(repo, "mktBonds", name));
     }
-    for (const name of ["job-fedBonds-update.sh", "collect-fedBonds.sh", "node-fedBonds-update.mjs"]) {
+    for (const name of ["job-fedBonds-update.sh", "collect-fedBonds.sh", "node-fedBonds-update.mjs", "report-history.mjs"]) {
         fs.copyFileSync(path.join(root, "fedBonds", name), path.join(cwd, name));
     }
     fs.writeFileSync(path.join(repo, "meta.common.sh"), 'cloudFlareHome="$HOME/cloudflare/public"\n');
@@ -179,9 +189,9 @@ test("parallel job publishes every Fed family, daily archive, summary and manife
     fs.writeFileSync(inputFile, JSON.stringify(input));
     fs.writeFileSync(path.join(cloud, "TIPSmeta.csv"), meta.join("\n"));
 
-    const cpi = ["Date,REFCPINSA,REFCPISA,SAFactor"];
+    const cpi = ["Date,REFCPINSA,REFCPISA,SAFactor,MMDD,maxREFCPI"];
     for (let date = new Date("2025-11-01"); date <= new Date("2026-11-01"); date.setUTCDate(date.getUTCDate() + 1)) {
-        cpi.push(`${date.toISOString().slice(0, 10)},330,330,1`);
+        cpi.push(`${date.toISOString().slice(0, 10)},330,330,1,,2026-11-01`);
     }
     const holidays = Array.from({ length: 12 }, (_, i) =>
         `[\\"$\\",\\"h3\\",null,{\\"children\\":\\"New Year ${2010 + i}\\"}],[\\"$\\",\\"span\\",null,{\\"children\\":\\"Friday, January 1, ${2010 + i}\\"}],`
@@ -302,6 +312,58 @@ globalThis.fetch = async url => {
         assert.ok(rows.every(row => row.settle_date === "2026-10-05"));
     }
     assert.equal(fs.readFileSync(path.join(target, "fedBonds-rate.json"), "utf8"), published);
+
+    const latestBefore = Object.fromEntries(fs.readdirSync(target).filter(name =>
+        fs.statSync(path.join(target, name)).isFile()).map(name => [name, fs.readFileSync(path.join(target, name), "utf8")]));
+    const historicalInput = input.map(row => ({ ...row, asOfDate: "2026-10-01" }));
+    const savedDir = path.join(cloud, "FedInvest/daily");
+    fs.mkdirSync(savedDir, { recursive: true });
+    fs.writeFileSync(path.join(savedDir, "2026-10-01-rate.json"), JSON.stringify(historicalInput));
+    const historicalRun = args => spawnSync(process.execPath, [path.join(cwd, "report-history.mjs"), ...args], {
+        cwd: repo, encoding: "utf8", timeout: 120000,
+        env: { ...process.env, HOME: home, NODE_OPTIONS: `--import=${pathToFileURL(mock).href}` },
+    });
+    const history = historicalRun(["2026-10-01"]);
+    assert.equal(history.status, 0, history.stdout + history.stderr);
+    assert.match(history.stdout, /Using saved FedInvest quotes/);
+    for (const stem of stems) {
+        const name = `2026-10-01-${stem === "fedBonds" ? "rate" : stem}.json`;
+        const value = json(`daily/${name}`);
+        if (Array.isArray(value)) {
+            assert.ok(value.every(row => row.asOfDate === "2026-10-01"));
+            if (stem !== "fedBonds") assert.ok(value.every(row => row.settle_date === "2026-10-01" && row.fwd_date === "2026-11-01"));
+        } else assert.equal(value.asOfDate, "2026-10-01");
+    }
+    const explicit = historicalRun(["2026-10-01", `--input=${path.join(savedDir, "2026-10-01-rate.json")}`]);
+    assert.equal(explicit.status, 0, explicit.stdout + explicit.stderr);
+    const mismatch = historicalRun(["2026-09-30", `--input=${path.join(savedDir, "2026-10-01-rate.json")}`]);
+    assert.notEqual(mismatch.status, 0);
+    assert.match(mismatch.stderr, /does not contain quotes/);
+
+    const fetchedInput = input.map(row => ({ ...row, asOfDate: "2026-09-30" }));
+    const csv = fetchedInput.map(row => [
+        "09/30/2026", row.cusip, row.securitytype, row.rate, row.maturitydate, "", row.buy, row.sell, "0",
+    ].join(",")).join("\n");
+    fs.writeFileSync(path.join(repo, "FedInvest/collect-FedInvest.sh"),
+        `#!/usr/bin/bash\n[ "$1" = "2026-09-30" ] || exit 1\ncat <<'CSV'\n${csv}\nCSV\n`);
+    const fetched = historicalRun(["2026-09-30", "--fetch"]);
+    assert.equal(fetched.status, 0, fetched.stdout + fetched.stderr);
+    assert.match(fetched.stdout, /Fetching FedInvest quotes/);
+    assert.ok(fs.existsSync(path.join(savedDir, "2026-09-30-rate.json")));
+    assert.equal(fs.readdirSync(path.join(target, "daily")).filter(name => name.startsWith("2026-09-30-")).length, 66);
+    const failedFetch = historicalRun(["2026-09-29", "--fetch"]);
+    assert.notEqual(failedFetch.status, 0);
+    assert.equal(fs.readdirSync(path.join(target, "daily")).filter(name => name.startsWith("2026-09-29-")).length, 0);
+    assert.equal(fs.existsSync(path.join(savedDir, "2026-09-29-rate.json")), false);
+    for (const [name, content] of Object.entries(latestBefore)) {
+        assert.equal(fs.readFileSync(path.join(target, name), "utf8"), content, name);
+    }
+    assert.equal(fs.readFileSync(inputFile, "utf8"), JSON.stringify(input));
+    for (const family of ["Tips", "Nominal", "Bei"]) {
+        const daily = path.join(target, "daily");
+        const expected = fs.readdirSync(daily).filter(name => name.endsWith(".csv") && name.includes(`fed${family}-`)).sort();
+        assert.deepEqual(fs.readFileSync(path.join(daily, `fed${family}-manifest.txt`), "utf8").trim().split("\n"), expected);
+    }
 
     fs.writeFileSync(inputFile, JSON.stringify([{ ...record, buy: "invalid" }]));
     const failure = run();
