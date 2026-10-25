@@ -1,0 +1,14 @@
+{
+  "dates": 208,
+  "referenceFits": 7488,
+  "predictions": 19332,
+  "matchedBucketPairs": 18243,
+  "summaryRows": 792,
+  "relationshipRows": 396,
+  "influenceRows": 11232,
+  "verifiedInputHashes": 2915,
+  "knownInflationViolations": 0,
+  "shortBondTrainingLeakage": 0,
+  "nearestThreeAndAggregatePriceVerified": true,
+  "allInfluenceDeletionsVerified": true
+}

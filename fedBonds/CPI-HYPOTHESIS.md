@@ -165,3 +165,106 @@ as the natural curve. The CSVs retain signed residuals and unknown-inflation
 days; horizon-conditioned relationships and plots are still to be developed.
 The trend-carry counterfactual and matched-bond release decomposition remain
 planned, not completed. Future releases remain the genuinely prospective test.
+
+## Independent reference and influential episodes
+
+### Specification fixed before running
+
+The agreed benchmark is one constant continuously compounded real rate,
+calibrated separately for each date/side/variant/cutoff to the three nearest
+eligible longer-maturity bonds (maturity then CUSIP order). It equates the sum
+of their modeled dirty prices to observed dirty prices at equal par. It is
+aggregate-price matching, not least squares. Coupons use the production
+schedule and accrued-interest helpers, with ACT/365 discount times. Negative
+rates are permitted. No short test prices enter calibration, and no slope is
+imposed. The 12/18/24-month training cutoffs and all earlier exclusions remain
+unchanged.
+
+```bash
+node fedBonds/experiment-carry.mjs --reference=flat-nearest3 --from=2015-01-01 --through=2026-10-25
+```
+
+The [independent reference report](./history/research/carry-flat.md),
+[summary](./history/research/carry-flat-summary.csv), and
+[influence diagnostics](./history/research/carry-flat-influence.csv) preserve
+this experiment. The original Svensson files are not overwritten. Both
+families use exactly the same matched short-bond comparisons. Since training
+breadth also changes, this is not a controlled comparison of functional form
+alone, nor an estimate of a uniquely correct "natural" curve.
+
+Verification covered all 7,488 calibrations, 19,332 predictions, 18,243 matched
+bucket comparisons, and 11,232 episode-influence rows across both families.
+The three-nearest selection, aggregate-price equation, absence of short-bond
+training leakage, maxREFCPI exclusion, and every reported episode-deletion slope
+were checked. All 2,915 recorded input hashes matched, and the original
+Svensson output files remained unchanged.
+
+### Findings: 6–12-month primary comparison
+
+The constant-rate benchmark is numerically much less sensitive to moving
+training support farther away:
+
+| Training beyond | Lowest pooled price-error variant | Price RMSE / 100 | Lowest pooled yield-error variant | Yield RMSE bp |
+|---|---|---:|---|---:|
+| 12 months | Forward/SA-decay | 0.2293 | Forward/SA-decay | 35.93 |
+| 18 months | Forward/SA-decay | 0.3011 | Forward/SA-decay | 45.05 |
+| 24 months | Forward/SA-decay | 0.3550 | Forward/SA-decay | 51.59 |
+
+These descriptive winners do not establish significance or a production rule.
+Below trend, forward/SA-decay leads at each cutoff; above trend, forward/SA
+leads; near trend, settlement seasonal variants lead. Thus the proposed
+"settlement above trend" rule does not survive changing the reference.
+
+The continuous full-SA price-improvement slopes are all in the hypothesized
+negative direction, but every primary interval still includes zero:
+
+| Training beyond | Slope per carry-gap percentage point | Episode-bootstrap 95% interval |
+|---|---:|---|
+| 12 months | -0.00030 | [-0.00426, +0.00382] |
+| 18 months | -0.00224 | [-0.00827, +0.00371] |
+| 24 months | -0.00183 | [-0.00963, +0.00596] |
+
+Separate quote-side slopes are also negative, but their intervals include zero.
+Removing the already-flagged shutdown-sensitive episodes strengthens the
+negative direction: the 18-month full-SA price interval excludes zero, whereas
+the 12- and 24-month intervals do not. This is a pre-existing sensitivity check,
+not grounds to select one favorable specification among many. SA-decay has
+similar primary directional results and intervals crossing zero.
+
+### Which episodes matter?
+
+Influence tables retain every episode and identify dates, CUSIPs, unknown days,
+mean/slope contributions, and leave-one-episode-out changes. No episode was
+discarded or labeled a bad quote merely because it was influential.
+
+- **Svensson, 12-month cutoff:** removing the September 12, 2019 episode flips
+  the full-SA price slope from +0.00840 to -0.00384. Its most extreme paired
+  observation is October 3, 2019, bid, CUSIP 912828K33 (April 15, 2020 maturity).
+  The original observed clean price is 99.15625. Settlement/SA predicts
+  99.14161, but forward/SA predicts 91.93983. The independent flat predictions
+  are 99.31089 and 99.29781, respectively. This strongly implicates
+  reference-extrapolation sensitivity in that example, not inclusion of a
+  known-inflation-only TIPS or an obvious extreme source quote.
+- **Svensson, 18-month cutoff:** July 2016 can reverse the slope on deletion;
+  August 2016 and May 2019 are also influential. The 24-month results are
+  particularly sensitive to September–November 2016, although no single
+  deletion reverses the full-SA price slope there.
+- **Constant-rate benchmark:** April–May 2026 and the January 9, 2015
+  observation are influential across cutoffs. The latter is labeled with the
+  latest-known December 17, 2014 CPI release; no quote before 2015 is used.
+  Removing that episode reverses the weak 12-month slope, but no single
+  episode deletion changes the negative full-SA price-slope sign at the
+  18- or 24-month cutoff.
+
+### Interpretation and remaining work
+
+The independent reference supplies weak directional support for a larger
+forward advantage below trend, not confirmation. Most importantly, model
+rankings and apparent regime effects depend materially on reference
+specification. Influential Svensson episodes should not be treated as direct
+evidence about a stable market "natural curve."
+
+The next planned step remains the coherent trend-carry counterfactual and
+matched-bond/common-start decomposition. Unknown-horizon conditioning,
+serial-dependence-aware uncertainty, and genuinely prospective validation
+remain unfinished; no regime-switching production logic has been added.

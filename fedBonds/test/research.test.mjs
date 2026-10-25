@@ -10,8 +10,65 @@ import { monthlyCpiReleases } from "../../lib/cpiDatesUtils.mjs";
 import { originalSettlementPrice } from "../lib/research-pricing.mjs";
 import { forwardTipsCleanPrice } from "../../mktBonds/lib/forwards/index.mjs";
 import { SHORT_BUCKETS, inShortBucket, shortBucketMetrics } from "../lib/research-buckets.mjs";
-import { episodeMeans, carryRelationship, forwardImprovement, referenceYield } from "../lib/research-experiment.mjs";
+import { episodeMeans, carryRelationship, forwardImprovement, referenceYield, episodeInfluence } from "../lib/research-experiment.mjs";
+import { fitNearestFlatReference, flatReferencePrice } from "../lib/research-flat-reference.mjs";
 import { priceFromYield } from "../../mktBonds/lib/price.mjs";
+import { tipsZeroModelPrice } from "../../mktBonds/lib/zero/index.mjs";
+import { accruedInterest } from "../../mktBonds/lib/coupons.mjs";
+
+test("independent flat reference recovers signed rates from only three nearest training bonds", () => {
+    for (const rate of [-0.025, 0, 0.04]) {
+        const settle = "2025-01-15";
+        const bonds = ["2026-07-15", "2027-01-15", "2027-07-15", "2050-01-15"].map((maturity, index) => ({
+            maturity, coupon: 0.0125, cusip: `B${index}`, cleanPrice: flatReferencePrice(settle, maturity, 0.0125, rate),
+        }));
+        bonds[3].cleanPrice = 500;
+        const fit = fitNearestFlatReference(settle, [...bonds].reverse());
+        assert.ok(Math.abs(fit.rate - rate) < 1e-12);
+        assert.deepEqual(fit.trainingCusips, ["B0", "B1", "B2"]);
+        assert.ok(fit.trainingPriceRmse < 1e-9);
+        const maturity = "2025-07-15", coupon = 0.02;
+        const svenssonFlat = tipsZeroModelPrice(settle, maturity, coupon, [rate, 0, 0, 0, 1, 2])
+            - accruedInterest(settle, maturity, coupon);
+        assert.ok(Math.abs(flatReferencePrice(settle, maturity, coupon, rate) - svenssonFlat) < 1e-10);
+        assert.throws(() => fitNearestFlatReference(settle, bonds.slice(0, 2)), /three/);
+        assert.throws(() => fitNearestFlatReference(settle, bonds.map(row => ({ ...row, cleanPrice: NaN }))), /price/);
+    }
+});
+
+test("flat reference matches aggregate dirty prices when training prices are inconsistent", () => {
+    const settle = "2025-01-15";
+    const bonds = ["2026-07-15", "2027-01-15", "2027-07-15"].map((maturity, index) => ({
+        maturity, coupon: 0.01, cusip: `B${index}`, cleanPrice: 99 + index,
+    }));
+    const fit = fitNearestFlatReference(settle, bonds);
+    const predicted = bonds.reduce((sum, bond) => sum + flatReferencePrice(settle, bond.maturity, bond.coupon, fit.rate), 0);
+    assert.ok(Math.abs(predicted - 300) < 1e-8);
+    assert.ok(fit.trainingPriceRmse > 0);
+    assert.throws(() => flatReferencePrice(settle, "2024-01-15", 0.01, 0.02), /dates/);
+});
+
+test("episode influence decomposes mean/slope and reproduces leave-one-out effects", () => {
+    const rows = [-2, -1, 0, 1, 2].map((gapPp, index) => ({
+        event: `event-${index}`, state: "near", gapPp, improvement: 5 - 3 * gapPp,
+    }));
+    const result = episodeInfluence(rows, "improvement");
+    assert.ok(Math.abs(result.reduce((sum, row) => sum + row.slopeContribution, 0) + 3) < 1e-12);
+    assert.ok(Math.abs(result.reduce((sum, row) => sum + row.meanContribution, 0) - 5) < 1e-12);
+    for (const row of result) {
+        assert.equal(row.fullSlope, -3);
+        assert.equal(row.withoutSlope, -3);
+        assert.equal(row.slopeFlips, false);
+        assert.ok(Math.abs(row.withoutMean - (25 - row.episodeImprovement) / 4) < 1e-12);
+    }
+    assert.throws(() => episodeInfluence([...rows, rows[0]], "improvement"), /unique/);
+    assert.equal(episodeInfluence(rows.map(row => ({ ...row, gapPp: 0 })), "improvement")[0].fullSlope, null);
+    const outlier = episodeInfluence([0, 1, 2, -10].map((improvement, index) => ({
+        event: `episode-${index}`, state: "near", gapPp: index, improvement,
+    })), "improvement").at(-1);
+    assert.equal(outlier.slopeFlips, true);
+    assert.equal(outlier.withoutSlope, 1);
+});
 
 test("reference yield handles extreme extrapolation prices without dropping observations", () => {
     for (const price of [0.1, 99, 150, 10000]) {

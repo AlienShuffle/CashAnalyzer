@@ -57,6 +57,28 @@ function slope(rows) {
     return variance > 0 ? rows.reduce((sum, row) => sum + (row.x - x) * (row.y - y), 0) / variance : null;
 }
 
+export function episodeInfluence(episodes, field) {
+    assert.equal(new Set(episodes.map(row => row.event)).size, episodes.length, "Influence requires unique episodes");
+    const rows = episodes.map(row => ({ x: row.gapPp, y: row[field] }));
+    assert.ok(rows.every(row => Number.isFinite(row.x) && Number.isFinite(row.y)), "Nonfinite influence input");
+    const fullSlope = slope(rows), fullMean = mean(rows.map(row => row.y));
+    const center = mean(rows.map(row => row.x));
+    const variance = rows.reduce((sum, row) => sum + (row.x - center) ** 2, 0);
+    return episodes.map((episode, index) => {
+        const rest = rows.filter((_, other) => other !== index);
+        const withoutSlope = slope(rest), withoutMean = mean(rest.map(row => row.y));
+        return {
+            event: episode.event, state: episode.state, gapPp: episode.gapPp,
+            episodeImprovement: episode[field], meanContribution: episode[field] / episodes.length,
+            fullMean, withoutMean, meanChange: withoutMean == null ? null : withoutMean - fullMean,
+            fullSlope, withoutSlope,
+            slopeChange: withoutSlope == null || fullSlope == null ? null : withoutSlope - fullSlope,
+            slopeFlips: fullSlope != null && withoutSlope != null && fullSlope * withoutSlope < 0,
+            slopeContribution: variance > 0 ? (episode.gapPp - center) * (episode[field] - fullMean) / variance : null,
+        };
+    });
+}
+
 export function carryRelationship(episodes, field, iterations = 2000) {
     const rows = episodes.map(row => ({ x: row.gapPp, y: row[field] }));
     assert.ok(rows.every(row => Number.isFinite(row.x) && Number.isFinite(row.y)), "Nonfinite carry relationship input");

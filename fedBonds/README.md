@@ -240,6 +240,30 @@ different model-family check. The first run performs thousands of fits; later
 runs reuse source/engine-fingerprinted parameters. Mechanical counterfactuals
 and matched release decomposition remain subsequent phases.
 
+To run the independently specified reference and influential-episode comparison:
+
+```bash
+node fedBonds/experiment-carry.mjs --reference=flat-nearest3 --from=2015-01-01 --through=2026-10-25
+```
+
+This benchmark uses only the three nearest training bonds beyond each cutoff,
+ordered by maturity then CUSIP. It calibrates a single continuously compounded
+ACT/365 rate by matching their aggregate dirty price at equal par. This is not
+least squares, and the resulting rate may be negative. It imposes no rising
+yield shape. All short test bonds remain excluded from calibration.
+
+`carry-flat.md` and the `carry-flat-*.csv` tables preserve the original Svensson
+outputs and compare continuous carry relationships against that baseline.
+The command requires the previous Svensson result tables and validates their
+input hashes and exact matched-bond coverage. The influence table identifies
+each episode's mean/slope contribution, leave-one-episode-out change, quote
+dates, securities, and largest raw bond-level improvement. Episodes are ranked,
+not deleted; the primary results keep all eligible episodes.
+Results can differ because both the family and training breadth change. This
+benchmark is not the observable "natural curve," a production recommendation,
+or an independent prospective test. An episode label in late 2014 can govern an
+early-2015 observation; the quote sample still starts in 2015.
+
 Outputs include `analysis.md`, full JSON results, per-observation and summary
 CSVs, exact-date pre/post comparisons, source SHA-256 hashes, and a reusable
 cross-validation cache. These measure cross-sectional yield/price fit and curve
