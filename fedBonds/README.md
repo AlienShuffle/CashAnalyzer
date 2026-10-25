@@ -219,6 +219,27 @@ paired bootstrap intervals are included in `analysis.md` and the JSON results.
 The CV cache retains bond-level errors and invalidates older aggregate-only
 entries when the short-end methodology changes.
 
+After producing that study, run the first hypothesis experiment:
+
+```bash
+node fedBonds/experiment-carry.mjs --from=2015-01-01 --through=2026-10-25
+```
+
+It rejects a changed study/sample or changed archived inputs. Each of the six
+variants is refitted using only maturities beyond 12, 18, and 24 calendar months;
+eligible sub-one-year bonds are exclusively test observations. All predictions
+are converted back to original settlement prices/yields. This is a
+longer-end-only reference experiment, not a short-end curve fit.
+`carry-reference.md` and the associated observation, summary, paired-improvement,
+and continuous-relationship CSVs include signed residuals, unknown-inflation
+days, quote-side/shutdown checks, and episode-bootstrap slope intervals.
+Positive squared-error improvement favors forward. A negative slope versus the
+carry-minus-trend gap supports the hypothesized below-trend forward advantage.
+All references are Svensson extrapolations; cutoff sensitivity is not a
+different model-family check. The first run performs thousands of fits; later
+runs reuse source/engine-fingerprinted parameters. Mechanical counterfactuals
+and matched release decomposition remain subsequent phases.
+
 Outputs include `analysis.md`, full JSON results, per-observation and summary
 CSVs, exact-date pre/post comparisons, source SHA-256 hashes, and a reusable
 cross-validation cache. These measure cross-sectional yield/price fit and curve

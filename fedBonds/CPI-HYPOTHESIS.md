@@ -103,3 +103,65 @@ The expected signed displacement should track the continuous carry gap and
 unknown-inflation horizon, survive reference/side/influence checks, and remain
 economically material in price units. Validate on future releases before
 selecting thresholds or deploying a regime-dependent production curve.
+
+## Experiment 1 execution and findings
+
+Executed on October 25, 2026 using
+[experiment-carry.mjs](./experiment-carry.mjs):
+
+```bash
+node fedBonds/experiment-carry.mjs --from=2015-01-01 --through=2026-10-25
+```
+
+The [reference experiment report](./history/research/carry-reference.md) and
+[summary CSV](./history/research/carry-reference-summary.csv) preserve the
+results. There are 208 primary dates, 7,488 reference fits, 19,332 bond
+predictions, and 18,243 overlapping-bucket matched comparisons. Checks verified
+that no test bond entered training, no tested maturity was on/before maxREFCPI,
+and all 2,913 recorded source hashes remained unchanged.
+
+### Primary 6–12-month pooled result
+
+Settlement/SA has the lowest yield and price RMSE for all three training cutoffs:
+
+| Training maturities beyond | Settlement/SA yield RMSE bp | Forward/SA yield RMSE bp | Settlement/SA price RMSE / 100 | Forward/SA price RMSE / 100 |
+|---|---:|---:|---:|---:|
+| 12 months | 21.55 | 57.50 | 0.1477 | 0.3072 |
+| 18 months | 90.51 | 128.66 | 0.5584 | 0.8302 |
+| 24 months | 155.05 | 254.21 | 0.9160 | 1.5411 |
+
+These are descriptive rankings, not paired significance claims. Extrapolation
+deteriorates substantially when the training support moves farther away.
+This longer-end-only experiment is different from the earlier interleaved
+maturity holdouts; it should not be expected to reproduce their rankings.
+
+### Does the continuous carry relationship support the hypothesis?
+
+Not robustly. For full SA at 6–12 months, the price-improvement slopes are:
+
+| Training beyond | Slope per percentage point of carry gap | Episode-bootstrap 95% interval |
+|---|---:|---|
+| 12 months | +0.0084 | [-0.0104, +0.0412] |
+| 18 months | -0.0099 | [-0.0979, +0.0669] |
+| 24 months | +0.1083 | [-0.0071, +0.3040] |
+
+The expected supporting direction is negative. Signs change with training
+cutoff, all these price intervals include zero, and deleting one episode can
+reverse the 12- and 18-month estimates. SA-decay also changes slope sign across
+cutoffs. Some yield-based relationships look stronger, but are not corroborated
+consistently by the price relationships. This does not validate the simple
+below-trend-forward/above-trend-settlement mechanism or a switching strategy.
+
+Two extreme extrapolated prices caused nonfinite production Newton yield
+inversions. They were retained, explicitly marked, and inverted with a
+bracketed solver using the identical coupon cash flows. Price scores do not
+depend on that yield inversion. No production pricing behavior was changed.
+
+### Next decision
+
+First investigate an independently specified, better-behaved reference family
+and the influential episodes, rather than treating the Svensson extrapolation
+as the natural curve. The CSVs retain signed residuals and unknown-inflation
+days; horizon-conditioned relationships and plots are still to be developed.
+The trend-carry counterfactual and matched-bond release decomposition remain
+planned, not completed. Future releases remain the genuinely prospective test.

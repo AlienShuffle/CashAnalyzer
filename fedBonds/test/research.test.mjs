@@ -10,6 +10,50 @@ import { monthlyCpiReleases } from "../../lib/cpiDatesUtils.mjs";
 import { originalSettlementPrice } from "../lib/research-pricing.mjs";
 import { forwardTipsCleanPrice } from "../../mktBonds/lib/forwards/index.mjs";
 import { SHORT_BUCKETS, inShortBucket, shortBucketMetrics } from "../lib/research-buckets.mjs";
+import { episodeMeans, carryRelationship, forwardImprovement, referenceYield } from "../lib/research-experiment.mjs";
+import { priceFromYield } from "../../mktBonds/lib/price.mjs";
+
+test("reference yield handles extreme extrapolation prices without dropping observations", () => {
+    for (const price of [0.1, 99, 150, 10000]) {
+        const result = referenceYield("2015-03-18", "2015-07-15", 0.0125, price);
+        assert.ok(Number.isFinite(result.value));
+        const upperPrice = priceFromYield("2015-03-18", "2015-07-15", 0.0125, result.value - 0.000005);
+        const lowerPrice = priceFromYield("2015-03-18", "2015-07-15", 0.0125, result.value + 0.000005);
+        assert.ok(price >= lowerPrice - 0.000001 && price <= upperPrice + 0.000001);
+        if (price === 10000) assert.equal(result.bracketed, true);
+    }
+    assert.throws(() => referenceYield("2015-03-18", "2015-07-15", 0.0125, -1), /Invalid/);
+});
+
+test("carry experiment matches bonds, preserves signs, and weights episodes rather than repeated bonds", () => {
+    const base = { cusip: "912828FL9", date: "2016-04-07", side: "bid", unknownDays: 44 };
+    const improvement = forwardImprovement({ ...base, yieldError: 4, priceError: -0.2 },
+        { ...base, yieldError: 2, priceError: -0.1 });
+    assert.equal(improvement.yieldImprovement, 12);
+    assert.equal(improvement.signedYieldChange, -2);
+    assert.ok(Math.abs(improvement.priceImprovement - 0.03) < 1e-12);
+    assert.throws(() => forwardImprovement({ ...base, yieldError: 4 }, { ...base, cusip: "different" }));
+    const rows = [
+        { event: "a", state: "below", gapPp: -1, date: "a", side: "bid", value: 0 },
+        { event: "a", state: "below", gapPp: -1, date: "a", side: "bid", value: 2 },
+        { event: "a", state: "below", gapPp: -1, date: "b", side: "bid", value: 5 },
+        { event: "b", state: "above", gapPp: 1, date: "c", side: "bid", value: 9 },
+    ];
+    assert.deepEqual(episodeMeans(rows, ["value"]).map(row => row.value), [3, 9]);
+});
+
+test("carry slope reports direction, reproducible episode intervals, influence, and unidentified cases", () => {
+    const rows = [-2, -1, 0, 1, 2].map(gapPp => ({ gapPp, improvement: 5 - 3 * gapPp }));
+    const result = carryRelationship(rows, "improvement", 100);
+    assert.equal(result.slope, -3);
+    assert.ok(Math.abs(result.lower95 + 3) < 1e-12);
+    assert.ok(Math.abs(result.upper95 + 3) < 1e-12);
+    assert.ok(Math.abs(result.leaveOneOutMin + 3) < 1e-12);
+    assert.deepEqual(result, carryRelationship(rows, "improvement", 100));
+    assert.equal(carryRelationship([], "improvement").slope, null);
+    assert.equal(carryRelationship(rows.map(row => ({ ...row, gapPp: 0 })), "improvement").slope, null);
+    assert.throws(() => carryRelationship([{ gapPp: 1, improvement: null }], "improvement"), /Nonfinite/);
+});
 
 test("short-end buckets use settlement calendar months and strictly exclude known inflation", () => {
     const row = { settle: "2025-01-31", horizon: "2025-04-01", maturity: "2025-07-31" };

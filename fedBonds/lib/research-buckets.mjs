@@ -6,7 +6,7 @@ export const SHORT_BUCKETS = [
     { id: "6-12m", lower: 6, upper: 12 },
 ];
 
-function addMonths(value, months) {
+export function addMonths(value, months) {
     const date = new Date(checkedDate(value));
     const day = date.getUTCDate();
     date.setUTCDate(1);
