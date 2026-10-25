@@ -7,7 +7,7 @@ import { roundToFixed } from "../lib/utils.mjs";
 import { fetchCpiDates } from "../lib/cpiDatesUtils.mjs";
 import { fetchFredCpiMonths } from "../lib/fredCpiUtils.mjs";
 
-const startDateString = "2019-01-01";
+const startDateString = "2013-01-01";
 const saMonths = await fetchFredCpiMonths("CPIAUCSL", { attr: "CPISA", startDateString }); // Seasonally adjusted.
 const nsaMonths = await fetchFredCpiMonths("CPIAUCNS", { attr: "CPINSA", startDateString }); // Not seasonally adjusted.
 

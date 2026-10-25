@@ -7,6 +7,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
+import { createHash } from "node:crypto";
 import { daysBetween, normalizeDate } from "./lib/dates.mjs";
 import { roundTo } from "./lib/rounding.mjs";
 import { fitTipsSvensson, svenssonZero } from "./lib/zero/index.mjs";
@@ -262,18 +263,37 @@ export function parseOptions(args) {
     return options;
 }
 
+export function stabilityCacheSources(snapshots, shortYears = 3) {
+    const sources = {};
+    for (const snapshot of snapshots) {
+        for (const adjustment of ADJUSTMENTS) {
+            for (const valuation of VALUATIONS) {
+                const key = `${snapshot.asOfDate}|${snapshot.side}|${adjustment}|${valuation}`;
+                sources[key] = createHash("sha256").update(JSON.stringify({
+                    curve: snapshot.curves[adjustment][valuation],
+                    forwardDate: snapshot.curves[adjustment].forward.settleDate,
+                    shortYears,
+                })).digest("hex");
+            }
+        }
+    }
+    return sources;
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
     const options = parseOptions(process.argv.slice(2));
     const snapshots = loadSnapshots(options.daily, options.prefix);
     if (snapshots.length === 0) throw new Error(`No complete archived snapshots in ${options.daily}`);
     const saved = options.cache && fs.existsSync(options.cache) ? JSON.parse(fs.readFileSync(options.cache, "utf-8")) : {};
     const cacheKey = `shortYears=${options.shortYears};${options.prefix === "fed" ? "v3-t0" : "v2"}`;
-    const cache = saved.key === cacheKey ? saved.entries : {};
+    const sources = stabilityCacheSources(snapshots, options.shortYears);
+    const cache = saved.key === cacheKey ? Object.fromEntries(Object.entries(saved.entries)
+        .filter(([key]) => saved.sources?.[key] === sources[key])) : {};
     const result = buildBeiStability(snapshots, { ...options, cache });
     if (options.cache) {
         const used = new Set(result.rows.map(r => `${r.asOfDate}|${r.side}|${r.adjustment}|${r.valuation}`));
         const entries = Object.fromEntries(Object.entries(cache).filter(([key]) => used.has(key)));
-        fs.writeFileSync(options.cache, JSON.stringify({ key: cacheKey, entries }));
+        fs.writeFileSync(options.cache, JSON.stringify({ key: cacheKey, entries, sources }));
     }
     console.log(JSON.stringify(result));
 }

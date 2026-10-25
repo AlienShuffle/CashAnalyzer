@@ -1,0 +1,3542 @@
+[
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/CPI-dates.json",
+    "sha256": "a202cbfab7426d5f5130be49967399a1f2f54ee8deda871abba8fe1b9c78e702"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/CPIAUCSL.csv",
+    "sha256": "4ba28a2a11ffb395b0b35b2cd3c44bd07c0235ccb870566beee207dfdad952ef"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/REFCPI.csv",
+    "sha256": "f63a2c8b4d0abf303c52f0ef50aa2fc904a7fb50a97bb059cf39497882f6b995"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedNominal-grid-ask.json",
+    "sha256": "c1eeb65595c200720dc629f75116e7af6b4ca3b47465cbd7146dd7043c9b792f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedNominal-grid-bid.json",
+    "sha256": "70e16068d67bb37a385c2d9ee89d26c0081a9d5cf579617093d37df844811f66"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedNominal-grid-fwd-ask.json",
+    "sha256": "472f2a281ec878ad76ba6f38e9b4b61619a4b9faa5bb01c39846c40cdf50dc39"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedNominal-grid-fwd-bid.json",
+    "sha256": "5c7dae92cde3eaeb7323857c7fd8c5e650194a22143c435f62b15d0cd7b4dacd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-ask.json",
+    "sha256": "4754bd4754363dd65da43697a40f07c21714fa51b716315c160ae9de0fcc9dec"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-bid.json",
+    "sha256": "ea8ab05c3ff13c5559ccc04ee4d28595c64a7ad54d3c3fd423bc88de9baab035"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-ask.json",
+    "sha256": "8cbc52f14825918231e2cd8eecdcd97b8a4cdae9b85096ee91b0c02af6530abb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-bid.json",
+    "sha256": "5fafefa81ce0978de6d97a0d3424e90436d5f1b118d14699b44e5475de23496f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-fwd-ask.json",
+    "sha256": "f9b9fb183fe219c6530a266c8591ea0c38f4cc0045061cc9ea99858ce546bd7e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-fwd-bid.json",
+    "sha256": "c9caa3b8e15fca72af43f2c9e65a422a1d710c840647455aa22636d3a3ce3520"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "0a543c6e4305f35b003aad7b3e0d0c6dff67a8c275666e0e6011d3f4a7bde7f8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "d69032ba2077f5badc9424603141f22d5f3591649e0bb48cafda94bc187147ef"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "c22cd864cf850e49a088e0bb53692299b2e773e9daef5afb4e85040f800aedb1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "4e490527a05ed00008a68cca9d65e429d9b1425f0ef2893f1ac7120ce75d8c38"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-sa-ask.json",
+    "sha256": "debc68ce0d3d81e1c4ee85d3218d7a70694ef2dd18a891f5869a1642256820ba"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-sa-bid.json",
+    "sha256": "2983184b49e6e784ca0cdd39ceb4b49906ec16e4957c35c5f1f5b1179367dcca"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-sa-decay-ask.json",
+    "sha256": "92b2c90a9ac6e4ce2a03c58ceab824e57999f4f2aa20857ef191f5b65c393d0d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-02-fedTips-curve-sa-decay-bid.json",
+    "sha256": "9cf1960949e682dc1a2deb892ce78e0c8699ba56b8d1846405594d6cf73c8d2c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedNominal-grid-ask.json",
+    "sha256": "229731d39616e8679af4890f6bbefd8d204715bf613d1a251bf66810ba404f3b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedNominal-grid-bid.json",
+    "sha256": "61b38151247ee6bcde23a25f40ffaf36ae303a54ab2f41418bcf7eff93b4de54"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedNominal-grid-fwd-ask.json",
+    "sha256": "b69d6601c7cc004b43d01763c47873246ce51b7002ce088c5616c8c098742844"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedNominal-grid-fwd-bid.json",
+    "sha256": "f02853f2dee655041ed06440d963fae24df9e5d5b92926bbaf7c4d7d92df5ba3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-ask.json",
+    "sha256": "cfda442118f42102fd1b858adf038c94fc06f3afe1098701dc6f8c04044f1f2a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-bid.json",
+    "sha256": "1713929944a545bf068be268dd4f73f64b0e2139344c6652ae1020baec75eb98"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-ask.json",
+    "sha256": "66055f8d08a008ef4112d74ea06452745cbbd8c555f5be1233926c1721ed6741"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-bid.json",
+    "sha256": "73a4f79255511fb33d545beaeae6489bff1ff86634850c6a2a3af9867cd7f31b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-fwd-ask.json",
+    "sha256": "4df87d55e041d9407cd5622af377a2040328645a28b4f6ae9c3c165e1e5a27fb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-fwd-bid.json",
+    "sha256": "438d98f9996f4d2faca6f4ccb5d34940b082a9cbc3a980d170056897631572a0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "3b688f07b5ba3455151870122f84c062c462ba659a313bf0692315f3fe9a614f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "c88835696d2882394a961237a9271c5b0c556c6fe93c34d523d2ff6615f9979d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "a5e30242ebc7d29e0bd159e14e818784bf03872602c07ec532444cda079ab824"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "ae76cd84677c64df97576440ec78e5bafa74c7238477c1cb9729ef1e77a5116c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-sa-ask.json",
+    "sha256": "866d3de339ce76249d475e0fcfb55d90bc5ed711a39fbf39ca56b4f01d246301"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-sa-bid.json",
+    "sha256": "4c759bacd9898d793cd2deb0eec4f6aae851a303c742b2f84c2cec0524fb8fe6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-sa-decay-ask.json",
+    "sha256": "1ce91b839a184ae42808079bb9148c8badde931f65bdb2d6dcf0c651854b0b9a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-10-fedTips-curve-sa-decay-bid.json",
+    "sha256": "76e98ad3a2bfd341c2237a2d7490d3cdd5b01a26f5caeebc69f55c7563852ddf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedNominal-grid-ask.json",
+    "sha256": "e5b5ac10273d88b78bdeae462dddcd05e1a5f8ba437d7dc6d77a126ecdd2561f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedNominal-grid-bid.json",
+    "sha256": "e2891f1ed5b3cb84fc55e0747760dfac44e8c862e96f8be5fea1d6903146412f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedNominal-grid-fwd-ask.json",
+    "sha256": "9e6d0828db687407d6da203a26ff9f3536444d7c72755fc59a6d97a1f1a303dd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedNominal-grid-fwd-bid.json",
+    "sha256": "b84ade767369b4ad8389530c074ea64af77859fed8aa4c3063b72981b0661d3c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-ask.json",
+    "sha256": "42f1600a83712b9ce0dbf1817b8f4033f39900d6ea73b24682762eaae30f7da8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-bid.json",
+    "sha256": "5d574556acb9a78bf9c1d7f448d798adbc6cdaee65baf65ade2f3b7f92be2ad7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-ask.json",
+    "sha256": "7858d1078f04f2efaa1f329d105d6a9e142afe9f0a2b7e1bf919284a96b4cd33"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-bid.json",
+    "sha256": "3d36025c4fcfa88a17f94f10b67c0a7b0ab3483744d364021548b99466ef2f73"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-fwd-ask.json",
+    "sha256": "6c5e4fbe1629e7f1b250723ee70f41f8956f2aef18dfd82e3d14a366095ceda9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-fwd-bid.json",
+    "sha256": "2da2c5c591fe2582565ff77f42e02bd3462b0581489249210bad8beb05799cc9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "1385af31be8a510150130435363ca305afb355a4cdf27825dc85db0d5b690cd4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "55aa50f69a6da1bebc83740481e3b5c871486d6129fe9a32e6a7683339b81b2a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "c53bb55d6078530827e1e700aabcc626e38f11ba5e068ae5a97a447463cdd934"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "17f6b7bd4adfd01b222992a42625df6204392e73ba8d67f95d101e4b1abdb7b1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-sa-ask.json",
+    "sha256": "ac0c7e7665d813a3f9ea15e31d431ed7716040abe1f882ece8ad133f21604ebb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-sa-bid.json",
+    "sha256": "4359b77e21b40d2f79a0f7a7cd066e6415419fb3c2b7456bfa6e5ccd96175b3f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-sa-decay-ask.json",
+    "sha256": "ea58c2b2800a70d7462eef75d9cd8bc05b218127d7925be30dc76503bdbc240b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-06-23-fedTips-curve-sa-decay-bid.json",
+    "sha256": "12c08398c6b9b9d5fff592d6ac5ac2df2d6d0372947e23732e7e0f501b318f6c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedNominal-grid-ask.json",
+    "sha256": "b20360556df306d3658f61298ffe80bda0f4dc78a8a3e8a6b9a4af11a0da056b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedNominal-grid-bid.json",
+    "sha256": "003db0cd02fdef45723fe35a636c92f9e6697ccde15bcbc6e4de959c2848ff03"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedNominal-grid-fwd-ask.json",
+    "sha256": "bc1d57f630952aace82478d0ba6647ea99c9681583fe12a12acaaa5c4739c7c3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedNominal-grid-fwd-bid.json",
+    "sha256": "60d079710b8d7200d73eb3eef1af61cbaa9db4503197eaf3f595d3b3a971f960"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-ask.json",
+    "sha256": "b3a6a808b9e4fac9707a00230ed79c6aa9444fd5d732c3b0a1d8e2a825106b48"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-bid.json",
+    "sha256": "fa45b8c6d8e5d136aec5ae9a16aca91344cf3b9e81cb2ed252578bd9519c5519"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-ask.json",
+    "sha256": "96a74f3f980655e132e867ea22f034b0a97d8439053727d17da94208f4c37b4c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-bid.json",
+    "sha256": "c08783465550d389ef0354090883d6560b49a04d4447ce7622879f61f8dbd877"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-fwd-ask.json",
+    "sha256": "117f613cc79c9d8cbdb28f419fdacaec32465ebae7f359c9fc33d36a6b42b7b2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-fwd-bid.json",
+    "sha256": "c206d0698a78379f24ef30f4a29dae55555e5946fcd955dc62fb3415c71592d9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "962b2ef8593f3b1c57db243ceb17ad8a9d815cd86e253ff5ac105539744b4308"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "77352bf5402b2f94822ce8581921ca00560bc1bcdb513a1f2524b6ee1de722eb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "556ea9b438922a05d1aadda4d8c9f6ccadcfb989dc889bc14632bdbd9734be4e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "d84a906283787516651ad6882c29ecc68d59fd0ad5da4b63452f4afbc3e53c8c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-sa-ask.json",
+    "sha256": "e62ac7e20c01d5ef2755786cf062d0ca9d9adefa83b2a32aade09b86aa098507"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-sa-bid.json",
+    "sha256": "dfba0e3f2a141ea9ce9da794b5b4a6dd1a8239f9c04e586051406ed7d58aeb23"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-sa-decay-ask.json",
+    "sha256": "5f2f940e506537a0f9c77853bbc5ee70c31d90f4ca9ccf8eef29a590e36760c5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-01-fedTips-curve-sa-decay-bid.json",
+    "sha256": "4b02b7baff3e6c3e103799e8391bd621e7dfccda0751d2fa2d3425247a0e4749"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedNominal-grid-ask.json",
+    "sha256": "52112047a5b026d07fd40ee83675582da52e5671c2fef271d18016ef7053368f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedNominal-grid-bid.json",
+    "sha256": "2b23c2e49ab7e40fad54bda4146b510589f2d046449f37f5a9e5967b38d3e70a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedNominal-grid-fwd-ask.json",
+    "sha256": "30da762b89a90e581996078a4093b269673ca2ad67dc938a43a2a2647c8c7a0d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedNominal-grid-fwd-bid.json",
+    "sha256": "fbc82cf3a22ffe49d85a51b01a11b7ab6c5b7766196e3b4649d5421d470bf559"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-ask.json",
+    "sha256": "91a401ed2112b29155db9a6bdf2007de772ec0c30996179dd9b801f3e2b48253"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-bid.json",
+    "sha256": "d8f3aeb99187088847ff0fc0173734b2d2d9e2c130de1e3e2d2db191d0e3dd6b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-ask.json",
+    "sha256": "e3bf776c919ba4a54b6fe55e632fdf3216ffd8dd4bf836471a8f42a5b4ca4c51"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-bid.json",
+    "sha256": "67d83b0f60fb102328973de771e7dd7e89febef5cf7ea72a9676506752d48626"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-fwd-ask.json",
+    "sha256": "885398c03e22511863a63a201e4f3ee42181599388b2bd20cec72d3f8b7d9d23"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-fwd-bid.json",
+    "sha256": "a852e20f299506a1e4470d9e42de04a5161250215a8a32337fb13a2aad468e61"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "c81818c78464b93283137d2dda3927b1d1973861c37694df900d0579491f4595"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "acc53e7e7a9e55ba00507b20d45b13a0d99e4057772b1f20c0173a4918b305d4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "08c372bebd314a795f9077b3773f539bf7a5be083a8fe032ae1cdacd79206326"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "0472d4ce7fe370ef3552a095b96f1b28d118f057b34d01b01fd7478899e04b11"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-sa-ask.json",
+    "sha256": "2ee77a72fefd685d28dccef2ee3dbb63a6f92c7bb5a18f2b2ed56cb40329a82f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-sa-bid.json",
+    "sha256": "863d014a82574094530b08464aeff61ab9e23c1ba7182c55073b68bf1bfbe223"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-sa-decay-ask.json",
+    "sha256": "a8e749b5039fd1ddb1b5559bdfa6f9e84c730550642a660bc5db5853c1655ff8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-10-fedTips-curve-sa-decay-bid.json",
+    "sha256": "877655497967f27f15142d60c1c8c85c541f5ba713671b5760a30dede081d8e8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedNominal-grid-ask.json",
+    "sha256": "af827d483ca1af356d744a39256e6236dbb7f7cbea6f333025067166e5b54b56"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedNominal-grid-bid.json",
+    "sha256": "55669578e503e80cb9c307e454740cd14b1134ba135e5317f2be44f6a6f75e4e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedNominal-grid-fwd-ask.json",
+    "sha256": "f8a67f42a9835b3a943a6d02062c5dfb718cb12b96d1f59890d9b7dd4346d618"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedNominal-grid-fwd-bid.json",
+    "sha256": "1e135eca5729dc64790d962dd18eaa8bf4346488f5ddc07fdd6616ce26c153f1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-ask.json",
+    "sha256": "a12c2ddd71c5e6dc185682b782bc11956748bd9ee511fc7bb1e1ebd59c0c5277"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-bid.json",
+    "sha256": "0ff02e00aa858c033040b7121bc71a624ad21e5c76345d927b3e43526d6cffe2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-ask.json",
+    "sha256": "d50566a8394a5d26d37c2276d96b3d64a75820261e1cd1fd3632f7524e29344c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-bid.json",
+    "sha256": "402d2efd00e25984ec71f6ecce54c3e42a079d6bd7a887d989c8695fcdd99369"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-fwd-ask.json",
+    "sha256": "a5f48b7ab5ce223003c29d64c5bb9d67eb13b0fb003019d22253d3bdb90afe4d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-fwd-bid.json",
+    "sha256": "2058d4695f6edd1139545f7c1a27eb614b9c791fc828f6993c00cdcefac85428"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "f1910f626be21804b48ba0205c626a2e498e7bd299a255696d80362147549902"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "822b757c00141adc77dbe0af97a698fbeb5636c43c41dda22899cdc6a7b4a252"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "a8182c54153805ea836b548ef9c7e1d3b9538fe6bce3f3cd519c9cc1940a884a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "d3eaed19b6d36aca5dff3258fe3b0989f78056488c37a9e1fd132c668b8a1bf1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-sa-ask.json",
+    "sha256": "29fc06a7359d67185bc4710985f3553cec8da46be8e8069e18ff33c5fc0de0bb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-sa-bid.json",
+    "sha256": "164784b60f651eda82f0e9ca28b86a1527d49e6ed746eb17ddd23fb302e88d9e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-sa-decay-ask.json",
+    "sha256": "e332d90a337e8e3f5039e2998b52d010b4a7ff5d7efe288d3c67bd9e755c0f83"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-07-21-fedTips-curve-sa-decay-bid.json",
+    "sha256": "da6a254abde779392b231f3cf6399435031e2b7cc56d48611fd22e900862a6f9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedNominal-grid-ask.json",
+    "sha256": "e7adcc590fd280383bf63e031b3baa0db987e7a06eed640d33569f86e23dd53b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedNominal-grid-bid.json",
+    "sha256": "a30f91b3f82ef35f508d77a145924866325287d908887386e6e5da677152aae6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedNominal-grid-fwd-ask.json",
+    "sha256": "f9b3b9256b5689fae5053f3f449a2de426887a8499d240c3db27f8e8dc48af10"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedNominal-grid-fwd-bid.json",
+    "sha256": "8ccd516e2ad4a869987b4aa021d8b1f2e143b73c003fa569db2fd929be806fb7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-ask.json",
+    "sha256": "48beadc255e23a47b9b1a3bcde64cf4ecae990060a1425d393d4e68eaf27c55c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-bid.json",
+    "sha256": "db4b9d57985bcc7c931677a7ab25d677b28a52cdb2aa80fd1b25d233457322db"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-ask.json",
+    "sha256": "b9a6b4ae75457dd198f4e59d7603fc7a786059f30dd4743a5e8d17ce73db26b3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-bid.json",
+    "sha256": "dc256fb903fe84e1d439019f67a6049cd6cf1d30d699cabc08ab24b92bf0a7ef"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-fwd-ask.json",
+    "sha256": "acdf5898748118535077b673380dd97cc251eb410239271dcd7495d05f69ab44"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-fwd-bid.json",
+    "sha256": "1b0d7da73a540eaa0e985322b9bbe11873abec3d5ff42c1a2541f695a0aca75f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "2c361a5d3e8ba97ae21b06bc8544cb0ea8f788353320006e8e959ea93e1c465b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "9c3b40ac2b3082940fbea5219aff626f9495c5a2ed1a80030e76579ba41e1b43"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "082805b246b8ccbecf3bd0a721a1e3739e26b7c9d53078ae972c5aecd805453d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "9183fea05d9019a89d967325aa2c734ec0ddd2e2878480fba0eacee06e0933f2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-sa-ask.json",
+    "sha256": "1395e0f991a995b899d4c3f15804281fbedd6d6a7d01449d31d62a6f33d2505e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-sa-bid.json",
+    "sha256": "5a992dc2835c4168850df907937c5ce19f95c8f88b4f0fe889bc589733dfa62d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-sa-decay-ask.json",
+    "sha256": "81006d187b4b2e2bed2a27ad532ff28e38010850566abb239a6016a009026bdd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-01-fedTips-curve-sa-decay-bid.json",
+    "sha256": "0587bd96b6f60376d2dfb09e541dbbd77d7ddcf755df62fb778bfccbead9c58a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedNominal-grid-ask.json",
+    "sha256": "8d2830507fb99939eafef4fc7ca251b77de2e4bc8bca717a76f3827587e1c8dd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedNominal-grid-bid.json",
+    "sha256": "8c878aae7b2d55b7174ec34d8146da36a16c4f54439c700054703937314e82b3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedNominal-grid-fwd-ask.json",
+    "sha256": "fd8815567a609f138732429ada76b14c5a3dea6382e094a3f18a8f8be4f6c017"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedNominal-grid-fwd-bid.json",
+    "sha256": "9880c1d14f6ac2ae066ba938d4633db89908528ea337380ec026c4dc6e87c56b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-ask.json",
+    "sha256": "fce6820a5804645ac6e9ac268a3dc2b058392a216cebd5b7f9f70b3a2daac7c7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-bid.json",
+    "sha256": "440132d0f431c311d2d9bfb08170eb689b1937548adbff5779c8c1d4b185e3a8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-ask.json",
+    "sha256": "e8a5fbf91ac3142dd0ac880337914d902760e961c37b80962d2c35ba98bc39fd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-bid.json",
+    "sha256": "2e4d8a02fb28b27645dafc9249e1b8c8175c5edf97dda3a10c59caa4a987e224"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-fwd-ask.json",
+    "sha256": "7e8a310b54bea0914235dbdf93cddb172654365c4e20e60c82a5f5861babf8ec"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-fwd-bid.json",
+    "sha256": "388e6064c4999f68fe296658e517ba5bd05029073a76c0c43af424a558431eba"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "e23f19c6b7516313c42ed46cbbaa7ee4c3402eecd90a88877b827055e44b801e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "51eb4f119c05da613dde5caed1c2f91bde3ae6bd42bc4800dc370c15646f9b6e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "66383638f1c9f9a7a78303de1e9d050f8cae97e235876d7e8721aa6b56e9ce9a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "6b77bd5597e3e048701b346968b93b3cb9d611b55c62f8d372da82a221ae35ae"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-sa-ask.json",
+    "sha256": "65475d09e65205ec1c91988444249f16bdeb9903076551af6fb7938a10918652"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-sa-bid.json",
+    "sha256": "dc1755dcc3e4e220d800d5c52c55117d4d62891cb4abfae24fbe1ebf28a34bc6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-sa-decay-ask.json",
+    "sha256": "f219e69e1f90557318a07c24fbf618f6f49245bf5fe17acdf0efc8208565f604"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-11-fedTips-curve-sa-decay-bid.json",
+    "sha256": "ad1d54742e1471e16f8058a129ec514b2352eaa1d949777c8a3a5f3dcbb8f97b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedNominal-grid-ask.json",
+    "sha256": "cd106e3787b248e0eb6bcb179cd9bfaeb3350501b9c95d36fdc865d59deeb510"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedNominal-grid-bid.json",
+    "sha256": "ba036c4079fe4a7ef7634c1f261c47b0b56585605e6a239e554aca54b88b8b9d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedNominal-grid-fwd-ask.json",
+    "sha256": "0a737ed802041f0ccab0a2501c3a31fdbdf6d764e6a44f5699cc4e7a1bbe2263"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedNominal-grid-fwd-bid.json",
+    "sha256": "f91d393d234f8445eefd6bd4b7edb25b1e6aaa143f0f0f5d2c4628361e3f2c43"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-ask.json",
+    "sha256": "35d67b97a47a407fdd7934cde1bebad3cfaf6a32e841d8625ae5278ebda44bac"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-bid.json",
+    "sha256": "a67d911666174458569dc2abc100fc77d2b6f2ce7bf7b296609f0fbec0f72951"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-ask.json",
+    "sha256": "d1fdfb6b46efae349f0464371c767aacd020b1b49ac983d201276e71df7b9967"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-bid.json",
+    "sha256": "00040fa63dcd966538ef0eb5c1f123ead282ea9ff7ddf67f66fdb0c852b2ccd9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-fwd-ask.json",
+    "sha256": "82d5aacc3e06d47bff462b2ce2790011cbf38532487e18a0e85c7bfc284525bc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-fwd-bid.json",
+    "sha256": "bae18b3b1dab8eff7391cbcab288a42bc398640a1e5b759dc173f7af5ed631a8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "b4760b7acf31fda998027357a58262cfb1a7ecf54d7dd95e102fe2ec34d39e10"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "b87c5075f981a67ac9d715d96738f93d200e51bb86cd7137268a5b74886b2737"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "072ff2b05ffb6a6de173f46d05495bb342da9b9904e43aae12d6e08f6961522f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "372c5bba1b6152184486999f21d88dceef73664f2381895d1bce1812c5987793"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-sa-ask.json",
+    "sha256": "1c9bfcacf0215283dc313c014699cf9c32716e4f198302d3961c3893203fff49"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-sa-bid.json",
+    "sha256": "94187d5c6df3b47d03215fa9b2c903626e2e5a0c1c842c4b69308af1ae4d7e9a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-sa-decay-ask.json",
+    "sha256": "2fae48738e31d4e2fe36804650efa6f62b222a91e3344d1b5374ef520d5cd0c8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-08-21-fedTips-curve-sa-decay-bid.json",
+    "sha256": "cb0f756391bc2c0247cd3d8e9bbb2cdb3cdd2939ed394d41f323064396f461e3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedNominal-grid-ask.json",
+    "sha256": "2e1e1e99bc93cf29edc656f51c4fea2fd1fc39f546316dee178ed16426150a42"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedNominal-grid-bid.json",
+    "sha256": "8a5aaa573b11acb8975fcaae947da2ef67f0c5235635375e9668924bfb679e32"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedNominal-grid-fwd-ask.json",
+    "sha256": "dc730df275cab37e7cd6cf50a113015ebde2ac073c006353f33dafbbed2b3b16"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedNominal-grid-fwd-bid.json",
+    "sha256": "8272a503833530c663d1578a6c9c6b70ef4391f1c2cb323d901a98c2f7c4fa67"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-ask.json",
+    "sha256": "c399d8e2eb049bc77fb224b5d1c2d5a521c28a7687100c7b9288ab0ee8be0867"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-bid.json",
+    "sha256": "640539d2484be78df49587c87e6a5b4b09d7a6bd1be59ad8037a1860775a483e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-ask.json",
+    "sha256": "7dfa960a0aff70bdf07cdd7750dc4dd113523b86849505be63d700d30b3a91b0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-bid.json",
+    "sha256": "19c811918d91195f4bca05b027b73b470394c8f6958aa42988f9c6acf167702a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-fwd-ask.json",
+    "sha256": "823859d086be2ae0478b6f90da79138fd3105fae921a295ebcb6f92d66a69097"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-fwd-bid.json",
+    "sha256": "b4d2f70c6fc021d0a1c770441fe9d8c82b4845a493d12e4b35f147e93ab2bc79"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "f4eec55ae05a3ae3303d305bd042322933984c2736d853cd502711b5032c4298"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "5a32049905bcc60fbe55ffa63f0c8bb20896d85c6243e9500d6d08b409f49287"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "e0f74ced819cebeb9a23fc1cc9bb6535f9082f58b3cca9c80388721386a64873"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "b4d8615473670dd63343c370096e147ae0290965cc565e388a14d728c4813917"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-sa-ask.json",
+    "sha256": "1acb76df25970a9ca7d69db9a0fc94b4987349039c5efe8775858fd60791a2b7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-sa-bid.json",
+    "sha256": "38f9789cedc4b6b3e06a46a17db81d25b75f7d395094c38221d26fc8242c29ec"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-sa-decay-ask.json",
+    "sha256": "ecea36b2c54a568bf4efe39d99875923d1df463348c77bf9ae7477aadacfa89e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-02-fedTips-curve-sa-decay-bid.json",
+    "sha256": "5794212620bbaa47880ccad96aa20f519d75048f298c425c22731c09150ad484"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedNominal-grid-ask.json",
+    "sha256": "13ed454e8ca3e40ae29da0d090b9ebfda3c14e0271edd4e79fd3ac78dae26e2b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedNominal-grid-bid.json",
+    "sha256": "a97253e2ea29c155bb6674357b6dbd07f2f2a95ea9db78d7aaa8431697be1010"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedNominal-grid-fwd-ask.json",
+    "sha256": "5ca720806afcce02aeb1aa99660b04393c4d207f8cd706c46976266177ddfa9c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedNominal-grid-fwd-bid.json",
+    "sha256": "7c4e6e9595240cce01f78d7249e5729029f72ce11884470245215b1a4e2d26a2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-ask.json",
+    "sha256": "fd7699ae12ff55f43eb6086a35b7d52100ac2d7fce520d9b0884ec29abc2908d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-bid.json",
+    "sha256": "8ed86f1e7f8da2e79fce0d8ea801d88d144049db7a5a03c9978eecfd6806ab8e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-ask.json",
+    "sha256": "1e64124edf85837aae42f9ebcdab0289153f9b3b25cdfd2adb7bd8b31ec163fb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-bid.json",
+    "sha256": "e946d07ce37c3ece6ad3a9604c90c13396de17dc09cd7c7fdd458e27e53fc7b9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-fwd-ask.json",
+    "sha256": "0d40e24b3357cbc28c00eb94fdd4684527817b2cf162127a21f128bd51ef8df0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-fwd-bid.json",
+    "sha256": "0bc3c55b2c2c8bb0b3ab3ec001911e331bb8d4bb029180049a0f99b4869f753e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "329945a6bd2e7bbb21e1ca66550c3b7f513bfee7a3b79a2d3a68e10e2344800b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "9946fd0a282557cdf53767686aecf4682955cf8f26121191345dbc4a3cdf5c6e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "92f04f756f14cf046bcc2caab0603e4c40fdc18045ffac143449ec9f918bee4b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "9336a4b0807b390963860fa474e64360ca2cc970cf94eacd02ff25519dd30808"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-sa-ask.json",
+    "sha256": "bdc468c6385940aace58f450f553d2e92db1fc9e9a20cf03893987b9ccbfafc2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-sa-bid.json",
+    "sha256": "86e6f23f41b2f1039ca0ed3dcdec0d401fa536b5556025596e17e294d9babeed"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-sa-decay-ask.json",
+    "sha256": "65d33c805c356f3c0150d97d889ea5636dcdc9283b68c7eb682a7f2f45178af9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-10-fedTips-curve-sa-decay-bid.json",
+    "sha256": "c8283ec9a96876e5dd47adb5664daee91e4308ae329940e25483f3ac8c31bb3a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedNominal-grid-ask.json",
+    "sha256": "8d5bd945146c984cd34726a9e7f9d3dab1f8b5d29493bc86dbbd0def46bc0e57"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedNominal-grid-bid.json",
+    "sha256": "844327e178c30aa55301571388b94b14082d2ebfebea2f027bd988b6fe964f4f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedNominal-grid-fwd-ask.json",
+    "sha256": "e1e2737e65d6ce6fae080086efb8d963f653a17faeee5311174285dfffa78ad5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedNominal-grid-fwd-bid.json",
+    "sha256": "b27a3243488092ab64dc9e6c1df6e8b043483e51224bc26e572d9aaa50797e6e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-ask.json",
+    "sha256": "538781635ed80a19ea9ff3521945cf9fa2aa4d3780bba58d7cbeb570be2d8e30"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-bid.json",
+    "sha256": "23df61501c44d96bde01d2096bd06b072186bac9d4463591da8265c1c55ea43a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-ask.json",
+    "sha256": "50845592ebefadea62c93eb70d96a337bd3e2407830aa72f6eec504522b4300f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-bid.json",
+    "sha256": "e93c35184dc37098b2f2bf94101c0b81bb32f3bd3c1d63466668630c802113ee"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-fwd-ask.json",
+    "sha256": "941b84eb57908a28422728dd4aa76600c405cff94a5cbf43fc21d06fe882d332"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-fwd-bid.json",
+    "sha256": "b52ecf499247ae1f13e5c6bbf38986df44402e62b798b17b87db13195917f7d4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "02afcbba86903e4f4602ffb287343a26a121691249ae35a16fc506d0cdba9c44"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "7db8c891e6fa2d3a426060297e8fe6a4f22cc512a2a43a6fcfab84a08842b8ff"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "f5a9bb7114f0dbe562856ce9aff6b1750380f7e70b19a45300f5acf58a8e5bb9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "d1661e30a0622b95fe68550ca88e4b55c82186974f2ee1b24f20a57475c7e1d3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-sa-ask.json",
+    "sha256": "ba19866428babfb1dd67d83fedc0937525254d6628bf02e57f2d54e2bd401934"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-sa-bid.json",
+    "sha256": "2dd0efc9784c20a005c175eb4fa77d928e6d9bfe7cb0df9de2a1c7ccc589b051"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-sa-decay-ask.json",
+    "sha256": "2e3e4fb453464022cda6d0259a04149c20a33e476e4ef48c6f337986b71be5ae"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-09-22-fedTips-curve-sa-decay-bid.json",
+    "sha256": "3db1e6203fd5d12ecce0a5b2481c9c3a297b6d4691155d710db57715357256d5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedNominal-grid-ask.json",
+    "sha256": "5c76390ccfc46d511f2240cf00e286961753a99ce2619cb853330b93cce30a64"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedNominal-grid-bid.json",
+    "sha256": "6f5c23917c931acc629e5eb7fc1d1f7dae362503ade66100377f4dc2fb748446"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedNominal-grid-fwd-ask.json",
+    "sha256": "cd68dd3696b9242050005f6aa8e8b1d49367263ac17192d3e950915d0d6b8505"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedNominal-grid-fwd-bid.json",
+    "sha256": "ebc6c0433eff95f904849ed6bc99876d81c68a80abba82f4e4881307916b479d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-ask.json",
+    "sha256": "8bdc477cc4d7835d4f725253ca60364855a77baa1ec9b38eb16437fff146eb0a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-bid.json",
+    "sha256": "dfd12a88cd7203b60bb73f87a871f495449f300c93702a22fa039c326c8269b4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-ask.json",
+    "sha256": "30c2331a4607ba2bc7ac40e2e512f3e3b57039bcb94bd30295f1a1f077805cec"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-bid.json",
+    "sha256": "38ccae4cad6c04f200e04dd1f8a50fab0717658d1dae098f190a9742c8a8018c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-fwd-ask.json",
+    "sha256": "f7d13ce88585c9003117909611db0579e08c27c748c2a4a3e657662a16bdec58"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-fwd-bid.json",
+    "sha256": "8d2c23ccad6f67b348f9d922786e1945558682bed0923111c27345f1c25e25a3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "901c6498dfe154793c0ab7f835e18edd4476442129e88cb1fa90e9718520b8ed"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "fbe28b06a80a54a732b85ad5e221a5211e0b64d387517025134723ce45a312a3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "b4d0f04e4b396904be58cec1dc4e5d942df88aed69c534950c2c9c6f54125be2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "668b5da0fd9b68d52094180fc6a05d3bd028afbae4b4e7f015925034cd4755d4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-sa-ask.json",
+    "sha256": "b2b7fe86685bfdec1a0893930850a715a1e31dccf2cdb9e68f0637da1d86c64c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-sa-bid.json",
+    "sha256": "6efb2ab4509c9e80a07fa7386a7f56e91d8551bc44f504f9f700c6b259743c72"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-sa-decay-ask.json",
+    "sha256": "6bab43a06b28840d28c12373f6ad10579449a376b78e915e24c7554a5a9ceffd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-01-fedTips-curve-sa-decay-bid.json",
+    "sha256": "5c5090ccd498d67c51bac78d4cd71a17cf7557c249529016a643256bb7ea780a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedNominal-grid-ask.json",
+    "sha256": "05790fade360544ca310e2d1dac0fc01d42cbb69892f26457e2086ea743d5cbd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedNominal-grid-bid.json",
+    "sha256": "f8ffeb566e502dd5f76636350a331e677b0e5cbbcfb1bfd8b426a43b8f638d40"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedNominal-grid-fwd-ask.json",
+    "sha256": "f23ae48d0f2243666f6d0fb0882535f8a5dd29a71c4b74e90cea345fe3f2d9e0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedNominal-grid-fwd-bid.json",
+    "sha256": "983da034b8849554d3c95bef6e7618253d16c91e684e9945fc06f0caf26ba7d3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-ask.json",
+    "sha256": "d025d0aa386323e9e9039018b07bb8e685d2c8ac0ec3b50678509d1d171ececf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-bid.json",
+    "sha256": "76491946a5f7f1bea4bb4d9c01f3f48d44e7aadf72a245812628e8622275b4f0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-ask.json",
+    "sha256": "1c37bbb4fededee1a6d51a586dd656b6d60fa2a7f4d1e7fda31c3d4a6174af5a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-bid.json",
+    "sha256": "f9f7022d13e8ec3e3bbcbb2e5ff28271288f512029fa82c2512c38a612a3fb90"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-fwd-ask.json",
+    "sha256": "d86d532fae909e35395a0fe8b0bc9a4379eb58592ce4589a9c855fdddbeabeda"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-fwd-bid.json",
+    "sha256": "e0f5b7b87d27c133281770299796e013a3334b41c35b791ce2dc9fb826e5c7da"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "cf5d0e1e23f38d812ef47b0a483d004c6b590bffd3cb39ede6f42b22adfb4d4c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "a2c1f7554f0723f8ef403fe3b7cb1b910a105acf13c69bc81988afa2ada74a5b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "f8bee06a0ceb6d3bc79ce27196a19ff7ef3a9dc522fdb5a58284132156e2c629"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "fe212f0a3f1f78b92e975d87dc568c89f8d7a03d249007a0fd296222b2c52460"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-sa-ask.json",
+    "sha256": "0c52279b4e7051b9ed5ab97c1f5b89b6074979fdc409d6c71f733f3d4fda3d64"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-sa-bid.json",
+    "sha256": "160baf1517f8c5d565b9ed2f0ad64fdc2c81d555d35b01bd16002702b9e74dd0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-sa-decay-ask.json",
+    "sha256": "f80cf8bfdfd25a9cb599fb86607e9f72bbf56d9c73efccd93b60560c6b06c237"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-09-fedTips-curve-sa-decay-bid.json",
+    "sha256": "104f07d0be698b2c510d2763a820c8b668945c169d9b159eb842166a7b350468"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedNominal-grid-ask.json",
+    "sha256": "917e5dad48357168aae83621fb40bbd00c489baed4289b581dd04c5d59b3f373"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedNominal-grid-bid.json",
+    "sha256": "6669f381ffef18e2f3a8253e4a4c5e917219738454580bb7938665cd358a8aaf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedNominal-grid-fwd-ask.json",
+    "sha256": "9dc0ceb377e3de53298d11d7913fbe72077661c56fec1fe3c6fa2ff40fd7d87c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedNominal-grid-fwd-bid.json",
+    "sha256": "8f664d6b7cad6408d4b28c57e0fae96378e58e64056a49919e3a5a2c55a20c5e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-ask.json",
+    "sha256": "f5433c52c28778b262f9e76c2875cb087b3056751c272656b3345ccdf61436b3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-bid.json",
+    "sha256": "3e2adedf50cd838260646d2d4a226c98550d4c90e6e27d525ab4ceec8e9a3741"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-ask.json",
+    "sha256": "a5428e9c6b4e9e21b29c68cf79fe7aad4f8cd541a83594a1ea40644abaae54d6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-bid.json",
+    "sha256": "10d13d630832bc203782ac7738f3101628ec8f2e7e5d38676fde62d3e8d1ec3c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-fwd-ask.json",
+    "sha256": "e07730f543fd40a32480097ca134ac99750f1de22abe37267defe1c4625120fd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-fwd-bid.json",
+    "sha256": "45e5fa73934ca07fad8eceaf391e8e3cb05372d51ed4b535265d4a8f44ed750b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "3d1e905a905763f40dd3d16c3e7fc0fc74ce116c4903a19de738e87be082a773"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "f876e6a6f086bc283bbccb89f971aa6170f2077ae1c4cf5aa7d85dbdb34f405c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "daa0b54f1736d35ca67196fdc4198b8fd746895a40a63f6da95b2638c58612a2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "e29c7a849b766e77b7089c2bfa3013018b8da6ba8e0702397bdd8ec2e23cad6a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-sa-ask.json",
+    "sha256": "52bacadd03c17d39cbf4943f34e574d83ac493a4834b43624742dc71f1ac8b53"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-sa-bid.json",
+    "sha256": "e945abf558dbf4bb070936300fb2382c549ef97d1144f40352673603be4d281c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-sa-decay-ask.json",
+    "sha256": "acbc0bc5d7f51836dd6102563b12ef945311dbb41a4e827256a0e2f35768f5c1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-10-21-fedTips-curve-sa-decay-bid.json",
+    "sha256": "5920febe3dc41e901445d34963c65acd2f3e28d7daa8cb8349aba59e165757f2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedNominal-grid-ask.json",
+    "sha256": "d1e24289d77d40ee721ccc1f7437cbacfa0b9a5cd32302ba61a0034a15d09f59"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedNominal-grid-bid.json",
+    "sha256": "731ddef1ed48e125eb751e92ccc4a64fe57383c6e43d858a666c872f19741173"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedNominal-grid-fwd-ask.json",
+    "sha256": "c72c8eee960db279954d05a2b8de1c3c9dccd2cfbcb2f97e9aecc353ae765412"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedNominal-grid-fwd-bid.json",
+    "sha256": "c651b5e64c1ee303207f3cbb4d7ffd82d4fa4cfc8a6b339133fb17aef1624721"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-ask.json",
+    "sha256": "3b8aff2ada6362fc8eb74c1ccadca48ac8fc1b7bea39729f99372d345bdcc943"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-bid.json",
+    "sha256": "8f237a6f777dec381d6f73c47b2553bb071aa4fd3ab0460db9373232cf06886a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-ask.json",
+    "sha256": "997569a79169e68b479ad0af7a4ef03992fcee44ea8d9692831da48cb70d3221"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-bid.json",
+    "sha256": "b7acb14787c749ed6cf083d70a74cfc1f1e873a6fa376f38a60ae8b3d3b57c32"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-fwd-ask.json",
+    "sha256": "c55a2c7b8fa02e2005ebdd3a7160a5bdb8a502b550996646fd86d6708212611e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-fwd-bid.json",
+    "sha256": "430790e8da3b4ac4abe2584677ff528688fcd7cac35ac2d692df5a9832307996"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "dccad4908f33d2963f96885e4a61e82ac823e27125205211f581582ae62e7604"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "1597512c0fd28a6fe219f8a5bd2bc2795e5d9fe7e253357b1abe1a717eabd01a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "2c60afe48b9f3cef78d2d28d68197a6e1924d0e11467cec95c0726942f8579cb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "0017733cb582f1a4b93aad07f3a174eac4fd9ca7b2f3e4a65a3bd53ba9d47b3f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-sa-ask.json",
+    "sha256": "1de8b7424b9b14d32fe4a975dd49c90fc3207a4d262f7460c84b941251d10429"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-sa-bid.json",
+    "sha256": "c78b7321763a2500a1f1ecf44b9c72600e34c2f78c3058b00dfb2ad42f7190d6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-sa-decay-ask.json",
+    "sha256": "354bcdaad427914269bc2b86dd178ce577d82faf97a8ab09bb5ff425b5694db7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-03-fedTips-curve-sa-decay-bid.json",
+    "sha256": "515ae06c439f7f2a29e2b2524ff9bb640a07c0f25f864e2c6f7db308bd7e88f5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedNominal-grid-ask.json",
+    "sha256": "75aa0e92fa6376ff5a23f54e52b518091d0bb97c894922b56a0e687c7164548a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedNominal-grid-bid.json",
+    "sha256": "8597e5d4597d6784f318d35cbf5d039b407f67b01b525b4ef90b4c98bb94c6c2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedNominal-grid-fwd-ask.json",
+    "sha256": "c228a2ea7328d88728c69c6a42a14579de450b7d4d97c9e2904aa9ff0d19c4bf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedNominal-grid-fwd-bid.json",
+    "sha256": "50e2f088d119d07d44ac6c1d3c9e1488a3f9b1e2d7e499edaea1727917c5e5d5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-ask.json",
+    "sha256": "1851ddeaf3cd97c8a0b0dea341de309d49373177c030ce1aae81612755c8447a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-bid.json",
+    "sha256": "b82a3cdcfccfc707885a1fe17d94b759b280c6d804d3625bf8800ca8073e8495"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-ask.json",
+    "sha256": "a48215a722115399931080c190ff8636a2e66ad81250e8c9535720fa347b40c0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-bid.json",
+    "sha256": "1229fd0ef10517fbc2219852843057dd89e107fabd0662fa462f818fb50d9319"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-fwd-ask.json",
+    "sha256": "10b9c4466983fa0514ed3cf8406a30ddab45b6dccd7fcdf2b0e65cf9493c500c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-fwd-bid.json",
+    "sha256": "05dddb24d3b312ec47518975bd84563928ff6ef4f7f1c3cd523f4d886b3fa74b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "a58cd8cc3df2ba3e96430fe0c416ee7cc49e3e2fec1a1b3fd1f817468c6bc517"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "a3ceae5b3633845f2be1d767eafca6ba8890f85e285c8e00a912236fa1a371cf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "b894d3ec8d8a340f3528ab6b445763ced02b428bdd40e159e5ab4704c8a5c924"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "937d5c5d8e29c521c6655e745b106a22a4c0fcc298113930b151c0b377b796e8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-sa-ask.json",
+    "sha256": "fcde207eaa98bb5c0c37d6ec35bc47dfbb0704da9950445695a4667cc13d5b96"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-sa-bid.json",
+    "sha256": "60515249c7732a68d62fcc803d5ae1c9a26a8f430d6847eb4fdfaef9cd76e5b5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-sa-decay-ask.json",
+    "sha256": "905497d59d11d94243334ad0c73b8c142f4d178ae27c8dbf5442fea2645f4a00"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-12-fedTips-curve-sa-decay-bid.json",
+    "sha256": "39daa7db4545dbd9aae717472dc1b7e2456886328de0d4d6a68df9403f826022"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedNominal-grid-ask.json",
+    "sha256": "e484cc5778ec55a665df35b956733e0ea9b08bc15e6cc2d7e892de410bab7644"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedNominal-grid-bid.json",
+    "sha256": "2106dd2219339afbfa96dfe773553c94589ba6ece3ef75af6419f88066d068a7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedNominal-grid-fwd-ask.json",
+    "sha256": "e747e267e5a120b6f68fe4e81cc07c278e9a2c2ee7654fa63852153f2ae65d5b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedNominal-grid-fwd-bid.json",
+    "sha256": "573a0c304e92621b4298db7a8e6fee830c68a21885efcf9ec3330e8adcbbb7aa"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-ask.json",
+    "sha256": "ed3ee3fb04ad83f817ba388f96a47b058e1120a0d9a68e5c2880a939d62db642"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-bid.json",
+    "sha256": "129847f61bdb07078549595e1f59fa477084b0f0af21a4c817ece8fbf1253968"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-ask.json",
+    "sha256": "f0bec988665e0bbf3d6d4e63ccbd526d463f8f0e6fce8eff2c9bc3c312aac14f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-bid.json",
+    "sha256": "cdb6d8808f8fa1550bd91a65ccfd3dbaacbc282e06d0a5d2175945a1acc56c46"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-fwd-ask.json",
+    "sha256": "ef5ac30b9ce101d4b5ad15c1020a6fbcbe1f0f2c69361184fc26b171c056af5f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-fwd-bid.json",
+    "sha256": "08e382cbd015179deba37a40166a009b041deadc33ae75bfd836517589cb96b3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "8a34a9dcbe1356a59cc4275897cd03fab1406b61f483b6f27e6a0898d576059e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "e664c1ae78ce9e90506d6135666b5185535ecacb6ae3c82f7b29b6f0e103aec9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "8911b89006d4e8e08fc4e52753cde5fec91a51b1c211f495c167638df61800d9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "93376e86b379787bb13830f7583393fbac9eb13816bd05fab1ae98eefab26b9e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-sa-ask.json",
+    "sha256": "b458dec643683c72c82e56a1ffe67cbb34b856dd8ef1e7a9192fdd4b5a04fae2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-sa-bid.json",
+    "sha256": "d50f451bfb22132b432b8682aeac3a3921adaf5a4dafa570af0b95cab468a712"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-sa-decay-ask.json",
+    "sha256": "413ce464aa003e866153f4bbb1b748644523eff3bab715034b45c884d6339763"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-11-21-fedTips-curve-sa-decay-bid.json",
+    "sha256": "bbd045e24e351a0a66fbbb730e98dad0eefac9ba3eb67ce7b6d4c1e36bc4027e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedNominal-grid-ask.json",
+    "sha256": "c33b82e883e2d3b4b715becd41c39094684ad59fc3e8988375cea1c353174223"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedNominal-grid-bid.json",
+    "sha256": "439af1a311b1095e1018d2437205eef8e917ba4615dbd24f85414b52c9284a8f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedNominal-grid-fwd-ask.json",
+    "sha256": "a36df47f8dd5f8964e9c75a03ce0be8e263342b974869a12286c7d8a71a0b686"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedNominal-grid-fwd-bid.json",
+    "sha256": "decb5882862284db204b8043e92cbcbf00c3a9734a4842ff83af3a49d519c6da"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-ask.json",
+    "sha256": "49eb8d15161361264b29da7c677c9a9cb2e241a49e668384e94a6fdea45c1486"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-bid.json",
+    "sha256": "ef8fefd5356bae82d7c8cd980dfa076500b86b6c152338f0aadda6f65a929369"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-ask.json",
+    "sha256": "9bef639c138442e3ed595201aeb1c7bc59f354de425fa442b1d814510be07501"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-bid.json",
+    "sha256": "ea3dcc6f95a1b1a780798026b2aa0cef64848ce22045ca3605ab23a601ff8b2e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-fwd-ask.json",
+    "sha256": "a6f998bf04881314b4d39cb708c12da61f9d5275413bcb115616d328459c9d65"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-fwd-bid.json",
+    "sha256": "45cec80a9c8bb6ad3f4115c8a463dd613afb7894d0108b32debd782644b8c33b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "1cb9ef17f37c649525da0c8672b15f8f871ab9a858650d3726db5f58b6c2f01a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "d784dc3c6b7a01a6c9577b0058fa39650feb7c0e661a7ffb869da1db00671a34"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "4e1428bdf1a4d435e31a6bdd6b707413dd8a164e920d378966d55dfc27d27eb7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "5bda04570cc754bb56a5b03b9ed6a28966a86bf83c3fe2e07f20441ab8b24ceb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-sa-ask.json",
+    "sha256": "a2ae62ff1047543182acd00f9a019f2665a6f95d57fbfcee638897ff0f75b5ad"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-sa-bid.json",
+    "sha256": "9e4d8dba31ff3b25c832c96c7a2e888e8ea9192c4bb208351b4cfe8843889ab9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-sa-decay-ask.json",
+    "sha256": "adcb60b26fe5f12a756cc3b6f7c81d4e3d20b4b5be75c38ca4c3ea3b28eb0047"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2025-12-22-fedTips-curve-sa-decay-bid.json",
+    "sha256": "223eca4dc25f3716a04c9b52bd691b0faefae9e79e19a510fdff60e4bc403b5b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedNominal-grid-ask.json",
+    "sha256": "1f1ded3b82f83bcba8fb08de55a488d742836aeaaab8bd7a4b17dff79a477e2b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedNominal-grid-bid.json",
+    "sha256": "7aade70687d4bdef5f3b441ef2db95670fa41c2e0743152e4b8213e784ec6e47"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedNominal-grid-fwd-ask.json",
+    "sha256": "63f25aabd85df770e0b896019f246e252998f6509ef76923c4d34ab1e3ce70cf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedNominal-grid-fwd-bid.json",
+    "sha256": "426035144247e5ebafa755d79e785a84449b6d29dbad74505f0bce6755dbea47"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-ask.json",
+    "sha256": "5611002bb01658bceaf7cf5a0c613c639a4059c9d993a8914b496f0478c36788"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-bid.json",
+    "sha256": "0e41428f625c0ba28b2286f0ad78e32959309527f52c35b48b9e2cd32185c370"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-ask.json",
+    "sha256": "7aa2d09eb88d73f0a6231c65b14e774c9d889b7246c275be4df7b16a3c6ee060"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-bid.json",
+    "sha256": "2997160ba70229fb72a88eec7363f66bed9aa25dcf7fe7dced358dd211034da0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-fwd-ask.json",
+    "sha256": "31dc03aa46206ed547af072aad6a4f2197a8f9b8864811851298b3d9d1f8a58d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-fwd-bid.json",
+    "sha256": "a539c7438afcd37655b38a56e261e5983427e441cb6007396fe92394d49427f1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "7eff9ed0415fbb701da8851eb665750ad1db4cfbd44db48d721ec24a843e18f4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "1aef21bdb3e334c398cf1d8e72c58771a6e98e5eadbc0de719dea798c0803c5c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "4f7d41aefda6704acbb0e1577f799a3b5f2bbd235f15be9358e605c691a19627"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "971c7dd2562c317da3461f1b800da4f2836bd0e4bf7b2c598fd6eefb4f694d38"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-sa-ask.json",
+    "sha256": "331cb5abec750ad6a3328525c7f95631253b540eacdb8902c81f06b909111899"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-sa-bid.json",
+    "sha256": "a8d2b60221842f8910ffeaa069705662d2bcc22d68ea0f0d80a45b7b46c8c0b3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-sa-decay-ask.json",
+    "sha256": "ab28911b308fca3507f6b7564b917278edc26eb105987b4a5e32112bc6604162"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-02-fedTips-curve-sa-decay-bid.json",
+    "sha256": "ecc04369ea937a6f9f7b380fb400e20f5cf87c36dedde54f0e49a5a0c4044457"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedNominal-grid-ask.json",
+    "sha256": "0f9efce27b8e53cd8cdf0942d83ac6363bb2c81794b297714c548be0a51391fb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedNominal-grid-bid.json",
+    "sha256": "6a669acde2c6a911f1253dc107d84feabebe3c4848982dd90f097c77e42ad139"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedNominal-grid-fwd-ask.json",
+    "sha256": "b8c9d406f7a9df426656154b39bce8b60394b1ab0be1a659e7c0b127064b406e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedNominal-grid-fwd-bid.json",
+    "sha256": "f494b46977e548a8a2feebbdeaca803a9226576ffbea2cd5d0015d5fd9ce877c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-ask.json",
+    "sha256": "c6c4a0162e1adefc0cf21fcf5972309e7f88266b5ff79aa5638341fdbacc5c9f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-bid.json",
+    "sha256": "48291010de67d4c39bdf59a3c144d1ebc801ae2b7e31d231e31f54e7444e2b80"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-ask.json",
+    "sha256": "d7c7cb96224c7751d8d7ece68961c57d32732f1e154cdb13459bd046ba488f82"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-bid.json",
+    "sha256": "4a503aa0e8d457b97da93ed09d1a6d6b90efc2dbb20b20ac975d05b14faba49a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-fwd-ask.json",
+    "sha256": "5db5e2153f6012106e82b80c48b478356c1a9d853b8c19d443673c5e417633ae"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-fwd-bid.json",
+    "sha256": "5656b25d528f9fb7d0e08ab348cdd3af57586224739e14d87e1d41776f5b154d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "9ba6968c5dcbc16d0a6c384c78e4fc3d74481b331643f01ce7b26c24e65262c2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "e29b0a9f39abacf175211c79b4a426148e46824555eeb22a1dff038752f2df03"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "9eaa51c58d3d981797dcb01c9b1249faabcbfcce136ae216f09f31b398e266dd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "e02dda23b705cc50f130015de96723582a25347d6f4f475bf5f11180b58dcdfa"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-sa-ask.json",
+    "sha256": "4d778f6c511ae78f945bd758b7e518f904e87956c6c89c7fa64aac587d67e215"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-sa-bid.json",
+    "sha256": "94bd8ec976c43585551df0c8acf6cb3f6a39fcb1ec37bf4b7fb2de6adb75249d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-sa-decay-ask.json",
+    "sha256": "4c3889a52899c41c0b8b0f2d273644570504ac1e0570d7e47df2971321163e79"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-12-fedTips-curve-sa-decay-bid.json",
+    "sha256": "25086b6dc9aaac147cf362cdf812bc2dd05ec389069ff174156bef79ec81430d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedNominal-grid-ask.json",
+    "sha256": "893ff25595a9b2beb14186d6daa561ea13110641c7de78075fa26d7d6908f4ec"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedNominal-grid-bid.json",
+    "sha256": "b724640c6089023c21e68d08def4c8e35c79f2205892d473d83483fe8444e149"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedNominal-grid-fwd-ask.json",
+    "sha256": "6d3e95b45bbe4f941b3f8c87a234c066300fb40679c9466d6eba160b7e4ba6fa"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedNominal-grid-fwd-bid.json",
+    "sha256": "13e67a0635a49fc3c783111668f19657ee384801ba09ce766c2748cb04d58aad"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-ask.json",
+    "sha256": "275643169206976782bad17ab5b7495980ba7ab55f107f1b1355bde92b80adb9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-bid.json",
+    "sha256": "4dab041fd263158c9c0fa7e4db3cf45bb53ed22194d2998d47d2786a33c1f103"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-ask.json",
+    "sha256": "214b1fa2525cea220396b4b06bd2a478a941a7be527c6026217f1edd5ddf8c4e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-bid.json",
+    "sha256": "bc8b16b76dbfa719d2c3ef3d528fa14f63c82b7d46ac00b347e080041c5614c2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-fwd-ask.json",
+    "sha256": "a6e455fc2224d62a7c5d61da5f08b287b4e6a1d49b9805a6dbd9c6db4942cfdb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-fwd-bid.json",
+    "sha256": "8b695a37d8eb2e6e2be1792cb79ffaff07ad3a3b5c7b1cb1ce6efe80e08c3806"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "39db2042ff5284485efc1a91e849a5f6fbe4cf51186177874e8a22f9ad5d8b30"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "d4f4b7c5a3e1b1de619d1337b65ef90443577f7ef33747349de00f6d0e0424aa"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "57b9c9498f222ab3e6860d2b3afafd1e815e3ee1af6d69e6da7859d8c11bd564"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "732adfa3b32f8f06943818f2908d189f6d8b6727129f4d9ac6a9bb86b6268d53"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-sa-ask.json",
+    "sha256": "f2ce23cfee66e682c9483e6733801dfcd936e47da10f420be0cddc3c6b1194cb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-sa-bid.json",
+    "sha256": "c8650b4cfe57688a5cf26f06a94ab72e01ea15a8da0ec0c678013e8f78b4c920"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-sa-decay-ask.json",
+    "sha256": "f3f5dc4cc29190e627655abb6a4d1c0fc9e3819fd629e2c3fecb0f6979475ac6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-01-21-fedTips-curve-sa-decay-bid.json",
+    "sha256": "bb9df7e8e667c8bd6ef822ca170941ea908b8fca1617984a1f59b543db2d0936"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedNominal-grid-ask.json",
+    "sha256": "a3f8e4eea5abfd24afa1df2770d45f1ee9e08c93b89af6f46c2c308434c86e66"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedNominal-grid-bid.json",
+    "sha256": "5c0c0579d635b16f98d10a00789d25aed2141ace8b11db78b39b63739aebada5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedNominal-grid-fwd-ask.json",
+    "sha256": "37b2a827da19141fca13c9c352f4311bd85ba8e2ef0d4d09025809766844aafb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedNominal-grid-fwd-bid.json",
+    "sha256": "b5ddea137c22107a5062e4011532b5929814617d2084490ab4619071296472a9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-ask.json",
+    "sha256": "84fc363f4d8f1a0ded28daa74f213a8a518da811d51f1f468a5ccadbd566a4fc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-bid.json",
+    "sha256": "b5bf1265d467cf96fa10f43137a2380c9ab2994ca5ffd297e477b570129be78b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-ask.json",
+    "sha256": "9b9482e8c04d54ca207b8b3ea0f5dbaa6d9ce9b57c4822110ef149e749644c6a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-bid.json",
+    "sha256": "7133b1b76a1c03da926f53c76594159ec1ef4db8b3a009139ebcbc2f6fc9e175"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-fwd-ask.json",
+    "sha256": "bac1deea03f5d0df4ce7f73c638f93858af194835727d435c59287fbaa5928fe"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-fwd-bid.json",
+    "sha256": "d38b4412a4b047ba975249743c863216fceb73a87d0454b355bfc03478cc3333"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "611e7148d4748957f2410614baa288513445b300c91a1b1e958d25417e12f196"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "a41a0f75db6a6d5b2fd8bf5bb33182d81863ef5092ec2ceb2feefc08aeb7a1e9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "699f81527137b83117e2e79ad0faf917483f8b1402f4e3975f34ea2d6421d34f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "9e4dff8c8b36ca0316517154dd2bb629f15eeff9873a27030b81ce5aa87f217e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-sa-ask.json",
+    "sha256": "4421185a7471e54220a101e63b2a32de961bd12dc92ad00d922f05c5af45b60b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-sa-bid.json",
+    "sha256": "66cd91903cd13f1c386c388344ca1d7c4084f47e3aafd1784777fb8b8057b5e7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-sa-decay-ask.json",
+    "sha256": "178c4431ccfc71cf1f020c6bcf56522717a8dd3e17f8b3ec4ff642e5ecf1574a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-02-fedTips-curve-sa-decay-bid.json",
+    "sha256": "43857ad471ca39d113048f9d0799505131be3f54b62d532cc119a5fe7be31f99"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedNominal-grid-ask.json",
+    "sha256": "40cb7e01d8c2f833414cf4b874f6b3f482d969900afe829487eefdfbbda036f5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedNominal-grid-bid.json",
+    "sha256": "1d5aae6887b7236bb5457f0e9414dbba814658b998ce76547da64435ef5183fc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedNominal-grid-fwd-ask.json",
+    "sha256": "0166b9462f34dce9c55752d98b86e1c525a2630b18ce5344f6685f6ea0b1da45"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedNominal-grid-fwd-bid.json",
+    "sha256": "8ef56a6577c1e8d2fd853a105dfc1190189a1c6f5b9fe7c4d63b7373770a35a6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-ask.json",
+    "sha256": "6301fd9bb41c2cbab95d13006dd9c652d3c1b73886f434387b0b323c1c3c14f6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-bid.json",
+    "sha256": "ef29ba8ffb978152ae0d8a4e1c5a708ca1b66f540bc55aa2c8b76502fa7dbdb9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-ask.json",
+    "sha256": "c5f42cfc03d776cba1996100a41a9a9a9bc1dc87a252a75d68732d9485028830"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-bid.json",
+    "sha256": "eb99e03943f6f9a1f89cadb5875c81129a00b771a86cc3ae04f924d64d595a15"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-fwd-ask.json",
+    "sha256": "d12e3e9a2daef900ba3ba0e5a351bc285b6c7adfdec8f242e6ae4c244ba3265f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-fwd-bid.json",
+    "sha256": "31c7c5af4476c516be6346a4f1f7998c31b1bd2e6dd467a7fef250a2727375d6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "8ba869328bd0d4669fee54e4d2844eed8e7317d6ab69760d9b9f14b9f2041184"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "1d2d6b2e156b6f50dd07aba6e3a9fe371604ed52d0ffb3fc1c6d44ff53f31ae6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "8a95f6c5ad8a758a7575e3f701933d1b5c6e1e35ddffbe2486dad253baf27f51"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "ac4ef76ee4c99b4a6af4611a8e715618bf603f83c5ae877ccf94e9a7240c599f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-sa-ask.json",
+    "sha256": "007fec564e3d1330a7f0da5b48bfd8b741f5089b486de73b4073adc943b65fe7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-sa-bid.json",
+    "sha256": "319ac06c7b20afc54e2a445bd8fe236fe382c04d8b2e1116f62e4c4b83e22fe4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-sa-decay-ask.json",
+    "sha256": "3bdfb84e35bf1f0ebf479c2f495949b3b6cf1bb02e503e0abf95dbc71b095815"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-10-fedTips-curve-sa-decay-bid.json",
+    "sha256": "b70ccf72680e2dc29f35ccc69e663cca150b03eb794945b0106268d368e412c6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedNominal-grid-ask.json",
+    "sha256": "6de091a4df4b1661ae59823bb238644d37fd17a566f4c38693379ef88791a388"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedNominal-grid-bid.json",
+    "sha256": "bdd5e9500614bb4ef26b68d1b6f4a1cb59341ee92feefc60506368394708e7a8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedNominal-grid-fwd-ask.json",
+    "sha256": "6ff9bca44ec01078cf3510e3a77c8d9885ada66da3ba1c99131dde8cb37f39b5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedNominal-grid-fwd-bid.json",
+    "sha256": "ec6689bcf8a0bdbe5f89b640e03c6bc6be37e6ee47b1f10801b0d2bd17223ab3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-ask.json",
+    "sha256": "83d674a867e61775c7bf00dc56edd0c83e094100ca805e432cd48efc7f3e9743"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-bid.json",
+    "sha256": "cafccb55bb8638c6b1e38a15b99bac1b0b70d8874e9c03a5cafae7f14880d697"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-ask.json",
+    "sha256": "8d625475b58d432d3b038cc76a27c18bb661d0d3357d54f04680d7056a8ce8a6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-bid.json",
+    "sha256": "b16e4c63b9ec9c36c00d6848ad79fe7684ba1e4b23309c457c601d23db554c59"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-fwd-ask.json",
+    "sha256": "3c46ca2d1dc251054082a732536bae3ae8030b0e03aa9b0cc6f5857f1cf2beda"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-fwd-bid.json",
+    "sha256": "b1e9d2a73c56797b313ff15e96ce505fbe89eb4f84ecf83d1223aafd07601589"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "d7571b00a8d522c383e844689d4108bc683b677f997216bb0ff6dc292418ca70"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "cc3e32e881374125947c914ada0757105f0d0c0528dff1d7d4a7c9921359bf7c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "4a013c24abc7d03dc95aea7d2ec4c9ae1b80051c62a4020a5a7e92bd3f20306b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "53c65ff0bd24c2b7f49fb4f5beddf9c6b04dbc88a4db2d87833b6c0d555aa0c3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-sa-ask.json",
+    "sha256": "5acfe39d093a0874bc5397f63b2a678bf367b5f804092417cbcc94b1b911d57c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-sa-bid.json",
+    "sha256": "e5531c2c9aec963da3cdb3db274db0e2f61ba5ee0d2fad85e58195e92d602920"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-sa-decay-ask.json",
+    "sha256": "d34744acb4a723c8a18122eafdb832e9686a7dc51012ea6d76e9cd3c11fddba7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-02-23-fedTips-curve-sa-decay-bid.json",
+    "sha256": "7b1151a4d5e2dfd299b5ee2e7fdc96f08f1da0ab7c4fb44582ca906a935c9486"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedNominal-grid-ask.json",
+    "sha256": "2219eb69319798ad9d5d4052716e91ceb10a770cf5b5818140048684a66a2b45"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedNominal-grid-bid.json",
+    "sha256": "b52052153f15f5e4348ad4ec5380aecb8f90b78c9f6d9969e3697686e352aa28"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedNominal-grid-fwd-ask.json",
+    "sha256": "0bbb949243e7f70774f01f71aa70aa72ce8ec0ed35b329d70bc2ac8bf6b4f63b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedNominal-grid-fwd-bid.json",
+    "sha256": "2a0c89849f5bcb6bb5fecb74e4c62158fa34802ab74348df51e8d6828025bd10"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-ask.json",
+    "sha256": "307108fe7f1efddabcaa77a795500263f770634c3c971a39cf635aaef8e2fd18"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-bid.json",
+    "sha256": "08d97a3a721e72b2a74db724fed98f5ee30d10caf38bc8a546105fdc555a8e71"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-ask.json",
+    "sha256": "b1afb06df516935a3ae6ee67aa91e8580c3a6ecdfa6681b23dc3c39f069e19a3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-bid.json",
+    "sha256": "f3f485e09b4be40ecf9ba41029f1bdc164f5449da1b34e530e091337907735aa"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-fwd-ask.json",
+    "sha256": "dcfc371e0fabec4e2646ff1da517423da6dff31d809baa320cc43ac8ef9b2b34"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-fwd-bid.json",
+    "sha256": "78b7b6299c533928bf4cb1f0e9e5b3fd6c28d331981d4201f7aadd2027228751"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "a5204313e2717bdb137438c39e43714b8f32301ddef60e5ffdb44cfe051c736a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "e20d2d2bf3538e4f54b128edef29e12ef55ec7b0ef51e9aee23df34d57a3ad73"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "04409126670c51d20c2919206b5c05dbca6e4d64054cb8e9be9bffef3efaff96"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "1c7daf6a8aa2606f56c790de7073c51e7a38c112d75729358871b09dfeaf95da"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-sa-ask.json",
+    "sha256": "60cbd6bcf07b7876bddd0a3aa75dbbd3c4be93ddd1e271d25d966f1e93ebffb1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-sa-bid.json",
+    "sha256": "24614a17a2f2262e4f41f1eda2129444af9211e17d0573d993376ea3f346421d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-sa-decay-ask.json",
+    "sha256": "445ee5bbcd6548a8b169b8fa5155cdea9a9970da18492258ee7cb08d45160bbd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-02-fedTips-curve-sa-decay-bid.json",
+    "sha256": "cf9849aa2659a25769894482913d4d7888b13f6347a20c797f8b35a312cdf5ed"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedNominal-grid-ask.json",
+    "sha256": "c0d319811ef38cc7bfc33cf4b113241a5bbdfa0eabef1cf1703a1304f5ce6edc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedNominal-grid-bid.json",
+    "sha256": "2da92fda395a1dc71cb1fb6622e5ee5b1fe0978a14a6a22fa5e11ddf3d619b50"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedNominal-grid-fwd-ask.json",
+    "sha256": "3a5373830bef020518bff4ffe603fcee99d352f1aaba35ef46d6124eefab12fc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedNominal-grid-fwd-bid.json",
+    "sha256": "12e5782116a4afbf9572bfedc132892bc6e618fba218882207aced66f5ca4d6d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-ask.json",
+    "sha256": "e0f017dd2920f38b56f29c80fe40fe5a308b1e8a8ca1b623e166fbb9b5293651"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-bid.json",
+    "sha256": "ed028ac7bf166c0350a6e4f5711521088e8932701c8cbc5b4dac9db4aceeed60"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-ask.json",
+    "sha256": "e77c8903742e54dfe13a3950291adda48aaac5f35ebbfc0b1dd58dceb8c3e78f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-bid.json",
+    "sha256": "a399a40083597a9e21d95a5257e0c9c2662ad44781554594af3348390007277d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-fwd-ask.json",
+    "sha256": "0897aa3c7c9bd82ee9fc1cfc47aacd96f3a3cadcb7bc32b6b3c5e5d35bb2558a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-fwd-bid.json",
+    "sha256": "262a553a65382b783f3dc56f97fc9b451ae521981b8ef33501efce56fb3a7354"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "74d94d61dae802f49945b6a0d557ca361220f2631a12405b7539a4ffbb31ddf9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "549806f38d60e52e71b0f66822c48c92bd70398fd44e602821da608e1b23c56b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "8bc0f2eeac8f98221fc1db5b0a3e8f65f951e06c9a5fb7e05c9a3d8a3581aab2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "5bfb72424b5c9fdabf4a51c1d3d63095ff1982c1e25ba0bc8780791a6ec10545"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-sa-ask.json",
+    "sha256": "960d6595c4afcd99354348ab1f34ded37da3b6055a659ca5f68f5264bd8ff832"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-sa-bid.json",
+    "sha256": "b365c5c8a46082f784eda7ffa4ae9e9b1117287445662617e00f1c42c92cdd0a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-sa-decay-ask.json",
+    "sha256": "b72ee9ff51fecafc24180db7a1e88112dab53a425f44a62fe886cad990f364c8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-10-fedTips-curve-sa-decay-bid.json",
+    "sha256": "6a757028cafcbb23598402ea6d23dcef7aaf4a3446a9b0b3eac007f85409461c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedNominal-grid-ask.json",
+    "sha256": "5c354e5f4153c42f71e20ff005143a1f67693ad1f78ed5ed31753ae09b90cfbf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedNominal-grid-bid.json",
+    "sha256": "26604e02e6a56750195bcd18b629b141afc0ee22190ed706f01b8476f146c8f7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedNominal-grid-fwd-ask.json",
+    "sha256": "579fb7a22f30d274547738d7f793941292022ffb0e22394882b5771d825956bc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedNominal-grid-fwd-bid.json",
+    "sha256": "5fe7db0cfa11758a5a6dd7c460d18d751abc8d1b0ecaf1bceb8a84ebfffd8877"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-ask.json",
+    "sha256": "3e45cc46c2b1d4ad2bc83fb5f592d7bbbe5cb65e9c0fe12edbcbc0fa8eee1bee"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-bid.json",
+    "sha256": "fadc25d0f171cfb6d0021f50783426bf9e3e21f53b06ec71acc1ae4c17fa0f55"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-ask.json",
+    "sha256": "e248df19a05bfe414e577e8cb249edfd4413e7163176a4f7b61e837e7017caf5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-bid.json",
+    "sha256": "16d30bae4d0a697399251b37c7bb071eaf7c2a70e1076bd84851299403d2915b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-fwd-ask.json",
+    "sha256": "6ef127e3042012504c7d103c855c628bb69e1523ae5853582f1a859520a78b08"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-fwd-bid.json",
+    "sha256": "61ad3a1214e4a2f1d1166d78bf33bf07cc8a25f1314b58769bc66465d5014fef"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "efb279605c26cc3ece8103dadee913750ae486be838709438650dc671b52a156"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "e431a02279a27e20d1714b0813aa0c0a0333941de8482c67e3410600f1496f87"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "2e142e7388e00305fe5a7ba8918e1cfead62e7666125624cfc304e200f3802f9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "7ccde15162de230eae8c7567325711bc6a28b7bfa2ab71bf6d1c26b72ffc59f3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-sa-ask.json",
+    "sha256": "ebe4c5470e3945e4d4eae988b1b39406f84daf59cea5d23d5e243078308ecbd8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-sa-bid.json",
+    "sha256": "35ea24dbaab1d9ff551e937649f00d263e502cc75393c314158e0a719b788903"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-sa-decay-ask.json",
+    "sha256": "e8ed12b522e8e0987f9ea8bd0ce8ffc4a3454b10b7abab36e766fdba1274edbd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-03-23-fedTips-curve-sa-decay-bid.json",
+    "sha256": "03f68a9ef0cc6b026794801bb7502f29ac0979ee02db9b6e302e0e7810fdb461"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedNominal-grid-ask.json",
+    "sha256": "93d3573dffdf8546d48d70647782cbf6b7a8acab7a79452707c3978bd3c16f65"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedNominal-grid-bid.json",
+    "sha256": "ae240d3d08533b205cbb67707095a31c4d707478f4d8c4c0b0c1ed9b63c3752d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedNominal-grid-fwd-ask.json",
+    "sha256": "36db580300bd244836ec5498179e6f419be0cb412482d6181913feb6ae2c2dc8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedNominal-grid-fwd-bid.json",
+    "sha256": "c0be87f10f16fbafe5ccadb8a46ccee195a19bd019b2f2b8e21db5282facc552"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-ask.json",
+    "sha256": "5ab1a0b0169a1b63269a0f6d58381d133ad895b0f773511bb1f5ab3388a5e58d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-bid.json",
+    "sha256": "5553f4bcb481ee59574ea8f9b0705a52a768eeae7987fafca09c60eed7026c30"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-ask.json",
+    "sha256": "9e3d201a0e68605adbcca3c3faa8f3a5287096d853901f00f057a82492bf9e11"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-bid.json",
+    "sha256": "00bb6631b56ec768828f47af74de191b734061e32b19204b59b31cef65cc43c6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-fwd-ask.json",
+    "sha256": "298f3f81eefcfcaea60a71a5afc7b36bc6e2b104bf45f9159a2b578b281b1eea"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-fwd-bid.json",
+    "sha256": "5b91042fac271f0ef173e669e22df3e39c48fe1d0ab1d514ffc2f69fb995a60e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "99cce5300c3985f842ba1f7be8f237e9b1e43a165064f45133c8dc4649016eb7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "1a4737b3e5b80737dd730965e87b3fde1b68d624a88582686f34d2bc5782842b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "08b4b1cfa566f836464f459f8455884e3b56d2514bacc01c2df82bec03bbad17"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "f19004d4da4cdda2982822a23993627e81c7bc6a7c76327cee486c53bbc1a419"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-sa-ask.json",
+    "sha256": "4c656ccb8a7506b933e994829f3bb819462eff799d293e59485e3f8353cc44ca"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-sa-bid.json",
+    "sha256": "c998576edf7d4ffa9ae4b9a4ebf20a40f4e5426d5feb094bd562e8fdb3d7ee27"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-sa-decay-ask.json",
+    "sha256": "9bbcb74f91390fdaa56c7f8e446d43b701f51cfd5757b4c618a2e565afd761fc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-01-fedTips-curve-sa-decay-bid.json",
+    "sha256": "c91a674f91747b57de6c5da147d81e2e8a16336150fdbdbcffd3a2990c160fce"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedNominal-grid-ask.json",
+    "sha256": "ce32cb379edef9e91fa28d993d7769538e396fb6f5400f53b217310151177eb0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedNominal-grid-bid.json",
+    "sha256": "b33497e70be508b54a352c40ded80384eaeddc95c1bcda9c03e498acb41bb612"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedNominal-grid-fwd-ask.json",
+    "sha256": "a57d92655d18294bdb8aee6ed41a550caad995e0eace01846cadf9abec8683fe"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedNominal-grid-fwd-bid.json",
+    "sha256": "fe55960efe57c6590c3fc6e0c1699091b17bef31b1e606ebffeffc8fb3c5b950"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-ask.json",
+    "sha256": "e0d4442375dbd289545fb9a15ca8dd5a33472419d75e5d181f339ffc15672a06"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-bid.json",
+    "sha256": "eaaa28f6143a48338be1924ea50d8d535e3d1bf9e20f25a8b3e1acbe51938706"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-ask.json",
+    "sha256": "0282d037e673fc4822777f7c0a2535e56002204ddc2a9becd7d53556509b7e98"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-bid.json",
+    "sha256": "8de64f18f4ed954814707766b936f0a45871064b853553c70b2960bdcb4e0f5e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-fwd-ask.json",
+    "sha256": "e166a761f33ee57eb7a446ca4a80b17b08ce16cc1954e19b21ff44cf1b574ec0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-fwd-bid.json",
+    "sha256": "9065d80a4ae1099f41fffba01973bdc6b01c7d0443f9e8ae955b1d84ce9aba6d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "5571b992aa69c7bc52f36b00cb9c82e4417847862e2a0db1de30fe98b98c55fd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "98a86944b1d04020d1e4a855a3802dcc817b602cf9ebe8f4d35ee7f60d93f39e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "f60b02276f1562e81b0590e1b1aba26b815db6d26348a2cda19411237fb3e039"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "ba2f270eb27067917474faf142be479d8f6895109513a7ccef98a082c67b10d3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-sa-ask.json",
+    "sha256": "792d959fe7dd8a49aaea5b83e52724fbfc19c802626ce75ad51f6dd6606ba3ca"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-sa-bid.json",
+    "sha256": "7b0ad78dac761c4132733cc517efb207e8712ec32a96b6456f461e4a0d47b347"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-sa-decay-ask.json",
+    "sha256": "4cfc0934f596f4c7fdacb8b2888dc43c838483b6be60455e30d03fbef2ecb42f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-09-fedTips-curve-sa-decay-bid.json",
+    "sha256": "9a17270ddb03f9078c606356c1d23e62bb44a89d9567ee6881d0632a0d8ca5b8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedNominal-grid-ask.json",
+    "sha256": "02a89a1b9091e57df368fa682296ae5b7ad9145ee42e297f7e0905c74e5da5bf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedNominal-grid-bid.json",
+    "sha256": "c82523fcc32db7bb31ed12b79269210d61056716dfc92dd7f2c36eb3dbc00f7c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedNominal-grid-fwd-ask.json",
+    "sha256": "1ff2b9d02c1941ce11c9d81db351687c2c741e99cbfc4c803bec6e34ada81bec"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedNominal-grid-fwd-bid.json",
+    "sha256": "75f6cb94bc1d430f3ceb2a34d12393d347f50bf2237c53e78cb8e9e488e0fb71"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-ask.json",
+    "sha256": "9abc87a5f0816b3427b4dd9f8dced56118ee7b791913d6ec3c2bddfaa3ca16aa"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-bid.json",
+    "sha256": "81802283a894b8aecd2502bab12c75aabb5a8ef0539635ec80d969ff054dfe62"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-ask.json",
+    "sha256": "3f8b9c6350478c4c202a36ee9e734999d6c417e1b12e7de1c4ffc9badd8462f5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-bid.json",
+    "sha256": "0e03acebf759d6fae97c33743af214fa26a62a45eb3628c5269a5a1a02ceb971"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-fwd-ask.json",
+    "sha256": "f36294613ad3e89dbfe2ea3a348d15ff6983532d1d4e3a9daf44c09424936e69"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-fwd-bid.json",
+    "sha256": "b5ae5209c1f0eccae1127e8f63163ecfc894291c0d5b0a2770fbbb2d103033d3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "c693805ee221f4a4090242302cc5dc41d0491fcf24d762f4102ae76d3cc08c45"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "96248aefff666167b73146f3984c2c2044a318f6a24dd66d66e58a1cd80932b8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "83d93a0315408907a288d00ac0211785eeffa7a7445fd8bb786ff0d8b31515de"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "e2828592aa1385e43ebd6d52b7f374b7749d2d58a2c1a9acea424164e7cc8cb6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-sa-ask.json",
+    "sha256": "cd73208f3a5f8f15a15575b54bcd3dac697304897cd0ad69d581da82aa31024e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-sa-bid.json",
+    "sha256": "bfa36f1891a8308ee62416d90a9ccdf5d1f500f9258684cce69e635054c34924"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-sa-decay-ask.json",
+    "sha256": "69850d73297c7d2069868ed7341a9b2a020c9fd9d2e843485aaa5805568e1596"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-04-21-fedTips-curve-sa-decay-bid.json",
+    "sha256": "a8da16cc2d3e6326d6e4ec9e3576111ee8bc79c149aa17570901262962dc4dbd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedNominal-grid-ask.json",
+    "sha256": "648ac807cc9735f4dd570b8241fb4a580e6261aecea1006dd1159c1df451b49e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedNominal-grid-bid.json",
+    "sha256": "689b90fcfffc57a34083dc435a16932a1424ff6e65c5346f4119ad3d01ed136f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedNominal-grid-fwd-ask.json",
+    "sha256": "3b5311d20704bb7a3972eb2e2bd961e424119bcabb06c9742f23f76e5ffbb5eb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedNominal-grid-fwd-bid.json",
+    "sha256": "03da3a5f91d6c83e75ea0290bffa3fbb48f2f3b141cb207e215588948c919289"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-ask.json",
+    "sha256": "df5ba26af69a94e46463851f4b40736fa70ed56bef485c8cc1b382dce2c344e3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-bid.json",
+    "sha256": "e225f3b5e212b9331dfe0fb503a105ef95fd03612b7b5bddd0ed7bc6a9de7f3f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-ask.json",
+    "sha256": "02116a6118ccb26612dd6b389de0e508471639d12861051c94b4fcc0d8d39337"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-bid.json",
+    "sha256": "42cf9af71f4844fd055417aed71fc63c8ac99cf4b3a88482692cc579fd03b4e9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-fwd-ask.json",
+    "sha256": "a7cc74e515d6abe08515703e70c96b700636b1dbc7c873cd10131b640df51198"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-fwd-bid.json",
+    "sha256": "edeadc9bf27956ab4efcb17299de744062c4473161cccf19eddb6ca0bec1558a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "9f510dd7884683c06299fb3eaffd98c9b9f158bbab50d6f3b41d1692b53b4198"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "aa25957b3ab905047e6f3b7e27b9c15a6fa18754fd4e89e9e6b53ed44d99ac59"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "ff8628c5648102d10f85698d60f865eaa061d0fa6b99dd693636231e97129b0b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "8d1501fe0d60c104202ce0951b65523e552296350daeb4f6c8682c97cb3cef20"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-sa-ask.json",
+    "sha256": "2535568c0ffa6bdb79d2a234f81a395e238947bc071676753f393a7bc0469d6c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-sa-bid.json",
+    "sha256": "8bcaa4458f905a69ef8ce7b8c1018a3104053b0be3658aa98140e7be44aabced"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-sa-decay-ask.json",
+    "sha256": "638c061be47a77083048fa2495973e5b4ade2f5d0e0d218f37c96dcb376e3a9c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-01-fedTips-curve-sa-decay-bid.json",
+    "sha256": "c925b6e78b69239f36e84702e59b886ab9d2a8de23b39a9fe96339e4d6795d99"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedNominal-grid-ask.json",
+    "sha256": "0cb63bf7ea25363de55e06c92fba675a61c7023a1f2bd239114ceb548a995823"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedNominal-grid-bid.json",
+    "sha256": "4fb266676be42b77c6d7882e7c22bd1e9bb44b1a5db0cf5e272507ea2af3e632"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedNominal-grid-fwd-ask.json",
+    "sha256": "ac44da4cabbbbd22c4e7dc8555c194a251e09b02158d5586d100937ec1f8c777"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedNominal-grid-fwd-bid.json",
+    "sha256": "848db7d43dfb95289c12678a5e34ee66466ef752679d9a473b23abd1b7eb2124"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-ask.json",
+    "sha256": "228da19c9f10f296c8ff7c6af130262f61d1d258b3025a41a15c590f4c1b3ab7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-bid.json",
+    "sha256": "6039c066e3631d45824436c74e3be8b31bc0b9e6640c007f565b58285ce02161"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-ask.json",
+    "sha256": "8b2a12997f3364a08922e8726f08b3c5c240df2519d83e293766204713581d36"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-bid.json",
+    "sha256": "9174478d5fd0d56c7c0e9f9b80a4784b1295d89a91915d9b3d1629a827dfadd1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-fwd-ask.json",
+    "sha256": "00126702dbd9299943d79953d81285ee53bed0657193b8cffc6df2b2a4266f9b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-fwd-bid.json",
+    "sha256": "c1beddaf536c379fa08a5976c24c9ef94bcc5b581fd0e807087ced2cc652e237"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "143b7fc82ca146d458ae05124f5e73af6b600f0458ef0e76efb5f7e0490056d9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "cceefc7b2a10666bd182d30a29c7b2ebf58438d50690ddb631ff3249860762f3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "ba792427a8fc2050d75087870ce1ab3509ad6a339ce18788418765935b22ae41"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "ff2632b5df20c26899bb4fe787d1da75af767493e82b85b86ae193b7ca98b606"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-sa-ask.json",
+    "sha256": "65a3c741394983668a043c20208ced7c2f5baef38aed1312c1e76b54c8879429"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-sa-bid.json",
+    "sha256": "07bed17da2eaeb9186b1a987db6b607606ab0d8e4e41f32521ab8d611f36abad"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-sa-decay-ask.json",
+    "sha256": "0d8921ae347493d4282659d006918dde8d02943648b5a2fb9f3c36f86287bdde"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-11-fedTips-curve-sa-decay-bid.json",
+    "sha256": "2acb199c5a6d01e75c9b7d077d09d182f2f523ce4cd9f5bd31a871fba8330c42"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedNominal-grid-ask.json",
+    "sha256": "0bff4a8f300ff14247db39f744c43b4a4aff666d72342aefe4e256654444d7b6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedNominal-grid-bid.json",
+    "sha256": "44b30513164f7af306c23d74b14a6829fc40aa1bae377ddcbd71f8ef6d919949"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedNominal-grid-fwd-ask.json",
+    "sha256": "f1574f17ad9f2eafcdaf452485bc6dc4eae8781c727bca907cd0aad73b64aa27"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedNominal-grid-fwd-bid.json",
+    "sha256": "23700861349e8c4930f938b955d349aabe0cf4e5bf2e555d8dcc969eb6740318"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-ask.json",
+    "sha256": "1c392e223bf9e51528723f20e40217cf83487bf9562accc93936d920347300f9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-bid.json",
+    "sha256": "3b1ed1487b52aebd34f1cdb553a50e3108c8862e405f1c772283e6beafc9c09d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-ask.json",
+    "sha256": "1714bf3112906ebe7564612c3bbf231e0ce9b97962265c8c8f1f2297fffab65d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-bid.json",
+    "sha256": "bfa9dbc8a5b5ed6f4fc0bab052009b88638265e6c194871fca6d410b773a00c9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-fwd-ask.json",
+    "sha256": "fba0885482959ff6c8a00f9e616d9a5872516d96717912ef4c12416711791081"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-fwd-bid.json",
+    "sha256": "5142c3d20f360c63cea56aab5216ac4a9465a4a6c764de65abeabfa9f308f0b7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "66f0e1873b6372636cb240d09183620e8992d462a42f0406a756174c9f14ca97"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "b07fa6664df39e92afc3fdbe31a33df2b2c05e672802a32c9c28d9d88af40ca0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "dec66dc9367929cd25728a117a8e5c36773491997e27292cb5c59d74832375c3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "8e074df4a9d8cb32c32c7a90ad3fae7a920a42eee205c68371aeace0b75cb6ae"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-sa-ask.json",
+    "sha256": "80a071253ef1f6ac9f36c1f9fe87e516540d26cc5261c961f628e97205c3a72b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-sa-bid.json",
+    "sha256": "374ed62e2a0c89f79381562f6722e362743f5b6b44ae534f8a7117506b4c2337"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-sa-decay-ask.json",
+    "sha256": "f5cfc999606f6423290b37d53867221bb396700858715acddf6a687beaaeade0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-05-21-fedTips-curve-sa-decay-bid.json",
+    "sha256": "0db35fd83337f3537e5f9474fcec765dd075586ac3daa886239c2e1a5cca7adb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedNominal-grid-ask.json",
+    "sha256": "47fe469ca0a5494abd03eaee9ba2558f0cd8bde0d5f47fd2a39e69ff13ead2f8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedNominal-grid-bid.json",
+    "sha256": "fe83c0b0998592ddaba32cfb4aa8f2f515070e7426f61385c5d29f69095f9c7c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedNominal-grid-fwd-ask.json",
+    "sha256": "04b94f1156a40ac67d501df9751e0772556f9b94ff18b2875e93b8adbec34e0f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedNominal-grid-fwd-bid.json",
+    "sha256": "a3c9b64f5045332f7f1b329cf8268e8a3c41fe4bd75d741e5eea3f31c3012e8c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-ask.json",
+    "sha256": "2b566768719f5d7c0a36f6046a2ffad5386626a46d9a6a5fb49a9fe8dc30c44c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-bid.json",
+    "sha256": "b2dcc5ced6b717042517d8d8d153806c9c18930b19ff3e191698a3c1b0aae34c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-ask.json",
+    "sha256": "ca7fc6d553a90cc00eef05716ab9313243592af8c86978f2dc768997baafaaff"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-bid.json",
+    "sha256": "b887aceb6bff3978602b2c6fe5be805f275ceb05b03750c07b2a44ed4ddc6d4e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-fwd-ask.json",
+    "sha256": "fdb4fb4483ba490294087c052631cdaa9e67d64ea1150c77cbc60cb8a85dc2ec"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-fwd-bid.json",
+    "sha256": "44369d52541f43e9cc75e93ec89deac16c9683c06de12fbd6b5133a2178cc334"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "222b1b97b044f2036554b28f9b2b90360402249053f469110704e7f83c27f632"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "5b4de3f95d9fd957d55e2142f6ada99eccc5ea7f8d9ad37c97e50a2689a6a1f1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "2a0f314873d8dfd3585e30c2a54544877efe98903fb7339d592892fbb291f000"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "13f330306247a423825d8864634d5c0ab3240fcfe2761fdaa2f44c12c779d591"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-sa-ask.json",
+    "sha256": "34f5562926001a78c8a3b78af7dda94cbd634133f2cb30faa3e64173c2d01a0f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-sa-bid.json",
+    "sha256": "8a8a481ab50485a9406f6cbffdaa074dc3d8acb97b4e964bc89c6a180281be77"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-sa-decay-ask.json",
+    "sha256": "43d0b0cb80675f3c6c7fa7b79c7f7acffe00037863267b77a42d214280e5b40a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-01-fedTips-curve-sa-decay-bid.json",
+    "sha256": "a1cb8e354fe56a62c3e3ff15010a9bb5821c6ad32895d3870ec748ee2d395215"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedNominal-grid-ask.json",
+    "sha256": "6e2808e6d503c7baa8576ece8993f1ce9d30d06d5bb1ea200731973e93fb9824"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedNominal-grid-bid.json",
+    "sha256": "25b69cb157e3790fb59e1bb7f09d6e429e52219f776732685af497da7fe9ae81"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedNominal-grid-fwd-ask.json",
+    "sha256": "ac5b784dff9512ca536a9835beb7e1f01450967f31ecaa4a276934e13bda1c09"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedNominal-grid-fwd-bid.json",
+    "sha256": "04c5fb759efa7b728f0cf16f7b862755cc0620aefbc845cd49aa934d4fff192e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-ask.json",
+    "sha256": "58be72ac7f6c15cfca02f600ed701c087d568a05deb7bba4657ee8f43c79272c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-bid.json",
+    "sha256": "33cc8e3d1b67b9ac10cfd3f960a5be5a689a769b48f81a2d065dd11665e0ff9e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-ask.json",
+    "sha256": "d40cddb56d97e505b42059a06dbb7e58948ed2e4d405067446aaf24ee6456d08"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-bid.json",
+    "sha256": "2dbc186e9a3654c9e92dad62750a9d8776272341b8d85acecae7087834b12ce7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-fwd-ask.json",
+    "sha256": "8f97b4ec9d1603a18ce4ed4edc19473cc3702669478d8ae500cbd83bf30bc27e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-fwd-bid.json",
+    "sha256": "0b9aaaf7a70f49da230c0c55507060478296b2b1fafa87f3303f8a3c21a47ff2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "1909dfda84c15386886eac17490a9182e5409c858641e6a2255d5d8f8eb40901"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "d9b72d3038b39c893980592e2a23e8d618be58ab2a3d41965d6389f8d641efa6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "19ec3f69c8a6d127309134b2c2c22459e176a7b9440f57c56b74db0343d8ba42"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "310a3d63ec39731398e4d9496a7bab691d7f1958bfbe37cde7775be57eb3dd0e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-sa-ask.json",
+    "sha256": "a422657f77335e4d6d72c0c7556fa91960dfce329fb0dc4fe4fb7caa6069b41e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-sa-bid.json",
+    "sha256": "29a7e3ee8e6eddee967abf737fe7baff6faac88fc3fb11d2b6538afb5c4f3e8c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-sa-decay-ask.json",
+    "sha256": "645dbbdc5d776edf8706637d2d994b81bd0b0f1fd1ee3722b855e834ce768079"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-09-fedTips-curve-sa-decay-bid.json",
+    "sha256": "2127491655b0f1dd4005e8d3848044a6636b325c2dc4a3c0309f115d5ff5fd5b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedNominal-grid-ask.json",
+    "sha256": "1fa92d89f998bb0eae98904ae73090db4781836ad06ca4d4d9bc206637d7d44c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedNominal-grid-bid.json",
+    "sha256": "2283fcfa7b7d796aa40bc58b7ed1d5559197e38aa6672add4ebfbf4b673fca39"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedNominal-grid-fwd-ask.json",
+    "sha256": "920362deb90ec713696511e6275a1cbe465e05dbff63e45a0e96b40e515e0482"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedNominal-grid-fwd-bid.json",
+    "sha256": "37757799fe436fe5e0950efe02e432c491216d9ee42beced3f90ee4fef10f926"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-ask.json",
+    "sha256": "4320fe02a7db828a3596398f8831e412f18f92ebf6a6e7efbd4b2148dbafd769"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-bid.json",
+    "sha256": "0588590fa42e2a3f37b826cc308bda7e133b2b1184d56625fc25b4fa53a75adb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-ask.json",
+    "sha256": "782b1be6188b68a45b6e946388c5479db98dd96cfddfbed2a1ab403f0d0788f3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-bid.json",
+    "sha256": "7869ea1777719b5318c37ee777479754c4a3fa7a90832ad41c9fc0e08ff78cfb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-fwd-ask.json",
+    "sha256": "0c8fdb004704b8f02caa6ec9fc97aaf8aeef5b7ae07c279633e13c268d7624b6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-fwd-bid.json",
+    "sha256": "91ffeb3c73e7d9628a8199888add1bbf30ec86e39f53b253d39b05771045fe68"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "ff19798549207b568cef874d508f6f16bfb0bbb1e1646545c268fd8225657137"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "7a39e6da680a318c2b72c533999c4f2fcb70341cad5e06b206613f542cca3901"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "257129147f21fde6ba0da560a11e38cd6aeaceb56cdd4cd408a3c17b5921d5cf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "e51aeacfff370aac43c174bcc1f7e6e21ac488fa50f384fefacc963e91f121de"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-sa-ask.json",
+    "sha256": "dbb1bc877428292006442b0da80d4dff6a0564d938e2b6d20dac690057787b84"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-sa-bid.json",
+    "sha256": "f4a4316b67e9e38ce55f8acb86d0cebf4905fc97acb248e52a02d1b6661fdcbf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-sa-decay-ask.json",
+    "sha256": "2135d9013055a2219c3d0575be5c25a6e4ebe2b320f5079cb5129208e8777a08"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-06-22-fedTips-curve-sa-decay-bid.json",
+    "sha256": "b123b8b73fcce45d7f6dab1681807be13542b67412f37436a936856c5743ff01"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedNominal-grid-ask.json",
+    "sha256": "7d13c0f7ed2dc979244017651cd37dc6ae4611ee85ed72c38c79907d664cbd35"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedNominal-grid-bid.json",
+    "sha256": "5a07e79e7796e6432e66c7080b05a0e5548389f203246868907510e050783ee4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedNominal-grid-fwd-ask.json",
+    "sha256": "6a32e9dfb7cbef2667ea8210c9bfd2bc0255fbcc535db7185fc00fd49b786e60"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedNominal-grid-fwd-bid.json",
+    "sha256": "c0aab84807e33fb76124b54d4037b1d097035b24dfa3eb7c00c1cf77260ab774"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-ask.json",
+    "sha256": "292ce639cbb81ed48ca1eaddb36ed02c80528bf025c9efaff0faa2d78027a658"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-bid.json",
+    "sha256": "a0cb630038de30930dc3c4cddf45f06cd6f09efbded9064cc78db62425081a8a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-ask.json",
+    "sha256": "8abc137a336810a9ba25a4824358ca74509b2312fff90729cd2a07dda9d79edf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-bid.json",
+    "sha256": "ab0ba55b01b08eb31477c81e4a1941f0a4c1865981be5d8226bbf7d0cfec4e1d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-fwd-ask.json",
+    "sha256": "b60a246d903337445c6f21bd7e9c4f9072e10b2adff662d932d3847ecec9dada"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-fwd-bid.json",
+    "sha256": "55c073e624d3955979dea8454cd29f979a49e82b3284edd1861589ebea55e481"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "02a42c743d5cc2c95fc22fe72dfd7dd488ca6f5c07899f2a57798282aebcb84a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "fc1e0a5bd37af3c4b49e931dc161ad9bc0b5122209193bcb06122352a588c933"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "3dd3ad07192f802c482707eeda5b319e5e46b3ac1e936eea765e54a3fd22f2d5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "de24ec9e8431867b8b01c0be5e5ee7e386be97a3d5429fe5f6c29b702a203991"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-sa-ask.json",
+    "sha256": "eab7d50bd457be522ed872fb41b6ed2b477469304d47cb99411d735c520e68b1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-sa-bid.json",
+    "sha256": "aa2c40ee79d2c374372ccea3dbf00fbe8ae4284ac51ec8231a9c04c1cabed78a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-sa-decay-ask.json",
+    "sha256": "bf3733e0a63bbe20f8907984a75baa17ae1fd40b76ceab86baab4bacdd56c8d4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-01-fedTips-curve-sa-decay-bid.json",
+    "sha256": "ef6a77131f6ffcd48d6299ce61c0bcb600b2f3a1ca171498f2e1386138be0715"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedNominal-grid-ask.json",
+    "sha256": "03d35464a6e005594cde1e188752c8c02c5a9933c632dd1224b5f8d82b1b6cc9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedNominal-grid-bid.json",
+    "sha256": "ad94d08b20e228278a2c8aa9e77673dbef52404c3043e4cdb394d551e64c95fc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedNominal-grid-fwd-ask.json",
+    "sha256": "6c58b91ecade92ae33b7c7b10a0e53d2ec86637938db4b1ce95636290b14bb0e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedNominal-grid-fwd-bid.json",
+    "sha256": "b73b3e885bbd057279fa43bb50e1d35a6f007d39f116ba11c2fe89eceb380a15"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-ask.json",
+    "sha256": "1d49e8dbc9be6182188396bce16eb21e4fa9a16ca893c0264e1bab784f94d89b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-bid.json",
+    "sha256": "0b1dfc3736f31b2fb0b83a9c2a64ba2ada0112c74bbdbf222917ced4a1f024c8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-ask.json",
+    "sha256": "41e6ed2b2cc62745364339ec234c9c97775febce526d5fe7f4e6f8b1c5da3b8a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-bid.json",
+    "sha256": "50cce7ac9498ae379c293801a00bc70ce652de5318036e076310838d3899f2cb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-fwd-ask.json",
+    "sha256": "68c941efda95b7bd89b4acec58d9b92f6985cf6d5bab56401fb39adbf98c7ccf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-fwd-bid.json",
+    "sha256": "82d4d959a25cd04edd22610ab27587166a684904bd347b440dd30a7ae47383b9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "46b607812a70807b2912b9f76aa963cda998de3765f6965d8e3addba23657ef9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "b24d0025615652ff1968b79236d13113c6863e43fba21c5dbe1ec7ad78e58c7f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "161fa6dc2d56128f7a5ebd5cec2a9349c2fb249bc0fe2daa7674112d75f24d2d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "c6c03ea0d752157c5c937e0a4ca99502c4fc41a3f6fc4124f54bacc167839987"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-sa-ask.json",
+    "sha256": "083037f6d35581ec7c861f6f1f1a86b33ade6678aeda05c8e309339a09474791"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-sa-bid.json",
+    "sha256": "a1c45c3897854374d0f11c9ab9655e26f9dae8ae8cb8fe12a07590e5d382a614"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-sa-decay-ask.json",
+    "sha256": "fca9358a53a2e349af91cdde41a8d4c5315cd2eda66e814df49b24fad4f160bd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-10-fedTips-curve-sa-decay-bid.json",
+    "sha256": "3b224c2bbd77fa90fbf2606c893548ea36327661386fc4e50872a4d1f8f8146b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedNominal-grid-ask.json",
+    "sha256": "ca6fcf0ea328ad1c098631380430b0e5212b7ba074df303eab0f607c836477dd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedNominal-grid-bid.json",
+    "sha256": "f619b72850ffceeb66f933cf7e3cf9969b6b77e5effe47150472cf399ccd54b6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedNominal-grid-fwd-ask.json",
+    "sha256": "5cac29efa4025817765ee700255a3081734148e667de90b15d2e809c88967eee"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedNominal-grid-fwd-bid.json",
+    "sha256": "16cc81cd4f33865cb203b26eeb45e190c17ca4e6811fda60a1d6780e29585471"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-ask.json",
+    "sha256": "81150aa65a4ce813efc7e831643c971c829006a2e0fc70cb1435881ba2c834a5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-bid.json",
+    "sha256": "c92b42aeb911624a04cb13e57a4239db288541753dcb45a7d1f7ab604acc85d1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-ask.json",
+    "sha256": "537cbdb51ee78101707fa45c17c0ecf2d87360f593896b2fb86f9e6b2a06731c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-bid.json",
+    "sha256": "f087d1adff9376276309cc359e7704bb8e40f5176491a2aa7b0d36d441558cc8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-fwd-ask.json",
+    "sha256": "83a99eb01c93fad521f0613edc801a176a9af08a289db27b9fbbc3fb22a106c8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-fwd-bid.json",
+    "sha256": "5dd6ac5a35720019116cb0c2db57339ab1ef3e23a070e5648650ce697a45a11a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "40cc849ffe63ea98580f5d87974d48e0807318c1b8b38417c0552b79ca758658"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "ea171316418a30a9447af5c3bd63cca5b9aa6bf5fd015fe36e36ad41a0008ecb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "b5c02bd39c86c38ffb7a506c518418f24c3d286e9cc611c19668b54e6926a481"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "bd0841ae3f6870d05a0670e78f81b4eb3ec7c8964f354511e4ddb0117ff57ef7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-sa-ask.json",
+    "sha256": "fbb665a91115f8e0b4faa93a5bd58b79004bd08c8c6f82c49908b269b0ecfb33"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-sa-bid.json",
+    "sha256": "7879d37112aaf4968cc05a9d2240d2ef51570e9a45f9dfc12975fbd2c06f5e7f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-sa-decay-ask.json",
+    "sha256": "ed81a019f3dcbf3c1f4ff0243bf7b502cd4659f82fcf38e0eac0f552ef22405d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-07-21-fedTips-curve-sa-decay-bid.json",
+    "sha256": "3cae9a91ee8918398b556ded0f1be800d43abd78456e3bec5b1dad264da53e76"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedNominal-grid-ask.json",
+    "sha256": "4c8542c1bce61298a368b306ef6ae61b739949cb0096c4d541482ab45aeae43b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedNominal-grid-bid.json",
+    "sha256": "fae2ed32b5a54c9f5ee65f3e5830b6524c8d377e946fce7ad03afecd1eded251"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedNominal-grid-fwd-ask.json",
+    "sha256": "d191e679fb00a813b07c7437be1fa86117b81db5be4d756f79557adc38b5a9d7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedNominal-grid-fwd-bid.json",
+    "sha256": "9e98ade4e7270f588e63d79aa7211df55a0b442fbaf4821f7032615153cbb83e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-ask.json",
+    "sha256": "b053a4a9bd58108d78a8250ee8934a9a193cf0f132e8ed6dd4598f829b558695"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-bid.json",
+    "sha256": "e2c53fcd4b479083ee1de274420a7e42296d578ee0c573e1d38fc704f79cf9a9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-ask.json",
+    "sha256": "242ea77fc789fbc99f4cd9f580c0c0516ff902aa501685138b6aa88363d64815"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-bid.json",
+    "sha256": "5434da38bcad590197b9a90a93c348d9d935a6214236a164203696771868fc95"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-fwd-ask.json",
+    "sha256": "a4456d7339f6e2170bfbee252025a1118698c0b32f48d087d1a6787d0aa20d13"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-fwd-bid.json",
+    "sha256": "fd01a00c2b45903cc7e828343c166a620dd2ddd833bdf33d96019ffc1d72ccfa"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "c5026722a96db785008d0e8f3ddb2a7dff6169a6274019c927e995f1f880687c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "2076ad8470d77a4b55921aca81546749420a3773894996a65c31347ee22d7a9d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "1fbcc5166e5f3b88d802f8b8ec7ee49cf4a6cda9a2a1d6cec6787204b44de749"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "6cc52095db65ecf03afd16d89b2e0f71c3eefcae9268e94a9d6a8c1da3fe0117"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-sa-ask.json",
+    "sha256": "b50d0e1789b2a3cb2624e6870fc19533f7c887b7c690a34dabeca9ea9d5a514a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-sa-bid.json",
+    "sha256": "b13ebe6ca3a0ba3776481a09e0cbfc51085e1cdb1ef3a76576b4f38105bb0482"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-sa-decay-ask.json",
+    "sha256": "edab63f7b356c69b60fa6bbb25fc85bb435cc29707df2a4673a28a44d5d57878"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-03-fedTips-curve-sa-decay-bid.json",
+    "sha256": "ef23334547744dbe2e8d7657b7d6298538e8dc09817cb04071f64a762a36677b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedNominal-grid-ask.json",
+    "sha256": "01a38ed945c6d5d5aa04765932ea9aeb7ce42d515fed28f4713f02a65e0d0a22"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedNominal-grid-bid.json",
+    "sha256": "04ce62abdd78c438752ebaafeed2bc0dbaf02d5ce06db8682edf0c8fb4b68506"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedNominal-grid-fwd-ask.json",
+    "sha256": "76717964b2dd307f6ee36505dfc792011c6fcb7dcdfd4a5fe5112797b944eebc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedNominal-grid-fwd-bid.json",
+    "sha256": "e2271cca84e1de3b34abd036823b7a5fdd7f11ca88005e82c5861b9e16abb1ac"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-ask.json",
+    "sha256": "a01704f71b4a8c41ca19a078c92d9bb056f7163be642b3878bb77ba7323d93a2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-bid.json",
+    "sha256": "22c6c17411cb97e9c3890801b8722e638564243d6ff4dc1a1cb06e119c6b5e73"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-ask.json",
+    "sha256": "71e9d30e6955b1d7f8a719d78f614189134eb350647352c221bfcc9ed661e427"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-bid.json",
+    "sha256": "f876941356da5b5a7440ea5454e6e468005ff36fb1c32f25cdf8375278d75880"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-fwd-ask.json",
+    "sha256": "d9c6672d9b5aa61c388c5be62fd770b0202de222e00622ebac208bae015d6a96"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-fwd-bid.json",
+    "sha256": "c841f60b6e4c5c43e5daee26cd7a29f07ab5c17f41d76714680d62765d83873e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "555664e4dfd8a41d4943d0da5707e4ae9515bc2870ec7373a76946622f2b1c29"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "5a6776c626c6dd065f133fdc78676639d4ef96f2ce652a5ce548ac1d47ee1d8d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "dbe13b14f2ae63d926d5bff6d3ae33bf4c2bedf8a51c29dd7ad67ebb0d2ac3ea"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "54bcfb17a51e84a896fc3dc50837bfceb98490c2cdf950e7056e504bcf6234fa"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-sa-ask.json",
+    "sha256": "89360412d4d1cb37630f7ba6414a3311d9322caed72129cd9c1e6c71f0139555"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-sa-bid.json",
+    "sha256": "7b2dd58830fa2270a17c770c0ea432286b183c92f612f41f7be16aef4b5727df"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-sa-decay-ask.json",
+    "sha256": "a3dd60a867695d654c6998406124cf88bbe1a8d128bc08f1230a122414700e7a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-11-fedTips-curve-sa-decay-bid.json",
+    "sha256": "387e4661b8abec2050393e9ae7c17893aef9714a97fd644bb0d320ec0d615226"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedNominal-grid-ask.json",
+    "sha256": "2c30fec6c0cd703f08b51676f9b46cb3840093aeba77887536e51e066264c328"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedNominal-grid-bid.json",
+    "sha256": "c69af67fee19f9ea444b56570f7c7281aa8e9e3e878cd83b39a2b4d3cfc202fd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedNominal-grid-fwd-ask.json",
+    "sha256": "0e21c5b8d08bbccc16adfd8f30d12f2c653867e20c5ce01eea64a2549ac77529"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedNominal-grid-fwd-bid.json",
+    "sha256": "763d8d8fb2835eaad4f6af974baffd7dfec879010b4f0c8af9f276ceec54a268"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-ask.json",
+    "sha256": "eb22cab0eeb8d8462434cfa00f84a6df42a163a6277f94bc2629b3cacde55913"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-bid.json",
+    "sha256": "6aaf39488aee9cbdaae6754ca9dbfde2ec60f3719e5fae5019bd54bb4fba60ac"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-ask.json",
+    "sha256": "d693f1e315b57b6da1a78df2d2455dce340f09e003263adb240a1da788827a6f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-bid.json",
+    "sha256": "8662abed81d4dd00160fdb5ed55f26c998154b54b185d1f159ead1cf45c5ca7f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-fwd-ask.json",
+    "sha256": "e860f628ff95b441cf8d1fff8c2b629a49329706d6739756d3ed65c89df8430a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-fwd-bid.json",
+    "sha256": "7c248ffe769f2349d36d4cb125e8aefca4b79738bac2cd58c9cfea0a2076bbd8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "e3489cc0c5d904260db0cb46dea7de366ae3a0770322fcd70b8ce3cde3ca807b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "7cfdde4c1cef0e391f51565841ed9cd4e217cce0df352f6c88d470fbe5b1256f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "e989a755977de0a24fdcd751e569a4d6f23ebb995318b5463d1cfea38129cf41"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "e2786cc617ed4bff6c7a5d2d1ccb5326ac9d7e24a42a8ae4083b43ab05d85be2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-sa-ask.json",
+    "sha256": "7606da465e6cef0e07292e967b9157d5bae25029c54c3acf111bf9cbf066c2aa"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-sa-bid.json",
+    "sha256": "b07f81334b9af62573aea5d0e3851d5e8db8724b8190297ab6952f98cb4ed837"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-sa-decay-ask.json",
+    "sha256": "fc532a39b651294c236895bee593dc755065b8b3d4f65b8ef41f8a7d71544268"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-08-21-fedTips-curve-sa-decay-bid.json",
+    "sha256": "d1da455f9afa1d5bc571c7d856d1d3921b301aeaf0a6cc5aba095282958dcb27"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedNominal-grid-ask.json",
+    "sha256": "d25921152f0462fe73f3252d4ea8f09950d3be58d39ec1e54ba5654d8f3fc6a5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedNominal-grid-bid.json",
+    "sha256": "d63becb9f65b06c35f2d806a51466cf956b60a03a5649e2fa8c20c303524ed8c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedNominal-grid-fwd-ask.json",
+    "sha256": "066864ea58d1992315e217649689e534f985c570a16f35b1a3c7c1b6d495e10d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedNominal-grid-fwd-bid.json",
+    "sha256": "36aaa6c1eb9b8a6d791798937bf1e043bbdc0a3bf295550492d2e0e8bb9c0f7e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-ask.json",
+    "sha256": "7d67c514b96da66a1b235c75e09c8804b9cf078bcd8769f8a282f3f57f3e1bd4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-bid.json",
+    "sha256": "86584eb5e87f7d6c40f325f04ce5282d83762b24f21e868d1178ae55f7a52ac0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-ask.json",
+    "sha256": "4ba842f6469c7142670ed8b9d57889d5802b50e9f403d0a34c148670854dffd4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-bid.json",
+    "sha256": "8e06a6a92f30daca74a79290cec2a11a188c0dfab1ca6f712a57945c8e7a5885"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-fwd-ask.json",
+    "sha256": "0f98db1b494c7f218ce9a68bb0ce638523d89549b9b1f19c3bee63867d028868"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-fwd-bid.json",
+    "sha256": "101c7509201a5abc063f2850963d096a48b4f6f1ed3510a50d049c0ae5e850ac"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "33d4cd71c777152f94eda147afcdad3d7bdf61059571246f788ee0e6f63d9da3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "0dc0d2ba86b9fd861f2db858613569bd2594d5442df2f9011f0016b5b0b3cef8"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "42a8d64da2c1846bc881206020809c2ad937cade9417f9b8aef3622b1abc4348"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "c0b9d6d265e6e68623825e9389a01188d7626d2afc0331dfe3c890f0d816a895"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-sa-ask.json",
+    "sha256": "481c0fd2c9cdb88b8bf4bb6b645ef9e83b3a326fb3f02839b942f9882d04fe05"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-sa-bid.json",
+    "sha256": "0f448f200d7a3a5f4c5bfa9a165978fd66ef8354d3c8af3a19f75d3129ae6670"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-sa-decay-ask.json",
+    "sha256": "0a07c2249e08520cfd57d44d00017506088029d8f38b59fc82a41ef77f63001f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-01-fedTips-curve-sa-decay-bid.json",
+    "sha256": "039ad5e557368c54002ad093af533c99ad2840ec73150f36592b9cf59cc629c5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedNominal-grid-ask.json",
+    "sha256": "b7f6b1618bd996937828a9b4488795ae244cf725b557da2e443a38a361426a54"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedNominal-grid-bid.json",
+    "sha256": "9681712cb50241ec94a686537d9cdaa4f1ec9614e6782a4b33aac4b080460d91"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedNominal-grid-fwd-ask.json",
+    "sha256": "08c8fbb8a267cf2e02627b4cac5f1a5cba2430b411be72b74a280d047afebf73"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedNominal-grid-fwd-bid.json",
+    "sha256": "ec952d267df5a14d94ce7a73bb3d86cabf38b8e5a614fbcc6ee1ffc346764dae"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-ask.json",
+    "sha256": "20f7e99d20a44299e1e36547ab5471eb28f854ee3d11b7fc807181898f73f07b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-bid.json",
+    "sha256": "c670635e01856269671ee0c6881a1fdbf18b6c749ceeb6928a57456b6a23aabd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-ask.json",
+    "sha256": "da92d8ed1337323ebd52e90f23dfa15290768c0e323d292ff82a6b277e14b91c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-bid.json",
+    "sha256": "10d36df00d88ed0e3552e8b4a6d0097128490d2a05721deb1f2285dd8c200640"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-fwd-ask.json",
+    "sha256": "94a5e16e47844ce7d3d04bef0454af64ab19446e0ee53c2c194f0489bf8d29f5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-fwd-bid.json",
+    "sha256": "13e9805f6e1b7ef850316022a7a22e36311f02f977a9296cf0cb18d9e150f0cd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "56a67ef72953b429a5d337fc22ca21dcfd387e33c7b571d48fa3617b69dc8448"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "5cf2f106eb350b93b5b93aae6609878d6e964c6d36626fd77d75c5923d8734f3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "244019989a86be4e40aa013745ec705dfaa77f779bfe740e4c7f4817dc44475e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "9084cf2cb7b12963094c2c57f8debd33307e936ae8299d494dceee651cae6c66"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-sa-ask.json",
+    "sha256": "592fe11079332ec210023f0355f277c1d88ae7100bc55a4800d527caeb2bde3c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-sa-bid.json",
+    "sha256": "f14598b0c08a06245c2a18dfdd0a0029a9353321ad22aa6a8c9bec8e4e9826ae"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-sa-decay-ask.json",
+    "sha256": "20cf780fd61705946a024518406eef0891e629fec6a0f2492cee713baefaa159"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-10-fedTips-curve-sa-decay-bid.json",
+    "sha256": "d92b554d4a839dff3f84e1da0e8d10d6636f442707cc811bfe02d0720797d519"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedNominal-grid-ask.json",
+    "sha256": "5265ce8f63bcc9559f66572ea55e8bdbe9734abd8db52f712c1c457f0087f65a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedNominal-grid-bid.json",
+    "sha256": "e55ab1cbae17fa5559724b50eebfa49d23a7ad8427c629cc1dff12b4f4e00b71"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedNominal-grid-fwd-ask.json",
+    "sha256": "9b165c4db4e4bdccdcfe2e733753a1f49f195a092edac2e03be8cac77c26aecc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedNominal-grid-fwd-bid.json",
+    "sha256": "078dac15f237509c880b5f963ff32f26d015fb37c6410e41c477349ce939ea86"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-ask.json",
+    "sha256": "a3ba8ef68d98ea25a570419d7056ca59a221ea6eb68c188cf94d5c5d3f85e27e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-bid.json",
+    "sha256": "3768133a365f796767591226f447956ae48b869a3c9818871a2774cf76e2da6b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-ask.json",
+    "sha256": "78fd3f9b18b5c3faef0dd817a85e823c3dc8b63c24b0f04283c0188455392e2c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-bid.json",
+    "sha256": "f08c23e485729c160433ea43a514f52e4343475f60608affe24138c6f7eb0dec"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-fwd-ask.json",
+    "sha256": "9eb7cb9e73e26ca5a1827ef7c7f98086be794e1d51b5110d3673f60b2d2ddac4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-fwd-bid.json",
+    "sha256": "c076824d05b3f307fc9b59a94fd84aefa06686dcd98565c6828cf52e99dd8ebd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "16de13c0fb669d5e9c2a1c5108543e2113cfe8193c48ea70f721fc9f6b33378b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "c7ab0259b396ce3b2727e3838bc2806bf62ec62b8218a24abc055a341610d072"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "5d6f5a8d2346dd9cc142ee5711bd8c12e554b1d6ffe1016bdc5ffc5219e65f9e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "dca0cde123aa6237741193ac8bba1f18e6f294fea248d5d27ec9432c36c736fd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-sa-ask.json",
+    "sha256": "c8a987d8fac87cfc67eeee5891c12a03cba608571a6e7930cde61ade13cdf1fc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-sa-bid.json",
+    "sha256": "522ced68076cdb77fc2decbd7aca802866641e5bf8b51f91a982dcc8b00393b2"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-sa-decay-ask.json",
+    "sha256": "cfac534c7126ff7c5a2c2cb0753c8d8f72debdb82b1328ee0539c7fd47cf1892"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-09-21-fedTips-curve-sa-decay-bid.json",
+    "sha256": "04e53d36ae9703d59ecabc7758b1e7defcfb5fcbc8b11ed7cd04ec6c217526cb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedNominal-grid-ask.json",
+    "sha256": "c974fdd03477656f72af655e084a44613a769f85a5779bb526e076fa4eaa2813"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedNominal-grid-bid.json",
+    "sha256": "051430caf83bc8dcfadcc0985830a333367634368a2f31d4462cbfe24f23873c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedNominal-grid-fwd-ask.json",
+    "sha256": "226a95bdcafadf752b2ea1d9080633f6ab9b52a84decf23b58197f4fda93945e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedNominal-grid-fwd-bid.json",
+    "sha256": "dd3c949d13d5c769fad9c130bf9d6f9d99c8e52334567c554a1cc0634c18721f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-ask.json",
+    "sha256": "75f3fcb3b1593b827b71d1a28630b7b4705284ef6939fffad50bac9b9d172fb7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-bid.json",
+    "sha256": "6cbaa8f484035239d80d793bc3f368f54c38f9ec3cebf667ee132ad16555aed3"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-ask.json",
+    "sha256": "3dc11e0ce77dfccecfe55edfe8afe86263e9b8259d6b4a74f4e2a0aa01b0beb4"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-bid.json",
+    "sha256": "1482b6fc9b338bcdc42d303786c0cc8409a3815b18d9fec58044910f1394e7ed"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-fwd-ask.json",
+    "sha256": "4e0c590b0457858c62dbd8580700f0ff087605bf339647f0dc7a26f1082f9156"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-fwd-bid.json",
+    "sha256": "9c021dcda59bc079de5ab62c2ceaee9f5ad51438a72c46c1a8095a3b1ef2cd6e"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "8c5570b96487ae17e6d7591e336636c2338550f279e3196af231035fc3767019"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "954cabfea7ecb622782313371d8480c03eadc699d3f58bd8960e2dfb1320fdd6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "a18a900160ee33a40d0351f585c42e41796c7c9ca681cf5b23b8f204b547dd2f"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "c8d46c10066aae40006d854bcd5a44a58dfe1eb377889e02d19aec67ca1357e5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-sa-ask.json",
+    "sha256": "c97a0fb20486841bcbfdca3b7b283960d8a4886aa58834dbaebc478172b9c6c9"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-sa-bid.json",
+    "sha256": "8ded679bf4cf3601c104a19eed435bd5beea7c6b28ff5da812b8864e64fa8cbb"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-sa-decay-ask.json",
+    "sha256": "d093a6da4c03a8639b06a7d834c5e036450457f4cae5dc96c5c83780a6c7de64"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-01-fedTips-curve-sa-decay-bid.json",
+    "sha256": "1f07faf09d5d87827cbcbe652f608abd4526169efbb69db47b8bdfec8f42ffe7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedNominal-grid-ask.json",
+    "sha256": "52448dda7771cb378f2ddd8d71493d797e2a651057e90610ac6e6de8e5450e2b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedNominal-grid-bid.json",
+    "sha256": "c84b279fd4918fef8ca1842b877adacf2383e133f0614895767da4dc8b276d42"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedNominal-grid-fwd-ask.json",
+    "sha256": "26b9f227d4411a32bc78c0129ffa6177ca89e7f69ce780a6033f8074c0dd436d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedNominal-grid-fwd-bid.json",
+    "sha256": "3b9ef8069ccf198b08b0f346e1430ad661ce5cb85151f6e486372551926a29e1"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-ask.json",
+    "sha256": "f706544f99171ac666392815d0c54201a6939c5245748c90be0186c6f4cab7dc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-bid.json",
+    "sha256": "e64daf6a6f2cb1ba74edf74734c3b8769f0103f9a91c55fa1e5c8d1f826563d5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-ask.json",
+    "sha256": "9775862346610014e99b1e7bffa6b23d32ec02575f4736e6173745823d81de95"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-bid.json",
+    "sha256": "b54833e7ce8baa7d3eee979996c54fa6f6b0c02b4751416f8cbba9afdd66ab61"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-fwd-ask.json",
+    "sha256": "3265b672bd2c30876bb1338d7722512b70ab81d529312eb918ccea170c6599be"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-fwd-bid.json",
+    "sha256": "35150e1415187f1681fe43eddf04d9cc5a6a01d39061a1bf671d289aed32063c"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "922fa0b117910602d0c3f6267dfd9c04fcf16c89f88b2795fa1a5b3a2712b74b"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "e8af457498f3624a0b5a99632f21a02d034eb530cf707712f38ae169c4b5d143"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "4461fa949be688125285351fafcde69cddae37d7bbdbbc0f7dc319e7195730d5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "391041842d973f1e162084ec36230812a22d3189985d1b4b6fa483148c2df2fd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-sa-ask.json",
+    "sha256": "f09fc0408fb66c9b8fdd903636a5a29c040dc1d20789927307c0496a04ef5467"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-sa-bid.json",
+    "sha256": "5c6886c9100440ee21f9bf967ac5ee04ddfc162db01d2efaca486fadbe84e477"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-sa-decay-ask.json",
+    "sha256": "7ef4c9d3ced542697fd74d8503a9fb102f445bc5bf6b9f2001f7e5bc07bb6832"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-09-fedTips-curve-sa-decay-bid.json",
+    "sha256": "4d8d80aada42c04b9953ede62879cefd3fb76c7fd10f968fc0cdb8c5283e7ac5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedNominal-grid-ask.json",
+    "sha256": "b074b697238337cb606dd6413520bb765bf9681969223dd04ba825abe7c50ab6"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedNominal-grid-bid.json",
+    "sha256": "2143566616c29ca21873a893caddd07b80c0919532b8563a9ada011951911a5d"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedNominal-grid-fwd-ask.json",
+    "sha256": "69729b33a0594044b9d7dcb21bf356686b1bfa9e6e8d1d83220cff4d054cd0b7"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedNominal-grid-fwd-bid.json",
+    "sha256": "0b6ad0680407fd671d6e9ce9bd31a1cd9efc19b3886cb94f9b014c65e18e90cf"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-ask.json",
+    "sha256": "a38c0153eb98009419e1443b95785ba5128f2e35e7fb86e9cf1833ab5f4bfa0a"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-bid.json",
+    "sha256": "f81fd2f9c417295692eab24734f8b10014d5df6e72fc475d00e1d840c5e2cdfd"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-ask.json",
+    "sha256": "bb81ad2e0b5dc0e8e0e413eace8f3606df52316b4d625dc1559487d9251a2e81"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-bid.json",
+    "sha256": "394240e829fe9cd2c73840d7970a825ed697b832148b0348a81cafc9444c7ebc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-fwd-ask.json",
+    "sha256": "38af12d0fddc1ad64ad4446441979e654377250358a8cb54222573f4cb9a44f0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-fwd-bid.json",
+    "sha256": "e893fad96a2272592d3180073867d862e9cf6cf18c1f3fb8e909bd815a47a6dc"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-fwd-sa-ask.json",
+    "sha256": "e40c88aa43984c0b07eb313c6f6bc1509dab16874e7d7ec42fdf0ae0518aa7aa"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-fwd-sa-bid.json",
+    "sha256": "1507baa3c4173b61d194aedffec32c03adfb0dd3cf54aa753b4c1c1772ca6068"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-fwd-sa-decay-ask.json",
+    "sha256": "7b49f3b173b2f18e214ab6ab5cd4c34b5107284cb403fea3c4466a6fdc5fa6d0"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-fwd-sa-decay-bid.json",
+    "sha256": "f18c11f1ef25e4d7fddfeb4e870867c8c2e754b8bcb08a03f0d532b292fed570"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-sa-ask.json",
+    "sha256": "e4e661643c4ed101c8721a3f2797c77b4242cc63eabedfecca087713a0794708"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-sa-bid.json",
+    "sha256": "123bb50bf9da40b27dda1e3670fb8cf484460ca3179b5e2ec23f5cbf4b224b63"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-sa-decay-ask.json",
+    "sha256": "b57f2ae9a70a0e26b36fa3bae9ee84b64c4d0d9aee8c0b575e5108918340e6f5"
+  },
+  {
+    "file": "/home/gebelea/cloudflare/public/Treasuries/fedBonds/daily/2026-10-21-fedTips-curve-sa-decay-bid.json",
+    "sha256": "0c20ea158fbbb93a0141e763305803799a68149f33844b9dbe693aeed1072051"
+  }
+]

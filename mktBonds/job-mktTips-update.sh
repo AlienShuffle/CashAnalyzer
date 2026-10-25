@@ -197,7 +197,9 @@ publishFitHistory() {
     fi
 }
 
-publishFitHistory || exit $?
+if [ "${BOND_DAILY_ONLY:-false}" != true ]; then
+    publishFitHistory || exit $?
+fi
 
 # publishBeiStability: settle against forward BEI stability, leave-one-out sensitivity and short-end fit
 # across the archive. Leave-one-out refits are cached in history/ so each run only fits new snapshots.
@@ -227,7 +229,9 @@ publishBeiStability() {
     fi
 }
 
-publishBeiStability || exit $?
+if [ "${BOND_DAILY_ONLY:-false}" != true ]; then
+    publishBeiStability || exit $?
+fi
 
 writeCsvManifest() {
     local directory="$1" pattern="$2" manifest="$3"

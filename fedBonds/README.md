@@ -130,9 +130,107 @@ the same date if present. It refreshes the three daily CSV manifests.
 **Latest reports, latest manifests, normal working files, and original input
 snapshots remain unchanged.** Cumulative fit-history and BEI-stability reports
 are refreshed on the next normal daily job, when it reads the expanded archive.
-No Cloudflare commit or push is performed. Avoid running a backfill concurrently
+Historical runs use a snapshot of locally published `REFCPI.csv` when available;
+the network source remains the fallback when no local table exists. This allows
+the extended reference table to support research beginning in 2015.
+The shared job skips cumulative fits/stability inside the temporary historical
+workspace, because those outputs are not published by this command. Normal daily
+jobs still rebuild them as before.
+
+No Cloudflare commit or push is performed by the historical command. An existing
+scheduler may independently publish the archive. Avoid running a backfill concurrently
 with the normal publisher; individual files are atomically replaced, but the
 entire daily report set is not a filesystem transaction.
+
+## Reproducible CPI-release research
+
+The [CPI carry hypothesis and experiment design](./CPI-HYPOTHESIS.md) records the
+mechanism under investigation, fixed exclusions, and staged validation plan.
+
+The [research runner](./research-history.mjs) creates exact CPI-release **-5/+5
+Treasury trading-day pairs**, never earlier than January 2015. It uses actual
+monthly announcement dates, not a fixed calendar day. The release-calendar
+collector removes earlier ALFRED February seasonal-revision dates when a later
+monthly CPI announcement exists for the same inferred reference month.
+
+The agreed primary release exclusions are **March 2020 through December 2022**
+and **October through December 2025**. January–June 2026 remains in the primary
+sample, with a flag and separate sensitivity analysis for trends affected by
+filled October 2025 CPI. Data are not erased because an episode is excluded.
+
+Prepare reference inputs with the normal metadata/CPI publication jobs. The
+[metadata collector](../TIPSmeta/README.md) uses official historical auction
+records, including matured TIPS. The REFCPI generator now fetches monthly inputs
+starting in 2013, supplying a complete prior seasonal cycle before the first
+2015 observation. Preview the plan before a potentially long backfill:
+
+```bash
+node fedBonds/research-history.mjs --from=2015-01-01 --through=2026-10-25
+node fedBonds/research-history.mjs --from=2015-01-01 --through=2026-10-25 --run
+node fedBonds/analyze-history.mjs --from=2015-01-01 --through=2026-10-25
+```
+
+Defaults: January 2015 through today, published inputs under
+`$HOME/cloudflare/public/Treasuries`, and generated results under
+`fedBonds/history/research` (ignored by Git). `--output=<dir>` changes the
+result directory; `--cloud=<dir>` supports offline analysis but publication
+requires the normal HOME-based destination. `--results=<file>` overrides the
+execution-results file. Unknown flags and invalid dates fail.
+
+The runner saves the complete plan and a per-date execution ledger. Successful
+reports are validated as 33 JSON/CSV pairs with matching dates and row counts,
+and source quotes are checked for missing historical TIPS metadata. Resuming
+reuses verified dates only when reference-data and pipeline signatures match.
+Missing/nonfuture CPI horizons are recorded as blocked; report failures return
+a nonzero status, and analysis rejects failed or incomplete batches.
+
+The calendar includes federal Treasury-market holidays, Juneteenth from 2022,
+the December 5, 2018 closure, and Good Friday full closes versus employment-report
+early closes. Early closes remain trading days. This historical calendar is for
+the study; do not treat it as a continuously maintained future SIFMA schedule.
+Offsets count trading sessions away from the announcement even when the release
+itself occurs on a closed bond-market day, as on April 14, 2017.
+
+[The analysis](./analyze-history.mjs) compares six settlement/forward and
+unadjusted/SA/SA-decay variants on identical date/side bond universes. Three-fold
+cross-validation holds out whole maturity dates. Adjusted predictions are
+inverted to original settlement prices, and errors are evaluated on that common
+basis. Episodes, not quote sides or bonds, are the uncertainty-resampling unit.
+The neutral CPI-carry band is +/-0.50 annualized percentage point around the
+prior-six-month SA inflation trend. The BEI score is conditional on the nominal
+curve and local nominal-yield interpolation, not independent market BEI quotes.
+It omits bonds without a matched nominal residual; observation-level bond counts
+show that coverage. All-maturity errors retain very short held-out bonds even
+when they require extrapolation. Separate 1–10-year scores and paired uncertainty
+comparisons help distinguish supported-tenor fit from extreme short-end errors.
+
+Short-end research also scores **0–6, 3–12, and 6–12 calendar months from
+original settlement**, always excluding maturity on or before historical
+maxREFCPI. Boundaries are lower-exclusive and upper-inclusive, with month-end
+anniversaries clamped to the last valid day. These buckets overlap intentionally.
+The fits and holdout folds still use the full eligible maturity universe.
+`cpi-curve-short-end.csv` and `cpi-curve-short-observations.csv` disclose sparse
+coverage, nominal matches, remaining days beyond maxREFCPI, extrapolated
+holdouts, original clean-price errors per 100, and yield errors in bp.
+Ask/bid date counts and separate side scores expose one-sided coverage; in the
+2015–2026 sample the eligible 0–6-month observations are bid-only.
+Empty buckets are missing, never zero. Episode-weighted short-end rankings and
+paired bootstrap intervals are included in `analysis.md` and the JSON results.
+The CV cache retains bond-level errors and invalidates older aggregate-only
+entries when the short-end methodology changes.
+
+Outputs include `analysis.md`, full JSON results, per-observation and summary
+CSVs, exact-date pre/post comparisons, source SHA-256 hashes, and a reusable
+cross-validation cache. These measure cross-sectional yield/price fit and curve
+shape, **not realized returns, causal CPI effects, or a point-in-time strategy**.
+Pre-release snapshots use only their latest already-available release label;
+those governed by excluded episodes are omitted from primary regime scores.
+Use identical `--from`, `--through`, and `--output` options for generation and
+analysis.
+
+The [October 25 pilot report](./research-baseline/analysis-2026-10-25.md) and its
+tables are preserved as a baseline, including its documented incomplete
+historical metadata. They are not updated by the new study.
 
 ### Incorporating backfills into fit and stability analysis
 
@@ -154,7 +252,9 @@ requested date's daily reports and updates the daily manifests.
   includes dates with the complete supporting TIPS rows, nominal curves, and
   SA/SA-decay TIPS curves. Added dates enter the chronological stability
   comparisons; missing leave-one-out sensitivity results are calculated and
-  cached. Incomplete snapshots are skipped.
+  cached. Cache entries are invalidated when a same-date curve, its forward
+  date, or the short-maturity cutoff changes, so repaired historical metadata
+  cannot leave stale sensitivity results. Incomplete snapshots are skipped.
 
 The job republishes `fedTips-fitHistory-rate.json` / `.csv` and
 `fedBei-stability-rate.json` / `.csv`, along with their

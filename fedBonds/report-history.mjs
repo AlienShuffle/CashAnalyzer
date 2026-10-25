@@ -55,7 +55,7 @@ export function buildHistoricalReport({ date, input, fetch: forceFetch }) {
     const repo = path.join(staging, "CashAnalyzer");
     const cwd = path.join(repo, "fedBonds");
     const stagedCloud = path.join(staging, "cloudflare/public/Treasuries");
-    const env = { ...process.env, HOME: staging, errFile: path.join(staging, "errors.log") };
+    const env = { ...process.env, HOME: staging, errFile: path.join(staging, "errors.log"), BOND_DAILY_ONLY: "true" };
     const run = (command, args, options = {}) => execFileSync(command, args, {
         cwd, env, encoding: "utf8", maxBuffer: 16 * 1024 * 1024, ...options,
     });
@@ -74,6 +74,11 @@ export function buildHistoricalReport({ date, input, fetch: forceFetch }) {
         }
         fs.copyFileSync(path.join(root, "meta.common.sh"), path.join(repo, "meta.common.sh"));
         fs.copyFileSync(meta, path.join(stagedCloud, "TIPSmeta.csv"));
+        const refCpi = path.join(cloud, "REFCPI.csv");
+        if (fs.existsSync(refCpi)) {
+            env.BOND_REFCPI_FILE = path.join(stagedCloud, "REFCPI.csv");
+            fs.copyFileSync(refCpi, env.BOND_REFCPI_FILE);
+        }
         const quotes = path.join(repo, "FedInvest/history/FedInvest-rate-new.json");
         if (input) {
             console.log(`Using saved FedInvest quotes: ${input}`);

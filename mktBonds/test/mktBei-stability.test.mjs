@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { accruedInterest } from "../lib/coupons.mjs";
 import { svenssonZero, tipsZeroModelPrice } from "../lib/zero/index.mjs";
-import { buildBeiStability, knownInflation, leaveOneOut, parseOptions, TENORS } from "../node-calc-mktBei-stability.mjs";
+import { buildBeiStability, knownInflation, leaveOneOut, parseOptions, stabilityCacheSources, TENORS } from "../node-calc-mktBei-stability.mjs";
 
 const realParams = [0.02, -0.01, 0.01, 0.005, 2, 8];
 const nominalParams = [0.045, -0.005, 0.01, 0.01, 2, 8];
@@ -35,6 +35,18 @@ function cacheFor(snapshots) {
     for (const s of snapshots) for (const a of ["sa", "sa-decay"]) for (const v of ["settle", "forward"]) cache[`${s.asOfDate}|${s.side}|${a}|${v}`] = zeroLoo;
     return cache;
 }
+
+test("stability cache sources change when a same-date backfill repairs the curve", () => {
+    const snapshots = [snapshot("2026-10-08", "2026-10-08", "2026-11-01")];
+    const before = stabilityCacheSources(snapshots);
+    assert.deepEqual(stabilityCacheSources(snapshots), before);
+    const changed = structuredClone(snapshots);
+    changed[0].curves.sa.settle.rows[0].marketClean += 0.01;
+    const after = stabilityCacheSources(changed);
+    const key = "2026-10-08|ask|sa|settle";
+    assert.notEqual(after[key], before[key]);
+    assert.notEqual(stabilityCacheSources(snapshots, 4)[key], before[key]);
+});
 
 test("known inflation is the seasonally adjusted log REFCPI ratio from settlement to the forward date", () => {
     const rows = [{ settle_refcpi: 334.0, fwd_refcpi: 335.0, settle_mature_sa_ratio: 1.001, fwd_mature_sa_ratio: 1.0004 }];

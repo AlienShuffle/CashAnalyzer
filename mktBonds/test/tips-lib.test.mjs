@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import vm from "node:vm";
 import {
     applyCredibilityFactor,
@@ -76,6 +78,24 @@ test("REFCPI loader uses the project source and propagates the historical cutoff
     assert.equal(historical.maxDate.getTime(), normalizeDate("2026-04-01").getTime());
     const full = await loadRefCpiTable({ url });
     assert.equal(full.getRefCpi("2026-05-01"), 335);
+});
+
+test("historical jobs can pin REFCPI locally without silently falling back to the network", async () => {
+    const directory = mkdtempSync(path.join(os.tmpdir(), "refcpi-local-"));
+    const previous = process.env.BOND_REFCPI_FILE;
+    try {
+        const file = path.join(directory, "REFCPI.csv");
+        writeFileSync(file, PROJECT_CSV);
+        process.env.BOND_REFCPI_FILE = file;
+        const table = await loadRefCpiTable({ url: "https://invalid.example", asOfDate: "2026-03-11" });
+        assert.equal(table.maxDate.getTime(), normalizeDate("2026-04-01").getTime());
+        process.env.BOND_REFCPI_FILE = path.join(directory, "missing.csv");
+        await assert.rejects(loadRefCpiTable(), /ENOENT/);
+    } finally {
+        if (previous === undefined) delete process.env.BOND_REFCPI_FILE;
+        else process.env.BOND_REFCPI_FILE = previous;
+        rmSync(directory, { recursive: true, force: true });
+    }
 });
 
 test("credibility shrinks factor toward 1 with horizon", () => {

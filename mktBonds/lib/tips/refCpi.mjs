@@ -2,6 +2,7 @@
 // The Apps Script version read a cached, fetched table; here the lookups are built over rows
 // supplied by the caller so the math stays free of I/O. Use loadRefCpiTable() to fetch them.
 import { dateEquals, normalizeDate } from "../dates.mjs";
+import fs from "node:fs/promises";
 
 export const REFCPI_URL = "https://cashoptimizer.pages.dev/Treasuries/REFCPI.csv";
 
@@ -67,6 +68,9 @@ function limitAsOf(rows, asOfDate) {
  */
 export async function loadRefCpiTable({ url = REFCPI_URL, oldestDate, asOfDate } = {}) {
     checkedDate(asOfDate, "asOfDate");
+    if (process.env.BOND_REFCPI_FILE) {
+        return createRefCpiTable(parseRefCpiCsv(await fs.readFile(process.env.BOND_REFCPI_FILE, "utf8"), { oldestDate, asOfDate }));
+    }
     const response = await fetch(url);
     if (!response.ok) throw new Error(`REFCPI request failed: ${response.status} ${url}`);
     return createRefCpiTable(parseRefCpiCsv(await response.text(), { oldestDate, asOfDate }));

@@ -1,0 +1,5 @@
+{
+  "testedBondsAndSides": 4872,
+  "maxForwardReconstructionErrorPer100": 0,
+  "maxAffineSlopeError": 9.830210605521472e-7
+}
