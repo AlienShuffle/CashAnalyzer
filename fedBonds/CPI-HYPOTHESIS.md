@@ -264,7 +264,147 @@ rankings and apparent regime effects depend materially on reference
 specification. Influential Svensson episodes should not be treated as direct
 evidence about a stable market "natural curve."
 
-The next planned step remains the coherent trend-carry counterfactual and
-matched-bond/common-start decomposition. Unknown-horizon conditioning,
+At this checkpoint the next steps were the coherent trend-carry counterfactual
+and matched-bond/common-start decomposition. Unknown-horizon conditioning,
 serial-dependence-aware uncertainty, and genuinely prospective validation
 remain unfinished; no regime-switching production logic has been added.
+
+## Experiment 2 execution: settlement-anchored trend carry
+
+The independent-reference checkpoint was saved in commit `7f492bf` before this
+experiment. Executed on the same 208 eligible dates:
+
+```bash
+node fedBonds/counterfactual-carry.mjs --from=2015-01-01 --through=2026-10-25
+```
+
+### Agreed intervention and identification limits
+
+The user selected **NSA carry equals trend, with NSA/SA seasonal factors
+preserved**, anchored at each observation's settlement date, not at the CPI
+announcement. Let `g` be actual settlement-to-maxREFCPI annualized ACT/365 log
+NSA carry, `t` the prior-six-month SA trend from the latest-known release, and
+`u` ACT/365 years from settlement. Inside the known carry window:
+
+```text
+counterfactual NSA CPI(date) = actual NSA CPI(date) * exp((t - g) * u)
+counterfactual SA CPI(date)  = actual SA CPI(date)  * exp((t - g) * u)
+```
+
+This preserves the settlement CPI level, retains interior daily variation with
+a smooth log tilt, and makes endpoint NSA carry equal `t`. It does **not**
+impose constant daily inflation or a seasonally neutral NSA path. Identical
+NSA/SA scaling leaves seasonal factors and the full/decay ratios unchanged.
+No future CPI is used. Original announcement-based regime labels remain fixed;
+the paths table separately discloses settlement carry gaps.
+
+The runner holds observed settlement quotes, repo rates, financing dates,
+maxREFCPI, and eligible securities fixed. It recomputes indexed coupon payments
+strictly before the forward date, their financing, forward CPI, and forward
+clean prices with the production pricer. Counterfactual original-settlement
+predictions use the corresponding counterfactual affine price transformation,
+not the actual-path slope or coupon intercept.
+
+Two primary diagnostics hold the saved Svensson and three-bond transformed
+reference curves fixed. A secondary diagnostic refits the same three longer
+bonds under the counterfactual. Its training prices use the archive publisher's
+six-decimal precision. No counterfactual Svensson refit was performed; the
+fixed-family comparison is a mechanical sensitivity, not a claim that the
+reference itself would remain fixed in a repriced market.
+
+This experiment changes accounting carry while retaining the prices generated
+under actual carry. Therefore, better fit under actual CPI can be entirely
+consistent with known CPI already being priced. It cannot alone establish or
+refute the causal claim that removing known carry reveals a stable natural
+curve. That requires common-start matched-release evidence and prospective
+validation, not treating these counterfactual predictions as market quotes.
+
+### Primary 6–12-month findings
+
+Full-SA forward clean-price RMSE per 100, pooled over 106 governing episodes:
+
+| Reference treatment | Training beyond | Actual carry | Trend carry |
+|---|---:|---:|---:|
+| Fixed Svensson | 12 months | 0.30724 | 0.43329 |
+| Fixed Svensson | 18 months | 0.83017 | 0.86686 |
+| Fixed Svensson | 24 months | 1.54110 | 1.55914 |
+| Fixed three-bond | 12 months | 0.23051 | 0.42101 |
+| Fixed three-bond | 18 months | 0.30174 | 0.47274 |
+| Fixed three-bond | 24 months | 0.35530 | 0.51349 |
+| Refitted three-bond | 12 months | 0.23051 | 0.30142 |
+| Refitted three-bond | 18 months | 0.30174 | 0.38967 |
+| Refitted three-bond | 24 months | 0.35530 | 0.45067 |
+
+All pooled comparisons worsen descriptively. For full-SA refitted three-bond
+references, paired squared-price improvement is:
+
+| Training beyond | Actual error squared minus counterfactual error squared | Episode-bootstrap 95% interval |
+|---|---:|---|
+| 12 months | -0.03772 | [-0.05680, -0.02034] |
+| 18 months | -0.06080 | [-0.08898, -0.03332] |
+| 24 months | -0.07686 | [-0.11280, -0.04077] |
+
+These intervals use 2,000 paired episode resamples, not independent bonds.
+They are exploratory and do not adjust for serial dependence, repeated
+securities or multiple comparisons. Fixed Svensson's 24-month improvement
+interval crosses zero; do not describe every worsening as statistically
+resolved. SA-decay gives similar pooled deterioration with both three-bond
+treatments. Original-settlement yield RMSE also worsens: refitted full-SA
+12-month results increase from 36.25 to 46.86 bp.
+
+At the 12-month cutoff, full-SA refitted three-bond results by **original
+announcement-based** state are:
+
+| State | Episodes | Actual price RMSE | Trend price RMSE | Squared-price improvement 95% interval |
+|---|---:|---:|---:|---|
+| Below | 43 | 0.27160 | 0.36863 | [-0.10649, -0.02845] |
+| Near | 21 | 0.20347 | 0.20671 | [-0.00608, +0.00341] |
+| Above | 42 | 0.19464 | 0.26231 | [-0.05351, -0.00934] |
+
+The 18- and 24-month three-bond refits show the same qualitative state pattern:
+worse below and above; little resolved change near trend. Refitting absorbs a
+substantial fraction of the fixed-reference displacement, but does not
+eliminate it. At the 12-month cutoff, only about 39% of episode-balanced
+full-SA observations move closer in price; about 19% cross the reference.
+Crossing does not necessarily mean improvement.
+
+The signed residual shift has the expected mechanical direction: full-SA
+fixed-three-bond price residuals change by roughly -0.261 per 100 below trend,
+-0.005 near trend, and +0.307 above trend at the 12-month cutoff. Refitting
+reduces these shifts to approximately -0.127, -0.004 and +0.152.
+This confirms that the transformation matters in the predicted direction; it
+does not identify a universal reference shape.
+
+The previously weak negative full-SA three-bond carry-gap slopes do **not**
+simply vanish under trend carry. They become positive at each cutoff under
+both fixed and refitted references, but all primary three-bond slope intervals
+still cross zero. Thus the observed regime relationship is mechanically
+sensitive, not a demonstrated stable switching rule.
+
+### Coverage, sensitivities and verification
+
+- Ask-only, bid-only and shutdown-sensitive-excluded full-SA refitted
+  three-bond pooled price improvements remain negative at all three cutoffs,
+  with their episode-bootstrap intervals below zero.
+- The overlapping 3–12-month and bid-only 0–6-month buckets also show worse
+  pooled full-SA refitted three-bond price fit at all cutoffs. These are not
+  independent confirmations. At 12 months, 0–6-month RMSE rises from 0.25877
+  to 0.40859 across 100 episodes; its sparse coverage must not be generalized
+  to an unavailable ask sample.
+- All 18,470 eligible source rows reconstruct archived actual forward prices
+  **exactly**. The 7,488 actual-path three-bond recalibrations reproduce saved
+  rates exactly before counterfactual comparisons.
+- Recomputed 3,034 intervening indexed-coupon lookups; retained two explicitly
+  flagged bracketed yield inversions for extreme Svensson predictions.
+- Saved 57,996 observations, 54,729 overlapping-bucket pairs, 2,376 summary
+  rows, 1,188 relationship rows and 416 date/side CPI paths. No duplicate
+  observation keys or maturity-on/before-maxREFCPI violations were found.
+- Input manifests are verified before execution and again before publishing
+  results. Original reference tables are not overwritten.
+
+The [counterfactual report](./history/research/carry-counterfactual.md) and its
+CSV tables preserve signed price/yield movement, uncertainty, side coverage,
+training support, and both intervention and original carry-gap definitions.
+The practical conclusion remains **do not deploy regime switching**.
+Next: matched bonds over release -5/+5 dates, evaluated at a common post-release
+start, separating quote repricing, carry updates and reference recalibration.

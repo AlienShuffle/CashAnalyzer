@@ -237,8 +237,8 @@ Positive squared-error improvement favors forward. A negative slope versus the
 carry-minus-trend gap supports the hypothesized below-trend forward advantage.
 All references are Svensson extrapolations; cutoff sensitivity is not a
 different model-family check. The first run performs thousands of fits; later
-runs reuse source/engine-fingerprinted parameters. Mechanical counterfactuals
-and matched release decomposition remain subsequent phases.
+runs reuse source/engine-fingerprinted parameters. Matched release
+decomposition remains a subsequent phase.
 
 To run the independently specified reference and influential-episode comparison:
 
@@ -263,6 +263,40 @@ Results can differ because both the family and training breadth change. This
 benchmark is not the observable "natural curve," a production recommendation,
 or an independent prospective test. An episode label in late 2014 can govern an
 early-2015 observation; the quote sample still starts in 2015.
+
+After both references are saved, run the mechanical trend-carry test:
+
+```bash
+node fedBonds/counterfactual-carry.mjs --from=2015-01-01 --through=2026-10-25
+```
+
+The [counterfactual runner](./counterfactual-carry.mjs) validates the study,
+release plan, execution ledger, both reference manifests, and all source hashes.
+It anchors CPI at each observation's settlement and smoothly tilts the known
+daily NSA path so settlement-to-maxREFCPI annualized log carry equals the
+latest-known release's prior-six-month SA trend. Applying the identical tilt
+to SA CPI preserves seasonal factors and full/decay adjustment ratios.
+Observed prices, dates, repo rates and bond selection do not change.
+Intervening indexed coupons and forward prices are recomputed coherently.
+
+`carry-counterfactual.md` and its observation, summary, paths, pair and
+relationship CSVs distinguish **fixed Svensson**, **fixed three-bond**, and
+**refitted three-bond** references. The fixed cases isolate the transformation;
+the refit shows how much longer-end recalibration absorbs. There is no new
+Svensson refit. The runner proves actual-path forward-price reconstruction and
+three-bond calibration identity before evaluating the counterfactual.
+Training prices retain the archive publisher's six-decimal rounding.
+The input-hash and verification JSONs make the run auditable.
+
+Positive counterfactual improvement means actual squared error minus
+trend-path squared error, with paired episode-bootstrap intervals for prices.
+The separate settlement-versus-forward relationship tables keep the earlier
+sign convention and **original announcement-based** carry-gap labels, even
+though the intervention is settlement-anchored. Signed residual movements,
+fractions moving toward/through the reference, sparse bid-only 0–6-month
+coverage, and shutdown/quote-side sensitivities are disclosed.
+This is a mechanical sensitivity at fixed observed prices, **not** simulated
+market repricing, a causal experiment, or a recommendation to replace known CPI.
 
 Outputs include `analysis.md`, full JSON results, per-observation and summary
 CSVs, exact-date pre/post comparisons, source SHA-256 hashes, and a reusable

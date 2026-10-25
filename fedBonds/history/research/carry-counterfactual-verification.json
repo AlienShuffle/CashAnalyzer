@@ -1,0 +1,18 @@
+{
+  "dates": 208,
+  "dateSides": 416,
+  "reconstructedEligibleRows": 18470,
+  "maxArchivedForwardPriceDifference": 0,
+  "interveningCouponLookups": 3034,
+  "flatRefits": 7488,
+  "actualPathCalibrationChecks": 7488,
+  "maxArchivedFlatRateDifference": 0,
+  "baselineObservationsPerFamily": 19332,
+  "observations": 57996,
+  "pairs": 54729,
+  "summaries": 2376,
+  "relationships": 1188,
+  "bracketedYields": 2,
+  "knownInflationViolations": 0,
+  "duplicateObservationKeys": 0
+}
