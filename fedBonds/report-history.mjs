@@ -5,6 +5,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { toPublishedRows } from "./node-fedBonds-update.mjs";
+import { localDaily, copyDailyFile, syncDailyArchive } from "./lib/daily-archive.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 
@@ -96,31 +97,17 @@ export function buildHistoricalReport({ date, input, fetch: forceFetch }) {
         const stagedDaily = path.join(stagedCloud, "fedBonds/daily");
         const files = fs.readdirSync(stagedDaily).filter(name => name.startsWith(`${date}-`) && /\.(csv|json)$/.test(name));
         if (files.length !== 66) throw new Error(`Expected 66 daily report files, produced ${files.length}`);
-        const daily = path.join(cloud, "fedBonds/daily");
+        syncDailyArchive({ published: path.join(cloud, "fedBonds/daily") });
+        const daily = localDaily;
         fs.mkdirSync(daily, { recursive: true });
-        const publish = (source, destination) => {
-            const temp = `${destination}.tmp.${process.pid}`;
-            try {
-                fs.copyFileSync(source, temp);
-                fs.renameSync(temp, destination);
-            } finally {
-                fs.rmSync(temp, { force: true });
-            }
-        };
-        for (const file of files) publish(path.join(stagedDaily, file), path.join(daily, file));
-        for (const family of ["Tips", "Nominal", "Bei"]) {
-            const names = fs.readdirSync(daily).filter(name =>
-                new RegExp(`^\\d{4}-\\d{2}-\\d{2}(?:T\\d{4})?-fed${family}-.+\\.csv$`).test(name)).sort();
-            const manifest = path.join(staging, `fed${family}-manifest.txt`);
-            fs.writeFileSync(manifest, `${names.join("\n")}\n`);
-            publish(manifest, path.join(daily, path.basename(manifest)));
-        }
+        for (const file of files) copyDailyFile(path.join(stagedDaily, file), path.join(daily, file));
+        syncDailyArchive({ published: path.join(cloud, "fedBonds/daily") });
         if (!input) {
             const saved = path.join(cloud, "FedInvest/daily", `${date}-rate.json`);
             fs.mkdirSync(path.dirname(saved), { recursive: true });
-            publish(quotes, saved);
+            copyDailyFile(quotes, saved);
         }
-        console.log(`Published 66 daily report files for ${date} in ${daily}. Latest reports were not changed.`);
+        console.log(`Archived 66 daily report files for ${date} in ${daily}; only the last three months are published. Latest reports were not changed.`);
     } catch (error) {
         const errors = env.errFile;
         if (fs.existsSync(errors)) process.stderr.write(fs.readFileSync(errors, "utf8"));

@@ -6,13 +6,14 @@ import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { buildResearchPlan } from "./lib/research-calendar.mjs";
 import { parseResearchOptions } from "./lib/research-options.mjs";
+import { dailyReportDirectory } from "./lib/daily-archive.mjs";
 import { parseCsvToMatrix } from "../lib/parseCsv.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const digest = file => createHash("sha256").update(fs.readFileSync(file)).digest("hex");
 
 export function verifyDaily(cloud, date) {
-    const directory = path.join(cloud, "fedBonds/daily");
+    const directory = dailyReportDirectory(cloud);
     const stems = ["rate"];
     for (const side of ["ask", "bid"]) {
         stems.push(`fedNominal-${side}`, `fedTips-${side}`);

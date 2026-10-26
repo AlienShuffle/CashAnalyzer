@@ -38,6 +38,7 @@ while [ -n "$1" ]; do
 done
 
 source ../meta.common.sh
+node ../fedBonds/publish-daily.mjs "--published=$cloudFlareHome/Treasuries/fedBonds/daily" || exit $?
 repoDir=$(dirname $cloudFlareHome)
 if [ ! -d "$repoDir/.git" ]; then
     echo "$0: we are running on a non-git cloudflare tree, skipping sync process."

@@ -58,9 +58,41 @@ A complete run produces:
   `fedBei-manifest.txt`, listing the matching CSV basenames.
 
 Daily snapshots are written when report contents change. Archive statistics
-only read the Fed-prefixed files in this stream's directory, including its
-date-only filenames. Verdicts initially say `insufficient history` until
+read the full local archive, including its date-only filenames, not just the
+published window. Verdicts initially say `insufficient history` until
 enough daily observations accumulate.
+
+### Published retention and local research history
+
+The complete daily JSON/CSV history is kept in `fedBonds/history/daily/` in the
+CashAnalyzer tree. This directory is Git-ignored, like other generated history;
+include it in local backups. It is **never age-pruned**.
+
+Cloudflare's `Treasuries/fedBonds/daily/` contains only a rolling **three calendar
+months**, measured from the current UTC date, inclusive of the cutoff. For
+example, on 2026-10-26 it retains snapshots dated 2026-07-26 or later.
+Month-end cutoffs clamp to the last valid day of the target month.
+Latest reports are unaffected. Daily CSV manifests list only the files present
+in their respective local or published directory.
+
+[The daily publisher](./publish-daily.mjs) imports existing published snapshots
+into the local archive before pruning, verifies copies, and refuses deletion
+if an expired published file differs from its local copy. Normal FedInvest
+report jobs write daily snapshots directly to the local archive, so cumulative
+fit-history and BEI-stability calculations continue to use the full history.
+The normal job and Cloudflare push job both enforce retention automatically.
+To migrate and trim an existing published tree immediately, from the repository
+root run:
+
+```bash
+node fedBonds/publish-daily.mjs
+```
+
+The research runner, analysis, carry experiments and release decomposition use
+the full local archive by default. Existing research input-hash manifests that
+name the former published paths are resolved to the identical local copies.
+An explicit custom `--cloud` tree still uses that tree's `fedBonds/daily/`.
+Other published Treasury streams are not trimmed by this policy.
 
 ## Running
 
@@ -124,12 +156,13 @@ missing CPI coverage or missing metadata cause failure rather than substituting
 current quotes. It is a historical-price replay, not a point-in-time reconstruction
 of every later metadata/seasonal-factor revision.
 
-Only after the full calculation succeeds does it publish **33 JSON and 33 CSV
-files** for that date under `Treasuries/fedBonds/daily/`, replacing entries for
-the same date if present. It refreshes the three daily CSV manifests.
+Only after the full calculation succeeds does it archive **33 JSON and 33 CSV
+files** for that date under `fedBonds/history/daily/`, replacing entries for
+the same date if present. It publishes the date to `Treasuries/fedBonds/daily/`
+only when it is within the three-month window and refreshes the daily CSV manifests.
 **Latest reports, latest manifests, normal working files, and original input
 snapshots remain unchanged.** Cumulative fit-history and BEI-stability reports
-are refreshed on the next normal daily job, when it reads the expanded archive.
+are refreshed on the next normal daily job, when it reads the expanded local archive.
 Historical runs use a snapshot of locally published `REFCPI.csv` when available;
 the network source remains the fallback when no local table exists. This allows
 the extended reference table to support research beginning in 2015.

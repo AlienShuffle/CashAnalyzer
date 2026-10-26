@@ -17,7 +17,7 @@ set -- "${jobArgs[@]}"
 source ../meta.common.sh
 curveCloudflareDir="$cloudFlareHome/Treasuries/$sourceName"
 quoteFile="$curveCloudflareDir/$sourceName-rate.json"
-curveDailyDir="$curveCloudflareDir/daily"
+curveDailyDir="${BOND_DAILY_DIR:-$curveCloudflareDir/daily}"
 mkdir -p "$curveDailyDir"
 
 csvFields=cusip,interest_rate,security_term,series,maturity_date,dated_date,report_source,asOfDate,settle_date,fwd_date,settle_clean_price,dated_refcpi,settle_refcpi,fwd_refcpi,settle_mature_sa_ratio,settle_mature_sa_ratio_decay,fwd_mature_sa_ratio,fwd_mature_sa_ratio_decay,repo_rate,fwd_clean_price,settle_ytm,settle_sa_ytm,settle_sa_decay_ytm,forward_ytm,forward_sa_ytm,forward_sa_decay_ytm,settle_sao,forward_sao,settle_sao_tweak,forward_sao_tweak

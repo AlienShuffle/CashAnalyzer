@@ -292,3 +292,4 @@ mktBonds/toolkit-app-script-src/.clasp.auth
 VanguardAdvisorsETF/history/hybrid-job.lock
 VanguardAdvisorsETF/history/hybrid-control/
 FedInvest/history/*
+fedBonds/history/daily/

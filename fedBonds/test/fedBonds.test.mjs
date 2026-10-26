@@ -159,7 +159,9 @@ test("parallel job publishes every Fed family, daily archive, summary and manife
     for (const name of fs.readdirSync(path.join(root, "mktBonds")).filter(name => /\.(mjs|sh)$/.test(name))) {
         fs.copyFileSync(path.join(root, "mktBonds", name), path.join(repo, "mktBonds", name));
     }
-    for (const name of ["job-fedBonds-update.sh", "collect-fedBonds.sh", "node-fedBonds-update.mjs", "report-history.mjs"]) {
+    fs.mkdirSync(path.join(cwd, "lib"));
+    fs.copyFileSync(path.join(root, "fedBonds/lib/daily-archive.mjs"), path.join(cwd, "lib/daily-archive.mjs"));
+    for (const name of ["job-fedBonds-update.sh", "collect-fedBonds.sh", "node-fedBonds-update.mjs", "report-history.mjs", "publish-daily.mjs"]) {
         fs.copyFileSync(path.join(root, "fedBonds", name), path.join(cwd, name));
     }
     fs.writeFileSync(path.join(repo, "meta.common.sh"), 'cloudFlareHome="$HOME/cloudflare/public"\n');
@@ -278,7 +280,12 @@ globalThis.fetch = async url => {
     assert.equal(fs.readdirSync(path.join(target, "daily")).filter(name => name.endsWith(".json")).length, 33);
     assert.deepEqual(fs.readdirSync(path.join(cloud, "mktBonds")), ["sentinel"]);
     assert.equal(fs.readFileSync(path.join(cloud, "mktBonds/sentinel"), "utf8"), "unchanged");
-    assert.ok(fs.readdirSync(path.join(cwd, "history")).every(name => name.startsWith("fed")));
+    assert.ok(fs.readdirSync(path.join(cwd, "history")).every(name => name.startsWith("fed") || name === "daily"));
+    const archive = path.join(cwd, "history/daily");
+    for (const name of fs.readdirSync(path.join(target, "daily"))) {
+        assert.equal(fs.readFileSync(path.join(archive, name), "utf8"),
+            fs.readFileSync(path.join(target, "daily", name), "utf8"));
+    }
 
     const published = fs.readFileSync(path.join(target, "fedBonds-rate.json"), "utf8");
     const marketDir = path.join(repo, "mktBonds");
@@ -364,6 +371,22 @@ globalThis.fetch = async url => {
         const expected = fs.readdirSync(daily).filter(name => name.endsWith(".csv") && name.includes(`fed${family}-`)).sort();
         assert.deepEqual(fs.readFileSync(path.join(daily, `fed${family}-manifest.txt`), "utf8").trim().split("\n"), expected);
     }
+
+    const oldInput = path.join(home, "old-quotes.json");
+    fs.writeFileSync(oldInput, JSON.stringify(input.map(row => ({ ...row, asOfDate: "2026-06-01" }))));
+    const oldHistory = historicalRun(["2026-06-01", `--input=${oldInput}`]);
+    assert.equal(oldHistory.status, 0, oldHistory.stdout + oldHistory.stderr);
+    assert.equal(fs.readdirSync(archive).filter(name => name.startsWith("2026-06-01-")).length, 66);
+    assert.equal(fs.readdirSync(path.join(target, "daily")).filter(name => name.startsWith("2026-06-01-")).length, 0);
+    for (const [name, content] of Object.entries(latestBefore)) {
+        assert.equal(fs.readFileSync(path.join(target, name), "utf8"), content, name);
+    }
+
+    const refreshed = run();
+    assert.equal(refreshed.status, 0, refreshed.stdout + refreshed.stderr);
+    assert.ok(json("fedTips-fitHistory-rate.json").rows.some(row => row.asOfDate === "2026-06-01"));
+    assert.ok(json("fedBei-stability-rate.json").rows.some(row => row.asOfDate === "2026-06-01"));
+    assert.equal(fs.readdirSync(path.join(target, "daily")).some(name => name.startsWith("2026-06-01-")), false);
 
     fs.writeFileSync(inputFile, JSON.stringify([{ ...record, buy: "invalid" }]));
     const failure = run();

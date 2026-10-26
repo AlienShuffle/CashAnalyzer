@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { parseResearchOptions, readResearchResults } from "./lib/research-options.mjs";
+import { dailyReportDirectory, archivedInputPath } from "./lib/daily-archive.mjs";
 import { buildResearchPlan } from "./lib/research-calendar.mjs";
 import { SHORT_BUCKETS, addMonths, inShortBucket } from "./lib/research-buckets.mjs";
 import { originalSettlementPrice } from "./lib/research-pricing.mjs";
@@ -21,7 +22,7 @@ assert.ok(["svensson", "flat-nearest3"].includes(reference), "reference must be 
 const prefix = reference === "svensson" ? "carry-reference" : "carry-flat";
 const options = parseResearchOptions(args.filter(arg => !arg.startsWith("--reference=")));
 const read = file => JSON.parse(fs.readFileSync(file, "utf8"));
-const hash = file => createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+const hash = file => createHash("sha256").update(fs.readFileSync(archivedInputPath(file))).digest("hex");
 const studyFile = path.join(options.output, "cpi-curve-analysis.json");
 const study = read(studyFile);
 assert.equal(study.methodology.from, options.from);
@@ -30,7 +31,7 @@ const execution = readResearchResults(options.results);
 assert.deepEqual(execution, study.executionResults, "Rerun analyze-history before the carry experiment");
 const plan = buildResearchPlan(read(path.join(options.cloud, "CPI-dates.json")), options);
 assert.deepEqual(plan, study.plan, "Release plan changed; rerun analyze-history");
-const daily = path.join(options.cloud, "fedBonds/daily");
+const daily = dailyReportDirectory(options.cloud);
 const events = new Map(study.events.map(row => [row.rlsDate, row]));
 const engine = ["experiment-carry.mjs", "lib/research-pricing.mjs", "lib/research-buckets.mjs",
     "lib/research-experiment.mjs", "lib/research-flat-reference.mjs",

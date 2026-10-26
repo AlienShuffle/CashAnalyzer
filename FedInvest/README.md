@@ -1,5 +1,12 @@
 # FedInvest quote history
 
+FedInvest and FedInvestToday publish only latest quote files and dated snapshots
+under their Cloudflare `daily/` directories. The obsolete published
+`Treasuries/FedInvest/history/` and `Treasuries/FedInvestToday/history/`
+per-CUSIP directories have been removed; the shared publisher no longer contains
+the legacy code that created them. Local CashAnalyzer `history/` working files
+and saved quotes are unaffected.
+
 Download TreasuryDirect's FedInvest quotes for a specific report date from the
 repository root:
 

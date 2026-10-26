@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { parseResearchOptions, readResearchResults } from "./lib/research-options.mjs";
+import { dailyReportDirectory, archivedInputPath } from "./lib/daily-archive.mjs";
 import { buildResearchPlan } from "./lib/research-calendar.mjs";
 import { SHORT_BUCKETS, addMonths, inShortBucket } from "./lib/research-buckets.mjs";
 import { mean, grouped, episodeMeans, referenceYield, carryRelationship, episodeInfluence } from "./lib/research-experiment.mjs";
@@ -16,7 +17,7 @@ import { normalizeDate, daysBetween } from "../mktBonds/lib/dates.mjs";
 
 const options = parseResearchOptions(process.argv.slice(2));
 const sources = new Map();
-const hash = file => createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+const hash = file => createHash("sha256").update(fs.readFileSync(archivedInputPath(file))).digest("hex");
 function input(file) {
     const text = fs.readFileSync(file, "utf8");
     sources.set(file instanceof URL ? file.pathname : file, createHash("sha256").update(text).digest("hex"));
@@ -89,13 +90,13 @@ for (const release of selected) {
         announcementGapPp: event.gap * 100,
     });
     const snapshots = [release.pre, release.post].map(date => {
-        const quotes = read(path.join(options.cloud, "fedBonds/daily", `${date}-rate.json`));
+        const quotes = read(path.join(dailyReportDirectory(options.cloud), `${date}-rate.json`));
         assert.ok(quotes.length && quotes.every(row => row.asOfDate.slice(0, 10) === date), "Bill snapshot date differs");
         return quotes;
     });
     for (const side of ["ask", "bid"]) {
         const data = [release.pre, release.post].map(date =>
-            read(path.join(options.cloud, "fedBonds/daily", `${date}-fedTips-${side}.json`)));
+            read(path.join(dailyReportDirectory(options.cloud), `${date}-fedTips-${side}.json`)));
         assert.ok(data.every(rows => rows.length), "Empty quote snapshot");
         const maps = data.map(rows => new Map(rows.map(row => [row.cusip, row])));
         const repos = snapshots.map((quotes, index) => commonStartRepo(quotes, side, data[index][0].settle_date, common));

@@ -176,46 +176,6 @@ else
     fi
 fi
 #
-# Process the daily history results in rate and merge with history.
-#
-##################################
-if false; then
-    grep cusip "$jsonRateNew" | sed 's/^.*cusip": "//' | sed 's/",$//' | sort -u |
-        while IFS= read -r cusip; do
-            dirname="history/$cusip"
-            #echo "Processing $cusip"
-            [ -d "$dirname" ] || mkdir -p "$dirname"
-            jasonRateCusip="$dirname/rate-new.json"
-            jsonHistoryUnique="$dirname/history-unique.json"
-            jsonHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.json"
-            csvHistoryFlare="$cloudFlareHome/Treasuries/$sourceName/$dirname/rate-history.csv"
-
-            # now for the line I am processing, I need to pull ONLY those items that are appropriate for this line from jsonRateNew and process from here.
-            cat "$jsonRateNew" | jq "[.[] | select(.cusip==\"$cusip\")]" >"$jasonRateCusip"
-
-            if [ -f "$jsonHistoryFlare" ]; then
-                jq -s 'flatten | unique_by([.cusip,.asOfDate]) | sort_by([.cusip,.asOfDate])' "$jasonRateCusip" "$jsonHistoryFlare" >tmp-flatten.json
-                cat tmp-flatten.json | jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
-                rm tmp-flatten.json
-            else
-                cat "$jasonRateCusip" | jq 'sort_by([.cusip,.asOfDate])' >"$jsonHistoryUnique"
-            fi
-            if [ ! -s "$jsonHistoryFlare" ]; then
-                dir=$(dirname "$jsonHistoryFlare")
-                [ -d "$dir" ] || mkdir -p "$dir"
-            fi
-            if ../bin/jsonDifferent.sh "$jsonHistoryUnique" "$jsonHistoryFlare"; then
-                cat "$jsonHistoryUnique" >"$jsonHistoryFlare"
-                (
-                    echo 'asOfDate, cusip, securitytype, rate, maturitydate, calldate, buy, sell, endofday, key'
-                    jq -r '.[] | [.asOfDate, .cusip, .securitytype, .rate, .maturitydate, .calldate, .buy, .sell, .endofday, .key] | @csv' "$jsonHistoryUnique"
-                ) >"$csvHistoryFlare"
-                #echo "published updated $sourceName cloudFlare history file."
-            fi
-        done
-fi
-###################################################
-#
 # process the rate file.
 #
 dateNew=$(grep asOfDate "$jsonRateNew" | cut -d: -f2 | sed 's/\"//g' | sed 's/,//g' | sed 's/ //g' | sort -u)
@@ -232,7 +192,7 @@ if [ ! -s "$jsonRateFlare" ]; then
     dir=$(dirname "$jsonRateFlare")
     [ -d "$dir" ] || mkdir -p "$dir"
 fi
-dailyFolder="$cloudFlareHome/Treasuries/$sourceName/daily"
+dailyFolder="${BOND_DAILY_DIR:-$cloudFlareHome/Treasuries/$sourceName/daily}"
 [ -d "$dailyFolder" ] || mkdir -p "$dailyFolder"
 if ! isJsonArray "$jsonRateNew"; then
     echo "REFUSED to publish $jsonRateFlare from invalid or empty $jsonRateNew."

@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { parseResearchOptions, readResearchResults } from "./lib/research-options.mjs";
+import { dailyReportDirectory, archivedInputPath } from "./lib/daily-archive.mjs";
 import { buildResearchPlan } from "./lib/research-calendar.mjs";
 import { SHORT_BUCKETS, addMonths, inShortBucket } from "./lib/research-buckets.mjs";
 import { originalSettlementPrice } from "./lib/research-pricing.mjs";
@@ -17,7 +18,7 @@ import { parseCsvToMatrix } from "../lib/parseCsv.mjs";
 
 const options = parseResearchOptions(process.argv.slice(2));
 const read = file => JSON.parse(fs.readFileSync(file, "utf8"));
-const hash = file => createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+const hash = file => createHash("sha256").update(fs.readFileSync(archivedInputPath(file))).digest("hex");
 const sources = new Map();
 function input(file) {
     sources.set(file, hash(file));
@@ -69,7 +70,7 @@ let identityChecks = 0, couponLookups = 0, bracketedYields = 0, maxIdentityError
 function dateRows(date, side) {
     const key = `${date}|${side}`;
     if (rowsByDateSide.has(key)) return rowsByDateSide.get(key);
-    const tips = JSON.parse(input(path.join(options.cloud, "fedBonds/daily", `${date}-fedTips-${side}.json`)));
+    const tips = JSON.parse(input(path.join(dailyReportDirectory(options.cloud), `${date}-fedTips-${side}.json`)));
     const sample = samples.get(date), event = events.get(sample?.event);
     assert.ok(event && Number.isFinite(event.trend6), "Missing historical trend");
     const eligible = tips.filter(row => row.maturity_date.slice(0, 10) > row.fwd_date.slice(0, 10));
