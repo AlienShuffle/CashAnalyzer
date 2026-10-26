@@ -77,7 +77,7 @@ across training cutoffs strengthens robustness but does not establish an
 observable "true" curve. A later alternative-family check should use a simple
 independently specified reference rather than tuning to favorable short errors.
 
-## Experiment 2: mechanical carry counterfactual (subsequent phase)
+## Experiment 2: mechanical carry counterfactual design
 
 Hold observed quotes fixed. Replace actual known CPI carry with trend-consistent
 carry and recompute all affected index ratios, indexed coupon cash flows,
@@ -89,7 +89,7 @@ Changing only the forward date or one price multiplier is insufficient.
 Agreement with the predicted signed displacement would support the mechanism;
 disagreement would weaken it even if a regime ranking looks favorable.
 
-## Experiment 3: matched release pairs (subsequent phase)
+## Experiment 3: matched release pairs design
 
 Use the same bonds on both sides of the release and a common future start date
 (post-release maxREFCPI). Decompose observed repricing, mechanical carry changes,
@@ -406,5 +406,301 @@ The [counterfactual report](./history/research/carry-counterfactual.md) and its
 CSV tables preserve signed price/yield movement, uncertainty, side coverage,
 training support, and both intervention and original carry-gap definitions.
 The practical conclusion remains **do not deploy regime switching**.
-Next: matched bonds over release -5/+5 dates, evaluated at a common post-release
-start, separating quote repricing, carry updates and reference recalibration.
+The next step at this checkpoint was matched bonds over release -5/+5 dates,
+evaluated at a common post-release start.
+
+## Experiment 3 execution: matched releases and a common future start
+
+Executed using [decompose-release.mjs](./decompose-release.mjs):
+
+```bash
+node fedBonds/decompose-release.mjs --from=2015-01-01 --through=2026-10-25
+```
+
+### Agreed design and accounting identity
+
+The user approved projecting the unknown pre-release CPI segment with the
+**pre-release six-month trend as NSA log growth**, and using the existing
+three-nearest-bond constant-rate reference at all three cutoffs.
+
+- Use exact -5/+5 Treasury-session dates for **103 complete pairs** from 105
+  selected releases. January 2023 and January 2026 stay out because their
+  pre-release snapshots are governed by excluded episodes.
+- The common future start is the **post-release maxREFCPI**. It is a fixed
+  pricing date within each pair, not an arbitrary shift in forward maturity.
+- Intersect CUSIPs within each quote side. Require maturity strictly after
+  this common start. Anchor test buckets and all 12/18/24-month cutoffs at
+  the pre-release settlement, so membership and training support cannot roll.
+- Calibrate the same three nearest matched longer bonds in every state by
+  aggregate dirty-price matching at equal par. No short test bond enters
+  training; no monotonic yield shape is imposed. This experiment does not
+  add a Svensson reference family.
+- Pre-release CPI is actual only through the old known horizon. Project from
+  there to the common start using `exp(preTrend * ACT365 years)`. Do **not**
+  read newly revealed actual CPI for this unknown segment. Post-release CPI
+  is actual through the common start.
+- Seasonal factors are snapshot-capped production lookups/projections.
+  Full/decay ratios use the same future start in both states. The pre-release
+  projection does not blend in a post-release trend or seasonal observation.
+- Financing is recalculated from each snapshot's same-side T-bills bracketing
+  the **common future start**, with production log-discount interpolation and
+  rate rounding. The pre-release rate for its old, shorter CPI horizon is not
+  extrapolated. The financing table preserves both rates and selected bills.
+
+Compute all eight combinations of before/after quote, CPI information, and
+**context** (settlement date, repo rate, accrued/coupon ownership roll, and
+seasonal ratios). Recompute indexed coupons, their repo financing, and clean
+prices consistently in each combination. Refit the same training bonds in
+all eight combinations as well.
+
+For signed residual `r = transformed market - reference`, averaging all six
+update orders gives the exact Shapley identity:
+
+```text
+change in r = quote effect + CPI effect + context effect - reference movement
+            = net quote effect + net CPI effect + net context effect
+```
+
+The net effects include the corresponding reference response. Reference
+recalibration is consequently not a fourth exogenous shock; it is a response
+to the same three input blocks. Components are correlated.
+
+A second Shapley decomposition applies to **squared residuals**:
+
+```text
+pre squared error - post squared error =
+    quote fit improvement + CPI fit improvement + context fit improvement
+```
+
+This distinguishes a signed displacement from movement toward the reference.
+Yield nonlinearities are decomposed separately from price, not approximated
+with duration.
+
+**Important basis change:** prices and coupon-equivalent yields here are at the
+**common future start**, after the chosen seasonal treatment. Earlier
+experiments inverted predictions to original settlement. These result
+magnitudes are not directly comparable to the previous tables.
+
+### Primary 6–12-month findings
+
+Full-SA common-start clean-price residual RMSE per 100:
+
+| Training beyond pre-settlement | Before | After | Paired squared-error improvement [95% episode-bootstrap interval] |
+|---|---:|---:|---|
+| 12 months | 0.28189 | 0.21382 | +0.03374 [+0.01138, +0.06132] |
+| 18 months | 0.36096 | 0.27725 | +0.05342 [+0.02108, +0.09231] |
+| 24 months | 0.41365 | 0.32673 | +0.06435 [+0.02652, +0.10870] |
+
+The full-SA 12-month price fit improvement decomposes as:
+
+| Input block, including reference response | Contribution to squared-price improvement |
+|---|---:|
+| Quote changes | +0.00703 |
+| Newly known CPI | +0.03673 |
+| Settlement/repo/seasonal context | -0.01003 |
+| **Total** | **+0.03374** |
+
+The CPI fit contribution's episode-bootstrap interval is
+[+0.01762, +0.06121]. It remains positive at 18 and 24 months, with intervals
+above zero. This is a conditional accounting result, **not** a claim that
+the CPI announcement caused this much trading profit or repricing.
+
+By original announcement-based CPI regime, at the 12-month cutoff:
+
+| State | Releases | Before RMSE | After RMSE | Net CPI price displacement [95% interval] |
+|---|---:|---:|---:|---|
+| Below | 40 | 0.36589 | 0.24961 | +0.13883 [+0.10860, +0.16963] |
+| Near | 21 | 0.18276 | 0.19481 | +0.00513 [-0.01522, +0.02380] |
+| Above | 42 | 0.22511 | 0.18387 | -0.15468 [-0.18658, -0.12340] |
+
+Below trend, mean price residual moves from -0.22947 to -0.06771; above trend,
+from +0.09046 to -0.02171. Thus the directional CPI correction tends to close
+oppositely signed pre-release residuals in both extremes. Near trend, the CPI
+piece is small while quotes and ordinary roll still move. At 12 and 18 months,
+the **total** above-trend fit-improvement intervals cross zero, even though
+the corresponding CPI fit contributions are positive with intervals above
+zero. Do not confuse a component interval with the uncertainty in total change.
+
+The sign pattern persists across cutoffs. Full SA and SA-decay both show
+pooled improvement; at the 12-month cutoff SA-decay RMSE moves from 0.27609 to
+0.21239. Unadjusted 6–12-month RMSE instead rises from 0.35752 to 0.38000;
+its total improvement interval crosses zero. These are descriptive
+specification comparisons, not new evidence that one adjustment dominates all
+regimes.
+
+Common-start yield results move similarly: full-SA 12-month RMSE falls from
+61.80 to 43.84 bp, versus 87.07 to 56.28 below trend, 31.52 to 33.67 near
+trend, and 40.63 to 33.63 above trend. Yield magnitudes are especially sensitive
+to short remaining maturities.
+
+### Quote changes, carry, and reference changes all matter
+
+Pooled signed means can hide offsetting episodes. At the 12-month full-SA
+cutoff, net price-effect RMS is 0.14429 for quotes, 0.16205 for CPI, and
+0.08731 for context. These RMS effects cannot be added or interpreted as
+independent variance shares.
+
+The raw mean CPI effect is +0.24776 below trend and -0.31049 above trend.
+Reference recalibration absorbs substantial movement, leaving net CPI effects
+of +0.13883 and -0.15468. This supports studying **relative short/long carry
+exposure**, not treating an estimated longer-end reference as fixed truth.
+The same carry transformation changes long-bond calibration too.
+
+The net CPI price-effect slope versus the original carry gap is negative at
+all cutoffs (about -0.05057 per annualized gap percentage point at 12 months).
+Unlike the earlier squared settlement-versus-forward performance slopes,
+this is a signed mechanical displacement slope. It is **partly built into the
+construction**: regime labels and the CPI intervention share actual CPI
+inputs. Its narrow interval is not independent confirmation of a natural curve.
+
+### Coverage, sensitivities, and influence
+
+- Full-SA 6–12-month pooled RMSE improves separately on asks and bids and
+  after excluding shutdown-sensitive pairs at all cutoffs. At 12 months,
+  asks move from 0.23373 to 0.19373, bids from 0.28685 to 0.21590, and the
+  shutdown exclusion from 0.28193 to 0.21359. The ask summary covers 97
+  releases; bids cover 103. These are not identical episode samples.
+- Matched 6–12-month coverage is 347 bond/side pairs across 200 release/side
+  cells; matched 3–12-month coverage is 440 pairs across 200 cells.
+- The matched 0–6-month sample remains **bid-only**: 123 bond pairs across
+  91 releases. Full-SA 12-month RMSE falls from 0.37569 to 0.23222.
+  Its smaller sample must not be generalized to nonexistent matched asks.
+- January 2015 is particularly influential in pooled fit improvement.
+  Removing it reduces full-SA 12-month mean improvement from +0.03374 to
+  +0.02390; January 2019 is also influential. No observations were removed.
+  Leave-one-release-out tables preserve the relevant dates and CUSIPs.
+- Saved 8,460 price/yield decomposition rows, 33,840 hybrid market/reference
+  states, and 14,832 constant-rate calibrations. Coverage and unmatched tables
+  explicitly record empty buckets, missing quotes, and known-inflation-only
+  securities excluded at the common start.
+- All price and yield identities reconcile to numerical precision; no
+  maturity-on/before-common-start bonds or training overlaps enter the scored
+  sample. Original-horizon forward prices and the post common-start
+  transformations reproduce archived values. All 18,212 original-horizon
+  forward-price reconstruction checks have zero discrepancy; 412 pre/post
+  common-start financing rows disclose their bill inputs.
+
+### What this adds, and what it does not
+
+This experiment is more informative about the proposed **mechanism** than an
+unmatched curve-slope flip: the common start and matched bonds remove changing
+horizons and universes, and the accounting separates quote movement from
+newly known CPI and reference response. It gives conditional support for
+carry-related displacement in the expected direction, especially outside
+the near-trend band.
+
+It does **not** establish that real yields must rise, identify an observable
+natural curve, or validate settlement/forward switching. The pre-release
+extension is a model assumption, not market consensus; actual quotes include
+all news over the window. Seasonal data are current vintage, all dates have
+already informed the hypothesis, and the bootstrap still ignores serial and
+repeated-security dependence and multiple testing.
+
+The [common-start report](./history/research/release-decomposition.md) preserves
+the complete accounting. Next useful robustness checks are alternative
+pre-release projection assumptions, dependence-aware uncertainty, and genuinely
+prospective releases. None should be selected by whichever produces the most
+favorable short-end fit.
+
+## Endpoint conclusions: October 25, 2026
+
+This section closes the present investigation. The possible robustness checks
+above are future work, not prerequisites for stating the conclusions supported
+by the completed experiments.
+
+### Agreed summary
+
+> Forward pricing removes an identifiable source of mechanical curve distortion
+> and can improve fit in some settings. Our evidence does not establish a
+> universal fit advantage, a predictable residual curve shape, or a reliable
+> regime-switching rule.
+
+The original proposed conclusion was that removing known inflation carry
+marginally improves zero-coupon model-curve fit, but cannot predict or define a
+default, or "natural," expected curve shape. That is a reasonable practical
+summary **with a qualification on each part**:
+
+- **Fit improvement is conditional, not universal.** Settlement/forward
+  rankings vary with maturity bucket, CPI regime, seasonal adjustment,
+  reference specification and training cutoff. Some advantages are modest or
+  statistically unresolved. The matched-release experiment shows that updating
+  CPI information improves common-start SA-adjusted fit; it does not directly
+  prove that forward curves consistently fit better than settlement curves.
+- **No natural shape was established.** Removing known CPI carry is a useful
+  normalization, not a theory requiring an upward-sloping real zero curve.
+  Neither an inverted curve nor a post-release slope reversal is, by itself,
+  evidence of erroneous pricing. The experiments do not identify a unique
+  expected curve against which every remaining deviation is a mispricing.
+  This is a limit of the evidence obtained, not proof that forward pricing
+  could never contribute to a future model of expected shape.
+
+Forward pricing must continue to handle indexed coupons, repo financing,
+seasonal adjustments and the historical CPI horizon coherently. It removes
+known carry, not all economically meaningful variation. No production
+settlement/forward switching rule is justified by this research.
+
+### Expected remaining drivers
+
+The user's interpretation is that term premiums, liquidity and
+security-specific effects matter more than initially expected. That is
+consistent with the residual variation and reference sensitivity, but this
+study **does not separately identify or quantify those premiums**. Plausible
+remaining drivers include:
+
+- **Expected future real short rates and real term premiums:** monetary-policy
+  expectations and compensation for duration/risk can produce rising, flat or
+  inverted real curves even after known inflation carry is removed.
+- **Liquidity and execution:** bid-ask spreads, market depth, dealer inventory
+  and balance-sheet costs, and limited demand for particular remaining
+  maturities can create discounts relative to a frictionless financed value.
+  More liquid bills or repo can be preferable substitutes for some investors.
+- **Security-specific supply, demand and financing:** issue size, issue age,
+  reopening status, investor holdings, collateral value and actual repo
+  availability or specialness can affect individual securities. The study's
+  T-bill-implied financing proxy does not establish executable security-specific
+  repo terms.
+- **Cash-flow and contract differences:** coupon schedules, accrued interest,
+  index ratios and, where relevant, the maturity principal deflation floor
+  can affect comparisons between securities. Removing known inflation alone
+  does not remove these differences.
+- **Measurement and model effects:** quote side and executability, stale or
+  rounded prices, settlement conventions, yield annualization, seasonal-factor
+  estimation and short-end reference extrapolation can all affect apparent
+  residuals. These should not automatically be called economic premiums.
+
+For BEI, nominal-curve fitting/matching and relative nominal-versus-TIPS
+liquidity also remain relevant; breakeven inflation is not a pure inflation
+expectation. None of the above was isolated as the dominant explanation by
+the completed experiments.
+
+### Near-maturity observation: a separate known-cash-flow question
+
+The user reported unusually large displayed YTM on an October 15 TIPS maturity,
+even close to redemption, and suggested a liquidity discount: investors may
+prefer bills or repo rather than acquire a security with only days remaining.
+This is a plausible **liquidity/execution hypothesis**, not a verified
+attribution from the present study.
+
+Very short annualization can turn a small dollar discount into a large YTM.
+For illustration, one cent per 100 recovered over one calendar day annualizes
+to approximately 3.65% on a simple ACT/365 basis. This is a scale illustration,
+not an exact TIPS coupon-equivalent yield calculation. Bid-ask costs and
+settlement timing can be comparable to the apparent dollar opportunity.
+
+When all remaining indexed cash flows are already covered by published
+REFCPI, the useful question is:
+
+> How many cents below its known remaining payment does the TIPS trade, after
+> financing, settlement and transaction costs?
+
+The user already maintains a spreadsheet comparing discount with remaining
+cash flow on this basis. That is the appropriate complementary analysis.
+Check executable purchase versus sale prices, final coupon/indexation,
+settlement and payment dates, financing and transaction costs before assigning
+the discount to liquidity or calling it an attainable return.
+
+These fully known-inflation maturities remain outside this curve study:
+securities maturing on or before the applicable maxREFCPI/common-start date
+were deliberately excluded. Their near-maturity yields do not overturn the
+curve-study results, and the study does not validate the anecdotal maturity's
+specific pricing explanation.

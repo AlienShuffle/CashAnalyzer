@@ -237,8 +237,8 @@ Positive squared-error improvement favors forward. A negative slope versus the
 carry-minus-trend gap supports the hypothesized below-trend forward advantage.
 All references are Svensson extrapolations; cutoff sensitivity is not a
 different model-family check. The first run performs thousands of fits; later
-runs reuse source/engine-fingerprinted parameters. Matched release
-decomposition remains a subsequent phase.
+runs reuse source/engine-fingerprinted parameters. The common-start matched
+release decomposition is documented below.
 
 To run the independently specified reference and influential-episode comparison:
 
@@ -297,6 +297,76 @@ fractions moving toward/through the reference, sparse bid-only 0–6-month
 coverage, and shutdown/quote-side sensitivities are disclosed.
 This is a mechanical sensitivity at fixed observed prices, **not** simulated
 market repricing, a causal experiment, or a recommendation to replace known CPI.
+
+To separate actual matched-quote changes from CPI/financing updates around
+each release, run:
+
+```bash
+node fedBonds/decompose-release.mjs --from=2015-01-01 --through=2026-10-25
+```
+
+The [release runner](./decompose-release.mjs) uses exact -5/+5 Treasury-session
+pairs with both primary snapshots eligible. The common future start is the
+post-release maxREFCPI. It intersects CUSIPs **within each quote side** and
+requires maturity strictly after that common date. Test buckets and training
+cutoffs are anchored once at the **pre-release settlement**; test/training
+membership cannot change within a pair. At every 12/18/24-month cutoff, the same
+three nearest matched longer bonds calibrate a constant-rate reference.
+Missing asks are not synthesized.
+
+Before-release CPI is known only through that snapshot's old maxREFCPI. The
+unknown segment to the common start is projected with the **pre-release**
+six-month SA trend as annualized NSA log growth. This assumed extension is
+anchored at the old horizon, unlike the settlement-anchored trend intervention
+above. After-release CPI is actual through the common start. Seasonal-factor
+lookups are capped at each snapshot's horizon; full/decay ratios use the same
+future start and production credibility rules.
+Financing is rederived from each snapshot's same-side T-bills bracketing the
+**common** start, using production discount interpolation and rounding, rather
+than extending the old shorter-horizon pre-release repo rate.
+
+The runner calculates all eight combinations of before/after:
+
+1. Observed clean quotes.
+2. CPI information/path.
+3. Settlement date, repo rate and seasonal ratios (the **context** block).
+
+Each combination recomputes indexed coupon ownership and repo carry. Shapley
+attribution averages all six update orders to split interactions symmetrically:
+**residual change = quote + CPI + context - reference movement**.
+Refitting the same training bonds at all eight combinations also produces
+**net quote/CPI/context** contributions, which include each reference response
+and sum to residual change. A separate squared-residual decomposition attributes
+fit improvement; positive fit contributions reduce squared errors. Neither
+these algebraic pieces nor their uncertainty estimates are independent shocks.
+
+Unlike previous experiment scores, all prices and coupon-equivalent yields
+here are evaluated **at the common future start**, not original settlement.
+Common-start transformed clean-price errors are per 100; yields are bp.
+Signed residuals are market minus reference. Results must not be numerically
+compared with the earlier settlement-basis errors as if they were identical.
+
+`release-decomposition.md` and the `release-decomposition-*.csv` tables save:
+
+- Bond-level price/yield decompositions and every hybrid market/reference state.
+- All reference calibrations, selected CUSIPs, training prices and support.
+- Common-start repo rates and their bracketing bill maturities/prices, with
+  original-horizon rates preserved for comparison and reconstruction checks.
+- Matched coverage, empty side/buckets, omitted securities and their reasons.
+- Assumed pre-release CPI extensions and actual endpoints.
+- Episode-balanced signed/RMS effects, fit-improvement contributions and
+  2,000-resample paired release-bootstrap intervals.
+- Quote-side/shutdown sensitivities, descriptive carry-gap slopes, and
+  leave-one-release-out influence.
+
+The JSON hash manifest and verification report check source integrity,
+original-horizon archive reconstruction, no short-bond training leakage, and
+exact price/yield decomposition identities. These checks run before results
+are published. This is current-vintage historical replay; CPI effects depend
+on the assumed pre-release projection, and CPI-regime labels share their
+inputs. The ten-session window includes other news. A strong signed CPI
+relationship is therefore **not causal or independent validation** of a
+natural curve, a forecast, or a production switching rule.
 
 Outputs include `analysis.md`, full JSON results, per-observation and summary
 CSVs, exact-date pre/post comparisons, source SHA-256 hashes, and a reusable
