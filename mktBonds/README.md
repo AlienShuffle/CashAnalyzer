@@ -47,8 +47,12 @@ Public report location:
 ### Market-bond input
 
 The collector reads `Treasuries/MarketQuotes.csv`. It uses the file's leading
-`YYYY-MM-DD HH:MM` timestamp as Pacific time and converts it to New York time
-for `asOfDate`. It uses the unadjusted `askPrice` and `bidPrice` columns. The feed does not include descriptions,
+`YYYY-MM-DD HH:MM` timestamp as New York local time, as confirmed by the publisher,
+and preserves it without a timezone shift for `asOfDate`. The publisher's earlier
+Pacific-time reporting was an error. Historical publication timestamps are
+retained unchanged; this correction applies only to new collections.
+It uses the unadjusted `askPrice` and
+`bidPrice` columns. The feed does not include descriptions,
 payment frequency, or a Bill/STRIP subtype. Descriptions are generated from
 the available fields, frequency is left blank, and zero-coupon Treasury rows
 in the `912797` CUSIP family are classified as Bills; other zero-coupon
@@ -165,8 +169,8 @@ The migration preserves `mktTips-curve-*` filenames.
 - REFCPI values are index levels. Seasonal ratios and discount factors are
   dimensionless.
 - `asOfDate` is the source download timestamp in New York market time, formatted
-  `YYYY-MM-DDTHHmm` without a timezone suffix. The collector converts the source's
-  Pacific download time to New York time.
+  `YYYY-MM-DDTHHmm` without a timezone suffix. The source already reports New York
+  local time (EST or EDT as applicable); the collector does not add an offset.
 - Calendar-date columns use `YYYY-MM-DD`. Settlement is the next bond-market
   business day after the quote date, using SIFMA holidays when available. If the
   holiday lookup fails, the processor warns and skips weekends only.

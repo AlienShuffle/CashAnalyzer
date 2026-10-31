@@ -34,7 +34,7 @@ test("parseTreasuryCsv maps MarketQuotes rows into collector records", () => {
         asOfDate, product, cusip, coupon, maturityDate, bidPrice, askPrice, securityType
     })), [
         {
-            asOfDate: "2026-10-21T1235",
+            asOfDate: "2026-10-21T0935",
             product: "Treasury",
             cusip: "912797VN4",
             coupon: null,
@@ -44,7 +44,7 @@ test("parseTreasuryCsv maps MarketQuotes rows into collector records", () => {
             securityType: "Bill"
         },
         {
-            asOfDate: "2026-10-21T1235",
+            asOfDate: "2026-10-21T0935",
             product: "Treasury",
             cusip: "91282CJK8",
             coupon: 4.625,
@@ -54,7 +54,7 @@ test("parseTreasuryCsv maps MarketQuotes rows into collector records", () => {
             securityType: "Bond"
         },
         {
-            asOfDate: "2026-10-21T1235",
+            asOfDate: "2026-10-21T0935",
             product: "TIPS",
             cusip: "912810PS1",
             coupon: 2.375,
@@ -64,7 +64,7 @@ test("parseTreasuryCsv maps MarketQuotes rows into collector records", () => {
             securityType: "TIPS"
         },
         {
-            asOfDate: "2026-10-21T1235",
+            asOfDate: "2026-10-21T0935",
             product: "Treasury",
             cusip: "912803BJ1",
             coupon: null,
@@ -78,14 +78,23 @@ test("parseTreasuryCsv maps MarketQuotes rows into collector records", () => {
     assert.match(records[3].description, /TREASURY STRIP ZERO CPN/);
 });
 
-test("parseTreasuryCsv converts Pacific timestamps to New York across midnight", () => {
-    const csv = [
-        "2026-10-21 23:35",
-        "type,cusip,maturity,coupon,askPrice,bidPrice",
-        "Treasury,912797VN4,2026-10-27,0,99.948,99.947"
-    ].join("\n");
+test("parseTreasuryCsv preserves New York local timestamps without shifting the hour or date", () => {
+    for (const [timestamp, expected] of [
+        ["2026-10-30 17:05", "2026-10-30T1705"],
+        ["2026-01-05 17:05", "2026-01-05T1705"],
+        ["2026-10-21 23:35", "2026-10-21T2335"],
+        ["2026-10-30 00:05", "2026-10-30T0005"],
+        ["2026-03-08 03:05", "2026-03-08T0305"],
+        ["2026-11-01 01:05", "2026-11-01T0105"]
+    ]) {
+        const csv = [
+            timestamp,
+            "type,cusip,maturity,coupon,askPrice,bidPrice",
+            "Treasury,912797VN4,2026-10-27,0,99.948,99.947"
+        ].join("\n");
 
-    assert.equal(parseTreasuryCsv(csv)[0].asOfDate, "2026-10-22T0235");
+        assert.equal(parseTreasuryCsv(csv)[0].asOfDate, expected, timestamp);
+    }
 });
 
 test("parseTreasuryCsv rejects invalid timestamps and missing quote columns", () => {

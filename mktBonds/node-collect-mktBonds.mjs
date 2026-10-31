@@ -54,6 +54,7 @@ export function getSecurityType(product, description, frequency) {
     throw new Error(`Unable to determine security type for ${product}: ${description}`);
 }
 
+// Legacy footer parsing uses Pacific time; MarketQuotes timestamps are already New York local time.
 const DOWNLOAD_TIME_ZONE = "America/Los_Angeles";
 const MARKET_TIME_ZONE = "America/New_York";
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
@@ -107,8 +108,8 @@ function parseMarketQuoteDate(value) {
         || hour > 23 || minute > 59) {
         throw new Error(`Invalid market quotes timestamp: ${value}`);
     }
-    const marketTime = convertWallClock(year, month, day, hour, minute, DOWNLOAD_TIME_ZONE, MARKET_TIME_ZONE);
-    return `${marketTime.year}-${marketTime.month}-${marketTime.day}T${marketTime.hour}${marketTime.minute}`;
+    // The publisher reports New York local time without a timezone suffix.
+    return `${yearText}-${monthText}-${dayText}T${hourText}${minuteText}`;
 }
 
 function getMarketQuoteSecurityType(product, coupon, cusip) {
