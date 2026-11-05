@@ -1,9 +1,16 @@
 #!/bin/bash
 source ../meta.common.sh
+
+FORCE="${FORCE:-}" # Set to any non-empty string to force a backup, bypassing the scratch-environment guard and BACKUP_INTERVAL.
+
 repoDir=$(dirname $cloudFlareHome)
 if [ ! -d "$repoDir/.git" ]; then
-    echo "$0: we are running on a non-git cloudflare tree, this is a scratch environment, skipping backup process."
-    exit 1
+    if [ -n "$FORCE" ]; then
+        echo "$0: non-git cloudflare tree (scratch environment), but FORCE is set, continuing with backup."
+    else
+        echo "$0: we are running on a non-git cloudflare tree, this is a scratch environment, skipping backup process."
+        exit 1
+    fi
 fi
 
 # =====================================================================
@@ -77,6 +84,34 @@ load_config() {
     fi
 }
 
+# Function to determine the hostname used in backup file names.
+# The Linux hostname (dev, test, production, master) is reused across several
+# Windows hosts, so prefix it with the Windows computer name (e.g. mars) taken
+# from WSL interop. The result is cached in a file so cron runs (where interop
+# may be unavailable) keep producing consistent names.
+get_backup_hostname() {
+    local cache_file="$HOME/.windows_hostname"
+    local win_hostname=""
+
+    if [ -x /mnt/c/Windows/System32/cmd.exe ]; then
+        # Run from /mnt/c to avoid UNC working-directory warnings;
+        # strip the trailing \r\n that Windows commands emit.
+        win_hostname=$(cd /mnt/c && /mnt/c/Windows/System32/cmd.exe /c hostname 2>/dev/null | tr -d '\r\n')
+    fi
+
+    if [ -n "$win_hostname" ]; then
+        echo "$win_hostname" >"$cache_file" 2>/dev/null
+    elif [ -r "$cache_file" ]; then
+        win_hostname=$(<"$cache_file")
+    fi
+
+    if [ -n "$win_hostname" ]; then
+        echo "${win_hostname}-$(hostname)"
+    else
+        hostname
+    fi
+}
+
 # Function to check for root privileges
 check_root() {
     if [ "$(id -u)" -ne 0 ]; then
@@ -116,8 +151,7 @@ create_backup_dir() {
 # Function to create the backup
 create_backup() {
     local timestamp=$(date +"$DATE_FORMAT")
-    local hostname=$(hostname)
-    local backup_file="${BACKUP_DIR}/${timestamp}_backup_${hostname}.tar"
+    local backup_file="${BACKUP_DIR}/${timestamp}_backup_${BACKUP_HOSTNAME}.tar"
     local exclude_args=""
 
     # Build exclude arguments
@@ -180,7 +214,7 @@ create_backup() {
 clean_old_backups() {
     if [ "$RETENTION_DAYS" -gt 0 ]; then
         log "INFO" "Cleaning backups older than $RETENTION_DAYS days"
-        find "$BACKUP_DIR" -name '*_backup_'$(hostname)'.*' -mtime +$RETENTION_DAYS -delete
+        find "$BACKUP_DIR" -name '*_backup_'"$BACKUP_HOSTNAME"'.*' -mtime +$RETENTION_DAYS -delete
 
         if [ $? -eq 0 ]; then
             log "INFO" "Old backups cleaned successfully"
@@ -194,10 +228,14 @@ clean_old_backups() {
 
 # Function to delete old backups
 delay_daily_backups() {
+    if [ -n "$FORCE" ]; then
+        log "INFO" "FORCE is set, running backup regardless of backup interval."
+        return 0
+    fi
     if [ "$BACKUP_INTERVAL" -gt 0 ]; then
         hours=$(expr $BACKUP_INTERVAL / 60)
         #log "INFO" "Running backups every $hours hours"
-        FILES_FOUND=$(find "$BACKUP_DIR" -name '*_backup_'$(hostname)'.tar.*' -amin -$BACKUP_INTERVAL -print | wc -l)
+        FILES_FOUND=$(find "$BACKUP_DIR" -name '*_backup_'"$BACKUP_HOSTNAME"'.tar.*' -amin -$BACKUP_INTERVAL -print | wc -l)
         if [ "$FILES_FOUND" -gt 0 ]; then
             log "INFO" "$FILES_FOUND current backup file(s) found."
             exit 0
@@ -213,6 +251,9 @@ delay_daily_backups() {
 if [ $# -gt 0 ]; then
     load_config "$1"
 fi
+
+# Resolve the hostname once so file naming, retention and interval checks agree.
+BACKUP_HOSTNAME=$(get_backup_hostname)
 
 # Only complete a backup if it's time.
 delay_daily_backups
