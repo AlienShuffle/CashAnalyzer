@@ -50,7 +50,7 @@ for (let i = 0; i < childCnt; i++) {
     const parcelString = parcelStringSplit[0] + '-' + parcelStringSplit[1] + '-' + parcelStringSplit[2] + '.' + parcelStringSplit[3];
 
     if (!isValidParcel(parcelString)) {
-        console.error(`Skipping invalid parcel: ${locationString} : ${parcelString}`);
+        //console.error(`Skipping invalid parcel: ${locationString} : ${parcelString}`);
         continue;
     }
 
