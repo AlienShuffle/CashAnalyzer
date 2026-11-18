@@ -160,8 +160,11 @@ test("parallel job publishes every Fed family, daily archive, summary and manife
         fs.copyFileSync(path.join(root, "mktBonds", name), path.join(repo, "mktBonds", name));
     }
     fs.mkdirSync(path.join(cwd, "lib"));
-    fs.copyFileSync(path.join(root, "fedBonds/lib/daily-archive.mjs"), path.join(cwd, "lib/daily-archive.mjs"));
-    for (const name of ["job-fedBonds-update.sh", "collect-fedBonds.sh", "node-fedBonds-update.mjs", "report-history.mjs", "publish-daily.mjs"]) {
+    for (const name of ["daily-archive.mjs", "research-calendar.mjs"]) {
+        fs.copyFileSync(path.join(root, "fedBonds/lib", name), path.join(cwd, "lib", name));
+    }
+    for (const name of ["job-fedBonds-update.sh", "collect-fedBonds.sh", "node-fedBonds-update.mjs", "report-history.mjs",
+        "report-bei-history.mjs", "publish-daily.mjs"]) {
         fs.copyFileSync(path.join(root, "fedBonds", name), path.join(cwd, name));
     }
     fs.writeFileSync(path.join(repo, "meta.common.sh"), 'cloudFlareHome="$HOME/cloudflare/public"\n');
@@ -217,9 +220,12 @@ globalThis.fetch = async url => {
         });
         return { ...result, stderr: result.stderr + fs.readFileSync(errFile, "utf8") };
     };
+    // Without saved or downloadable FedInvest history, look-back periods are reported as warnings only.
+    const historyWarnings = stderr => stderr.split("\n").filter(line => line && !/^BEI history: |^bash: .*collect-FedInvest\.sh: No such file/.test(line));
     const result = run();
     assert.equal(result.status, 0, result.stdout + result.stderr);
-    assert.equal(result.stderr, "");
+    assert.deepEqual(historyWarnings(result.stderr), []);
+    assert.match(result.stderr, /BEI history: 1y \(2025-10-02\) unavailable/);
 
     const target = path.join(cloud, "fedBonds");
     const stems = ["fedBonds"];
@@ -275,8 +281,17 @@ globalThis.fetch = async url => {
             assert.deepEqual(fs.readFileSync(path.join(directory, `fed${family}-manifest.txt`), "utf8").trim().split("\n"), expected);
         }
     }
-    assert.equal(fs.readdirSync(target).filter(name => name.endsWith(".json")).length, 35);
-    assert.equal(fs.readdirSync(target).filter(name => name.endsWith(".csv")).length, 37);
+    assert.equal(fs.readdirSync(target).filter(name => name.endsWith(".json")).length, 47);
+    assert.equal(fs.readdirSync(target).filter(name => name.endsWith(".csv")).length, 49);
+    for (const qualifier of ["", "sa-", "sa-decay-", "fwd-", "fwd-sa-", "fwd-sa-decay-"]) {
+        for (const side of ["ask", "bid"]) {
+            const beiHistory = json(`fedBei-history-${qualifier}${side}-rate.json`);
+            assert.equal(beiHistory.asOfDate, record.asOfDate);
+            assert.deepEqual(beiHistory.periods.map(p => p.period), ["current"]);
+            assert.deepEqual(beiHistory.periods[0].points, json(`fedBei-grid-${qualifier}${side}-rate.json`).points);
+            assert.equal(beiHistory.missing.length, 5);
+        }
+    }
     assert.equal(fs.readdirSync(path.join(target, "daily")).filter(name => name.endsWith(".json")).length, 33);
     assert.deepEqual(fs.readdirSync(path.join(cloud, "mktBonds")), ["sentinel"]);
     assert.equal(fs.readFileSync(path.join(cloud, "mktBonds/sentinel"), "utf8"), "unchanged");
@@ -384,6 +399,8 @@ globalThis.fetch = async url => {
 
     const refreshed = run();
     assert.equal(refreshed.status, 0, refreshed.stdout + refreshed.stderr);
+    assert.deepEqual(json("fedBei-history-ask-rate.json").periods.map(p => [p.period, p.asOfDate]),
+        [["current", "2026-10-02"], ["previousTradingDay", "2026-10-01"]]);
     assert.ok(json("fedTips-fitHistory-rate.json").rows.some(row => row.asOfDate === "2026-06-01"));
     assert.ok(json("fedBei-stability-rate.json").rows.some(row => row.asOfDate === "2026-06-01"));
     assert.equal(fs.readdirSync(path.join(target, "daily")).some(name => name.startsWith("2026-06-01-")), false);

@@ -47,9 +47,10 @@ Columns and calculation content otherwise match the
 
 A complete run produces:
 
-- **35 latest JSON and 37 latest CSV files**, including both quote sides,
+- **47 latest JSON and 49 latest CSV files**, including both quote sides,
   all six TIPS curve/BEI variants per side, the settlement/forward nominal
-  grids, cumulative fit history and cumulative BEI stability.
+  grids, cumulative fit history, cumulative BEI stability and the 12
+  [historical BEI comparison](#historical-bei-comparison) reports.
 - **33 daily JSON and 33 daily CSV snapshots** per report date. The combined
   quote archive is `daily/YYYY-MM-DD-rate.<ext>`; other archives are
   `daily/YYYY-MM-DD-fed<family>-<qualifiers>.<ext>`. As in the market stream,
@@ -93,6 +94,42 @@ the full local archive by default. Existing research input-hash manifests that
 name the former published paths are resolved to the identical local copies.
 An explicit custom `--cloud` tree still uses that tree's `fedBonds/daily/`.
 Other published Treasury streams are not trimmed by this policy.
+
+### Historical BEI comparison
+
+After the daily report and daily-archive publication, the job runs
+[report-bei-history.mjs](./report-bei-history.mjs). For every `fedBei-grid`
+variant it publishes `fedBei-history-<qualifiers>-<side>-rate.json` and `.csv`.
+Each file contains the grid for six periods, measured from the latest grid's
+`asOfDate`:
+
+| `period` | Target date |
+| --- | --- |
+| `current` | Latest grid (`history/fedBei-grid-*-rate-new.json`) |
+| `previousTradingDay` | Prior Treasury trading day |
+| `30d`, `90d`, `180d` | That many calendar days earlier |
+| `1y` | Same calendar date a year earlier (February 29 becomes February 28) |
+
+A non-trading calendar target rolls back to the prior trading day, using the
+[research calendar](./lib/research-calendar.mjs). The CSV has the
+`fedBei-grid` columns, preceded by `period, targetDate`, with one 60-row
+block per period. `targetDate` is the nominal date; `asOfDate` is the
+quote date used. The JSON contains the complete grid objects in `periods`;
+periods that cannot be produced are listed in `missing`.
+
+Dates are read from the local daily archive. When any of the 12 grid variants
+is missing for a date, the date is backfilled with
+[the historical command](#generate-a-historical-daily-entry). If FedInvest has
+no prices, up to three earlier trading days are tried. A period that still
+fails is reported on stderr and recorded in `missing`; the daily job does
+not fail. Backfilled dates are permanent archive entries, so later runs reuse
+them; unchanged outputs are not rewritten. Run manually from the repository root:
+
+```bash
+node fedBonds/report-bei-history.mjs                     # latest date, backfill as needed
+node fedBonds/report-bei-history.mjs --date=2026-10-08   # different anchor date
+node fedBonds/report-bei-history.mjs --no-backfill       # archived dates only
+```
 
 ## Running
 

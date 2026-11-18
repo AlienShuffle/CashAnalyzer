@@ -20,4 +20,5 @@ bash ../mktBonds/job-mktTips-update.sh "$@" || exit $?
 
 if [ "${BOND_DAILY_ONLY:-false}" != true ]; then
     node ./publish-daily.mjs "--published=$cloudFlareHome/Treasuries/fedBonds/daily" || exit $?
+    node ./report-bei-history.mjs "--published=$cloudFlareHome/Treasuries/fedBonds" || exit $?
 fi
