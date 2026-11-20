@@ -1,496 +1,257 @@
+#!/usr/bin/env node
 /**
- * Schuylkill County (CountySuite) Civil Portal scraper (Puppeteer)
- * - Searches last 20 years for Lake Wynonah Property Owners Association-related cases
- * - Traverses pagination
- * - Opens each case and tries to extract judgment amount(s)
+ * Schuylkill County (CountySuite) civil portal scraper for Lake Wynonah litigation.
  *
- * Notes:
- * - CountySuite portals are heavily JS-driven; selectors may need tweaking.
- * - Script includes robust "find input by label text" helpers and network-idle waits.
+ *  1. Logs in with the local, git-ignored credentials.json (see credentials.example.json).
+ *  2. Runs Participant Name searches (default "%wynonah%") across all case dates.
+ *  3. Opens every case and extracts header, participants, details/disposition, dockets and judgments.
+ *  4. Classifies Lake Wynonah's role, judgments in its favor, likely dues-collection cases and liens.
+ *  5. Writes output/ (current status) and history/ (dated snapshots, case ledger, changes since last run).
+ *
+ * Usage: node node-court-scraper.js [options]   (see --help or README.md)
  */
-
 import fs from "fs";
 import path from "path";
-import puppeteer from "puppeteer";
+import { parseArgs } from "util";
+import { fileURLToPath } from "url";
 
-const BASE_URL = "https://portal.schuylkill.pa.countysuite-azuregov.us/courts.civil.portal/"; // stable base (avoid sessioned S(...) urls)
-const OUT_JSON = "cases.json";
-const OUT_CSV = "cases.csv";
+import { loadCredentials } from "./lib/credentials.js";
+import {
+  BASE_URL, SessionExpiredError, launchBrowser, newPage, login, openCaseSearch,
+  runSearch, collectResults, scrapeCaseDetail, sleep
+} from "./lib/portal.js";
+import {
+  DEFAULT_ORG_PATTERN, analyzeCase, caseCsvRow, toCSV, isOrg,
+  CASE_COLUMNS, JUDGMENT_COLUMNS, DOCKET_COLUMNS, PARTICIPANT_COLUMNS
+} from "./lib/analyze.js";
+import { loadJson, writeJson, findPreviousSnapshot, updateLedger, diffCases } from "./lib/history.js";
 
-const NAME_VARIANTS = [
-  "Lake Wynonah Property Owners Association",
-  "Lake Wynonah Property Owners Association, Inc.",
-  "Lake Wynonah POA",
-  "LWPOA"
-];
+const APP_DIR = path.dirname(fileURLToPath(import.meta.url));
+const DEFAULT_SEARCHES = ["%wynonah%", "%lwpoa%"];
 
-const YEARS_BACK = 20;
+const HELP = `Usage: node node-court-scraper.js [options]
 
-// Environment toggles
-//const HEADLESS = (process.env.HEADLESS ?? "true").toLowerCase() !== "false";
-const HEADLESS = "false";
-const SLOW_MO = Number(process.env.SLOW_MO ?? 10);         // e.g. 50 for debugging
-const MAX_CASES = Number(process.env.MAX_CASES ?? 100);     // 0 = no limit
+  --search <pattern>     Participant Name search string; repeatable (default: ${DEFAULT_SEARCHES.join(", ")})
+  --start <MM/DD/YYYY>   Only cases opened on/after this date (default: no limit)
+  --end <MM/DD/YYYY>     Only cases opened on/before this date (default: no limit)
+  --judgments-only       Tick the portal's "Judgments Only" filter
+  --max <n>              Only open the first n cases (test run; history is not updated)
+  --delay <ms>           Pause between case pages (default 1500)
+  --discover             Save HTML + screenshots of each step to debug/ and stop after 2 cases
+  --save-html            Keep each case detail page in output/html/
+  --reanalyze            Re-run analysis on output/cases-raw.json without contacting the portal
+  --headful              Show the browser window
+  --slow-mo <ms>         Slow down browser actions (debugging)
+  --credentials <file>   Credentials JSON (default: credentials.json in this directory)
+  --out <dir>            Output directory (default: output/)
+  -h, --help             Show this help`;
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-function toISODateOnly(d) {
-  // yyyy-mm-dd
-  const pad = (n) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-}
-
-function moneyFromText(txt) {
-  // Returns array of money-like strings, e.g. ["$1,234.56", "$500"]
-  if (!txt) return [];
-  const matches = txt.match(/\$\s?\d{1,3}(?:,\d{3})*(?:\.\d{2})?|\$\s?\d+(?:\.\d{2})?/g);
-  return matches ? matches.map(m => m.replace(/\s+/g, "")) : [];
-}
-
-function uniqBy(arr, keyFn) {
-  const seen = new Set();
-  const out = [];
-  for (const it of arr) {
-    const k = keyFn(it);
-    if (!k || seen.has(k)) continue;
-    seen.add(k);
-    out.push(it);
+const { values: opt } = parseArgs({
+  options: {
+    search: { type: "string", multiple: true },
+    start: { type: "string", default: "" },
+    end: { type: "string", default: "" },
+    "judgments-only": { type: "boolean", default: false },
+    max: { type: "string", default: "0" },
+    delay: { type: "string", default: "1500" },
+    discover: { type: "boolean", default: false },
+    "save-html": { type: "boolean", default: false },
+    reanalyze: { type: "boolean", default: false },
+    headful: { type: "boolean", default: false },
+    "slow-mo": { type: "string", default: "0" },
+    credentials: { type: "string" },
+    out: { type: "string", default: path.join(APP_DIR, "output") },
+    help: { type: "boolean", short: "h", default: false }
   }
-  return out;
+});
+
+if (opt.help) {
+  console.log(HELP);
+  process.exit(0);
 }
 
-function toCSV(rows) {
-  const cols = [
-    "caseNumber",
-    "caption",
-    "status",
-    "openedDate",
-    "caseCategory",
-    "detailUrl",
-    "judgmentAmounts",
-    "judgmentTotal"
-  ];
-  const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-  const lines = [cols.join(",")];
-  for (const r of rows) {
-    lines.push(cols.map(c => esc(r[c])).join(","));
+for (const d of ["start", "end"]) {
+  if (opt[d] && !/^\d{2}\/\d{2}\/\d{4}$/.test(opt[d])) {
+    console.error(`--${d} must be MM/DD/YYYY`);
+    process.exit(2);
   }
-  return lines.join("\n");
 }
 
-/**
- * Find an input/select element associated with a label containing labelText (case-insensitive).
- * Works for many “label + input” layouts, including div-based forms.
- */
-async function findControlByLabel(page, labelText) {
-  const lc = labelText.toLowerCase();
-  return await page.evaluateHandle((lc) => {
-    const labels = Array.from(document.querySelectorAll("label, span, div"))
-      .filter(el => el && el.textContent && el.textContent.toLowerCase().includes(lc));
+const searches = opt.search?.length ? opt.search : DEFAULT_SEARCHES;
+const maxCases = opt.discover ? 2 : Number(opt.max) || 0;
+const partialRun = maxCases > 0 || !!opt.start || !!opt.end || opt["judgments-only"] || !!opt.search?.length;
+const delayMs = Number(opt.delay) || 0;
+const OUT_DIR = path.resolve(opt.out);
+const HISTORY_DIR = path.join(APP_DIR, "history");
+const DEBUG_DIR = opt.discover ? path.join(APP_DIR, "debug") : null;
+const RAW_FILE = path.join(OUT_DIR, "cases-raw.json");
+const LEDGER_FILE = path.join(HISTORY_DIR, "case-ledger.json");
 
-    // Try typical patterns: <label for="id"> then #id
-    for (const lab of labels) {
-      const forId = lab.getAttribute && lab.getAttribute("for");
-      if (forId) {
-        const ctl = document.getElementById(forId);
-        if (ctl) return ctl;
-      }
-    }
-
-    // Try: label wrapping input
-    for (const lab of labels) {
-      const input = lab.querySelector && lab.querySelector("input, select, textarea");
-      if (input) return input;
-    }
-
-    // Try: sibling / nearby input
-    for (const lab of labels) {
-      const root = lab.closest("div, li, td, th, section, form") || lab.parentElement;
-      if (!root) continue;
-      const near = root.querySelector && root.querySelector("input, select, textarea");
-      if (near) return near;
-    }
-
-    return null;
-  }, lc);
+function localDate(d = new Date()) {
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
-async function safeType(page, handle, value) {
-  if (!handle) return false;
-  const el = handle.asElement();
-  if (!el) return false;
-  await el.click({ clickCount: 3 });
-  await page.keyboard.type(value, { delay: 10 });
-  return true;
-}
-
-async function clickByText(page, text) {
-  // Click first element matching exact-ish visible text
-  const lc = text.toLowerCase();
-  const handle = await page.evaluateHandle((lc) => {
-    const candidates = Array.from(document.querySelectorAll("button, a, input[type='button'], input[type='submit']"));
-    const el = candidates.find(e => (e.textContent || e.value || "").trim().toLowerCase().includes(lc));
-    return el || null;
-  }, lc);
-  const el = handle.asElement();
-  if (!el) return false;
-  await el.click();
-  return true;
-}
-
-async function extractResultsFromTable(page) {
-  // Attempts to read a visible results table; returns row objects with at least caseNumber + detailUrl if available.
-  return await page.evaluate(() => {
-    // find a likely results table
-    const tables = Array.from(document.querySelectorAll("table"));
-    const table = tables.find(t => {
-      const txt = (t.innerText || "").toLowerCase();
-      return txt.includes("case") && (txt.includes("number") || txt.includes("status") || txt.includes("opened"));
-    }) || tables[0];
-
-    if (!table) return [];
-
-    const headerCells = Array.from(table.querySelectorAll("thead th")).map(th => (th.innerText || "").trim());
-    const rows = Array.from(table.querySelectorAll("tbody tr"));
-
-    const idx = (nameIncludes) => {
-      const lc = nameIncludes.toLowerCase();
-      return headerCells.findIndex(h => h.toLowerCase().includes(lc));
-    };
-
-    const iCase = idx("case");
-    const iStatus = idx("status");
-    const iOpened = idx("opened") >= 0 ? idx("opened") : idx("filed");
-    const iCat = idx("category") >= 0 ? idx("category") : idx("type");
-    const iCaption = idx("caption") >= 0 ? idx("caption") : idx("title");
-
-    const out = [];
-
-    for (const tr of rows) {
-      const tds = Array.from(tr.querySelectorAll("td"));
-      if (!tds.length) continue;
-
-      // Look for detail link in row (often case number is an <a>)
-      const link = tr.querySelector("a[href]");
-      const href = link ? link.href : "";
-
-      const get = (i) => (i >= 0 && i < tds.length) ? (tds[i].innerText || "").trim() : "";
-
-      // Case number may be in a column or in link text
-      const caseNumber = get(iCase) || (link ? (link.innerText || "").trim() : "");
-      const status = get(iStatus);
-      const openedDate = get(iOpened);
-      const caseCategory = get(iCat);
-      const caption = get(iCaption);
-
-      out.push({ caseNumber, status, openedDate, caseCategory, caption, detailUrl: href });
-    }
-
-    // Filter junk rows
-    return out.filter(r => r.caseNumber || r.detailUrl);
-  });
-}
-
-async function goNextPage(page) {
-  // Tries common "Next" controls; returns true if it clicked something.
-  // CountySuite portals often use pagination buttons/links.
-  const clicked = await page.evaluate(() => {
-    const candidates = Array.from(document.querySelectorAll("button, a"))
-      .filter(el => {
-        const t = (el.textContent || "").trim().toLowerCase();
-        return t === "next" || t.includes("next >") || t.includes("›") || t.includes(">");
-      });
-
-    const enabled = candidates.find(el => {
-      const disabled = el.getAttribute("disabled") !== null || el.classList.contains("disabled") || el.getAttribute("aria-disabled") === "true";
-      return !disabled;
-    });
-
-    if (enabled) { enabled.click(); return true; }
-    return false;
-  });
-
-  if (clicked) {
-    await page.waitForNetworkIdle({ idleTime: 800, timeout: 60000 }).catch(() => { });
-    await sleep(500);
-    return true;
-  }
-  return false;
-}
-
-async function extractCaseDetails(page) {
-  // Best-effort extraction from a case detail page/dialog
-  return await page.evaluate(() => {
-    const text = (sel) => (document.querySelector(sel)?.innerText || "").trim();
-
-    // Try multiple label-value patterns
-    const byLabel = (labelIncludes) => {
-      const lc = labelIncludes.toLowerCase();
-      const nodes = Array.from(document.querySelectorAll("div, dt, th, label, span"))
-        .filter(n => (n.textContent || "").trim().toLowerCase().includes(lc));
-      for (const n of nodes) {
-        // definition list: <dt>Label</dt><dd>Value</dd>
-        if (n.tagName === "DT" && n.nextElementSibling?.tagName === "DD") {
-          const v = (n.nextElementSibling.textContent || "").trim();
-          if (v) return v;
-        }
-        // table header: <th>Label</th><td>Value</td>
-        if (n.tagName === "TH") {
-          const td = n.parentElement?.querySelector("td");
-          const v = (td?.textContent || "").trim();
-          if (v) return v;
-        }
-        // generic: label container then next sibling
-        const sib = n.nextElementSibling;
-        const v = (sib?.textContent || "").trim();
-        if (v && v.length < 500) return v;
-      }
-      return "";
-    };
-
-    const caption = byLabel("caption") || byLabel("case caption") || text("h1") || text("h2");
-    const caseNumber = byLabel("case number") || byLabel("docket") || "";
-    const status = byLabel("status") || "";
-    const openedDate = byLabel("opened") || byLabel("filed") || byLabel("date opened") || "";
-    const caseCategory = byLabel("category") || byLabel("case type") || "";
-
-    // Capture likely judgments section text if present
-    const judgmentSection =
-      Array.from(document.querySelectorAll("section, div, table"))
-        .find(el => (el.innerText || "").toLowerCase().includes("judgment"))?.innerText || "";
-
-    const bodyText = document.body?.innerText || "";
-    return {
-      caseNumber,
-      caption,
-      status,
-      openedDate,
-      caseCategory,
-      judgmentSectionText: judgmentSection,
-      pageTextSample: bodyText.slice(0, 5000)
-    };
-  });
-}
-
-async function openDetailAndScrape(browser, listPage, row) {
-  // If we have a direct URL, open it. Otherwise, try clicking the case number link.
-  const detailUrl = row.detailUrl;
-
-  const page = await browser.newPage();
-  await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36");
-
-  // Be conservative with timeouts; the portal is JS-heavy
-  page.setDefaultTimeout(60000);
-
-  if (detailUrl) {
-    await page.goto(detailUrl, { waitUntil: "networkidle2" }).catch(async () => {
-      await page.goto(detailUrl, { waitUntil: "domcontentloaded" });
-      await page.waitForNetworkIdle({ idleTime: 800, timeout: 60000 }).catch(() => { });
-    });
-  } else {
-    // Fallback: try to click matching case on listPage and copy URL (less reliable)
-    await page.close();
-    return {
-      ...row,
-      judgmentAmounts: [],
-      judgmentTotal: "",
-      scrapeNote: "No detailUrl found on result row; adjust extractResultsFromTable selectors."
-    };
-  }
-
-  // Try to extract details
-  const details = await extractCaseDetails(page);
-
-  // Parse money from judgment section; fallback to whole page sample
-  const moneyA = moneyFromText(details.judgmentSectionText);
-  const moneyB = moneyFromText(details.pageTextSample);
-  const judgmentAmounts = Array.from(new Set([...moneyA, ...moneyB]));
-
-  // Compute a rough total if amounts parse cleanly
-  let judgmentTotal = "";
-  try {
-    const vals = judgmentAmounts
-      .map(m => Number(m.replace("$", "").replace(/,/g, "")))
-      .filter(n => Number.isFinite(n));
-    if (vals.length) judgmentTotal = vals.reduce((a, b) => a + b, 0).toFixed(2);
-  } catch { /* ignore */ }
-
-  const final = {
-    caseNumber: details.caseNumber || row.caseNumber || "",
-    caption: details.caption || row.caption || "",
-    status: details.status || row.status || "",
-    openedDate: details.openedDate || row.openedDate || "",
-    caseCategory: details.caseCategory || row.caseCategory || "",
-    detailUrl: page.url(),
-    judgmentAmounts: judgmentAmounts.join(" | "),
-    judgmentTotal
-  };
-
-  await page.close();
-  // small politeness delay
-  await sleep(600);
-  return final;
-}
-
-async function runQueryVariant(browser, variant, startDate, endDate) {
-  const page = await browser.newPage();
-  await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36");
-  page.setDefaultTimeout(60000);
-
-  // Helpful for reverse engineering endpoints
-  const apiHits = [];
-  page.on("response", async (resp) => {
-    const url = resp.url();
-    if (/api|publicsearch|search|Case/i.test(url)) {
-      apiHits.push(url);
-    }
-  });
-
-  await page.goto(BASE_URL, { waitUntil: "networkidle2" }).catch(async () => {
-    await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
-    await page.waitForNetworkIdle({ idleTime: 800, timeout: 60000 }).catch(() => { });
-  });
-
-  // Wait for UI to be interactive
-  await new Promise(resolve => setTimeout(resolve, 1200));
-
-  // Many CountySuite pages include “Search by Participant Name”
-  // Try clicking that mode first (best-effort)
-  await clickByText(page, "Search by Participant Name").catch(() => { });
-  await new Promise(resolve => setTimeout(resolve, 800));
-
-  // Fill participant / name field
-  const nameCtlH = await findControlByLabel(page, "Participant Name");
-  console.log("nameCtlH", !!nameCtlH);
-  const nameCtlH2 = await findControlByLabel(page, "Name");
-  console.log("nameCtlH2", !!nameCtlH2);
-  const typed = await safeType(page, nameCtlH, variant) || await safeType(page, nameCtlH2, variant);
-
-  if (!typed) {
-    console.warn(`[WARN] Could not find a name input for variant "${variant}". You may need to tweak label text.`);
-  }
-
-  // Fill date range fields “Start” and “End” (Only Cases Opened within this Date Range)
-  // The portal UI shows Start/End date controls. [1](https://portal.schuylkill.pa.countysuite-azuregov.us/courts.civil.portal/)[2](https://app.schuylkill.pa.countysuite-azuregov.us/courts.civil.publicsearch/%28S%2843z32gsxpprzjmx2oclrrme0%29%29/Default.aspx)
-  const startCtlH = await findControlByLabel(page, "Start");
-  const endCtlH = await findControlByLabel(page, "End");
-
-  if (startCtlH) await safeType(page, startCtlH, startDate);
-  if (endCtlH) await safeType(page, endCtlH, endDate);
-
-  // Click Search
-  const searched = await clickByText(page, "Search") || await clickByText(page, "Find");
-  if (!searched) {
-    console.warn("[WARN] Could not find a Search button by text. Trying Enter key.");
-    await page.keyboard.press("Enter");
-  }
-
-  await page.waitForNetworkIdle({ idleTime: 800, timeout: 60000 }).catch(() => { });
-  await new Promise(resolve => setTimeout(resolve, 800));
-
-  // Paginate & collect all rows
-  const allRows = [];
-  let pageCount = 0;
-
-  while (true) {
-    pageCount++;
-
-    const rows = await extractResultsFromTable(page);
-    if (rows.length) allRows.push(...rows);
-
-    // Stop if MAX_CASES is configured
-    if (MAX_CASES > 0 && allRows.length >= MAX_CASES) break;
-
-    const moved = await goNextPage(page);
-    if (!moved) break;
-
-    // Safety: avoid endless loops if pagination misbehaves
-    if (pageCount > 500) break;
-  }
-
-  // Close list page
-  await page.close();
-
-  return { rows: allRows, apiHits };
-}
-
-(async () => {
-  const now = new Date();
-  const start = new Date(now);
-  start.setFullYear(start.getFullYear() - YEARS_BACK);
-
-  // Many portals accept mm/dd/yyyy; we’ll provide both ISO and US-style fallback in code comments.
-  // You may need to change formatting depending on the site’s date inputs.
-  const startISO = toISODateOnly(start); // yyyy-mm-dd
-  const endISO = toISODateOnly(now);   // yyyy-mm-dd
-
-  const browser = await puppeteer.launch({
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
-    //headless: HEADLESS,
-    //slowMo: SLOW_MO,
-    defaultViewport: { width: 1280, height: 900 },
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage"
-    ]
-  });
-
-  const combinedRows = [];
-  const apiSeen = new Set();
+async function scrapePortal() {
+  const creds = loadCredentials(opt.credentials);
+  const browser = await launchBrowser({ headful: opt.headful, slowMo: Number(opt["slow-mo"]) || 0 });
+  const page = await newPage(browser);
+  const rawCases = [];
 
   try {
-    for (const variant of NAME_VARIANTS) {
-      console.log(`\n=== Searching variant: ${variant} | Date range: ${startISO} to ${endISO} ===`);
-      const { rows, apiHits } = await runQueryVariant(browser, variant, startISO, endISO);
+    await login(page, creds, DEBUG_DIR);
+    const searchUrl = await openCaseSearch(page, DEBUG_DIR);
 
-      rows.forEach(r => combinedRows.push(r));
-      apiHits.forEach(u => apiSeen.add(u));
-
-      // Polite pause between variants
-      await sleep(1200);
+    const byCase = new Map();
+    for (const s of searches) {
+      console.log(`\n=== Participant Name search "${s}"${opt.start || opt.end ? ` opened ${opt.start || "*"} .. ${opt.end || "*"}` : ""} ===`);
+      if (page.url() !== searchUrl) await page.goto(searchUrl, { waitUntil: "domcontentloaded" });
+      await openCaseSearch(page);
+      await runSearch(page, {
+        searchString: s, searchType: "Participant Name",
+        startDate: opt.start, endDate: opt.end, judgmentsOnly: opt["judgments-only"]
+      }, DEBUG_DIR);
+      const rows = await collectResults(page, { maxRows: maxCases, debugDir: DEBUG_DIR });
+      for (const r of rows) {
+        const prev = byCase.get(r.caseNumber);
+        byCase.set(r.caseNumber, { ...r, ...prev, detailUrl: prev?.detailUrl || r.detailUrl, searches: [...(prev?.searches ?? []), s] });
+      }
+      console.log(`  ${rows.length} rows, ${byCase.size} unique cases so far`);
     }
 
-    // Deduplicate by case number if possible (else by detailUrl)
-    let deduped = uniqBy(combinedRows, r => (r.caseNumber || "").trim() || (r.detailUrl || "").trim());
+    const rows = [...byCase.values()];
+    const todo = maxCases > 0 ? rows.slice(0, maxCases) : rows;
+    console.log(`\nOpening ${todo.length} case(s)...`);
 
-    console.log(`\nFound ${combinedRows.length} raw rows, ${deduped.length} deduped rows.`);
-
-    // Now open each case and attempt to scrape judgment amounts
-    const final = [];
     let i = 0;
-
-    for (const row of deduped) {
+    for (const row of todo) {
       i++;
-      if (MAX_CASES > 0 && i > MAX_CASES) break;
-
-      console.log(`Scraping case ${i}/${deduped.length}: ${row.caseNumber || row.detailUrl || "(no id)"}`);
-      const details = await openDetailAndScrape(browser, null, row);
-      final.push(details);
-
-      // Polite rate limiting
-      await sleep(900);
-    }
-
-    // Write output
-    fs.writeFileSync(OUT_JSON, JSON.stringify({
-      scrapedAt: new Date().toISOString(),
-      baseUrl: BASE_URL,
-      dateRange: { start: startISO, end: endISO },
-      nameVariants: NAME_VARIANTS,
-      possibleApiEndpointsObserved: Array.from(apiSeen),
-      cases: final
-    }, null, 2));
-
-    fs.writeFileSync(OUT_CSV, toCSV(final));
-
-    console.log(`\nDone.\n- ${OUT_JSON}\n- ${OUT_CSV}`);
-    if (apiSeen.size) {
-      console.log("\nObserved possible API endpoints (helpful for building a faster non-UI scraper):");
-      Array.from(apiSeen).slice(0, 50).forEach(u => console.log("  " + u));
-      if (apiSeen.size > 50) console.log(`  ...and ${apiSeen.size - 50} more`);
+      const { rowIndex, ...listRow } = row;
+      if (!row.detailUrl) {
+        console.warn(`[${i}/${todo.length}] ${row.caseNumber}: no detail link found; using results-row data only`);
+        rawCases.push({ caseNumber: row.caseNumber, status: row.status, listRow, scrapeError: "no detail link" });
+        continue;
+      }
+      console.log(`[${i}/${todo.length}] ${row.caseNumber}`);
+      let detail = null;
+      for (let attempt = 1; attempt <= 2 && !detail; attempt++) {
+        try {
+          detail = await scrapeCaseDetail(page, row.detailUrl, {
+            debugDir: DEBUG_DIR,
+            saveHtmlDir: opt["save-html"] ? path.join(OUT_DIR, "html") : null
+          });
+        } catch (e) {
+          if (e instanceof SessionExpiredError && attempt === 1) {
+            console.warn("  session expired; logging in again");
+            await login(page, creds, DEBUG_DIR);
+          } else if (attempt === 2) {
+            console.error(`  [ERROR] ${e.message}`);
+          } else {
+            console.warn(`  retrying after error: ${e.message}`);
+            await sleep(3000);
+          }
+        }
+      }
+      rawCases.push(detail
+        ? { ...detail, caseNumber: row.caseNumber || detail.caseNumber, detailCaseNumber: detail.caseNumber, listRow }
+        : { caseNumber: row.caseNumber, status: row.status, listRow, detailUrl: row.detailUrl, scrapeError: "detail page failed" });
+      await sleep(delayMs);
     }
   } finally {
     await browser.close();
   }
-})();
+  return rawCases;
+}
+
+function writeOutputs(cases, meta) {
+  fs.mkdirSync(OUT_DIR, { recursive: true });
+  writeJson(path.join(OUT_DIR, "cases.json"), { ...meta, cases });
+  fs.writeFileSync(path.join(OUT_DIR, "cases.csv"), toCSV(cases.map(caseCsvRow), CASE_COLUMNS));
+  fs.writeFileSync(path.join(OUT_DIR, "judgments.csv"),
+    toCSV(cases.flatMap(c => c.judgments.map(j => ({ ...j, caseNumber: c.caseNumber, caption: c.caption }))), JUDGMENT_COLUMNS));
+  fs.writeFileSync(path.join(OUT_DIR, "dockets.csv"),
+    toCSV(cases.flatMap(c => c.dockets.map(d => ({ ...d, caseNumber: c.caseNumber }))), DOCKET_COLUMNS));
+  fs.writeFileSync(path.join(OUT_DIR, "participants.csv"),
+    toCSV(cases.flatMap(c => c.participants.map(p => ({ ...p, caseNumber: c.caseNumber, isLW: isOrg(p.name, DEFAULT_ORG_PATTERN) }))), PARTICIPANT_COLUMNS));
+}
+
+function printSummary(cases, changes) {
+  const count = (fn) => cases.filter(fn).length;
+  const money = (n) => `$${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const tally = (key) => Object.entries(cases.reduce((a, c) => ((a[c[key] || "(blank)"] = (a[c[key] || "(blank)"] ?? 0) + 1), a), {}))
+    .map(([k, v]) => `${k}: ${v}`).join(", ");
+  console.log(`\nCases: ${cases.length} (open ${count(c => /open/i.test(c.status))}, closed ${count(c => /closed/i.test(c.status))})`);
+  console.log(`By role: ${tally("caseKind")}`);
+  console.log(`Dues-collection classification: ${tally("duesClass")}`);
+  console.log(`Judgments for LW: ${money(cases.reduce((a, c) => a + c.judgmentTotalForLW, 0))} total, ` +
+    `${money(cases.reduce((a, c) => a + c.judgmentOpenForLW, 0))} not marked satisfied, across ${count(c => c.judgmentTotalForLW > 0)} cases`);
+  const poa = cases.filter(c => c.lwEntity !== "Municipal Authority");
+  console.log(`  POA only (excl. Municipal Authority): ${money(poa.reduce((a, c) => a + c.judgmentTotalForLW, 0))} total, ` +
+    `${money(poa.reduce((a, c) => a + c.judgmentOpenForLW, 0))} not marked satisfied`);
+  console.log(`By LW entity: ${tally("lwEntity")}`);
+  console.log(`Lien indicators: ${count(c => c.lienIndicator)} cases`);
+  const errors = cases.filter(c => c.scrapeError);
+  if (errors.length) console.log(`Scrape problems: ${errors.length} (${errors.map(c => c.caseNumber).join(", ")})`);
+  if (changes) {
+    console.log(`\nChanges since previous snapshot: ${changes.length}`);
+    for (const c of changes.slice(0, 50)) console.log(`  ${c.type.padEnd(24)} ${c.caseNumber.padEnd(18)} ${c.detail}`);
+    if (changes.length > 50) console.log(`  ...and ${changes.length - 50} more (see output/changes.json)`);
+  }
+}
+
+(async () => {
+  const runDate = localDate();
+  let raw;
+  if (opt.reanalyze) {
+    raw = loadJson(RAW_FILE, null);
+    if (!raw) throw new Error(`${RAW_FILE} not found; run a scrape first.`);
+    console.log(`Re-analyzing ${raw.cases.length} cases scraped at ${raw.scrapedAt}`);
+  } else {
+    const cases = await scrapePortal();
+    raw = { scrapedAt: new Date().toISOString(), baseUrl: BASE_URL, searches, dateRange: { start: opt.start, end: opt.end }, partialRun, cases };
+    writeJson(RAW_FILE, raw);
+  }
+
+  const cases = raw.cases
+    .map(c => analyzeCase(c))
+    .sort((a, b) => (b.openedDateIso || "").localeCompare(a.openedDateIso || "") || a.caseNumber.localeCompare(b.caseNumber));
+
+  const ledger = loadJson(LEDGER_FILE, { cases: {} });
+  let changes = null;
+  if (!opt.reanalyze && !raw.partialRun) {
+    const prevFile = findPreviousSnapshot(path.join(HISTORY_DIR, "snapshots"), runDate);
+    // A case whose detail page failed this run keeps its last good record so history isn't corrupted.
+    const prevByNumber = new Map((prevFile ? loadJson(prevFile, { cases: [] }).cases : []).map(c => [c.caseNumber, c]));
+    for (let i = 0; i < cases.length; i++) {
+      const prev = prevByNumber.get(cases[i].caseNumber);
+      if (cases[i].scrapeError && prev && !prev.scrapeError) {
+        cases[i] = { ...prev, scrapeError: cases[i].scrapeError, carriedForwardFrom: prev.lastSeen || path.basename(prevFile) };
+      }
+    }
+    updateLedger(ledger, cases, runDate);
+    writeJson(LEDGER_FILE, ledger);
+    writeJson(path.join(HISTORY_DIR, "snapshots", `cases-${runDate}.json`), { scrapedAt: raw.scrapedAt, cases });
+    if (prevFile) {
+      changes = diffCases(loadJson(prevFile, { cases: [] }).cases, cases);
+      writeJson(path.join(OUT_DIR, "changes.json"), { runDate, comparedTo: path.basename(prevFile), changes });
+      writeJson(path.join(HISTORY_DIR, "changes", `changes-${runDate}.json`), { runDate, comparedTo: path.basename(prevFile), changes });
+    } else {
+      console.log("\nNo earlier snapshot: this run is the history baseline.");
+    }
+  } else {
+    // Annotate from the ledger without modifying it (test, filtered, or re-analysis run).
+    for (const c of cases) Object.assign(c, {
+      firstSeen: ledger.cases[c.caseNumber]?.firstSeen ?? "",
+      lastSeen: ledger.cases[c.caseNumber]?.lastSeen ?? "",
+      statusHistory: ledger.cases[c.caseNumber]?.statusHistory ?? []
+    });
+    if (raw.partialRun) console.log("\nPartial/filtered run: history snapshot and ledger NOT updated.");
+  }
+
+  writeOutputs(cases, { scrapedAt: raw.scrapedAt, analyzedAt: new Date().toISOString(), searches: raw.searches, dateRange: raw.dateRange, partialRun: raw.partialRun });
+  printSummary(cases, changes);
+  console.log(`\nWrote ${path.relative(process.cwd(), OUT_DIR) || "."}/cases.csv, judgments.csv, dockets.csv, participants.csv, cases.json`);
+})().catch(e => {
+  console.error(`\nFAILED: ${e.message}`);
+  process.exit(1);
+});

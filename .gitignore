@@ -293,3 +293,8 @@ VanguardAdvisorsETF/history/hybrid-job.lock
 VanguardAdvisorsETF/history/hybrid-control/
 FedInvest/history/*
 fedBonds/history/daily/
+# schuylkill-court-scraper: never commit portal credentials or scraped case data
+schuylkill-court-scraper/credentials.json
+schuylkill-court-scraper/output/
+schuylkill-court-scraper/history/
+schuylkill-court-scraper/debug/

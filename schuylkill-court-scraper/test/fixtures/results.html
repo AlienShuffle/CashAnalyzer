@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html><head><title>Case Search</title></head>
+<body>
+<!-- Modeled on the guide's "List of Cases" screenshot; rows navigate via onclick (no href). -->
+<main>
+  <h1>Case Search</h1>
+  <input placeholder="Search String"><select><option>Case Number</option><option>Participant Name</option></select>
+  <div class="panel">
+    <div class="panel-heading">List of Cases</div>
+    <table><thead><tr><th>Case Number</th><th>Case Participants</th><th>Case Category</th><th>Contact Name</th><th>Address</th><th>Opened</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr onclick="go('2019-NO-000123')"><td>2019-NO-000123</td><td>Pla: LAKE WYNONAH PROPERTY OWNERS ASSOCIATION<br>Def: SMITH, JOHN</td><td>Judgment: Transcript</td><td>LAKE WYNONAH (Plaintiff)</td><td>PO Box 1</td><td>03/04/2019<br>2450 Days</td><td>Open</td></tr>
+        <tr onclick="go('2021-SU-000032')"><td>2021-SU-000032</td><td>Pla: DOE, JANE<br>Def: LAKE WYNONAH POA</td><td>Civil: Tort</td><td>LAKE WYNONAH POA (Defendant)</td><td></td><td>10/27/2021<br>884 Days</td><td>Closed</td></tr>
+      </tbody></table>
+  </div>
+</main>
+<script>function go(n) { location.href = "/Case/CaseDetail?caseNumber=" + n; }</script>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html><head><title>Case Details</title></head>
+<body>
+<!-- Modeled on the portal's "Civil Case Search User Guide" Case Details screenshots. -->
+<nav><a href="/">Home</a> <a href="/Account/LogOff">Log Out</a></nav>
+<main>
+  <div><a href="/search">Search</a> &gt; Case Details</div>
+  <h1>Case Details</h1>
+  <a href="#">Summary</a>
+  <div class="panel">
+    <h2>Lake Wynonah Property Owners Association vs. John Smith</h2>
+    <span class="badge">Open</span>
+    <div><strong>2019-NO-000123</strong></div>
+    <div><strong>Judgment: Transcript from District Justice</strong></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-heading">CASE PARTICIPANTS</div>
+    <a href="#">Participants</a>
+    <div class="row">
+      <div class="col side-pla">
+        <div class="card group">
+          <div class="hdr"><b>Plaintiff</b> (1 of 1)</div>
+          <div class="entry"><div><b>LAKE WYNONAH PROPERTY OWNERS ASSOCIATION</b> (Primary)</div><div>PO Box 1, Auburn, PA 17922</div></div>
+        </div>
+        <div class="card group">
+          <div class="hdr"><b>Attorney</b> (1 of 1)</div>
+          <div class="entry"><div><b>Connie Patterson</b></div><div>2870 Eastern Boulevard, York, PA 17403</div></div>
+        </div>
+      </div>
+      <div>VS</div>
+      <div class="col side-def">
+        <div class="card group" id="def">
+          <div class="hdr"><b>Defendant</b> <span class="ctr">(1 of 2)</span></div>
+          <a class="prev" aria-label="previous">&lsaquo;</a>
+          <div class="entry"><div><b>SMITH, JOHN</b> (Primary)</div><div>12 Lake Dr, Auburn, PA 17922</div></div>
+          <a class="next glyphicon-chevron-right" aria-label="next" onclick="nextDef()"></a>
+        </div>
+        <div class="card group">
+          <div class="hdr"><b>Attorney</b> (1 of 1)</div>
+          <div class="entry"><div><b>DEWEY, CHEATUM AND HOWELL, LLC</b></div><div>2870 Eastern Boulevard, York, PA 17402</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-heading">ADDITIONAL INFORMATION</div>
+    <div class="card"><h3>DETAILS</h3>
+      <div><b>DATE FILED:</b> 03/04/2019</div><div><b>STATUS:</b> Open</div>
+      <div><b>DATE CLOSED:</b> </div><div><b>DAYS OPEN:</b> 2450</div>
+    </div>
+    <div class="card"><h3>DISPOSITION</h3>
+      <div><b>FINAL:</b> </div><div><b>AOPC:</b> 03/01/2019 - A - Default Judgment</div>
+      <div><b>DIVORCE:</b></div><div><b>CUSTODY:</b></div>
+    </div>
+    <div class="card">
+      <div><b>REFERENCE NUMBERS:</b> MJ-21302-CV-0000123-2018</div>
+      <div><b>COMMENCEMENT:</b> Transfer from Another Jurisdiction</div>
+      <div><b>NOTES:</b></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-heading">CASE DISPOSITIONS</div>
+    <table><thead><tr><th>Date</th><th>Category</th><th>Result</th></tr></thead>
+      <tbody><tr><td>03/01/2019</td><td>AOPC</td><td>Default Judgment</td></tr></tbody></table>
+  </div>
+
+  <div class="panel">
+    <div class="panel-heading">CASE DOCKET ENTRIES</div>
+    <div>+ Expand All Dockets</div>
+    <!-- split header/body tables, like a scrolling DataTable -->
+    <table><thead><tr><th></th><th>Date</th><th>Category</th><th>Description</th><th>Attachments</th><th></th></tr></thead></table>
+    <table><tbody>
+      <tr><td></td><td>06/01/2020</td><td>PRAECIPE</td><td>PRAECIPE FOR WRIT OF EXECUTION</td><td>0</td><td><a href="#">View</a></td></tr>
+      <tr><td>&gt;</td><td>03/04/2019</td><td>TRANSCRIPT</td><td>TRANSCRIPT OF JUDGMENT FROM MDJ</td><td>1</td><td><a href="#">View</a></td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="panel">
+    <div class="panel-heading">CASE JUDGMENTS</div>
+    <table><thead><tr><th>Date</th><th>Creditor</th><th>Debtor</th><th>Description</th><th>Amount</th><th></th></tr></thead>
+      <tbody><tr><td>03/04/2019</td><td>Lake Wynonah Property Owners Association</td><td>John Smith</td><td></td><td>$1,234.50</td><td><a href="#">View</a></td></tr></tbody></table>
+  </div>
+</main>
+<script>
+  const defs = [
+    ["SMITH, JOHN", "12 Lake Dr, Auburn, PA 17922", "(Primary)"],
+    ["SMITH, MARY", "14 Lake Dr, Auburn, PA 17922", ""]
+  ];
+  let di = 0;
+  function nextDef() {
+    di = (di + 1) % defs.length;
+    const card = document.getElementById("def");
+    card.querySelector(".ctr").textContent = `(${di + 1} of 2)`;
+    card.querySelector(".entry").innerHTML = `<div><b>${defs[di][0]}</b> ${defs[di][2]}</div><div>${defs[di][1]}</div>`;
+  }
+</script>
+</body></html>

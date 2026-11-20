@@ -1,10 +1,13 @@
 {
   "name": "schuylkill-court-scraper",
   "version": "1.0.0",
-  "description": "",
+  "description": "Collects Lake Wynonah litigation status from the Schuylkill County civil court portal",
   "main": "node-court-scraper.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node node-court-scraper.js",
+    "discover": "node node-court-scraper.js --discover",
+    "reanalyze": "node node-court-scraper.js --reanalyze",
+    "test": "node --test \"test/*.test.js\""
   },
   "keywords": [],
   "author": "",
