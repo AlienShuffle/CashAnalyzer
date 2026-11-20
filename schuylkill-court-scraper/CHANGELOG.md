@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Added `npm run match-lots` ([match-lots.js](./match-lots.js), [lib/lotmatch.js](./lib/lotmatch.js)):
+  cross-references LW-plaintiff dues cases to Lake Wynonah lots by defendant address,
+  owner mailing address and owner name, with ownership timing. Writes
+  `output/case-lots.csv`, `lot-matches.csv` and `lot-matches.json`.
+- Added `output/lot-summary.csv`: one row per lot with litigation likelihood and the
+  likely number of cases, regardless of owner.
+
 ## 2026-11-20
 
 - Rewrote the scraper: logs in with a local git-ignored `credentials.json`, searches

@@ -7,6 +7,7 @@
     "start": "node node-court-scraper.js",
     "discover": "node node-court-scraper.js --discover",
     "reanalyze": "node node-court-scraper.js --reanalyze",
+    "match-lots": "node match-lots.js",
     "test": "node --test \"test/*.test.js\""
   },
   "keywords": [],

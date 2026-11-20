@@ -36,6 +36,7 @@ association dues. Background, portal behavior and classification rules are in
 npm run discover     # first run / after portal changes: 2 cases, saves HTML + screenshots to debug/
 npm start            # full run: all "%wynonah%" and "%lwpoa%" cases, updates history
 npm run reanalyze    # re-run classification on output/cases-raw.json without contacting the portal
+npm run match-lots   # cross-reference dues cases to Lake Wynonah lots (../lwlots data)
 npm test             # unit + fixture tests (no portal access)
 node node-court-scraper.js --help
 ```
@@ -84,6 +85,24 @@ disposition that satisfied/released it), `duesClass` (`likely`/`possible`) with
 `duesReasons` (`no` for Lake Wynonah Municipal Authority cases; see `lwEntity`), `lienIndicator` with `lienReasons`, `lastDocketDate`,
 `firstSeen`, `statusHistory`, and `scrapeError` for cases whose detail page failed.
 Classification rules are explained in [KNOWLEDGE.md](./KNOWLEDGE.md).
+
+### Lot cross-reference (`npm run match-lots`)
+
+Reads `output/cases.json` and the lot data in `../lwlots` (`4-lot-normalized.json`
+plus `history/*/` snapshots for past mailing addresses). It checks every
+LW-plaintiff case with `duesClass` `likely`/`possible`, except Municipal Authority
+cases (`--all` checks every LW-plaintiff case). Options: `--lots`, `--lot-history`,
+`--cases`, `--out`, `--min-score` (default 25), `--all`.
+
+| File | Contents |
+| --- | --- |
+| `case-lots.csv` | One row per case: `matchConfidence` (high/medium/low/none), `bestLots`, `bestParcels`, `bestLocations` (several = tie), `bestScore`, `bestReasons`, `defendantStillOwns`, `currentOwners`, `otherCandidates` |
+| `lot-matches.csv` | Every candidate lot per case, ranked, with score and reasons |
+| `lot-summary.csv` | One row per lot, most likely first: `litigationLikelihood` (% chance at least one case involves the lot) with `likelihoodBand`, `likelyCases` (expected number of cases), `casesHigh`/`casesMedium`/`casesLow` (cases where it is the best lot), `alternativeCases`, `openJudgmentCases`, `firstFiled`/`lastFiled`, `cases` (each with its %), `defendants` |
+| `lot-matches.json` | All of the above |
+
+Matches are leads for review, not legal determinations; see
+[KNOWLEDGE.md](./KNOWLEDGE.md#lot-cross-reference) for the scoring.
 
 ## Troubleshooting
 

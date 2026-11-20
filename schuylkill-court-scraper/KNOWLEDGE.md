@@ -120,3 +120,40 @@ in [README.md](./README.md).
   disposition changes. Changes are computed against the latest earlier-dated snapshot.
 - Filtered/test runs do not update history because absent cases would be
   reported as missing.
+
+## Lot cross-reference ([lib/lotmatch.js](./lib/lotmatch.js))
+
+- Dockets never contain parcel or lot numbers, so lots are inferred from
+  defendant addresses and names. Lot data: `../lwlots/4-lot-normalized.json`
+  (`location` = property street, `address` = owner mailing address, `owners`,
+  `saleDate`, `previousOwners`). Mailing-address history only goes back to the
+  first `lwlots/history` snapshot (2026-04); older owners' mailing addresses are unknown.
+- Signals and points (total capped at 100):
+  - Defendant address = lot location: exact 50, street typo/suffix variant 40.
+    Only when the zip is 17922, the city is Auburn, or there is no zip.
+    Outside Auburn, an exact street match only scores 5 (a tie-breaker; dockets
+    sometimes pair a lot street with the wrong city).
+  - Defendant address = owner mailing address (current or any snapshot): 40.
+  - Name = owner: full 55, first initial 35, surname only 15 (25 if the surname is
+    on 3 or fewer lots). Multiplied by ownership timing at the filing date: owned
+    at filing ×1, sold within 3 years before ×0.9, otherwise ×0.4.
+  - Two or more defendants named as owners in the same period (spouses): +25;
+    otherwise two matching defendants: +10.
+  - Confidence: high ≥ 80, medium ≥ 50, low below; candidates under 25 are dropped.
+- Name handling: portal names are "FIRST M LAST, JR" or "LAST JR, FIRST"; lot
+  owners are "LAST, FIRST M" or older "LAST F M & F M". Apostrophes are dropped
+  (D'ATTILIO = DATTILIO), and two-word surnames are joined (VANDER MUELEN).
+  Organizations match on a normalized key (INC/LLC/CORP… removed) or a ≥12-character
+  prefix, because the lot data truncates long owner names.
+- Garnishee banks named as defendants never match lots. "C/O"/"ATTN" lines are
+  skipped when parsing addresses.
+- Old dockets (e.g. J-1395-1985) show a recent opened date; the case-number year is
+  used as the filing year for ownership timing.
+- Lot summary (`lot-summary.csv`): each case→lot candidate counts as probability
+  p = score/100, halved when another lot fits that case better (an "alt").
+  Tied best lots each keep full weight. Per lot, `litigationLikelihood` = 1 − Π(1 − p)
+  and `likelyCases` = Σ p. These are review heuristics, not calibrated
+  probabilities; `openJudgmentCases` counts cases with p ≥ 0.5 and an open LW judgment.
+- Ties are usually one owner holding several lots; the dues judgment may cover all of them.
+- Unmatched cases are mostly owners who sold before the earliest `previousOwners`
+  record, or entity names that never appear in the lot data.
