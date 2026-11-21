@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Lot matching warns and skips empty historical lot snapshots; malformed JSON errors
+  now identify the input file.
 - Added `npm run match-lots` ([match-lots.js](./match-lots.js), [lib/lotmatch.js](./lib/lotmatch.js)):
   cross-references LW-plaintiff dues cases to Lake Wynonah lots by defendant address,
   owner mailing address and owner name, with ownership timing. Writes

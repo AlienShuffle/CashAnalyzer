@@ -36,7 +36,19 @@ if (opt.help) {
   process.exit(0);
 }
 
-const readJson = (f) => JSON.parse(fs.readFileSync(f, "utf8"));
+function readJson(f, { skipEmpty = false } = {}) {
+  const contents = fs.readFileSync(f, "utf8");
+  if (skipEmpty && !contents.trim()) {
+    console.warn(`Warning: skipping empty historical lot snapshot: ${f}. Past mailing addresses may be missing.`);
+    return undefined;
+  }
+  try {
+    return JSON.parse(contents);
+  } catch (err) {
+    if (!(err instanceof SyntaxError)) throw err;
+    throw new SyntaxError(`Invalid JSON in ${f}: ${err.message}`, { cause: err });
+  }
+}
 const lots = readJson(opt.lots);
 
 const mailingHistory = [];
@@ -44,7 +56,9 @@ if (fs.existsSync(opt["lot-history"])) {
   for (const dir of fs.readdirSync(opt["lot-history"]).sort()) {
     const f = path.join(opt["lot-history"], dir, "4-lot-normalized.json");
     if (!fs.existsSync(f)) continue;
-    for (const l of readJson(f)) mailingHistory.push({ lot: l.lot, address: l.address, snapshot: dir.slice(0, 10) });
+    const snapshot = readJson(f, { skipEmpty: true });
+    if (snapshot === undefined) continue;
+    for (const l of snapshot) mailingHistory.push({ lot: l.lot, address: l.address, snapshot: dir.slice(0, 10) });
   }
 }
 const index = buildLotIndex(lots, mailingHistory);

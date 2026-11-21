@@ -112,5 +112,8 @@ Matches are leads for review, not legal determinations; see
   save incomplete data;
   the portal layout may have changed. Run `npm run discover` and inspect
   `debug/*.html` and `debug/*.png`.
+- **Warning: skipping empty historical lot snapshot** – restore the named snapshot
+  from a backup if possible. Matching continues, but past mailing addresses from
+  that snapshot are missing. Other invalid JSON files stop the run and must be fixed.
 - `output/`, `history/`, `debug/` and `credentials.json` are git-ignored because
   they contain personal data and secrets.
